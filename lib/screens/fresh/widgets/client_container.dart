@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:fox_fit/models/client_model.dart';
+import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/screens/fresh/widgets/blur.dart';
 
 class ClientContainer extends StatefulWidget {
@@ -12,7 +12,7 @@ class ClientContainer extends StatefulWidget {
     this.onTap,
   }) : super(key: key);
 
-  final ClientModel client;
+  final CustomerModel client;
   final Function()? onTap;
   final bool isActive;
   @override
