@@ -99,6 +99,16 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get log_in {
+    return Intl.message(
+      '',
+      name: 'log_in',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

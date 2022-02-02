@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/config/styles.dart';
+import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
 import 'package:fox_fit/screens/general/general.dart';
 import 'package:fox_fit/widgets/text_button.dart';
@@ -74,7 +75,7 @@ class _AuthPageState extends State<AuthPage> {
                     const SizedBox(height: 46),
                     CustomTextButton(
                         width: width,
-                        text: 'Войти',
+                        text: S.of(context).log_in,
                         onTap: () {
                           Get.to(
                             const General(),

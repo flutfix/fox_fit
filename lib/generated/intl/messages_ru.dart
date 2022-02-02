@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "assigned": MessageLookupByLibrary.simpleMessage("Назначено"),
         "fresh": MessageLookupByLibrary.simpleMessage("Новые"),
+        "log_in": MessageLookupByLibrary.simpleMessage("Войти"),
         "perfomed": MessageLookupByLibrary.simpleMessage("Проведено"),
         "stable": MessageLookupByLibrary.simpleMessage("Постоянные"),
         "still": MessageLookupByLibrary.simpleMessage("Ещё")
