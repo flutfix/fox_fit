@@ -38,7 +38,7 @@ class _AuthPageState extends State<AuthPage> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              ///Top bar with logo
+              ///TopBar с лого
               Image.asset(
                 Images.authTop,
                 fit: BoxFit.fill,
@@ -48,6 +48,8 @@ class _AuthPageState extends State<AuthPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 67),
+
+                    ///Ввод номера телефона
                     Input(
                       width: width,
                       hintText: '+7 ___-___-__-__',
@@ -64,6 +66,8 @@ class _AuthPageState extends State<AuthPage> {
                       scrollPaddingBottom: 120,
                     ),
                     const SizedBox(height: 18),
+
+                    ///Ввод пароля
                     Input(
                       width: width,
                       hintText: '*** *** ***',
@@ -72,6 +76,8 @@ class _AuthPageState extends State<AuthPage> {
                       textController: passController,
                     ),
                     const SizedBox(height: 46),
+
+                    ///Кнопка [Войти]
                     CustomTextButton(
                         width: width,
                         text: S.of(context).log_in,

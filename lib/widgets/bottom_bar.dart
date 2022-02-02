@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
 
 class CustomBottomBar extends StatefulWidget {
@@ -7,14 +8,18 @@ class CustomBottomBar extends StatefulWidget {
     Key? key,
     required this.items,
     required this.onChange,
+    required this.activeColor,
+    required this.inActiveColor,
     this.verticalPadding = 14.0,
     this.duration = 150,
   }) : super(key: key);
 
-  final List<ItemBottomBar> items;
+  final List<ItemBottomBarModel> items;
   final Function(int) onChange;
   final double verticalPadding;
   final int duration;
+  final Color activeColor;
+  final Color inActiveColor;
 
   @override
   _CustomBottomBarState createState() => _CustomBottomBarState();
@@ -63,19 +68,19 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                       child: Column(
                         children: [
                           SvgPicture.asset(
-                            item.icon,
+                            getIcon(index),
                             width: 20,
                             color: index == currentIndex
-                                ? item.activeColor
-                                : item.inactiveColor,
+                                ? widget.activeColor
+                                : widget.inActiveColor,
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            item.name,
+                            item.shortName,
                             style: theme.textTheme.caption!.copyWith(
                                 color: index == currentIndex
-                                    ? item.activeColor
-                                    : item.inactiveColor),
+                                    ? widget.activeColor
+                                    : widget.inActiveColor),
                           ),
                         ],
                       ),
@@ -110,4 +115,21 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
       currentIndex *
       (MediaQuery.of(context).size.width - 40) /
       widget.items.length;
+
+  String getIcon(int index) {
+    switch (index) {
+      case 0:
+        return Images.fresh;
+      case 1:
+        return Images.assigned;
+      case 2:
+        return Images.perfomed;
+      case 3:
+        return Images.stable;
+      case 4:
+        return Images.still;
+      default:
+        return Images.fresh;
+    }
+  }
 }

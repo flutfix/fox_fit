@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fox_fit/models/client_model.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:get/get.dart';
 
 class FreshPage extends StatefulWidget {
   const FreshPage({Key? key}) : super(key: key);
@@ -11,25 +12,17 @@ class FreshPage extends StatefulWidget {
 }
 
 class _FreshPageState extends State<FreshPage> {
-  late List<ClientModel> fakeModel;
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  late RefreshController _refreshController;
 
   @override
   void initState() {
-    fakeModel = [
-      ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-    ];
+    _refreshController = RefreshController(initialRefresh: false);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final GeneralController controller = Get.put(GeneralController());
     ThemeData theme = Theme.of(context);
     return SmartRefresher(
       controller: _refreshController,
@@ -40,25 +33,26 @@ class _FreshPageState extends State<FreshPage> {
         child: Column(
           children: [
             const SizedBox(height: 25),
-            ...List.generate(
-              fakeModel.length,
-              (index) => Padding(
+            ...List.generate(controller.appState.value.customers.length,
+                (index) {
+              var customer = controller.appState.value.customers[index];
+              return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     DefaultContainer(
-                      isBlured: index == 0 ? false : true,
+                      isBlured: customer.isVisible,
                       child: Text(
-                        fakeModel[index].fullName,
+                        customer.fullName,
                         style: theme.textTheme.bodyText1,
                       ),
                     ),
-                    if (index != fakeModel.length - 1)
+                    if (index != controller.appState.value.customers.length - 1)
                       const SizedBox(height: 6),
                   ],
                 ),
-              ),
-            ),
+              );
+            }),
             const SizedBox(height: 25),
           ],
         ),

@@ -51,56 +51,6 @@ class S {
   }
 
   /// ``
-  String get fresh {
-    return Intl.message(
-      '',
-      name: 'fresh',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get assigned {
-    return Intl.message(
-      '',
-      name: 'assigned',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get perfomed {
-    return Intl.message(
-      '',
-      name: 'perfomed',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get stable {
-    return Intl.message(
-      '',
-      name: 'stable',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get still {
-    return Intl.message(
-      '',
-      name: 'still',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
   String get log_in {
     return Intl.message(
       '',

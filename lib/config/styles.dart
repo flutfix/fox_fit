@@ -15,23 +15,23 @@ abstract class Styles {
   static const Color disableIcon = Color(0xFF6E7288);
   static const Color borderColor = Color(0xFFF1F1F1);
 
-  ///Default font family
+  /// Стандартный шрифт
   static const String mainFontFamily = 'Open Sans';
 
-  ///Theme
+  /// Светлая тема
   static ThemeData get getLightTheme {
     return ThemeData(
       fontFamily: Styles.mainFontFamily,
       brightness: Brightness.light,
       backgroundColor: Styles.white,
       colorScheme: const ColorScheme.light(
-        ///[Orange] Color
+        /// [Оранжевый] Цвет
         primary: Styles.orange,
 
-        ///[Light Blue] Color
+        /// [Голубой] Цвет
         secondary: Styles.blue,
 
-        ///[White] Color
+        /// [Белый] Цвет
         surface: Styles.white,
       ),
 
@@ -43,22 +43,22 @@ abstract class Styles {
         modalBackgroundColor: Styles.greyLight,
       ),
 
-      /// Text Color
+      /// Цвет текста
       hintColor: Styles.primaryText,
 
-      /// [Grey] Color
+      /// [Серый] Цвет
       canvasColor: Styles.grey,
 
-      /// Inactive BottomBar Icon Color
+      /// Неактивный цвет иконки BottomBar
       hoverColor: Styles.disableIcon,
 
       /// Border Color
       splashColor: Styles.borderColor,
 
-      /// Разделитель
+      /// Цвет разделяющей линии
       dividerColor: Styles.secondaryText,
 
-      /// Text Theme
+      /// Шрифты
       textTheme: const TextTheme(
         headline1: TextStyle(
           fontSize: 18,

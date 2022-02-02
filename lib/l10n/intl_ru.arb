@@ -1,9 +1,3 @@
 {
-    "fresh": "Новые",
-    "assigned": "Назначено",
-    "perfomed": "Проведено",
-    "stable": "Постоянные",
-    "still": "Ещё",
-    "log_in": "Войти",
-    "customer_information": "Информация о клиенте"
+    "log_in": "Войти"
 }
