@@ -3,7 +3,7 @@ class Images {
   static const String authTop = 'lib/assets/icons/auth_top.png';
   static const String phone = 'lib/assets/icons/phone.svg';
   static const String pass = 'lib/assets/icons/pass.svg';
- 
+
   /// AppBar
   static const String backArrow = 'lib/assets/icons/back_arrow.svg';
   static const String notifications = 'lib/assets/icons/notifications.svg';
@@ -14,4 +14,11 @@ class Images {
   static const String perfomed = 'lib/assets/icons/perfomed.svg';
   static const String stable = 'lib/assets/icons/stable.svg';
   static const String still = 'lib/assets/icons/still.svg';
+
+  /// CustomerInformation Screen
+  static const String more = 'lib/assets/icons/more.svg';
+  static const String phoneFill = 'lib/assets/icons/phone_fill.svg';
+  static const String refresh = 'lib/assets/icons/refresh.svg';
+  static const String phoneMinus = 'lib/assets/icons/phone_minus.svg';
+  static const String cross = 'lib/assets/icons/cross.svg';
 }

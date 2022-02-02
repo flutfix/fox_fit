@@ -46,7 +46,7 @@ class _InputState extends State<Input> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
           color: backgroundColor,
-          border: Border.all(width: 1, color: theme.dividerColor)),
+          border: Border.all(width: 1, color: theme.splashColor)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 19),
         child: Row(
