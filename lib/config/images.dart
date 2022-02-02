@@ -18,4 +18,7 @@ class Images {
   /// CustomerInformation Screen
   static const String more = 'lib/assets/icons/more.svg';
   static const String phoneFill = 'lib/assets/icons/phone_fill.svg';
+  static const String refresh = 'lib/assets/icons/refresh.svg';
+  static const String phoneMinus = 'lib/assets/icons/phone_minus.svg';
+  static const String cross = 'lib/assets/icons/cross.svg';
 }

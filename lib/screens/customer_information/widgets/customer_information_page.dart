@@ -39,7 +39,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
                 /// ФИО и номер телефона
                 DefaultContainer(
-                  padding: const EdgeInsets.fromLTRB(15.5, 19, 15.5, 25),
+                  padding: const EdgeInsets.fromLTRB(15.5, 19, 5.5, 25),
                   child: Column(
                     children: [
                       Row(
@@ -50,9 +50,24 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                             'Сантанова Юлия Игоревна',
                             style: theme.textTheme.bodyText1,
                           ),
-                          SvgPicture.asset(
-                            Images.more,
-                            width: 4,
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                Images.more,
+                                width: 4,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showBottomSheet(theme: theme);
+                                },
+                                behavior: HitTestBehavior.translucent,
+                                child: const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -124,6 +139,78 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void showBottomSheet({required ThemeData theme}) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.bottomSheetTheme.backgroundColor,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 24),
+              Container(
+                height: 5,
+                width: 135,
+                decoration: BoxDecoration(
+                  color: theme.bottomSheetTheme.modalBackgroundColor!
+                      .withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              ),
+              const SizedBox(height: 41),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 33),
+                child: Column(
+                  children: [
+                    ...List.generate(
+                      3,
+                      (index) {
+                        return Column(
+                          children: [
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  Images.refresh,
+                                  width: 19,
+                                ),
+                                const SizedBox(width: 16),
+                                Text(
+                                  'Назначена стартовая тренировка',
+                                  style: theme.textTheme.headline3,
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 32),
+                            Divider(
+                              color: theme
+                                  .bottomSheetTheme.modalBackgroundColor!
+                                  .withOpacity(0.1),
+                            ),
+                            const SizedBox(height: 32),
+                          ],
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 100),
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -5,6 +5,8 @@ abstract class Styles {
   static const Color white = Colors.white;
   static const Color black = Colors.black;
   static const Color grey = Color(0xFFFAFAF8);
+  static const Color greyLight = Color(0xFF3C3C3C);
+  static const Color greyLight2 = Color(0xFFE8E8E8);
   static const Color blue = Color(0xFF2692DA);
   static const Color primaryText = Color(0xFF333E63);
   static const Color secondaryText = Color(0xFF3A4060);
@@ -31,6 +33,14 @@ abstract class Styles {
 
         ///[White] Color
         surface: Styles.white,
+      ),
+
+      /// Стиль для Bottom Sheet
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Styles.grey,
+
+        /// Для разделителя
+        modalBackgroundColor: Styles.greyLight,
       ),
 
       /// Text Color
