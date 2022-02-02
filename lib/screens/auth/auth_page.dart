@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/images.dart';
+import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
@@ -77,12 +78,7 @@ class _AuthPageState extends State<AuthPage> {
                         width: width,
                         text: S.of(context).log_in,
                         onTap: () {
-                          Get.to(
-                            const General(),
-                            transition: Transition.fadeIn,
-                            curve: Curves.easeOut,
-                            duration: const Duration(milliseconds: 100),
-                          );
+                          Get.toNamed(Routes.general);
                         },
                         backgroundColor: theme.colorScheme.secondary,
                         textStyle: theme.textTheme.button!.copyWith(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/auth_page.dart';
@@ -21,18 +22,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'FoxFit',
-      debugShowCheckedModeBanner: false,
-      theme: Styles.getLightTheme,
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: const Locale('ru', 'RU'),
-      supportedLocales: S.delegate.supportedLocales,
-      home: const AuthPage(),
-    );
+        title: 'FoxFit',
+        debugShowCheckedModeBanner: false,
+        theme: Styles.getLightTheme,
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: const Locale('ru', 'RU'),
+        supportedLocales: S.delegate.supportedLocales,
+        initialRoute: Routes.auth,
+        getPages: [
+          ///Auth Page
+          GetPage(name: Routes.auth, page: () => const AuthPage()),
+
+          ///General Page
+          GetPage(
+            name: Routes.general,
+            transition: Transition.fadeIn,
+            curve: Curves.easeOut,
+            page: () => const General(),
+          ),
+        ]);
   }
 }

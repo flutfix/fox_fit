@@ -24,7 +24,6 @@ class _ClientContainerState extends State<ClientContainer> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     ThemeData theme = Theme.of(context);
-    log(widget.isActive.toString());
     if (widget.isActive) {
       return SizedBox(
         width: width,
