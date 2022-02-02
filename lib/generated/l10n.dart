@@ -109,6 +109,16 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get customer_information {
+    return Intl.message(
+      '',
+      name: 'customer_information',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

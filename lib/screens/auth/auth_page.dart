@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/config/routes.dart';
-import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
-import 'package:fox_fit/screens/general/general.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';

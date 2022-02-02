@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/models/client_model.dart';
-import 'package:fox_fit/screens/fresh/widgets/client_container.dart';
+import 'package:fox_fit/utils/sizes.dart';
+import 'package:fox_fit/widgets/default_container.dart';
 
 class FreshPage extends StatefulWidget {
   const FreshPage({Key? key}) : super(key: key);
@@ -31,29 +32,37 @@ class _FreshPageState extends State<FreshPage> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return RefreshIndicator(
       onRefresh: _refresh,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height - 182,
-            child: Column(
-              children: [
-                const SizedBox(height: 25),
-                ...List.generate(
-                  fakeModel.length,
-                  (index) {
-                    return ClientContainer(
-                      client: fakeModel[index],
-                      isActive: index == 0 ? false : true,
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: SizedBox(
+          height: Sizes.getHeightColumnForScroll(context: context),
+          child: Column(
+            children: [
+              const SizedBox(height: 25),
+              Expanded(
+                child: ListView.separated(
+                  itemCount: fakeModel.length,
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  physics: const NeverScrollableScrollPhysics(),
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(height: 6);
+                  },
+                  itemBuilder: (context, index) {
+                    return DefaultContainer(
+                      isBlured: index == 0 ? false : true,
+                      child: Text(
+                        fakeModel[index].fullName,
+                        style: theme.textTheme.bodyText1,
+                      ),
                     );
                   },
                 ),
-                const SizedBox(height: 25),
-              ],
-            ),
+              ),
+              const SizedBox(height: 25),
+            ],
           ),
         ),
       ),

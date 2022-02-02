@@ -4,6 +4,7 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/auth_page.dart';
+import 'package:fox_fit/screens/customer_information/widgets/customer_information_page.dart';
 import 'package:fox_fit/screens/general/general.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -33,10 +34,11 @@ class MyApp extends StatelessWidget {
         ],
         locale: const Locale('ru', 'RU'),
         supportedLocales: S.delegate.supportedLocales,
-        initialRoute: Routes.auth,
+        initialRoute: Routes.customerInformation,
         getPages: [
           getPage(Routes.auth, () => const AuthPage()),
           getPage(Routes.general, () => const General()),
+          getPage(Routes.customerInformation, () => const CustomerInformationPage()),
         ]);
   }
 
