@@ -35,16 +35,17 @@ class MyApp extends StatelessWidget {
         supportedLocales: S.delegate.supportedLocales,
         initialRoute: Routes.auth,
         getPages: [
-          ///Auth Page
-          GetPage(name: Routes.auth, page: () => const AuthPage()),
-
-          ///General Page
-          GetPage(
-            name: Routes.general,
-            transition: Transition.fadeIn,
-            curve: Curves.easeOut,
-            page: () => const General(),
-          ),
+          getPage(Routes.auth, () => const AuthPage()),
+          getPage(Routes.general, () => const General()),
         ]);
+  }
+
+  GetPage<dynamic> getPage(String routeName, Widget Function() page) {
+    return GetPage(
+      name: routeName,
+      transition: Transition.fadeIn,
+      curve: Curves.easeOut,
+      page: page,
+    );
   }
 }
