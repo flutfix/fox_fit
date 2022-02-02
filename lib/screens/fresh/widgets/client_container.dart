@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/screens/fresh/widgets/blur.dart';

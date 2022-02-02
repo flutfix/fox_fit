@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
-import 'package:fox_fit/generated/l10n.dart';
-import 'package:fox_fit/models/item_bottom_bar.dart';
-import 'package:fox_fit/screens/assigned/assigned_page.dart';
 import 'package:fox_fit/screens/fresh/fresh_page.dart';
-import 'package:fox_fit/screens/perfomed/perfomed_page.dart';
-import 'package:fox_fit/screens/stable/stable_page.dart';
-import 'package:fox_fit/screens/still/still_page.dart';
 import 'package:fox_fit/widgets/bottom_bar.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/keep_alive_page.dart';
@@ -50,18 +43,6 @@ class _GeneralState extends State<General> {
             children: const [
               /// Страница [Новые]
               KeepAlivePage(child: FreshPage()),
-
-              ///Страница [Назначено]
-              KeepAlivePage(child: AssignedPage()),
-
-              ///Страница [Проведено]
-              KeepAlivePage(child: PerfomedPage()),
-
-              ///Страница [Постоянные]
-              KeepAlivePage(child: StablePage()),
-
-              ///Страница [Ещё]
-              KeepAlivePage(child: StillPage()),
             ],
           ),
           bottomNavigationBar: Obx(
@@ -91,14 +72,11 @@ class _GeneralState extends State<General> {
     });
   }
 
-  setPage(int index) {
+  void setPage(int index) {
     currentIndex = index;
     pageController.jumpToPage(
       index,
     );
   }
 
-  List<ItemBottomBarModel> getBottomBarItems(ThemeData theme) {
-    return [];
-  }
 }

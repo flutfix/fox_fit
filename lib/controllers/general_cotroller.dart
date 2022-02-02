@@ -1,5 +1,5 @@
+import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:fox_fit/config/api.dart';
@@ -9,7 +9,6 @@ import 'package:fox_fit/models/item_bottom_bar.dart';
 import 'package:get/get.dart';
 
 class GeneralController extends GetxController {
-  bool? isNewNotifications;
   final appState = AppStateModel().obs;
 
   @override
@@ -19,12 +18,16 @@ class GeneralController extends GetxController {
     });
     await initApp();
     sortBottomBarItems();
+    sortCustomers();
+    log(json.encode(appState.value.sortedCustomers));
+
     appState.update((model) {
       model?.isLoading = false;
     });
     super.onInit();
   }
 
+  /// Запрос на получение основных данных, необходимых для инициализации приложения
   Future<dynamic> initApp() async {
     const String url = '${Api.url}get_customers';
     final dioClient = Dio(Api.options);
@@ -49,10 +52,11 @@ class GeneralController extends GetxController {
         });
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
+  /// Сортировка активных разделов BottomBar
   void sortBottomBarItems() {
     List<ItemBottomBarModel> sortedList = [];
     for (var element in appState.value.bottomBarItems) {
@@ -66,6 +70,24 @@ class GeneralController extends GetxController {
     appState.update((model) {
       model?.bottomBarItems = sortedList;
     });
-    update();
+    log(appState.value.bottomBarItems.length.toString());
+  }
+
+  /// Сортировка клиентов по разделам BottomBar, где [Uid] раздела - ключ от Map
+  void sortCustomers() {
+    List<CustomerModel> customers = [];
+    Map<String, List<CustomerModel>> sortedClients = {};
+    for (var stage in appState.value.bottomBarItems) {
+      for (var customer in appState.value.customers) {
+        if (stage.uid == customer.trainerStageUid) {
+          customers.add(customer);
+        }
+      }
+      sortedClients[stage.uid] = customers;
+      customers = [];
+    }
+    appState.update((model) {
+      model?.sortedCustomers = sortedClients;
+    });
   }
 }
