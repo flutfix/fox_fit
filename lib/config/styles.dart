@@ -4,11 +4,12 @@ abstract class Styles {
   /*------------------COLORS-------------------*/
   static const Color white = Colors.white;
   static const Color black = Colors.black;
-  static const Color gray = Color(0xFFFAFAF8);
+  static const Color grey = Color(0xFFFAFAF8);
   static const Color blue = Color(0xFF2692DA);
   static const Color darkBlue = Color(0xFF333E63);
   static const Color orange = Color(0xFFFE5900);
   static const Color disableIcon = Color(0xFF6E7288);
+  static const Color borderColor = Color(0xFFF1F1F1);
 
   ///Default font family
   static const String mainFontFamily = 'Open Sans';
@@ -20,24 +21,27 @@ abstract class Styles {
       brightness: Brightness.light,
       backgroundColor: Styles.white,
       colorScheme: const ColorScheme.light(
+        ///[Orange] Color
+        primary: Styles.orange,
 
-          ///[Orange] Color
-          primary: Styles.orange,
+        ///[Light Blue] Color
+        secondary: Styles.blue,
 
-          ///[Light Blue] Color
-          secondary: Styles.blue,
-
-          ///[White] Color
-          surface: Styles.white),
+        ///[White] Color
+        surface: Styles.white,
+      ),
 
       /// Text Color
       hintColor: Styles.darkBlue,
 
-      /// [Gray] Color
-      canvasColor: Styles.gray,
+      /// [Grey] Color
+      canvasColor: Styles.grey,
 
       /// Inactive BottomBar Icon Color
       hoverColor: Styles.disableIcon,
+
+      ///Border Color
+      dividerColor: Styles.borderColor,
 
       ///Text Theme
       textTheme: const TextTheme(
@@ -62,10 +66,11 @@ abstract class Styles {
           color: Styles.darkBlue,
         ),
         button: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Styles.darkBlue,
-            letterSpacing: 2),
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: Styles.white,
+          letterSpacing: 2,
+        ),
       ),
     );
   }

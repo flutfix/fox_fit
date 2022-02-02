@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Stable extends StatefulWidget {
-  const Stable({ Key? key }) : super(key: key);
+class StablePage extends StatefulWidget {
+  const StablePage({Key? key}) : super(key: key);
 
   @override
-  _StableState createState() => _StableState();
+  _StablePageState createState() => _StablePageState();
 }
 
-class _StableState extends State<Stable> {
+class _StablePageState extends State<StablePage> {
   @override
   Widget build(BuildContext context) {
     return Column(

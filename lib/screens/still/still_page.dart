@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-class Assigned extends StatefulWidget {
-  const Assigned({Key? key}) : super(key: key);
+class StillPage extends StatefulWidget {
+  const StillPage({ Key? key }) : super(key: key);
 
   @override
-  _AssignedState createState() => _AssignedState();
+  _StillPageState createState() => _StillPageState();
 }
 
-class _AssignedState extends State<Assigned> {
+class _StillPageState extends State<StillPage> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
-          'Назначено',
+          'Ещё',
           style: Theme.of(context).textTheme.headline1,
         )
       ],

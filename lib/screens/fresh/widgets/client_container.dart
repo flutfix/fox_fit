@@ -8,13 +8,13 @@ class ClientContainer extends StatefulWidget {
   const ClientContainer({
     Key? key,
     required this.client,
-    required this.isBlured,
+    required this.isActive,
     this.onTap,
   }) : super(key: key);
 
   final ClientModel client;
   final Function()? onTap;
-  final bool isBlured;
+  final bool isActive;
   @override
   _ClientContainerState createState() => _ClientContainerState();
 }
@@ -24,8 +24,8 @@ class _ClientContainerState extends State<ClientContainer> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     ThemeData theme = Theme.of(context);
-    log(widget.isBlured.toString());
-    if (widget.isBlured) {
+    log(widget.isActive.toString());
+    if (widget.isActive) {
       return SizedBox(
         width: width,
         height: 60,
@@ -50,7 +50,7 @@ class _ClientContainerState extends State<ClientContainer> {
           padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 15),
           margin: const EdgeInsets.only(bottom: 6.0),
           decoration: BoxDecoration(
-              color: !widget.isBlured
+              color: !widget.isActive
                   ? theme.canvasColor
                   : theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(10)),

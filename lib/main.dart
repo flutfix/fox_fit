@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fox_fit/config/styles/styles.dart';
+import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
+import 'package:fox_fit/screens/auth/auth_page.dart';
 import 'package:fox_fit/screens/general/general.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'FoxFit',
       debugShowCheckedModeBanner: false,
       theme: Styles.getLightTheme,
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
       ],
       locale: const Locale('ru', 'RU'),
       supportedLocales: S.delegate.supportedLocales,
-      home: const General(),
+      home: const AuthPage(),
     );
   }
 }
