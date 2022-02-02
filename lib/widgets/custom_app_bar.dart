@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/images.dart';
+import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:get/get.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -30,6 +32,8 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
+    final GeneralController controller = Get.put(GeneralController());
+
     ThemeData theme = Theme.of(context);
     double width = MediaQuery.of(context).size.width;
     return Container(
@@ -73,7 +77,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 child: SvgPicture.asset(
                   Images.notifications,
                   width: 24,
-                  color: theme.colorScheme.primary,
+                  color: controller.appState.value.isNewNotifications ? theme.colorScheme.primary : theme.iconTheme.color,
                 ))
           ],
         ),

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:fox_fit/screens/fresh/widgets/blur.dart';
+import 'package:fox_fit/screens/customers/widgets/blur.dart';
 
 class DefaultContainer extends StatefulWidget {
   const DefaultContainer({
     Key? key,
-    this.isBlured = false,
+    this.isVisible = true,
     this.onTap,
     this.padding = const EdgeInsets.symmetric(vertical: 18, horizontal: 15),
     required this.child,
   }) : super(key: key);
 
-  final bool isBlured;
+  final bool isVisible;
   final Function()? onTap;
   final EdgeInsetsGeometry padding;
   final Widget child;
@@ -24,7 +24,9 @@ class _DefaultContainerState extends State<DefaultContainer> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     ThemeData theme = Theme.of(context);
-    if (widget.isBlured) {
+    if (widget.isVisible) {
+      return getClientContainer(width, theme);
+    } else {
       return SizedBox(
         width: width,
         height: 60,
@@ -35,8 +37,6 @@ class _DefaultContainerState extends State<DefaultContainer> {
           ],
         ),
       );
-    } else {
-      return getClientContainer(width, theme);
     }
   }
 
@@ -48,7 +48,7 @@ class _DefaultContainerState extends State<DefaultContainer> {
         width: width,
         padding: widget.padding,
         decoration: BoxDecoration(
-            color: !widget.isBlured
+            color: widget.isVisible
                 ? theme.canvasColor
                 : theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(10)),

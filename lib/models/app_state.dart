@@ -4,12 +4,14 @@ import 'package:fox_fit/models/item_bottom_bar.dart';
 class AppStateModel {
   AppStateModel({
     this.isLoading = false,
+    this.currentIndex = 0,
     this.isNewNotifications = false,
     this.customers = const [],
     this.bottomBarItems = const [],
     this.sortedCustomers = const {},
   });
   bool isLoading;
+  int currentIndex;
   bool isNewNotifications;
 
   ///Все клиенты

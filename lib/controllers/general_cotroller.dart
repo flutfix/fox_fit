@@ -19,7 +19,6 @@ class GeneralController extends GetxController {
     await initApp();
     sortBottomBarItems();
     sortCustomers();
-    log(json.encode(appState.value.sortedCustomers));
 
     appState.update((model) {
       model?.isLoading = false;
@@ -38,6 +37,10 @@ class GeneralController extends GetxController {
       if (response.statusCode == 200) {
         List<CustomerModel> customers = [];
         List<ItemBottomBarModel> bottomBarItems = [];
+        // log( response.data['NewNotifications']);
+        // appState.update((model) {
+        //   model?.isNewNotifications = response.data['NewNotifications'];
+        // });
         for (var element in response.data['Customers']) {
           customers.add(CustomerModel.fromJson(element));
         }
@@ -70,7 +73,6 @@ class GeneralController extends GetxController {
     appState.update((model) {
       model?.bottomBarItems = sortedList;
     });
-    log(appState.value.bottomBarItems.length.toString());
   }
 
   /// Сортировка клиентов по разделам BottomBar, где [Uid] раздела - ключ от Map
@@ -83,7 +85,9 @@ class GeneralController extends GetxController {
           customers.add(customer);
         }
       }
-      sortedClients[stage.uid] = customers;
+      if (customers.isNotEmpty) {
+        sortedClients[stage.uid] = customers;
+      }
       customers = [];
     }
     appState.update((model) {

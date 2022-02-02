@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
-import 'package:fox_fit/screens/fresh/fresh_page.dart';
+import 'package:fox_fit/screens/customers/customers.dart';
 import 'package:fox_fit/widgets/bottom_bar.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/keep_alive_page.dart';
@@ -14,12 +16,10 @@ class General extends StatefulWidget {
 }
 
 class _GeneralState extends State<General> {
-  late int currentIndex;
   late PageController pageController;
   @override
   void initState() {
-    currentIndex = 0;
-    pageController = PageController(initialPage: currentIndex);
+    pageController = PageController(initialPage: 0);
 
     super.initState();
   }
@@ -33,18 +33,21 @@ class _GeneralState extends State<General> {
       if (!controller.appState.value.isLoading) {
         return Scaffold(
           backgroundColor: theme.backgroundColor,
-          appBar: const CustomAppBar(
-            title: 'Новые',
-            count: 5,
+          appBar: CustomAppBar(
+            title: controller
+                .appState
+                .value
+                .bottomBarItems[controller.appState.value.currentIndex]
+                .shortName,
+            // count: 0,
           ),
           body: PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: pageController,
-            children: const [
-              /// Страница [Новые]
-              KeepAlivePage(child: FreshPage()),
-            ],
-          ),
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              children: List.generate(
+                  controller.appState.value.bottomBarItems.length, (index) {
+                return const KeepAlivePage(child: CustomersPage());
+              })),
           bottomNavigationBar: Obx(
             () => CustomBottomBar(
               items: controller.appState.value.bottomBarItems,
@@ -73,10 +76,11 @@ class _GeneralState extends State<General> {
   }
 
   void setPage(int index) {
-    currentIndex = index;
+    Get.find<GeneralController>().appState.update((model) {
+      model?.currentIndex = index;
+    });
     pageController.jumpToPage(
       index,
     );
   }
-
 }
