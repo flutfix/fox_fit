@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fox_fit/models/client_model.dart';
+import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/screens/fresh/widgets/client_container.dart';
+import 'package:get/get.dart';
 
 class FreshPage extends StatefulWidget {
   const FreshPage({Key? key}) : super(key: key);
@@ -10,50 +12,38 @@ class FreshPage extends StatefulWidget {
 }
 
 class _FreshPageState extends State<FreshPage> {
-  late List<ClientModel> fakeModel;
+  late List<CustomerModel> fakeModel;
 
   @override
   void initState() {
-    fakeModel = [
-      ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      // ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      // ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      // ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-      // ClientModel(fullName: 'Сантанова Юлия Игоревна'),
-    ];
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final GeneralController controller = Get.put(GeneralController());
+
     return RefreshIndicator(
       onRefresh: _refresh,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height - 182,
-            child: Column(
-              children: [
-                const SizedBox(height: 25),
-                ...List.generate(
-                  fakeModel.length,
-                  (index) {
-                    return ClientContainer(
-                      client: fakeModel[index],
-                      isActive: index == 0 ? false : true,
-                    );
-                  },
-                ),
-                const SizedBox(height: 25),
-              ],
-            ),
+          child: Column(
+            children: [
+              const SizedBox(height: 25),
+              ...List.generate(
+                controller.appState.value.customers.length,
+                (index) {
+                  return ClientContainer(
+                    client: controller.appState.value.customers[index],
+                    isActive:
+                        controller.appState.value.customers[index].isVisible,
+                  );
+                },
+              ),
+              const SizedBox(height: 25),
+            ],
           ),
         ),
       ),
