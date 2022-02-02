@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-class Perfomed extends StatefulWidget {
-  const Perfomed({Key? key}) : super(key: key);
+class AssignedPage extends StatefulWidget {
+  const AssignedPage({Key? key}) : super(key: key);
 
   @override
-  _PerfomedState createState() => _PerfomedState();
+  _AssignedPageState createState() => _AssignedPageState();
 }
 
-class _PerfomedState extends State<Perfomed> {
+class _AssignedPageState extends State<AssignedPage> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
-          'Проведено',
+          'Назначено',
           style: Theme.of(context).textTheme.headline1,
         )
       ],

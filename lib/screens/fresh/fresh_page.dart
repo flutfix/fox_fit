@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:fox_fit/models/client_model.dart';
 import 'package:fox_fit/screens/fresh/widgets/client_container.dart';
 
-class Fresh extends StatefulWidget {
-  const Fresh({Key? key}) : super(key: key);
+class FreshPage extends StatefulWidget {
+  const FreshPage({Key? key}) : super(key: key);
 
   @override
-  _FreshState createState() => _FreshState();
+  _FreshPageState createState() => _FreshPageState();
 }
 
-class _FreshState extends State<Fresh> {
+class _FreshPageState extends State<FreshPage> {
   late List<ClientModel> fakeModel;
 
   @override
@@ -47,7 +47,7 @@ class _FreshState extends State<Fresh> {
                   (index) {
                     return ClientContainer(
                       client: fakeModel[index],
-                      isBlured: index == 0 ? false : true,
+                      isActive: index == 0 ? false : true,
                     );
                   },
                 ),
