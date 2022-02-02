@@ -31,7 +31,6 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   @override
   void initState() {
     currentIndex = 0;
-    print(widget.items.length);
     super.initState();
   }
 

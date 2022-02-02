@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/config/routes.dart';
-import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
-import 'package:fox_fit/screens/general/general.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -40,7 +38,7 @@ class _AuthPageState extends State<AuthPage> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              ///Top bar with logo
+              ///TopBar с лого
               Image.asset(
                 Images.authTop,
                 fit: BoxFit.fill,
@@ -50,6 +48,8 @@ class _AuthPageState extends State<AuthPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 67),
+
+                    ///Ввод номера телефона
                     Input(
                       width: width,
                       hintText: '+7 ___-___-__-__',
@@ -66,6 +66,8 @@ class _AuthPageState extends State<AuthPage> {
                       scrollPaddingBottom: 120,
                     ),
                     const SizedBox(height: 18),
+
+                    ///Ввод пароля
                     Input(
                       width: width,
                       hintText: '*** *** ***',
@@ -74,6 +76,8 @@ class _AuthPageState extends State<AuthPage> {
                       textController: passController,
                     ),
                     const SizedBox(height: 46),
+
+                    ///Кнопка [Войти]
                     CustomTextButton(
                         width: width,
                         text: S.of(context).log_in,
