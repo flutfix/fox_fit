@@ -9,5 +9,6 @@
     "trainer_stats": "Статистика тренера",
     "support": "Поддержка",
     "coordinator": "Координатор",
-    "log_out": "Выйти из профиля"
+    "log_out": "Выйти из профиля",
+    "chat": "Чат в WhatsApp"
 }

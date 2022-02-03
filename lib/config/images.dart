@@ -21,6 +21,7 @@ class Images {
   static const String refresh = 'lib/assets/icons/refresh.svg';
   static const String phoneMinus = 'lib/assets/icons/phone_minus.svg';
   static const String cross = 'lib/assets/icons/cross.svg';
+  static const String chat = 'lib/assets/icons/chat.svg';
 
   /// More Screen
   static const String trainerStats = 'lib/assets/icons/trainer_stats.png';

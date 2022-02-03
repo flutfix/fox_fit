@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
@@ -9,6 +12,7 @@ import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomerInformationPage extends StatefulWidget {
   const CustomerInformationPage({
@@ -104,17 +108,55 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                     ),
                     const SizedBox(height: 4),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        SvgPicture.asset(
+                          Images.phone,
+                          width: 17,
+                        ),
+                        const SizedBox(width: 8),
                         Text(
                           widget.customer.phone,
                           style: theme.textTheme.headline2,
                         ),
-                        const SizedBox(width: 8),
-                        SvgPicture.asset(
-                          Images.phoneFill,
-                          width: 23,
-                        ),
                       ],
+                    ),
+                    const SizedBox(height: 4),
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () async {
+                        dynamic number;
+                        number = widget.customer.phone.split(' ');
+                        number = '${number[0]}${number[1]}${number[2]}';
+                        number = number.split('(');
+                        number = '${number[0]}${number[1]}';
+                        number = number.split(')');
+                        number = '${number[0]}${number[1]}';
+
+                        await canLaunch('whatsapp://send?phone=${number}')
+                            ? launch(
+                                'whatsapp://send?phone=${number}&text=Елена, здравствуйте! Меня зовут Андрей,'
+                                ' я являюсь персональным тренером фитнес-клуба X-fit «Южный лёд».'
+                                'Вы записались на вводную персональную тренировку, и я пишу, чтобы'
+                                ' договориться о дате и времени. Напишите, пожалуйста, когда вам будет удобно?',
+                              )
+                            : print(
+                                "open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            Images.chat,
+                            width: 17,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            S.of(context).chat,
+                            style: theme.textTheme.headline2,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

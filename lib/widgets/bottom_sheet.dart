@@ -58,10 +58,12 @@ class CustomBottomSheet extends StatelessWidget {
                       return Column(
                         children: [
                           GestureDetector(
+                            behavior: HitTestBehavior.translucent,
                             onTap: () {
                               Get.to(
                                 () => ConfirmationPage(
-                                  image: Enums.getIconStage(stage.uid.split('-')[0]),
+                                  image: Enums.getIconStage(
+                                      stage.uid.split('-')[0]),
                                   text: '${stage.name}?',
                                 ),
                               );
