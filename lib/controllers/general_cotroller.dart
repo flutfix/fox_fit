@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:fox_fit/config/api.dart';
+import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/models/app_state.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
@@ -52,6 +54,7 @@ class GeneralController extends GetxController {
         for (var element in response.data['PipelineStages']) {
           bottomBarItems.add(ItemBottomBarModel.fromJson(element));
         }
+        bottomBarItems.add(getLastStageBottomBar);
         appState.update((model) {
           model?.bottomBarItems = bottomBarItems;
         });
@@ -95,5 +98,14 @@ class GeneralController extends GetxController {
     appState.update((model) {
       model?.sortedCustomers = sortedClients;
     });
+  }
+
+  ItemBottomBarModel get getLastStageBottomBar {
+    return ItemBottomBarModel(
+      icon: Images.still,
+      name: 'Eщё',
+      shortName: 'Ещё',
+      visible: true,
+    );
   }
 }
