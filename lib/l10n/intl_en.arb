@@ -3,5 +3,9 @@
     "customer_information": "",
     "kickoff_training": "",
     "cancel": "",
-    "send_to_trainer": ""
+    "send_to_trainer": "",
+    "trainer_stats": "",
+    "support": "",
+    "coordinator": "",
+    "log_out": ""
 }

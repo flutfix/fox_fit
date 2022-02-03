@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
+import 'package:fox_fit/screens/more/more.dart';
 import 'package:fox_fit/widgets/bottom_bar.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/keep_alive_page.dart';
@@ -26,58 +27,63 @@ class _GeneralState extends State<General> {
   Widget build(BuildContext context) {
     final GeneralController controller = Get.put(GeneralController());
     ThemeData theme = Theme.of(context);
-    return Obx(() {
-      if (!controller.appState.value.isLoading) {
-        return Scaffold(
-          backgroundColor: theme.backgroundColor,
-          appBar: CustomAppBar(
-            title: controller
-                .appState
-                .value
-                .bottomBarItems[controller.appState.value.currentIndex]
-                .shortName,
-            count: controller
-                .appState
-                .value
-                .sortedCustomers[controller
-                    .appState
-                    .value
-                    .bottomBarItems[controller.appState.value.currentIndex]
-                    .uid]!
-                .length,
-          ),
-          body: PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: pageController,
-              children: List.generate(
-                  controller.appState.value.bottomBarItems.length, (index) {
-                return const KeepAlivePage(child: CustomersPage());
-              })),
-          bottomNavigationBar: Obx(
-            () => CustomBottomBar(
-              items: controller.appState.value.bottomBarItems,
-              activeColor: theme.hintColor,
-              inActiveColor: theme.hoverColor,
-              onChange: (index) {
-                setState(() {
-                  setPage(index);
-                });
-              },
+    return Obx(
+      () {
+        if (!controller.appState.value.isLoading) {
+          return Scaffold(
+            backgroundColor: theme.backgroundColor,
+            appBar: appBar(controller),
+            body: PageView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: pageController,
+                children: [
+                  ...List.generate(
+                    controller.appState.value.bottomBarItems.length - 1,
+                    (index) {
+                      return const KeepAlivePage(child: CustomersPage());
+                    },
+                  ),
+                  const MorePage(),
+                ]),
+            bottomNavigationBar: Obx(
+              () => CustomBottomBar(
+                items: controller.appState.value.bottomBarItems,
+                activeColor: theme.hintColor,
+                inActiveColor: theme.hoverColor,
+                onChange: (index) {
+                  setState(() {
+                    setPage(index);
+                  });
+                },
+              ),
             ),
-          ),
-        );
-      } else {
-        return Scaffold(
-          backgroundColor: theme.backgroundColor,
-          body: Center(
-            child: CircularProgressIndicator(
-              color: theme.colorScheme.primary,
-              strokeWidth: 4,
+          );
+        } else {
+          return Scaffold(
+            backgroundColor: theme.backgroundColor,
+            body: Center(
+              child: CircularProgressIndicator(
+                color: theme.colorScheme.primary,
+                strokeWidth: 4,
+              ),
             ),
-          ),
-        );
-      }
-    });
+          );
+        }
+      },
+    );
+  }
+
+  CustomAppBar appBar(GeneralController controller) {
+    var customers = controller.appState.value.sortedCustomers[controller
+        .appState
+        .value
+        .bottomBarItems[controller.appState.value.currentIndex]
+        .uid];
+    return CustomAppBar(
+      title: controller.appState.value
+          .bottomBarItems[controller.appState.value.currentIndex].shortName,
+      count: (customers != null) ? customers.length : null,
+    );
   }
 
   void setPage(int index) {

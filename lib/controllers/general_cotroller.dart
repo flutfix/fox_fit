@@ -1,7 +1,10 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:fox_fit/config/api.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fox_fit/api/requests.dart';
+import 'package:fox_fit/config/config.dart';
+import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/models/app_state.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
@@ -27,38 +30,12 @@ class GeneralController extends GetxController {
 
   /// Запрос на получение основных данных, необходимых для инициализации приложения
   Future<dynamic> initApp() async {
-    const String url = '${Api.url}get_customers';
-    final dioClient = Dio(Api.options);
-    try {
-      var response = await dioClient.get(url, queryParameters: {
-        "UserUid": Api.uId,
-      });
-      if (response.statusCode == 200) {
-        List<CustomerModel> customers = [];
-        List<ItemBottomBarModel> bottomBarItems = [];
-        appState.update((model) {
-          if (response.data['NewNotifications'] == 'True') {
-            model?.isNewNotifications = true;
-          } else {
-            model?.isNewNotifications = false;
-          }
-        });
-        for (var element in response.data['Customers']) {
-          customers.add(CustomerModel.fromJson(element));
-        }
-        appState.update((model) {
-          model?.customers = customers;
-        });
-        for (var element in response.data['PipelineStages']) {
-          bottomBarItems.add(ItemBottomBarModel.fromJson(element));
-        }
-        appState.update((model) {
-          model?.bottomBarItems = bottomBarItems;
-        });
-      }
-    } catch (e) {
-      log(e.toString());
-    }
+    await Requests.getCustomers();
+  }
+
+  /// Запрос на получение статистики тренера
+  Future<dynamic> getTrainerPerfomance() async {
+    await Requests.getTrainerPerfomance();
   }
 
   /// Сортировка активных разделов BottomBar

@@ -3,5 +3,9 @@
     "customer_information": "Информация о клиенте",
     "kickoff_training": "Стартовая тренировка",
     "cancel": "Отмена",
-    "send_to_trainer": "Передать тренеру"
+    "send_to_trainer": "Передать тренеру",
+    "trainer_stats": "Статистика тренера",
+    "support": "Поддержка",
+    "coordinator": "Координатор",
+    "log_out": "Выйти из профиля"
 }

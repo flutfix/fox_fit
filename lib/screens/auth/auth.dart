@@ -82,7 +82,7 @@ class _AuthPageState extends State<AuthPage> {
                       width: width,
                       text: S.of(context).log_in,
                       onTap: () {
-                        Get.toNamed(Routes.general);
+                        Get.offNamed(Routes.general);
                       },
                       backgroundColor: theme.colorScheme.secondary,
                       textStyle: theme.textTheme.button!.copyWith(),
