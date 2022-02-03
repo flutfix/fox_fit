@@ -21,4 +21,10 @@ class Images {
   static const String refresh = 'lib/assets/icons/refresh.svg';
   static const String phoneMinus = 'lib/assets/icons/phone_minus.svg';
   static const String cross = 'lib/assets/icons/cross.svg';
+
+  /// More Screen
+  static const String trainerStats = 'lib/assets/icons/trainer_stats.png';
+  static const String support = 'lib/assets/icons/support.png';
+  static const String coordinator = 'lib/assets/icons/coordinator.png';
+  static const String logOut = 'lib/assets/icons/log_out.png';
 }
