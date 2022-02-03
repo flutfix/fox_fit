@@ -1,15 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/images.dart';
-import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
-import 'package:fox_fit/models/trainer_stats.dart';
 import 'package:fox_fit/screens/trainer_stats/widgets/moths.dart';
 import 'package:fox_fit/screens/trainer_stats/widgets/stats_card.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
-import 'package:fox_fit/widgets/default_container.dart';
 import 'package:get/get.dart';
 
 class TrainerStatsPage extends StatefulWidget {

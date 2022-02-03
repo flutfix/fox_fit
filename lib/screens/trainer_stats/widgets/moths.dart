@@ -25,8 +25,6 @@ class _MonthsState extends State<Months> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    double width = MediaQuery.of(context).size.width;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: List.generate(

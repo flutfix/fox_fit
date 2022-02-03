@@ -5,8 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 class Input extends StatefulWidget {
   const Input({
     Key? key,
-    required this.width,
-    required this.icon,
+    this.width,
+    this.icon,
     required this.textController,
     required this.hintText,
     this.textStyle,
@@ -16,10 +16,16 @@ class Input extends StatefulWidget {
     this.textInputType = TextInputType.text,
     this.obscureText = false,
     this.textFormatters,
+    this.borderRadius,
+    this.padding,
+    this.lines = 1,
+    this.textCapitalization = TextCapitalization.none,
+    this.cursorColor,
+    this.hintStyle,
   }) : super(key: key);
 
-  final double width;
-  final String icon;
+  final double? width;
+  final String? icon;
   final String hintText;
   final TextEditingController textController;
   final TextStyle? textStyle;
@@ -29,6 +35,12 @@ class Input extends StatefulWidget {
   final TextInputType textInputType;
   final bool obscureText;
   final List<TextInputFormatter>? textFormatters;
+  final BorderRadiusGeometry? borderRadius;
+  final EdgeInsetsGeometry? padding;
+  final int lines;
+  final TextCapitalization textCapitalization;
+  final Color? cursorColor;
+  final TextStyle? hintStyle;
 
   @override
   _InputState createState() => _InputState();
@@ -44,21 +56,26 @@ class _InputState extends State<Input> {
     return Container(
       width: widget.width,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
+          borderRadius: widget.borderRadius ?? BorderRadius.circular(100),
           color: backgroundColor,
           border: Border.all(width: 1, color: theme.splashColor)),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 19),
+        padding: widget.padding ??
+            const EdgeInsets.symmetric(horizontal: 22.0, vertical: 19),
         child: Row(
           children: [
-            SvgPicture.asset(
-              widget.icon,
-              width: 18,
-            ),
-            const SizedBox(width: 11),
-            SizedBox(
-              width: 200,
+            if (widget.icon != null)
+              SvgPicture.asset(
+                widget.icon!,
+                width: 18,
+              ),
+            if (widget.icon != null) const SizedBox(width: 11),
+            Expanded(
               child: TextField(
+                cursorColor: widget.cursorColor,
+                textCapitalization: widget.textCapitalization,
+                minLines: widget.lines,
+                maxLines: widget.lines,
                 obscuringCharacter: '*',
                 inputFormatters: widget.textFormatters,
                 obscureText: widget.obscureText,
@@ -71,6 +88,7 @@ class _InputState extends State<Input> {
                 decoration: InputDecoration.collapsed(
                   hintText: widget.hintText,
                   border: InputBorder.none,
+                  hintStyle: widget.hintStyle,
                 ),
               ),
             )

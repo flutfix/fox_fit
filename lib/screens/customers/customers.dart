@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fox_fit/screens/customer_information/customer_information.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
@@ -12,20 +13,23 @@ class CustomersPage extends StatefulWidget {
 }
 
 class _CustomersPageState extends State<CustomersPage> {
+  late GeneralController controller;
   late RefreshController _refreshController;
+  late int currentIndex;
+  late String stageId;
 
   @override
   void initState() {
+    controller = Get.put(GeneralController());
     _refreshController = RefreshController(initialRefresh: false);
+    currentIndex = controller.appState.value.currentIndex;
+    stageId = controller.appState.value.bottomBarItems[currentIndex].uid;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final GeneralController controller = Get.put(GeneralController());
     ThemeData theme = Theme.of(context);
-    int currentIndex = controller.appState.value.currentIndex;
-    String stageId = controller.appState.value.bottomBarItems[currentIndex].uid;
     return SmartRefresher(
       controller: _refreshController,
       onRefresh: _refresh,
@@ -48,6 +52,13 @@ class _CustomersPageState extends State<CustomersPage> {
                       children: [
                         DefaultContainer(
                           isVisible: customer.isVisible,
+                          onTap: () {
+                            Get.to(
+                              () => CustomerInformationPage(
+                                customer: customer,
+                              ),
+                            );
+                          },
                           child: Text(
                             customer.fullName,
                             style: theme.textTheme.bodyText1,

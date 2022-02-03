@@ -101,6 +101,26 @@ class S {
   }
 
   /// ``
+  String get confirm {
+    return Intl.message(
+      '',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get comment_for_recipient {
+    return Intl.message(
+      '',
+      name: 'comment_for_recipient',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
   String get trainer_stats {
     return Intl.message(
       '',

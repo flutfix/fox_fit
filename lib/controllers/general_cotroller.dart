@@ -1,10 +1,4 @@
-import 'dart:developer';
-
-import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:fox_fit/api/requests.dart';
-import 'package:fox_fit/config/config.dart';
-import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/models/app_state.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
@@ -18,9 +12,9 @@ class GeneralController extends GetxController {
     appState.update((model) {
       model?.isLoading = true;
     });
-    await initApp();
-    sortBottomBarItems();
-    sortCustomers();
+    await _initApp();
+    _sortBottomBarItems();
+    _sortCustomers();
 
     appState.update((model) {
       model?.isLoading = false;
@@ -29,7 +23,7 @@ class GeneralController extends GetxController {
   }
 
   /// Запрос на получение основных данных, необходимых для инициализации приложения
-  Future<dynamic> initApp() async {
+  Future<dynamic> _initApp() async {
     await Requests.getCustomers();
   }
 
@@ -38,8 +32,13 @@ class GeneralController extends GetxController {
     await Requests.getTrainerPerfomance();
   }
 
+  /// Получение подробной информации о пользователе
+  Future<dynamic> getCustomerInfo({required String clientUid}) async {
+    await Requests.getCustomerInfo(clientUid: clientUid);
+  }
+
   /// Сортировка активных разделов BottomBar
-  void sortBottomBarItems() {
+  void _sortBottomBarItems() {
     List<ItemBottomBarModel> sortedList = [];
     for (var element in appState.value.bottomBarItems) {
       if (element.visible) {
@@ -55,7 +54,7 @@ class GeneralController extends GetxController {
   }
 
   /// Сортировка клиентов по разделам BottomBar, где [Uid] раздела - ключ от Map
-  void sortCustomers() {
+  void _sortCustomers() {
     List<CustomerModel> customers = [];
     Map<String, List<CustomerModel>> sortedClients = {};
     for (var stage in appState.value.bottomBarItems) {

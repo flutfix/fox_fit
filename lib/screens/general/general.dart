@@ -15,17 +15,18 @@ class General extends StatefulWidget {
 }
 
 class _GeneralState extends State<General> {
+  late GeneralController controller;
   late PageController pageController;
 
   @override
   void initState() {
+    controller = Get.put(GeneralController());
     pageController = PageController(initialPage: 0);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final GeneralController controller = Get.put(GeneralController());
     ThemeData theme = Theme.of(context);
     return Obx(
       () {

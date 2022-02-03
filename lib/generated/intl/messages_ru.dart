@@ -23,6 +23,9 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "cancel": MessageLookupByLibrary.simpleMessage("Отмена"),
+        "comment_for_recipient":
+            MessageLookupByLibrary.simpleMessage("Комментарий для получателя"),
+        "confirm": MessageLookupByLibrary.simpleMessage("Подтвердить"),
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),

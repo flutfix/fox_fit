@@ -4,7 +4,6 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/auth.dart';
-import 'package:fox_fit/screens/customer_information/customer_information.dart';
 import 'package:fox_fit/screens/general/general.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fox_fit/screens/trainer_stats/trainer_stats.dart';
@@ -61,8 +60,6 @@ class MyApp extends StatelessWidget {
         getPages: [
           getPage(Routes.auth, () => const AuthPage()),
           getPage(Routes.general, () => const General()),
-          getPage(Routes.customerInformation,
-              () => const CustomerInformationPage()),
           getPage(Routes.trainerStats, () => const TrainerStatsPage()),
         ],
       ),
