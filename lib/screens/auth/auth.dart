@@ -79,15 +79,14 @@ class _AuthPageState extends State<AuthPage> {
 
                     ///Кнопка [Войти]
                     CustomTextButton(
-                        width: width,
-                        text: S.of(context).log_in,
-                        onTap: () {
-                          Get.toNamed(Routes.general);
-                        },
-                        backgroundColor: theme.colorScheme.secondary,
-                        textStyle: theme.textTheme.button!.copyWith(
-                          fontSize: 18,
-                        ))
+                      width: width,
+                      text: S.of(context).log_in,
+                      onTap: () {
+                        Get.toNamed(Routes.general);
+                      },
+                      backgroundColor: theme.colorScheme.secondary,
+                      textStyle: theme.textTheme.button!.copyWith(),
+                    )
                   ],
                 ),
               ),

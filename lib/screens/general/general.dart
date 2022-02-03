@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
@@ -17,10 +15,10 @@ class General extends StatefulWidget {
 
 class _GeneralState extends State<General> {
   late PageController pageController;
+
   @override
   void initState() {
     pageController = PageController(initialPage: 0);
-
     super.initState();
   }
 
@@ -28,7 +26,6 @@ class _GeneralState extends State<General> {
   Widget build(BuildContext context) {
     final GeneralController controller = Get.put(GeneralController());
     ThemeData theme = Theme.of(context);
-
     return Obx(() {
       if (!controller.appState.value.isLoading) {
         return Scaffold(

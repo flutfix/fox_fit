@@ -69,6 +69,36 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get kickoff_training {
+    return Intl.message(
+      '',
+      name: 'kickoff_training',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get cancel {
+    return Intl.message(
+      '',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get send_to_trainer {
+    return Intl.message(
+      '',
+      name: 'send_to_trainer',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

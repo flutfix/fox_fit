@@ -1,4 +1,7 @@
 {
     "log_in": "Войти",
-    "customer_information": "Информация о клиенте"
+    "customer_information": "Информация о клиенте",
+    "kickoff_training": "Стартовая тренировка",
+    "cancel": "Отмена",
+    "send_to_trainer": "Передать тренеру"
 }

@@ -33,7 +33,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     final GeneralController controller = Get.put(GeneralController());
-
     ThemeData theme = Theme.of(context);
     double width = MediaQuery.of(context).size.width;
     return Container(

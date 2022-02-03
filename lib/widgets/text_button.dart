@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class CustomTextButton extends StatelessWidget {
   const CustomTextButton({
     Key? key,
-    required this.width,
+    this.width,
+    this.height,
     required this.text,
     required this.backgroundColor,
     required this.textStyle,
@@ -12,7 +13,8 @@ class CustomTextButton extends StatelessWidget {
     this.borderRadius = 100,
   }) : super(key: key);
 
-  final double width;
+  final double? width;
+  final double? height;
   final String text;
   final Function()? onTap;
   final Color backgroundColor;
@@ -25,7 +27,8 @@ class CustomTextButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: width,
+        width: width ?? MediaQuery.of(context).size.width,
+        height: height,
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(vertical: textPadding),
         decoration: BoxDecoration(

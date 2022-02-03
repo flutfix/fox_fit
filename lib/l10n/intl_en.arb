@@ -1,4 +1,7 @@
 {
     "log_in": "",
-    "customer_information": ""
+    "customer_information": "",
+    "kickoff_training": "",
+    "cancel": "",
+    "send_to_trainer": ""
 }

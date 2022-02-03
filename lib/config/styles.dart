@@ -8,6 +8,7 @@ abstract class Styles {
   static const Color greyLight = Color(0xFF3C3C3C);
   static const Color greyLight2 = Color(0xFFE8E8E8);
   static const Color greyLight3 = Color(0xFFE0E0E0);
+  static const Color greyLight4 = Color(0xFFE7EBEF);
   static const Color blue = Color(0xFF2692DA);
   static const Color primaryText = Color(0xFF333E63);
   static const Color secondaryText = Color(0xFF3A4060);
@@ -59,9 +60,15 @@ abstract class Styles {
       /// Цвет разделяющей линии
       dividerColor: Styles.secondaryText,
 
-
       /// Цвет неактивного колокольчика уведомлений
-      iconTheme: const  IconThemeData(color: Styles.greyLight3),
+      iconTheme: const IconThemeData(color: Styles.greyLight3),
+
+      buttonTheme: const ButtonThemeData(
+        colorScheme: ColorScheme.light(
+          primary: Styles.greyLight4,
+          secondary: Styles.primaryText,
+        ),
+      ),
 
       /// Шрифты
       textTheme: const TextTheme(
@@ -85,6 +92,11 @@ abstract class Styles {
           fontWeight: FontWeight.w400,
           color: Styles.primaryLightText,
         ),
+        headline5: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w700,
+          color: Styles.secondaryText,
+        ),
         bodyText1: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
@@ -104,7 +116,7 @@ abstract class Styles {
           fontSize: 14,
           fontWeight: FontWeight.w600,
           color: Styles.white,
-          letterSpacing: 2,
+          letterSpacing: 0.02,
         ),
       ),
     );

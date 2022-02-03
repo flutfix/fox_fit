@@ -45,24 +45,25 @@ class MyApp extends StatelessWidget {
         },
       ),
       child: GetMaterialApp(
-          title: 'FoxFit',
-          debugShowCheckedModeBanner: false,
-          theme: Styles.getLightTheme,
-          localizationsDelegates: const [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          locale: const Locale('ru', 'RU'),
-          supportedLocales: S.delegate.supportedLocales,
-          initialRoute: Routes.auth,
-          getPages: [
-            getPage(Routes.auth, () => const AuthPage()),
-            getPage(Routes.general, () => const General()),
-            getPage(Routes.customerInformation,
-                () => const CustomerInformationPage()),
-          ]),
+        title: 'FoxFit',
+        debugShowCheckedModeBanner: false,
+        theme: Styles.getLightTheme,
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: const Locale('ru', 'RU'),
+        supportedLocales: S.delegate.supportedLocales,
+        initialRoute: Routes.customerInformation,
+        getPages: [
+          getPage(Routes.auth, () => const AuthPage()),
+          getPage(Routes.general, () => const General()),
+          getPage(Routes.customerInformation,
+              () => const CustomerInformationPage()),
+        ],
+      ),
     );
   }
 
