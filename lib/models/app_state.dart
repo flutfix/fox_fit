@@ -1,5 +1,6 @@
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
+import 'package:fox_fit/models/trainer_stats.dart';
 
 class AppStateModel {
   AppStateModel({
@@ -9,6 +10,7 @@ class AppStateModel {
     this.customers = const [],
     this.bottomBarItems = const [],
     this.sortedCustomers = const {},
+    this.trainerPerfomance = const [],
   });
   bool isLoading;
   int currentIndex;
@@ -22,4 +24,7 @@ class AppStateModel {
 
   ///Отсортированные клиенты по разделам BottomBar, где ключ [Uid] раздела
   Map<String, List<CustomerModel>> sortedCustomers;
+
+  ///Статистика тренера
+  List<TrainerPerfomanceModel> trainerPerfomance;
 }

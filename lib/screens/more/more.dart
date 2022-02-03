@@ -1,12 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/more_card.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MorePage extends StatefulWidget {
   const MorePage({Key? key}) : super(key: key);
@@ -41,7 +43,12 @@ class _MorePageState extends State<MorePage> {
           MoreCardModel(
             text: S.of(context).support,
             icon: Images.support,
-            onTap: () {},
+            onTap: () async {
+              await canLaunch(AppConfig.supportUrl)
+                  ? launch(AppConfig.supportUrl)
+                  : print(
+                      "open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
+            },
           ),
 
           /// Координатор

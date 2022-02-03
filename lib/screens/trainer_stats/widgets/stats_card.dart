@@ -5,11 +5,16 @@ import 'package:fox_fit/widgets/default_container.dart';
 
 class StatsCard extends StatefulWidget {
   const StatsCard(
-      {Key? key, required this.sales, required this.plan, this.duration = 200})
+      {Key? key,
+      required this.sales,
+      required this.plan,
+      required this.progress,
+      this.duration = 200})
       : super(key: key);
 
-  final int sales;
-  final int plan;
+  final String sales;
+  final String plan;
+  final String progress;
   final int duration;
 
   @override
@@ -38,7 +43,7 @@ class _StatsCardState extends State<StatsCard> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Выполнение плана ${widget.sales / widget.plan * 100}%',
+            'Выполнение плана ${double.parse(widget.progress) * 100}%',
             style: theme.textTheme.headline3!.copyWith(fontSize: 12),
           ),
           const SizedBox(height: 6),
@@ -53,7 +58,7 @@ class _StatsCardState extends State<StatsCard> {
               ),
               AnimatedContainer(
                 duration: Duration(milliseconds: widget.duration),
-                width: progressContainerWidth * widget.sales / widget.plan,
+                width: progressContainerWidth * double.parse(widget.progress),
                 height: 8,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -68,7 +73,7 @@ class _StatsCardState extends State<StatsCard> {
   }
 
   Widget _buildRow(ThemeData theme,
-      {required String text, required int count}) {
+      {required String text, required String count}) {
     return Row(
       children: [
         Text(

@@ -19,3 +19,8 @@ class Api {
     receiveTimeout: 10000,
   );
 }
+
+class AppConfig {
+  /// Whatsapp url
+  static const String supportUrl = 'whatsapp://send?phone=+79323005950';
+}

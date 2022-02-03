@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fox_fit/models/stats.dart';
+import 'package:fox_fit/models/trainer_stats.dart';
 
 class Months extends StatefulWidget {
   const Months({
@@ -13,7 +13,7 @@ class Months extends StatefulWidget {
 
   final double width;
   final int duration;
-  final List<MonthModel> items;
+  final List<TrainerPerfomanceModel> items;
   final Function(int) onChange;
   final int currentIndex;
 
@@ -33,7 +33,7 @@ class _MonthsState extends State<Months> {
         widget.items.length,
         (index) => _buildMonth(
           theme,
-          text: widget.items[index].text,
+          text: widget.items[index].month,
           isActive: widget.items[index].isActive,
           index: index,
         ),

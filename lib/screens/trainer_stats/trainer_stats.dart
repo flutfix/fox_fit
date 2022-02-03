@@ -3,8 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/config/routes.dart';
+import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
-import 'package:fox_fit/models/stats.dart';
+import 'package:fox_fit/models/trainer_stats.dart';
 import 'package:fox_fit/screens/trainer_stats/widgets/moths.dart';
 import 'package:fox_fit/screens/trainer_stats/widgets/stats_card.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
@@ -19,24 +20,27 @@ class TrainerStatsPage extends StatefulWidget {
 }
 
 class _TrainerStatsPageState extends State<TrainerStatsPage> {
-  late List<MonthModel> months;
+  late GeneralController controller;
   late int currentIndex;
+  late bool isLoading;
   @override
   void initState() {
-    months = [
-      MonthModel(
-        text: 'декабрь',
-      ),
-      MonthModel(
-        text: 'январь',
-      ),
-      MonthModel(
-        text: 'февраль',
-        isActive: true,
-      )
-    ];
-    currentIndex = months.indexWhere((element) => element.isActive);
+    controller = Get.put(GeneralController());
+    getPerfomance();
+
     super.initState();
+  }
+
+  void getPerfomance() async {
+    setState(() {
+      isLoading = true;
+    });
+    await controller.getTrainerPerfomance();
+    currentIndex = controller.appState.value.trainerPerfomance
+        .indexWhere((element) => element.isActive);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -52,91 +56,170 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
           Get.back();
         },
       ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20.0,
-            vertical: 25.0,
-          ),
-          child: Column(
-            children: [
-              Months(
-                width: width,
-                items: months,
-                currentIndex: currentIndex,
-                onChange: (index) {
-                  int oldIndex =
-                      months.indexWhere((element) => element.isActive);
-                  if (index != oldIndex) {
-                    setState(() {
-                      months[oldIndex].isActive = false;
-                      months[index].isActive = true;
-                    });
-                  }
-                },
+      body: !isLoading
+          ? SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 25.0,
+                ),
+                child: Column(
+                  children: [
+                    Months(
+                      width: width,
+                      items: controller.appState.value.trainerPerfomance,
+                      currentIndex: currentIndex,
+                      onChange: (index) {
+                        int oldIndex = controller
+                            .appState.value.trainerPerfomance
+                            .indexWhere((element) => element.isActive);
+                        if (index != oldIndex) {
+                          setState(() {
+                            controller.appState.value
+                                .trainerPerfomance[oldIndex].isActive = false;
+                            controller.appState.value.trainerPerfomance[index]
+                                .isActive = true;
+                          });
+                        }
+                        setState(() {
+                          currentIndex = index;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    StatsCard(
+                      sales: controller.appState.value
+                          .trainerPerfomance[currentIndex].amount,
+                      plan: controller
+                          .appState.value.trainerPerfomance[currentIndex].plan,
+                      progress: controller
+                          .appState.value.trainerPerfomance[currentIndex].done,
+                      duration: 350,
+                    ),
+                    const SizedBox(height: 24),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildFunnel(
+                          theme,
+                          width: width * 0.6,
+                          image: Images.funnelNew,
+                          name: controller
+                              .appState
+                              .value
+                              .trainerPerfomance[currentIndex]
+                              .perfomanceStages[0]
+                              .name,
+                          count: controller
+                              .appState
+                              .value
+                              .trainerPerfomance[currentIndex]
+                              .perfomanceStages[0]
+                              .quantity,
+                          conversion: controller
+                              .appState
+                              .value
+                              .trainerPerfomance[currentIndex]
+                              .perfomanceStages[0]
+                              .conversion,
+                          lineWidth: width * 0.3,
+                        ),
+                        const SizedBox(height: 9),
+                        _buildFunnel(
+                          theme,
+                          width: width * 0.44,
+                          image: Images.funnelAssigned,
+                          name: controller
+                              .appState
+                              .value
+                              .trainerPerfomance[currentIndex]
+                              .perfomanceStages[1]
+                              .name,
+                          count: controller
+                              .appState
+                              .value
+                              .trainerPerfomance[currentIndex]
+                              .perfomanceStages[1]
+                              .quantity,
+                          conversion: controller
+                              .appState
+                              .value
+                              .trainerPerfomance[currentIndex]
+                              .perfomanceStages[1]
+                              .conversion,
+                          lineColor: theme.cardColor,
+                          lineWidth: width * 0.379,
+                          lineTopPadding: 6,
+                          isLineExtends: true,
+                        ),
+                        const SizedBox(height: 7.5),
+                        _buildFunnel(
+                          theme,
+                          isLightText: true,
+                          width: width * 0.32,
+                          image: Images.funnelPerfomed,
+                          name: controller
+                              .appState
+                              .value
+                              .trainerPerfomance[currentIndex]
+                              .perfomanceStages[2]
+                              .name,
+                          count: controller
+                              .appState
+                              .value
+                              .trainerPerfomance[currentIndex]
+                              .perfomanceStages[2]
+                              .quantity,
+                          conversion: controller
+                              .appState
+                              .value
+                              .trainerPerfomance[currentIndex]
+                              .perfomanceStages[2]
+                              .conversion,
+                          lineColor: theme.highlightColor,
+                          lineWidth: width * 0.437,
+                          lineTopPadding: 4,
+                          isLineExtends: true,
+                        ),
+                        const SizedBox(height: 7.5),
+                        _buildFunnel(
+                          theme,
+                          isLightText: true,
+                          width: width * 0.235,
+                          image: Images.funnelStable,
+                          name: controller
+                              .appState
+                              .value
+                              .trainerPerfomance[currentIndex]
+                              .perfomanceStages[3]
+                              .name,
+                          count: controller
+                              .appState
+                              .value
+                              .trainerPerfomance[currentIndex]
+                              .perfomanceStages[3]
+                              .quantity,
+                          conversion: controller
+                              .appState
+                              .value
+                              .trainerPerfomance[currentIndex]
+                              .perfomanceStages[3]
+                              .conversion,
+                          lineColor: theme.disabledColor,
+                          lineWidth: width * 0.477,
+                          lineTopPadding: 4,
+                          isLineExtends: true,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-              const SizedBox(height: 24),
-              const StatsCard(
-                sales: 16000,
-                plan: 20000,
-              ),
-              const SizedBox(height: 24),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildFunnel(
-                    theme,
-                    width: width * 0.6,
-                    image: Images.funnelNew,
-                    name: 'новые',
-                    lineWidth: width * 0.3,
-                    count: '100',
-                  ),
-                  const SizedBox(height: 9),
-                  _buildFunnel(
-                    theme,
-                    width: width * 0.44,
-                    image: Images.funnelAssigned,
-                    name: 'назначено',
-                    count: '50',
-                    lineColor: theme.cardColor,
-                    lineWidth: width * 0.379,
-                    lineTopPadding: 6,
-                    isLineExtends: true,
-                  ),
-                  const SizedBox(height: 7.5),
-                  _buildFunnel(
-                    theme,
-                    isLightText: true,
-                    width: width * 0.32,
-                    image: Images.funnelPerfomed,
-                    name: 'проведено',
-                    count: '30',
-                    lineColor: theme.highlightColor,
-                    lineWidth: width * 0.437,
-                    lineTopPadding: 4,
-                    isLineExtends: true,
-                  ),
-                  const SizedBox(height: 7.5),
-                  _buildFunnel(
-                    theme,
-                    isLightText: true,
-                    width: width * 0.235,
-                    image: Images.funnelStable,
-                    name: 'постоянных',
-                    count: '20',
-                    lineColor: theme.disabledColor,
-                    lineWidth: width * 0.477,
-                    lineTopPadding: 4,
-                    isLineExtends: true,
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 
@@ -147,6 +230,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
     required String name,
     required String count,
     required double lineWidth,
+    required String conversion,
     double lineTopPadding = 0,
     Color lineColor = Colors.transparent,
     bool isLineExtends = false,
@@ -168,7 +252,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
             ),
             if (isLineExtends)
               Text(
-                '5%',
+                '$conversion%',
                 style: theme.textTheme.headline5,
               ),
             if (isLineExtends)
