@@ -26,12 +26,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "comment_for_recipient":
             MessageLookupByLibrary.simpleMessage("Комментарий для получателя"),
         "confirm": MessageLookupByLibrary.simpleMessage("Подтвердить"),
+        "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
         "kickoff_training":
             MessageLookupByLibrary.simpleMessage("Стартовая тренировка"),
         "log_in": MessageLookupByLibrary.simpleMessage("Войти"),
+        "log_out": MessageLookupByLibrary.simpleMessage("Выйти из профиля"),
         "send_to_trainer":
-            MessageLookupByLibrary.simpleMessage("Передать тренеру")
+            MessageLookupByLibrary.simpleMessage("Передать тренеру"),
+        "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
+        "trainer_stats":
+            MessageLookupByLibrary.simpleMessage("Статистика тренера")
       };
 }

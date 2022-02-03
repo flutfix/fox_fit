@@ -5,5 +5,9 @@
     "cancel": "",
     "send_to_trainer": "",
     "confirm": "",
-    "comment_for_recipient": ""
+    "comment_for_recipient": "",
+    "trainer_stats": "",
+    "support": "",
+    "coordinator": "",
+    "log_out": ""
 }

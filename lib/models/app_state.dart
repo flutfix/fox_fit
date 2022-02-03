@@ -2,6 +2,7 @@ import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
+import 'package:fox_fit/models/trainer_stats.dart';
 
 class AppStateModel {
   AppStateModel({
@@ -13,6 +14,7 @@ class AppStateModel {
     this.sortedCustomers = const {},
     this.detailedInfo = const [],
     this.availablePipelineStages = const [],
+    this.trainerPerfomance = const [],
   });
 
   bool isLoading;
@@ -33,4 +35,7 @@ class AppStateModel {
 
   /// Возможные варианты передачи клиента дальше по воронке
   List<AvailablePipelineStages> availablePipelineStages;
+
+  /// Статистика тренера
+  List<TrainerPerfomanceModel> trainerPerfomance;
 }

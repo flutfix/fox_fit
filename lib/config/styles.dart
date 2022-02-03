@@ -16,6 +16,10 @@ abstract class Styles {
   static const Color orange = Color(0xFFFE5900);
   static const Color disableIcon = Color(0xFF6E7288);
   static const Color borderColor = Color(0xFFF1F1F1);
+  static const Color borderBlue = Color(0xFF2694DA);
+  static const Color darkBlue = Color(0xFF1D7AB9);
+  static const Color darkGrey = Color(0xFFD7D7D7);
+  static const Color darkOrange = Color(0xFFE55000);
 
   /// Стандартный шрифт
   static const String mainFontFamily = 'Open Sans';
@@ -60,6 +64,19 @@ abstract class Styles {
       /// Цвет разделяющей линии
       dividerColor: Styles.secondaryText,
 
+      /// Голубой бордер
+      focusColor: Styles.borderBlue,
+
+      ///[Воронка продаж] цввета линий
+      ///Серый
+      cardColor: Styles.darkGrey,
+
+      ///Оранжевый
+      highlightColor: Styles.darkOrange,
+
+      ///Синий
+      disabledColor: Styles.darkBlue,
+
       /// Цвет неактивного колокольчика уведомлений
       iconTheme: const IconThemeData(color: Styles.greyLight3),
 
@@ -95,6 +112,21 @@ abstract class Styles {
         headline5: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w700,
+          color: Styles.secondaryText,
+        ),
+        headline6: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          color: Styles.borderBlue,
+        ),
+        subtitle1: TextStyle(
+          fontSize: 23,
+          fontWeight: FontWeight.w700,
+          color: Styles.secondaryText,
+        ),
+        subtitle2: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w400,
           color: Styles.secondaryText,
         ),
         bodyText1: TextStyle(

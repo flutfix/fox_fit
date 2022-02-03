@@ -119,6 +119,46 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get trainer_stats {
+    return Intl.message(
+      '',
+      name: 'trainer_stats',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get support {
+    return Intl.message(
+      '',
+      name: 'support',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get coordinator {
+    return Intl.message(
+      '',
+      name: 'coordinator',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get log_out {
+    return Intl.message(
+      '',
+      name: 'log_out',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
