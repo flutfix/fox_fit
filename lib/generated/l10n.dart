@@ -99,6 +99,26 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get confirm {
+    return Intl.message(
+      '',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get comment_for_recipient {
+    return Intl.message(
+      '',
+      name: 'comment_for_recipient',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

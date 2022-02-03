@@ -1,18 +1,26 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/images.dart';
+import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
+import 'package:fox_fit/models/customer.dart';
+import 'package:fox_fit/screens/confirmation/confirmation.dart';
 import 'package:fox_fit/widgets/bottom_sheet.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
+import 'package:get/get.dart';
 
 class CustomerInformationPage extends StatefulWidget {
   const CustomerInformationPage({
     Key? key,
+    required this.customer,
     this.isHandingButton = false,
   }) : super(key: key);
 
+  final CustomerModel customer;
   final bool isHandingButton;
 
   @override
@@ -21,6 +29,28 @@ class CustomerInformationPage extends StatefulWidget {
 }
 
 class _CustomerInformationPageState extends State<CustomerInformationPage> {
+  late bool loading;
+  late GeneralController controller;
+
+  @override
+  void initState() {
+    controller = Get.put(GeneralController());
+    load();
+    super.initState();
+  }
+
+  Future<void> load() async {
+    setState(() {
+      loading = true;
+    });
+
+    await controller.getCustomerInfo(clientUid: widget.customer.uid);
+
+    setState(() {
+      loading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -30,6 +60,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
       appBar: CustomAppBar(
         title: S.of(context).customer_information,
         isBackArrow: true,
+        onBack: () {
+          Get.back();
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -47,9 +80,8 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        //TODO: Привязать модель
                         Text(
-                          'Сантанова Юлия Игоревна',
+                          widget.customer.fullName,
                           style: theme.textTheme.bodyText1,
                         ),
                         Stack(
@@ -76,9 +108,8 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        //TODO: Привязать модель
                         Text(
-                          '+7 926 544 72 46',
+                          widget.customer.phone,
                           style: theme.textTheme.headline2,
                         ),
                         const SizedBox(width: 8),
@@ -95,46 +126,58 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
               /// Подробная инфромация о клиенте
               /// [Цели], [Травмы], [Пожелания], [Комментарии], [Дата рождения]
-              DefaultContainer(
-                padding: const EdgeInsets.fromLTRB(28, 17.45, 19, 22.55),
-                //TODO: Привязать модель ко всему листу
-                child: ListView.separated(
-                  itemCount: 5,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  separatorBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        const SizedBox(height: 21),
-                        Divider(
-                          height: 1,
-                          color: theme.dividerColor,
-                        ),
-                        const SizedBox(height: 8),
-                      ],
-                    );
-                  },
-                  itemBuilder: (context, index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Цели:',
-                          style: theme.textTheme.headline3,
-                        ),
-                        const SizedBox(height: 6),
-                        SizedBox(
-                          height: 38,
-                          child: Text(
-                            'Набор мышечной массы. Тренировки по плаванью.',
-                            style: theme.textTheme.headline4,
+              if (loading)
+                const Center(
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  ),
+                )
+              else
+                DefaultContainer(
+                  padding: const EdgeInsets.fromLTRB(28, 17.45, 19, 22.55),
+                  child: ListView.separated(
+                    itemCount: controller.appState.value.detailedInfo.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          const SizedBox(height: 21),
+                          Divider(
+                            height: 1,
+                            color: theme.dividerColor,
                           ),
-                        ),
-                      ],
-                    );
-                  },
+                          const SizedBox(height: 8),
+                        ],
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            controller
+                                .appState.value.detailedInfo[index].header,
+                            style: theme.textTheme.headline3,
+                          ),
+                          const SizedBox(height: 6),
+                          SizedBox(
+                            height: 38,
+                            child: Text(
+                              controller
+                                  .appState.value.detailedInfo[index].value,
+                              style: theme.textTheme.headline4,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 ),
-              ),
               const SizedBox(height: 80),
             ],
           ),
@@ -160,44 +203,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (context) {
-        return CustomBottomSheet(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 33),
-            child: Column(
-              children: [
-                ...List.generate(
-                  4,
-                  (index) {
-                    return Column(
-                      children: [
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              Images.refresh,
-                              width: 19,
-                            ),
-                            const SizedBox(width: 16),
-                            Text(
-                              'Назначена стартовая тренировка',
-                              style: theme.textTheme.headline3,
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 32),
-                        Divider(
-                          color: theme.bottomSheetTheme.modalBackgroundColor!
-                              .withOpacity(0.1),
-                        ),
-                        const SizedBox(height: 32),
-                      ],
-                    );
-                  },
-                ),
-                const SizedBox(height: 100),
-              ],
-            ),
-          ),
-        );
+        return CustomBottomSheet();
       },
     );
   }

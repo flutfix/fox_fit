@@ -53,11 +53,20 @@ class _CustomAppBarState extends State<CustomAppBar> {
             Row(
               children: [
                 if (widget.isBackArrow)
-                  GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: widget.onBack,
-                      child: SvgPicture.asset(Images.backArrow)),
-                const SizedBox(width: 9),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SvgPicture.asset(Images.backArrow),
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: widget.onBack,
+                        child: const SizedBox(
+                          width: 20,
+                          height: 20,
+                        ),
+                      ),
+                    ],
+                  ),
                 if (widget.count != null)
                   Text(
                     '${widget.title} (${widget.count})',
@@ -76,7 +85,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 child: SvgPicture.asset(
                   Images.notifications,
                   width: 24,
-                  color: controller.appState.value.isNewNotifications ? theme.colorScheme.primary : theme.iconTheme.color,
+                  color: controller.appState.value.isNewNotifications
+                      ? theme.colorScheme.primary
+                      : theme.iconTheme.color,
                 ))
           ],
         ),

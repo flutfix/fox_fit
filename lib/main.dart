@@ -60,8 +60,6 @@ class MyApp extends StatelessWidget {
         getPages: [
           getPage(Routes.auth, () => const AuthPage()),
           getPage(Routes.general, () => const General()),
-          getPage(Routes.customerInformation,
-              () => const CustomerInformationPage()),
         ],
       ),
     );

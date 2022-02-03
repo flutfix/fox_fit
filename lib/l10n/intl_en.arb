@@ -3,5 +3,7 @@
     "customer_information": "",
     "kickoff_training": "",
     "cancel": "",
-    "send_to_trainer": ""
+    "send_to_trainer": "",
+    "confirm": "",
+    "comment_for_recipient": ""
 }
