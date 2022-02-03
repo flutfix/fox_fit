@@ -27,4 +27,10 @@ class Images {
   static const String support = 'lib/assets/icons/support.png';
   static const String coordinator = 'lib/assets/icons/coordinator.png';
   static const String logOut = 'lib/assets/icons/log_out.png';
+
+  /// Trainer Stats
+  static const String funnelNew = 'lib/assets/icons/funnel_new.png';
+  static const String funnelAssigned = 'lib/assets/icons/funnel_assigned.png';
+  static const String funnelPerfomed = 'lib/assets/icons/funnel_perfomed.png';
+  static const String funnelStable = 'lib/assets/icons/funnel_stable.png';
 }
