@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         ],
         locale: const Locale('ru', 'RU'),
         supportedLocales: S.delegate.supportedLocales,
-        initialRoute: Routes.customerInformation,
+        initialRoute: Routes.auth,
         getPages: [
           getPage(Routes.auth, () => const AuthPage()),
           getPage(Routes.general, () => const General()),

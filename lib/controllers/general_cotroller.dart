@@ -36,10 +36,13 @@ class GeneralController extends GetxController {
       if (response.statusCode == 200) {
         List<CustomerModel> customers = [];
         List<ItemBottomBarModel> bottomBarItems = [];
-        // log( response.data['NewNotifications']);
-        // appState.update((model) {
-        //   model?.isNewNotifications = response.data['NewNotifications'];
-        // });
+        appState.update((model) {
+          if (response.data['NewNotifications'] == 'True') {
+            model?.isNewNotifications = true;
+          } else {
+            model?.isNewNotifications = false;
+          }
+        });
         for (var element in response.data['Customers']) {
           customers.add(CustomerModel.fromJson(element));
         }
