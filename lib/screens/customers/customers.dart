@@ -32,35 +32,37 @@ class _CustomersPageState extends State<CustomersPage> {
       physics: const BouncingScrollPhysics(),
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            const SizedBox(height: 25),
-            if (controller.appState.value.sortedCustomers[stageId] != null)
-              ...List.generate(
-                  controller.appState.value.sortedCustomers[stageId]!.length,
-                  (index) {
-                var customer =
-                    controller.appState.value.sortedCustomers[stageId]![index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      DefaultContainer(
-                        isVisible: customer.isVisible,
-                        child: Text(
-                          customer.fullName,
-                          style: theme.textTheme.bodyText1,
+        child: Obx(
+          () => Column(
+            children: [
+              const SizedBox(height: 25),
+              if (controller.appState.value.sortedCustomers[stageId] != null)
+                ...List.generate(
+                    controller.appState.value.sortedCustomers[stageId]!.length,
+                    (index) {
+                  var customer = controller
+                      .appState.value.sortedCustomers[stageId]![index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        DefaultContainer(
+                          isVisible: customer.isVisible,
+                          child: Text(
+                            customer.fullName,
+                            style: theme.textTheme.bodyText1,
+                          ),
                         ),
-                      ),
-                      if (index !=
-                          controller.appState.value.customers.length - 1)
-                        const SizedBox(height: 6),
-                    ],
-                  ),
-                );
-              }),
-            const SizedBox(height: 25),
-          ],
+                        if (index !=
+                            controller.appState.value.customers.length - 1)
+                          const SizedBox(height: 6),
+                      ],
+                    ),
+                  );
+                }),
+              const SizedBox(height: 25),
+            ],
+          ),
         ),
       ),
     );

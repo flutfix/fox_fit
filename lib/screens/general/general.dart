@@ -36,7 +36,15 @@ class _GeneralState extends State<General> {
                 .value
                 .bottomBarItems[controller.appState.value.currentIndex]
                 .shortName,
-            // count: 0,
+            count: controller
+                .appState
+                .value
+                .sortedCustomers[controller
+                    .appState
+                    .value
+                    .bottomBarItems[controller.appState.value.currentIndex]
+                    .uid]!
+                .length,
           ),
           body: PageView(
               physics: const NeverScrollableScrollPhysics(),

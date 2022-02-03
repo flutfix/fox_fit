@@ -60,7 +60,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 const SizedBox(width: 9),
                 if (widget.count != null)
                   Text(
-                    '${widget.title}(${widget.count})',
+                    '${widget.title} (${widget.count})',
                     style: theme.textTheme.headline1,
                   )
                 else
