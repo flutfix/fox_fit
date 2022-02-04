@@ -73,11 +73,12 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             children: [
               const SizedBox(height: 25),
 
-              /// ФИО и номер телефона
+              /// Основная информация
               DefaultContainer(
                 padding: const EdgeInsets.fromLTRB(15.5, 19, 5.5, 25),
                 child: Column(
                   children: [
+                    /// ФИО
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -107,6 +108,8 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                       ],
                     ),
                     const SizedBox(height: 4),
+
+                    /// Номер телефона
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -122,26 +125,12 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                       ],
                     ),
                     const SizedBox(height: 4),
+
+                    /// Переход в чат
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () async {
-                        dynamic number;
-                        number = widget.customer.phone.split(' ');
-                        number = '${number[0]}${number[1]}${number[2]}';
-                        number = number.split('(');
-                        number = '${number[0]}${number[1]}';
-                        number = number.split(')');
-                        number = '${number[0]}${number[1]}';
-
-                        await canLaunch('whatsapp://send?phone=${number}')
-                            ? launch(
-                                'whatsapp://send?phone=${number}&text=Елена, здравствуйте! Меня зовут Андрей,'
-                                ' я являюсь персональным тренером фитнес-клуба X-fit «Южный лёд».'
-                                'Вы записались на вводную персональную тренировку, и я пишу, чтобы'
-                                ' договориться о дате и времени. Напишите, пожалуйста, когда вам будет удобно?',
-                              )
-                            : print(
-                                "open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
+                        await _switchingToChat();
                       },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -236,6 +225,8 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     );
   }
 
+  /// Открывает нижлий лист с доступными вариантами
+  /// передачи клиента дальше по воронке
   void showBottomSheet({required ThemeData theme}) {
     showModalBottomSheet(
       context: context,
@@ -245,5 +236,25 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
         return CustomBottomSheet();
       },
     );
+  }
+
+  Future<void> _switchingToChat() async {
+    dynamic number;
+    number = widget.customer.phone.split(' ');
+    number = '${number[0]}${number[1]}${number[2]}';
+    number = number.split('(');
+    number = '${number[0]}${number[1]}';
+    number = number.split(')');
+    number = '${number[0]}${number[1]}';
+
+    await canLaunch('whatsapp://send?phone=$number')
+        ? launch(
+            'whatsapp://send?phone=$number&text=${widget.customer.firstName}, здравствуйте! Меня зовут Андрей,'
+            ' я являюсь персональным тренером фитнес-клуба X-fit «Южный лёд».'
+            'Вы записались на вводную персональную тренировку, и я пишу, чтобы'
+            ' договориться о дате и времени. Напишите, пожалуйста, когда вам будет удобно?',
+          )
+        : print(
+            "open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
   }
 }

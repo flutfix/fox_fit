@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
+        "exit": MessageLookupByLibrary.simpleMessage("Выйти"),
         "kickoff_training":
             MessageLookupByLibrary.simpleMessage("Стартовая тренировка"),
         "log_in": MessageLookupByLibrary.simpleMessage("Войти"),

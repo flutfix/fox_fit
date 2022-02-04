@@ -10,5 +10,6 @@
     "support": "Поддержка",
     "coordinator": "Координатор",
     "log_out": "Выйти из профиля",
-    "chat": "Чат в WhatsApp"
+    "chat": "Чат в WhatsApp",
+    "exit": "Выйти"
 }

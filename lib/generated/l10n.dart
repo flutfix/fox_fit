@@ -169,6 +169,16 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get exit {
+    return Intl.message(
+      '',
+      name: 'exit',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

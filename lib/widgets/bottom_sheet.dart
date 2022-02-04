@@ -9,17 +9,19 @@ class CustomBottomSheet extends StatelessWidget {
   CustomBottomSheet({
     Key? key,
     this.child,
+    this.backgroundColor,
   }) : super(key: key);
 
   final Widget? child;
   final GeneralController controller = Get.put(GeneralController());
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: theme.bottomSheetTheme.backgroundColor,
+        color: backgroundColor ?? theme.bottomSheetTheme.backgroundColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
