@@ -30,9 +30,15 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
+  late GeneralController controller;
+  @override
+  void initState() {
+    controller = Get.put(GeneralController());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final GeneralController controller = Get.put(GeneralController());
     ThemeData theme = Theme.of(context);
     double width = MediaQuery.of(context).size.width;
     return Container(
@@ -59,14 +65,14 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     behavior: HitTestBehavior.translucent,
                     onTap: widget.onBack,
                     child: Stack(
-                      alignment: Alignment.center,
+                      alignment: Alignment.centerLeft,
                       children: [
                         SvgPicture.asset(
                           Images.backArrow,
                           width: 10,
                         ),
                         const SizedBox(
-                          width: 25,
+                          width: 22,
                           height: 25,
                         ),
                       ],

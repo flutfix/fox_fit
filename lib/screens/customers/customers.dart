@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/screens/customer_information/customer_information.dart';
 import 'package:fox_fit/widgets/default_container.dart';
@@ -20,7 +22,7 @@ class _CustomersPageState extends State<CustomersPage> {
 
   @override
   void initState() {
-    controller = Get.put(GeneralController());
+    controller = Get.find<GeneralController>();
     _refreshController = RefreshController(initialRefresh: false);
     currentIndex = controller.appState.value.currentIndex;
     stageId = controller.appState.value.bottomBarItems[currentIndex].uid;

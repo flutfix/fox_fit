@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
@@ -21,8 +23,26 @@ class _GeneralState extends State<General> {
   @override
   void initState() {
     controller = Get.put(GeneralController());
+    var authData = Get.arguments;
+    controller.appState.update((model) {
+      model?.auth = authData;
+    });
+    getCustomers();
     pageController = PageController(initialPage: 0);
     super.initState();
+  }
+
+  Future<void> getCustomers() async {
+    log('UID: ${controller.appState.value.auth!.users![0].id}');
+    controller.appState.update((model) {
+      model?.isLoading = true;
+    });
+    await controller.getCustomers(
+        );
+
+    controller.appState.update((model) {
+      model?.isLoading = false;
+    });
   }
 
   @override

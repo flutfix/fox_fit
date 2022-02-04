@@ -1,54 +1,108 @@
+import 'dart:developer';
+
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/models/app_state.dart';
+import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/customer.dart';
+import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
 import 'package:fox_fit/models/trainer.dart';
 import 'package:get/get.dart';
 
 class GeneralController extends GetxController {
   final Rx<AppStateModel> appState = AppStateModel().obs;
-  static GeneralController controller = Get.put(GeneralController());
 
-  @override
-  Future<void> onInit() async {
-    appState.update((model) {
-      model?.isLoading = true;
-    });
-    await _initApp();
-    _sortBottomBarItems();
-    _sortCustomers();
-
-    appState.update((model) {
-      model?.isLoading = false;
-    });
-    super.onInit();
+  ///Авторизация
+  Future<dynamic> auth({
+    required String phone,
+    required String pass,
+  }) async {
+    var data = await Requests.auth(phone: phone, pass: pass);
+    if (data is int) {
+      // TODO: Обработка статус кодов != 200
+    } else {
+      appState.update((model) {
+        model?.auth = data;
+      });
+      log('UID: ${appState.value.auth!.users![0].id}');
+    }
   }
 
   /// Запрос на получение основных данных, необходимых для инициализации приложения
-  Future<dynamic> _initApp() async {
-    await Requests.getCustomers();
+  Future<dynamic> getCustomers() async {
+    var data =
+        await Requests.getCustomers(id: appState.value.auth!.users![0].id);
+    if (data is int) {
+      // TODO: Обработка статус кодов != 200
+    } else {
+      final String isNewNotifications = data[0];
+      final List<ItemBottomBarModel> bottomBarItems = data[1];
+      final List<CustomerModel> customers = data[2];
+
+      appState.update((model) {
+        if (isNewNotifications == 'True') {
+          model?.isNewNotifications = true;
+        } else {
+          model?.isNewNotifications = false;
+        }
+      });
+
+      _sortBottomBarItems(bottomBarItems: bottomBarItems);
+      _sortCustomers(bottomBarItems: bottomBarItems, allCutsomers: customers);
+    }
   }
 
   /// Запрос на получение статистики тренера
   Future<dynamic> getTrainerPerfomance() async {
-    await Requests.getTrainerPerfomance();
+    var data = await Requests.getTrainerPerfomance(
+      id: appState.value.auth!.users![0].id,
+    );
+    if (data is int) {
+      // TODO: Обработка статус кодов != 200
+    } else {
+      appState.update((model) {
+        model?.trainerPerfomance = data;
+      });
+    }
   }
 
   /// Получение подробной информации о пользователе
-  Future<dynamic> getCustomerInfo({required String clientUid}) async {
-    await Requests.getCustomerInfo(clientUid: clientUid);
+  Future<dynamic> getCustomerInfo({
+    required String customerId,
+  }) async {
+    var data = await Requests.getCustomerInfo(
+      customerId: customerId,
+      uId: appState.value.auth!.users![0].id,
+    );
+    if (data is int) {
+      // TODO: Обработка статус кодов != 200
+    } else {
+      final List<DetailedInfo> detailedInfo = data[0];
+      final List<AvailablePipelineStages> availablePipelineStages = data[1];
+      appState.update((model) {
+        model?.detailedInfo = detailedInfo;
+        model?.availablePipelineStages = availablePipelineStages;
+      });
+    }
   }
 
   /// Получение всех тренеров
   Future<dynamic> getTrainers() async {
-    await Requests.getTrainers();
+    var data =
+        await Requests.getTrainers(id: appState.value.auth!.users![0].id);
+    if (data is int) {
+      // TODO: Обработка статус кодов != 200
+    } else {
+      appState.update((model) {
+        model?.availableTrainers = data[0];
+      });
+    }
   }
 
   /// Сортировка активных разделов BottomBar
-  void _sortBottomBarItems() {
+  void _sortBottomBarItems({required List<ItemBottomBarModel> bottomBarItems}) {
     List<ItemBottomBarModel> sortedList = [];
-
-    for (var element in controller.appState.value.bottomBarItems) {
+    for (var element in bottomBarItems) {
       if (element.visible) {
         sortedList.add(element);
       }
@@ -63,11 +117,14 @@ class GeneralController extends GetxController {
   }
 
   /// Сортировка клиентов по разделам BottomBar, где [Uid] раздела - ключ от Map
-  void _sortCustomers() {
+  void _sortCustomers({
+    required List<ItemBottomBarModel> bottomBarItems,
+    required List<CustomerModel> allCutsomers,
+  }) {
     List<CustomerModel> customers = [];
     Map<String, List<CustomerModel>> sortedClients = {};
-    for (var stage in controller.appState.value.bottomBarItems) {
-      for (var customer in controller.appState.value.customers) {
+    for (var stage in bottomBarItems) {
+      for (var customer in allCutsomers) {
         if (stage.uid == customer.trainerStageUid) {
           customers.add(customer);
         }
@@ -86,7 +143,7 @@ class GeneralController extends GetxController {
   void sortTrainers({required String search}) {
     List<Trainer> trainers = [];
     if (search != '') {
-      for (var trainer in controller.appState.value.availableTrainers) {
+      for (var trainer in appState.value.availableTrainers) {
         List<String> trainerDividers = trainer.name.split(' ');
         List<String> searchDividers = search.split(' ');
 

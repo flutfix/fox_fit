@@ -33,7 +33,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   @override
   void initState() {
-    controller = Get.put(GeneralController());
+    controller = Get.find<GeneralController>();
     load();
     super.initState();
   }
@@ -42,8 +42,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     setState(() {
       loading = true;
     });
-
-    await controller.getCustomerInfo(clientUid: widget.customer.uid);
+    await controller.getCustomerInfo(customerId: widget.customer.uid);
 
     setState(() {
       loading = false;

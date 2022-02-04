@@ -25,6 +25,7 @@ class Input extends StatefulWidget {
     this.cursorColor,
     this.hintStyle,
     this.onChanged,
+    this.prefixText,
   }) : super(key: key);
 
   final double? width;
@@ -47,6 +48,7 @@ class Input extends StatefulWidget {
   final Color? cursorColor;
   final TextStyle? hintStyle;
   final Function(String)? onChanged;
+  final String? prefixText;
 
   @override
   _InputState createState() => _InputState();
@@ -58,7 +60,8 @@ class _InputState extends State<Input> {
     ThemeData theme = Theme.of(context);
     Color backgroundColor = widget.backgroundColor ?? theme.colorScheme.surface;
     TextStyle textStyle = widget.textStyle ??
-        theme.textTheme.headline1!.copyWith(fontWeight: FontWeight.w400);
+        theme.textTheme.headline1!
+            .copyWith(fontSize: 16, fontWeight: FontWeight.w400);
     return Container(
       width: widget.width,
       decoration: BoxDecoration(
