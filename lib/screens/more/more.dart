@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/config/routes.dart';
+import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/more_card.dart';
 import 'package:fox_fit/widgets/bottom_sheet.dart';
@@ -20,9 +21,12 @@ class MorePage extends StatefulWidget {
 
 class _MorePageState extends State<MorePage> {
   late List<MoreCardModel> cards;
+  late GeneralController controller;
+
   @override
   void initState() {
     cards = [];
+    controller = Get.put(GeneralController());
     super.initState();
   }
 
@@ -65,49 +69,9 @@ class _MorePageState extends State<MorePage> {
             text: S.of(context).log_out,
             icon: Images.logOut,
             onTap: () {
-              showModalBottomSheet(
+              _showBottomSheet(
                 context: context,
-                backgroundColor: Colors.transparent,
-                isScrollControlled: true,
-                builder: (context) {
-                  return CustomBottomSheet(
-                    backgroundColor: theme.backgroundColor,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 65,
-                        vertical: 50,
-                      ),
-                      child: Column(
-                        children: [
-                          SvgPicture.asset(Images.exit),
-                          const SizedBox(height: 32),
-                          Text(
-                            '${S.of(context).log_out}?',
-                            style: theme.textTheme.headline5,
-                          ),
-                          const SizedBox(height: 50),
-                          CustomTextButton(
-                            text: S.of(context).exit,
-                            backgroundColor: theme.colorScheme.secondary,
-                            textStyle: theme.textTheme.button!,
-                          ),
-                          const SizedBox(height: 12),
-                          CustomTextButton(
-                            onTap: () {
-                              Get.back();
-                            },
-                            text: S.of(context).cancel,
-                            backgroundColor:
-                                theme.buttonTheme.colorScheme!.primary,
-                            textStyle: theme.textTheme.button!.copyWith(
-                                color:
-                                    theme.buttonTheme.colorScheme!.secondary),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
+                theme: theme,
               );
             },
           ),
@@ -120,17 +84,20 @@ class _MorePageState extends State<MorePage> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 25.0),
         child: Column(
-          children: List.generate(cards.length, (index) {
-            return Padding(
-              padding: EdgeInsets.only(
-                  bottom: (index != cards.length - 1) ? 5.0 : 0.0),
-              child: _buildCard(
-                text: cards[index].text,
-                icon: cards[index].icon,
-                onTap: cards[index].onTap,
-              ),
-            );
-          }),
+          children: List.generate(
+            cards.length,
+            (index) {
+              return Padding(
+                padding: EdgeInsets.only(
+                    bottom: (index != cards.length - 1) ? 5.0 : 0.0),
+                child: _buildCard(
+                  text: cards[index].text,
+                  icon: cards[index].icon,
+                  onTap: cards[index].onTap,
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -157,6 +124,58 @@ class _MorePageState extends State<MorePage> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showBottomSheet({
+    required BuildContext context,
+    required ThemeData theme,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return CustomBottomSheet(
+          backgroundColor: theme.backgroundColor,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 65,
+              vertical: 50,
+            ),
+            child: Column(
+              children: [
+                SvgPicture.asset(Images.exit),
+                const SizedBox(height: 32),
+                Text(
+                  '${S.of(context).log_out}?',
+                  style: theme.textTheme.headline5,
+                ),
+                const SizedBox(height: 50),
+                CustomTextButton(
+                  onTap: () {
+                    Get.delete<GeneralController>();
+                    Get.offNamed(Routes.auth);
+                  },
+                  text: S.of(context).exit,
+                  backgroundColor: theme.colorScheme.secondary,
+                  textStyle: theme.textTheme.button!,
+                ),
+                const SizedBox(height: 12),
+                CustomTextButton(
+                  onTap: () {
+                    Get.back();
+                  },
+                  text: S.of(context).cancel,
+                  backgroundColor: theme.buttonTheme.colorScheme!.primary,
+                  textStyle: theme.textTheme.button!.copyWith(
+                      color: theme.buttonTheme.colorScheme!.secondary),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
