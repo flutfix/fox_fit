@@ -96,7 +96,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  showBottomSheet(theme: theme);
+                                  _showBottomSheet(theme: theme);
                                 },
                                 behavior: HitTestBehavior.translucent,
                                 child: const SizedBox(
