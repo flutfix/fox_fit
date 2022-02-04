@@ -48,24 +48,29 @@ class _CustomAppBarState extends State<CustomAppBar> {
       ),
       child: SafeArea(
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (widget.isBackArrow)
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      SvgPicture.asset(Images.backArrow),
-                      GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: widget.onBack,
-                        child: const SizedBox(
-                          width: 20,
-                          height: 20,
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: widget.onBack,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          Images.backArrow,
+                          width: 10,
                         ),
-                      ),
-                    ],
+                        const SizedBox(
+                          width: 25,
+                          height: 25,
+                        ),
+                      ],
+                    ),
                   ),
                 if (widget.count != null)
                   Text(
