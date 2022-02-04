@@ -1,3 +1,4 @@
+import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
@@ -10,6 +11,7 @@ class AppStateModel {
     this.isLoading = false,
     this.currentIndex = 0,
     this.isNewNotifications = false,
+    this.auth,
     this.customers = const [],
     this.bottomBarItems = const [],
     this.sortedCustomers = const {},
@@ -23,6 +25,9 @@ class AppStateModel {
   bool isLoading;
   int currentIndex;
   bool isNewNotifications;
+
+  /// Данные авторизации
+  AuthDataModel? auth;
 
   /// Все клиенты
   List<CustomerModel> customers;
