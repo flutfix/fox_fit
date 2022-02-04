@@ -8,6 +8,7 @@ import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
+import 'package:fox_fit/models/trainer.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
 import 'package:get/get.dart';
 
@@ -28,6 +29,15 @@ class Requests {
       if (response.statusCode == 200) {
         List<CustomerModel> customers = [];
         List<ItemBottomBarModel> bottomBarItems = [];
+
+        for (var element in response.data['Customers']) {
+          customers.add(CustomerModel.fromJson(element));
+        }
+        for (var element in response.data['PipelineStages']) {
+          bottomBarItems.add(ItemBottomBarModel.fromJson(element));
+        }
+
+        bottomBarItems.add(getLastStageBottomBar);
         controller.appState.update(
           (model) {
             if (response.data['NewNotifications'] == 'True') {
@@ -35,22 +45,7 @@ class Requests {
             } else {
               model?.isNewNotifications = false;
             }
-          },
-        );
-        for (var element in response.data['Customers']) {
-          customers.add(CustomerModel.fromJson(element));
-        }
-        controller.appState.update(
-          (model) {
             model?.customers = customers;
-          },
-        );
-        for (var element in response.data['PipelineStages']) {
-          bottomBarItems.add(ItemBottomBarModel.fromJson(element));
-        }
-        bottomBarItems.add(getLastStageBottomBar);
-        controller.appState.update(
-          (model) {
             model?.bottomBarItems = bottomBarItems;
           },
         );
@@ -129,6 +124,30 @@ class Requests {
         controller.appState.update((model) {
           model?.detailedInfo = detailedInfo;
           model?.availablePipelineStages = availablePipelineStages;
+        });
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  /// Получение подробной информации о пользователе
+  static Future<dynamic> getTrainers() async {
+    const String url = '${Api.url}get_trainers';
+    final dioClient = Dio(Api.options);
+    try {
+      var response = await dioClient.get(url, queryParameters: {
+        'UserUid': Api.uId,
+      });
+      if (response.statusCode == 200) {
+        List<Trainer> availableTrainers = [];
+
+        for (var element in response.data) {
+          availableTrainers.add(Trainer.fromJson(element));
+        }
+
+        controller.appState.update((model) {
+          model?.availableTrainers = availableTrainers;
         });
       }
     } catch (e) {

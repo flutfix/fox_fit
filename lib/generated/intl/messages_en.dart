@@ -29,11 +29,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "coordinator": MessageLookupByLibrary.simpleMessage(""),
         "customer_information": MessageLookupByLibrary.simpleMessage(""),
         "exit": MessageLookupByLibrary.simpleMessage(""),
+        "fast_search": MessageLookupByLibrary.simpleMessage(""),
         "kickoff_training": MessageLookupByLibrary.simpleMessage(""),
         "log_in": MessageLookupByLibrary.simpleMessage(""),
         "log_out": MessageLookupByLibrary.simpleMessage(""),
         "send_to_trainer": MessageLookupByLibrary.simpleMessage(""),
         "support": MessageLookupByLibrary.simpleMessage(""),
-        "trainer_stats": MessageLookupByLibrary.simpleMessage("")
+        "trainer_stats": MessageLookupByLibrary.simpleMessage(""),
+        "triner_choosing": MessageLookupByLibrary.simpleMessage("")
       };
 }

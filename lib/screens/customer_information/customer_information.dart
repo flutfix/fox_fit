@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
@@ -75,6 +72,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             child: Column(
               children: [
                 const SizedBox(height: 25),
+
 
                 /// Основная информация
                 DefaultContainer(
@@ -231,7 +229,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   /// Открывает нижлий лист с доступными вариантами
   /// передачи клиента дальше по воронке
-  void showBottomSheet({required ThemeData theme}) {
+  void _showBottomSheet({required ThemeData theme}) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,

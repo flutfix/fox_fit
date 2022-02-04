@@ -35,4 +35,7 @@ class Images {
   static const String funnelAssigned = 'lib/assets/icons/funnel_assigned.png';
   static const String funnelPerfomed = 'lib/assets/icons/funnel_perfomed.png';
   static const String funnelStable = 'lib/assets/icons/funnel_stable.png';
+
+  /// Trainer Choosing
+  static const String search = 'lib/assets/icons/search.png';
 }

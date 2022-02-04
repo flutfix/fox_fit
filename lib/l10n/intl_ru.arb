@@ -11,5 +11,7 @@
     "coordinator": "Координатор",
     "log_out": "Выйти из профиля",
     "chat": "Чат в WhatsApp",
-    "exit": "Выйти"
+    "exit": "Выйти",
+    "fast_search": "Быстрый поиск",
+    "triner_choosing": "Выбор тренера"
 }

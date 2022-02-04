@@ -2,13 +2,15 @@ import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/models/app_state.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
+import 'package:fox_fit/models/trainer.dart';
 import 'package:get/get.dart';
 
 class GeneralController extends GetxController {
-  final appState = AppStateModel().obs;
+  final Rx<AppStateModel> appState = AppStateModel().obs;
+  static GeneralController controller = Get.put(GeneralController());
 
   @override
-  void onInit() async {
+  Future<void> onInit() async {
     appState.update((model) {
       model?.isLoading = true;
     });
@@ -37,10 +39,16 @@ class GeneralController extends GetxController {
     await Requests.getCustomerInfo(clientUid: clientUid);
   }
 
+  /// Получение всех тренеров
+  Future<dynamic> getTrainers() async {
+    await Requests.getTrainers();
+  }
+
   /// Сортировка активных разделов BottomBar
   void _sortBottomBarItems() {
     List<ItemBottomBarModel> sortedList = [];
-    for (var element in appState.value.bottomBarItems) {
+
+    for (var element in controller.appState.value.bottomBarItems) {
       if (element.visible) {
         sortedList.add(element);
       }
@@ -48,6 +56,7 @@ class GeneralController extends GetxController {
         sortedList[0] = element;
       }
     }
+
     appState.update((model) {
       model?.bottomBarItems = sortedList;
     });
@@ -57,8 +66,8 @@ class GeneralController extends GetxController {
   void _sortCustomers() {
     List<CustomerModel> customers = [];
     Map<String, List<CustomerModel>> sortedClients = {};
-    for (var stage in appState.value.bottomBarItems) {
-      for (var customer in appState.value.customers) {
+    for (var stage in controller.appState.value.bottomBarItems) {
+      for (var customer in controller.appState.value.customers) {
         if (stage.uid == customer.trainerStageUid) {
           customers.add(customer);
         }
@@ -71,5 +80,40 @@ class GeneralController extends GetxController {
     appState.update((model) {
       model?.sortedCustomers = sortedClients;
     });
+  }
+
+  /// Поиск тренеров из всего списка
+  void sortTrainers({required String search}) {
+    List<Trainer> trainers = [];
+    if (search != '') {
+      for (var trainer in controller.appState.value.availableTrainers) {
+        List<String> trainerDividers = trainer.name.split(' ');
+        List<String> searchDividers = search.split(' ');
+
+        List<bool> check = [];
+        for (var searchDivider in searchDividers) {
+          bool passed = false;
+          for (var trainerDivider in trainerDividers) {
+            if (trainerDivider
+                .toLowerCase()
+                .contains(searchDivider.toLowerCase())) {
+              passed = true;
+            }
+          }
+          check.add(passed);
+        }
+        if (!check.contains(false)) {
+          trainers.add(trainer);
+        }
+      }
+
+      appState.update((model) {
+        model?.sortedAvailableTrainers = trainers;
+      });
+    } else {
+      appState.update((model) {
+        model?.sortedAvailableTrainers = null;
+      });
+    }
   }
 }

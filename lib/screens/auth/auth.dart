@@ -22,7 +22,6 @@ class _AuthPageState extends State<AuthPage> {
   void initState() {
     phoneController = TextEditingController();
     passController = TextEditingController();
-
     super.initState();
   }
 
