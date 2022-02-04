@@ -179,6 +179,26 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get fast_search {
+    return Intl.message(
+      '',
+      name: 'fast_search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get triner_choosing {
+    return Intl.message(
+      '',
+      name: 'triner_choosing',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

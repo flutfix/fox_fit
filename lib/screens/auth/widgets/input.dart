@@ -7,6 +7,8 @@ class Input extends StatefulWidget {
     Key? key,
     this.width,
     this.icon,
+    this.iconPng,
+    this.iconPngWidth,
     required this.textController,
     required this.hintText,
     this.textStyle,
@@ -22,10 +24,13 @@ class Input extends StatefulWidget {
     this.textCapitalization = TextCapitalization.none,
     this.cursorColor,
     this.hintStyle,
+    this.onChanged,
   }) : super(key: key);
 
   final double? width;
   final String? icon;
+  final String? iconPng;
+  final double? iconPngWidth;
   final String hintText;
   final TextEditingController textController;
   final TextStyle? textStyle;
@@ -41,6 +46,7 @@ class Input extends StatefulWidget {
   final TextCapitalization textCapitalization;
   final Color? cursorColor;
   final TextStyle? hintStyle;
+  final Function(String)? onChanged;
 
   @override
   _InputState createState() => _InputState();
@@ -69,9 +75,16 @@ class _InputState extends State<Input> {
                 widget.icon!,
                 width: 18,
               ),
-            if (widget.icon != null) const SizedBox(width: 11),
+            if (widget.iconPng != null)
+              Image.asset(
+                widget.iconPng!,
+                width: widget.iconPngWidth,
+              ),
+            if (widget.icon != null || widget.iconPng != null)
+              const SizedBox(width: 11),
             Expanded(
               child: TextField(
+                onChanged: widget.onChanged,
                 cursorColor: widget.cursorColor,
                 textCapitalization: widget.textCapitalization,
                 minLines: widget.lines,
@@ -85,7 +98,8 @@ class _InputState extends State<Input> {
                 textInputAction: widget.textInputAction,
                 keyboardType: widget.textInputType,
                 style: textStyle,
-                decoration: InputDecoration.collapsed(
+                decoration: InputDecoration(
+                  isCollapsed: true,
                   hintText: widget.hintText,
                   border: InputBorder.none,
                   hintStyle: widget.hintStyle,

@@ -9,6 +9,7 @@ abstract class Styles {
   static const Color greyLight2 = Color(0xFFE8E8E8);
   static const Color greyLight3 = Color(0xFFE0E0E0);
   static const Color greyLight4 = Color(0xFFE7EBEF);
+  static const Color greyLight5 = Color(0xFFBDBDBD);
   static const Color blue = Color(0xFF2692DA);
   static const Color primaryText = Color(0xFF333E63);
   static const Color secondaryText = Color(0xFF3A4060);
@@ -149,6 +150,12 @@ abstract class Styles {
           fontWeight: FontWeight.w600,
           color: Styles.white,
           letterSpacing: 0.02,
+        ),
+        overline: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          color: Styles.greyLight5,
+          letterSpacing: 0.2,
         ),
       ),
     );

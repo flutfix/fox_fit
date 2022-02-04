@@ -2,6 +2,7 @@ import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
+import 'package:fox_fit/models/trainer.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
 
 class AppStateModel {
@@ -15,6 +16,8 @@ class AppStateModel {
     this.detailedInfo = const [],
     this.availablePipelineStages = const [],
     this.trainerPerfomance = const [],
+    this.availableTrainers = const [],
+    this.sortedAvailableTrainers,
   });
 
   bool isLoading;
@@ -38,4 +41,10 @@ class AppStateModel {
 
   /// Статистика тренера
   List<TrainerPerfomanceModel> trainerPerfomance;
+
+  /// Доступные тренера
+  List<Trainer> availableTrainers;
+
+  /// Отсортированные тренера для поиска
+  List<Trainer>? sortedAvailableTrainers;
 }

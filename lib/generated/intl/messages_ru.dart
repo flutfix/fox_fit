@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
         "exit": MessageLookupByLibrary.simpleMessage("Выйти"),
+        "fast_search": MessageLookupByLibrary.simpleMessage("Быстрый поиск"),
         "kickoff_training":
             MessageLookupByLibrary.simpleMessage("Стартовая тренировка"),
         "log_in": MessageLookupByLibrary.simpleMessage("Войти"),
@@ -39,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Передать тренеру"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
         "trainer_stats":
-            MessageLookupByLibrary.simpleMessage("Статистика тренера")
+            MessageLookupByLibrary.simpleMessage("Статистика тренера"),
+        "triner_choosing": MessageLookupByLibrary.simpleMessage("Выбор тренера")
       };
 }
