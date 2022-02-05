@@ -142,9 +142,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SvgPicture.asset(
+                            Image.asset(
                               Images.chat,
-                              width: 17,
+                              width: 20,
                             ),
                             const SizedBox(width: 8),
                             Text(
