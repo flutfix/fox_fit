@@ -37,8 +37,7 @@ class _GeneralState extends State<General> {
     controller.appState.update((model) {
       model?.isLoading = true;
     });
-    await controller.getCustomers(
-        );
+    await controller.getCustomers();
 
     controller.appState.update((model) {
       model?.isLoading = false;
@@ -55,7 +54,12 @@ class _GeneralState extends State<General> {
             backgroundColor: theme.backgroundColor,
             appBar: appBar(controller),
             body: PageView(
-                physics: const NeverScrollableScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
+                onPageChanged: (index) {
+                  setState(() {
+                    setPage(index);
+                  });
+                },
                 controller: pageController,
                 children: [
                   ...List.generate(

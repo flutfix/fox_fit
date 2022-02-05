@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
@@ -11,6 +12,8 @@ import 'package:fox_fit/screens/trainer_choosing/trainer_choosing.dart';
 import 'package:fox_fit/screens/trainer_stats/trainer_stats.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import 'config/config.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -69,6 +72,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
+
   GetPage<dynamic> getPage(String routeName, Widget Function() page) {
     return GetPage(
       name: routeName,
@@ -78,4 +82,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

@@ -17,15 +17,11 @@ class CustomersPage extends StatefulWidget {
 class _CustomersPageState extends State<CustomersPage> {
   late GeneralController controller;
   late RefreshController _refreshController;
-  late int currentIndex;
-  late String stageId;
 
   @override
   void initState() {
     controller = Get.find<GeneralController>();
     _refreshController = RefreshController(initialRefresh: false);
-    currentIndex = controller.appState.value.currentIndex;
-    stageId = controller.appState.value.bottomBarItems[currentIndex].uid;
     super.initState();
   }
 
@@ -42,12 +38,30 @@ class _CustomersPageState extends State<CustomersPage> {
           () => Column(
             children: [
               const SizedBox(height: 25),
-              if (controller.appState.value.sortedCustomers[stageId] != null)
+              if (controller.appState.value.sortedCustomers[controller
+                      .appState
+                      .value
+                      .bottomBarItems[controller.appState.value.currentIndex]
+                      .uid] !=
+                  null)
                 ...List.generate(
-                    controller.appState.value.sortedCustomers[stageId]!.length,
-                    (index) {
-                  var customer = controller
-                      .appState.value.sortedCustomers[stageId]![index];
+                    controller
+                        .appState
+                        .value
+                        .sortedCustomers[controller
+                            .appState
+                            .value
+                            .bottomBarItems[
+                                controller.appState.value.currentIndex]
+                            .uid]!
+                        .length, (index) {
+                  var customer = controller.appState.value.sortedCustomers[
+                      controller
+                          .appState
+                          .value
+                          .bottomBarItems[
+                              controller.appState.value.currentIndex]
+                          .uid]![index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
@@ -66,14 +80,12 @@ class _CustomersPageState extends State<CustomersPage> {
                             style: theme.textTheme.bodyText1,
                           ),
                         ),
-                        if (index !=
-                            controller.appState.value.customers.length - 1)
-                          const SizedBox(height: 6),
+                        const SizedBox(height: 6),
                       ],
                     ),
                   );
                 }),
-              const SizedBox(height: 25),
+              const SizedBox(height: 19),
             ],
           ),
         ),

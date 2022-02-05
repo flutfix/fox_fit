@@ -24,6 +24,8 @@ class _AuthPageState extends State<AuthPage> {
   late TextEditingController phoneController;
   late TextEditingController passController;
   late MaskTextInputFormatter maskFormatter;
+  late bool isPhoneAnimation;
+  late bool isPassAnimation;
 
   @override
   void initState() {
@@ -33,6 +35,8 @@ class _AuthPageState extends State<AuthPage> {
       mask: '+7 ###-###-##-##',
       filter: {"#": RegExp(r'[0-9]')},
     );
+    isPhoneAnimation = false;
+    isPassAnimation = false;
 
     super.initState();
   }
@@ -60,12 +64,12 @@ class _AuthPageState extends State<AuthPage> {
                   children: [
                     const SizedBox(height: 67),
 
-                    ///Ввод номера телефона
+                    /// Ввод номера телефона
                     Input(
                       width: width,
-                      // prefixText: '+7',
                       hintText: 'Введите телефон',
                       icon: Images.phone,
+                      isIconAnimation: isPhoneAnimation,
                       textInputType: TextInputType.phone,
                       textController: phoneController,
                       textInputAction: TextInputAction.next,
@@ -74,40 +78,23 @@ class _AuthPageState extends State<AuthPage> {
                     ),
                     const SizedBox(height: 18),
 
-                    ///Ввод пароля
+                    /// Ввод пароля
                     Input(
                       width: width,
                       hintText: 'Введите пароль',
                       icon: Images.pass,
+                      isIconAnimation: isPassAnimation,
                       obscureText: true,
                       textController: passController,
                     ),
                     const SizedBox(height: 46),
 
-                    ///Кнопка [Войти]
+                    /// Кнопка [Войти]
                     CustomTextButton(
                       width: width,
                       text: S.of(context).log_in,
                       onTap: () async {
-                        if (phoneController.text.isNotEmpty &&
-                            passController.text.isNotEmpty) {
-                          var authData = await Requests.auth(
-                            phone: maskFormatter.getUnmaskedText(),
-                            pass: passController.text,
-                          );
-                          bool? isAuthorized = await Requests.getPrefs(
-                              key: Cashe.isAuthorized,
-                              prefsType: PrefsType.boolean);
-                          if (isAuthorized != null) {
-                            if (isAuthorized) {
-                              log('[Auth] User was authorized');
-                              Get.offNamed(
-                                Routes.general,
-                                arguments: authData,
-                              );
-                            }
-                          }
-                        }
+                        await _validateFields();
                       },
                       backgroundColor: theme.colorScheme.secondary,
                       textStyle: theme.textTheme.button!.copyWith(),
@@ -121,5 +108,54 @@ class _AuthPageState extends State<AuthPage> {
         ),
       ),
     );
+  }
+
+  Future<dynamic> _validateFields() async {
+    if (phoneController.text.isNotEmpty && passController.text.isNotEmpty) {
+      var authData = await Requests.auth(
+        phone: maskFormatter.getUnmaskedText(),
+        pass: passController.text,
+      );
+      if (authData is int) {
+        // TODO: Обработка статус кодов != 200
+      } else {
+        Get.offNamed(
+          Routes.general,
+          arguments: authData,
+        );
+      }
+    } else {
+      if(phoneController.text.isEmpty && passController.text.isEmpty){
+        setState(() {
+          isPhoneAnimation = true;
+          isPassAnimation = true;
+        });
+        await Future.delayed(const Duration(milliseconds: 250));
+        setState(() {
+          isPhoneAnimation = false;
+           isPassAnimation = false;
+        });
+      } else{
+
+      if (phoneController.text.isEmpty) {
+        setState(() {
+          isPhoneAnimation = true;
+        });
+        await Future.delayed(const Duration(milliseconds: 250));
+        setState(() {
+          isPhoneAnimation = false;
+        });
+      }
+      if (passController.text.isEmpty) {
+        setState(() {
+          isPassAnimation = true;
+        });
+        await Future.delayed(const Duration(milliseconds: 250));
+        setState(() {
+          isPassAnimation = false;
+        });
+      }
+      }
+    }
   }
 }

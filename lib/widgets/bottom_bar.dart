@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/images.dart';
+import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
+import 'package:get/get.dart';
 
 class CustomBottomBar extends StatefulWidget {
   const CustomBottomBar({
@@ -26,11 +28,11 @@ class CustomBottomBar extends StatefulWidget {
 }
 
 class _CustomBottomBarState extends State<CustomBottomBar> {
-  late int currentIndex;
+  late GeneralController controller;
 
   @override
   void initState() {
-    currentIndex = 0;
+    controller = Get.find<GeneralController>();
     super.initState();
   }
 
@@ -58,10 +60,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                   return GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      setState(() {
-                        currentIndex = index;
-                      });
-                      widget.onChange(currentIndex);
+                      widget.onChange(index);
                     },
                     child: SizedBox(
                       width: (width - 40) / widget.items.length,
@@ -70,7 +69,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                           SvgPicture.asset(
                             getIcon(index),
                             width: 20,
-                            color: index == currentIndex
+                            color: index == controller.appState.value.currentIndex
                                 ? widget.activeColor
                                 : widget.inActiveColor,
                           ),
@@ -78,7 +77,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                           Text(
                             item.shortName,
                             style: theme.textTheme.caption!.copyWith(
-                                color: index == currentIndex
+                                color: index == controller.appState.value.currentIndex
                                     ? widget.activeColor
                                     : widget.inActiveColor),
                           ),
@@ -112,7 +111,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   double get getHeight => (widget.verticalPadding * 2) + 38;
 
   double get getAnimatedPaddding =>
-      currentIndex *
+      controller.appState.value.currentIndex *
       (MediaQuery.of(context).size.width - 40) /
       widget.items.length;
 
