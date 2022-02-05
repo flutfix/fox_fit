@@ -5,12 +5,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 class Input extends StatefulWidget {
   const Input({
     Key? key,
+    required this.hintText,
+    required this.textController,
     this.width,
     this.icon,
     this.iconPng,
     this.iconPngWidth,
-    required this.textController,
-    required this.hintText,
     this.textStyle,
     this.textInputAction = TextInputAction.done,
     this.backgroundColor,
@@ -25,7 +25,7 @@ class Input extends StatefulWidget {
     this.cursorColor,
     this.hintStyle,
     this.onChanged,
-    this.prefixText,
+    this.isIconAnimation = false,
   }) : super(key: key);
 
   final double? width;
@@ -48,8 +48,7 @@ class Input extends StatefulWidget {
   final Color? cursorColor;
   final TextStyle? hintStyle;
   final Function(String)? onChanged;
-  final String? prefixText;
-
+  final bool isIconAnimation;
   @override
   _InputState createState() => _InputState();
 }
@@ -74,9 +73,14 @@ class _InputState extends State<Input> {
         child: Row(
           children: [
             if (widget.icon != null)
-              SvgPicture.asset(
-                widget.icon!,
-                width: 18,
+              AnimatedOpacity(
+                opacity: widget.isIconAnimation ? 0 : 1,
+                curve: Curves.easeOut,
+                duration: const Duration(milliseconds: 350),
+                child: SvgPicture.asset(
+                  widget.icon!,
+                  width: 18,
+                ),
               ),
             if (widget.iconPng != null)
               Image.asset(
