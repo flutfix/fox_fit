@@ -1,4 +1,8 @@
 class Images {
+  /// Splash screen
+  static const String splashLogo = 'lib/assets/icons/splash_logo.png';
+  static const String splashText = 'lib/assets/icons/splash_text.png';
+
   /// Auth Screen
   static const String authTop = 'lib/assets/icons/auth_top.png';
   static const String phone = 'lib/assets/icons/phone.svg';

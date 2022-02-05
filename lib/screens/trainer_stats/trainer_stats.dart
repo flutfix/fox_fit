@@ -101,7 +101,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                         children: [
                           _buildFunnel(
                             theme,
-                            width: width * 0.6,
+                            width: width * 0.75,
                             image: Images.funnelNew,
                             name: controller
                                 .appState
@@ -121,12 +121,12 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                                 .trainerPerfomance[currentIndex]
                                 .perfomanceStages[0]
                                 .conversion,
-                            lineWidth: width * 0.3,
+                            lineWidth: width * 0.15,
                           ),
                           const SizedBox(height: 9),
                           _buildFunnel(
                             theme,
-                            width: width * 0.44,
+                            width: width * 0.55,
                             image: Images.funnelAssigned,
                             name: controller
                                 .appState
@@ -147,7 +147,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                                 .perfomanceStages[1]
                                 .conversion,
                             lineColor: theme.cardColor,
-                            lineWidth: width * 0.379,
+                            lineWidth: width * 0.247,
                             lineTopPadding: 6,
                             isLineExtends: true,
                           ),
@@ -155,7 +155,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                           _buildFunnel(
                             theme,
                             isLightText: true,
-                            width: width * 0.32,
+                            width: width * 0.4,
                             image: Images.funnelPerfomed,
                             name: controller
                                 .appState
@@ -176,7 +176,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                                 .perfomanceStages[2]
                                 .conversion,
                             lineColor: theme.highlightColor,
-                            lineWidth: width * 0.437,
+                            lineWidth: width * 0.32,
                             lineTopPadding: 4,
                             isLineExtends: true,
                           ),
@@ -184,7 +184,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                           _buildFunnel(
                             theme,
                             isLightText: true,
-                            width: width * 0.235,
+                            width: width * 0.29375,
                             image: Images.funnelStable,
                             name: controller
                                 .appState
@@ -205,7 +205,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                                 .perfomanceStages[3]
                                 .conversion,
                             lineColor: theme.disabledColor,
-                            lineWidth: width * 0.477,
+                            lineWidth: width * 0.369,
                             lineTopPadding: 4,
                             isLineExtends: true,
                           ),
@@ -228,7 +228,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
     required String image,
     required String name,
     required String count,
-    required double lineWidth,
+    double? lineWidth,
     required String conversion,
     double lineTopPadding = 0,
     Color lineColor = Colors.transparent,

@@ -8,12 +8,16 @@ class DefaultContainer extends StatefulWidget {
     this.onTap,
     this.padding = const EdgeInsets.symmetric(vertical: 18, horizontal: 15),
     required this.child,
+    this.isHighlight,
+    this.highlightColor,
   }) : super(key: key);
 
   final bool isVisible;
   final Function()? onTap;
   final EdgeInsetsGeometry padding;
   final Widget child;
+  final bool? isHighlight;
+  final Color? highlightColor;
 
   @override
   _DefaultContainerState createState() => _DefaultContainerState();
@@ -29,7 +33,7 @@ class _DefaultContainerState extends State<DefaultContainer> {
     } else {
       return SizedBox(
         width: width,
-        height: 60,
+        height: 80,
         child: Stack(
           children: [
             getClientContainer(width, theme),
@@ -48,12 +52,25 @@ class _DefaultContainerState extends State<DefaultContainer> {
         width: width,
         padding: widget.padding,
         decoration: BoxDecoration(
-            color: widget.isVisible
-                ? theme.canvasColor
-                : theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(10)),
+          color: getContainerColor(theme),
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: widget.child,
       ),
     );
+  }
+
+  Color getContainerColor(ThemeData theme) {
+    Color color = theme.canvasColor;
+    if (widget.isVisible) {
+      if (widget.isHighlight != null) {
+        if (widget.isHighlight!) {
+          color = widget.highlightColor ?? Colors.black;
+        }
+      }
+    } else {
+      color = theme.colorScheme.surface;
+    }
+    return color;
   }
 }

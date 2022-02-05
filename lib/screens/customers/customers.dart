@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/screens/customer_information/customer_information.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -17,11 +18,13 @@ class CustomersPage extends StatefulWidget {
 class _CustomersPageState extends State<CustomersPage> {
   late GeneralController controller;
   late RefreshController _refreshController;
+  late bool isStableCustomersPage;
 
   @override
   void initState() {
     controller = Get.find<GeneralController>();
     _refreshController = RefreshController(initialRefresh: false);
+
     super.initState();
   }
 
@@ -62,6 +65,7 @@ class _CustomersPageState extends State<CustomersPage> {
                           .bottomBarItems[
                               controller.appState.value.currentIndex]
                           .uid]![index];
+
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
@@ -75,10 +79,11 @@ class _CustomersPageState extends State<CustomersPage> {
                               ),
                             );
                           },
-                          child: Text(
-                            customer.fullName,
-                            style: theme.textTheme.bodyText1,
-                          ),
+                          child: getContainerContent(customer, theme),
+                          isHighlight: isContainerBordered(
+                              balance: customer.paidServicesBalance),
+                          highlightColor:
+                              theme.colorScheme.primary.withOpacity(0.07),
                         ),
                         const SizedBox(height: 6),
                       ],
@@ -91,6 +96,65 @@ class _CustomersPageState extends State<CustomersPage> {
         ),
       ),
     );
+  }
+
+  Widget getContainerContent(CustomerModel customer, ThemeData theme) {
+    ///Индекс раздела Постоянные
+    var stableStageIndex = controller.appState.value.bottomBarItems
+        .indexWhere((element) => element.shortName == 'Постоянные');
+    if (controller.appState.value.currentIndex == stableStageIndex) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            customer.fullName,
+            style: theme.textTheme.bodyText1,
+          ),
+          Text(
+            customer.paidServicesBalance != null
+                ? 'Осталось платных услуг: ${customer.paidServicesBalance}'
+                : 'Осталось платных услуг: 0',
+            style: theme.textTheme.headline4,
+          ),
+        ],
+      );
+    } else {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            customer.fullName,
+            style: theme.textTheme.bodyText1,
+          ),
+          Text(
+            customer.birthDay,
+            style: theme.textTheme.headline4,
+          ),
+        ],
+      );
+    }
+  }
+
+  bool isContainerBordered({required int? balance}) {
+    ///Индекс раздела Постоянные
+    var stableStageIndex = controller.appState.value.bottomBarItems
+        .indexWhere((element) => element.shortName == 'Постоянные');
+
+    if (controller.appState.value.currentIndex == stableStageIndex) {
+      if (balance != null) {
+        if (balance <= 3) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
 
   Future<void> _refresh() async {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/config.dart';
@@ -10,6 +12,7 @@ import 'package:fox_fit/widgets/bottom_sheet.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MorePage extends StatefulWidget {
@@ -153,8 +156,12 @@ class _MorePageState extends State<MorePage> {
                 ),
                 const SizedBox(height: 50),
                 CustomTextButton(
-                  onTap: () {
+                  onTap: () async {
                     Get.delete<GeneralController>();
+                    var prefs = await SharedPreferences.getInstance();
+                    prefs.setBool(Cashe.isAuthorized, false);
+                    prefs.setString(Cashe.pass, '');
+
                     Get.offNamed(Routes.auth);
                   },
                   text: S.of(context).exit,

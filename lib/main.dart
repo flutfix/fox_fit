@@ -8,6 +8,7 @@ import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/auth.dart';
 import 'package:fox_fit/screens/general/general.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fox_fit/screens/splash/splash_screen.dart';
 import 'package:fox_fit/screens/trainer_choosing/trainer_choosing.dart';
 import 'package:fox_fit/screens/trainer_stats/trainer_stats.dart';
 import 'package:get/get.dart';
@@ -61,8 +62,9 @@ class MyApp extends StatelessWidget {
         ],
         locale: const Locale('ru', 'RU'),
         supportedLocales: S.delegate.supportedLocales,
-        initialRoute: Routes.auth,
+        initialRoute: Routes.splash,
         getPages: [
+          getPage(Routes.splash, () => const SpalshScreen()),
           getPage(Routes.auth, () => const AuthPage()),
           getPage(Routes.general, () => const General()),
           getPage(Routes.trainerStats, () => const TrainerStatsPage()),
@@ -71,7 +73,6 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-
 
   GetPage<dynamic> getPage(String routeName, Widget Function() page) {
     return GetPage(

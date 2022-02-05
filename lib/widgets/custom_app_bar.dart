@@ -91,15 +91,24 @@ class _CustomAppBarState extends State<CustomAppBar> {
               ],
             ),
             GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: widget.onTap,
-                child: SvgPicture.asset(
-                  Images.notifications,
-                  width: 24,
-                  color: controller.appState.value.isNewNotifications
-                      ? theme.colorScheme.primary
-                      : theme.iconTheme.color,
-                ))
+              behavior: HitTestBehavior.translucent,
+              onTap: widget.onTap,
+              child: Stack(
+                alignment: Alignment.centerRight,
+                children: [
+                  SvgPicture.asset(
+                    Images.notifications,
+                    width: 24,
+                    color: controller.appState.value.isNewNotifications
+                        ? theme.colorScheme.primary
+                        : theme.iconTheme.color,
+                  ),
+                  const SizedBox(
+                    width: 36,
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),

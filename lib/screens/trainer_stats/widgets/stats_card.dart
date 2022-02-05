@@ -41,7 +41,7 @@ class _StatsCardState extends State<StatsCard> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Выполнение плана ${double.parse(widget.progress) * 100}%',
+            'Выполнение плана ${(double.parse(widget.progress) * 100).round()}%',
             style: theme.textTheme.headline3!.copyWith(fontSize: 12),
           ),
           const SizedBox(height: 6),

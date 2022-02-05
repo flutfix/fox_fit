@@ -12,6 +12,7 @@ import 'package:fox_fit/screens/general/general.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -26,9 +27,11 @@ class _AuthPageState extends State<AuthPage> {
   late MaskTextInputFormatter maskFormatter;
   late bool isPhoneAnimation;
   late bool isPassAnimation;
+  late String oldPhone;
 
   @override
   void initState() {
+    oldPhone = '';
     phoneController = TextEditingController();
     passController = TextEditingController();
     maskFormatter = MaskTextInputFormatter(
@@ -37,8 +40,22 @@ class _AuthPageState extends State<AuthPage> {
     );
     isPhoneAnimation = false;
     isPassAnimation = false;
+    getPhoneFromPrefs();
 
     super.initState();
+  }
+
+  Future<dynamic> getPhoneFromPrefs() async {
+    var phone =
+        await Requests.getPrefs(key: Cashe.phone, prefsType: PrefsType.string);
+    if (phone != null) {
+      if (phone != '') {
+        setState(() {
+          oldPhone = phone;
+          phoneController.text = maskFormatter.maskText(phone);
+        });
+      }
+    }
   }
 
   @override
@@ -113,7 +130,7 @@ class _AuthPageState extends State<AuthPage> {
   Future<dynamic> _validateFields() async {
     if (phoneController.text.isNotEmpty && passController.text.isNotEmpty) {
       var authData = await Requests.auth(
-        phone: maskFormatter.getUnmaskedText(),
+        phone: oldPhone != '' ? oldPhone : maskFormatter.getUnmaskedText(),
         pass: passController.text,
       );
       if (authData is int) {
@@ -125,7 +142,7 @@ class _AuthPageState extends State<AuthPage> {
         );
       }
     } else {
-      if(phoneController.text.isEmpty && passController.text.isEmpty){
+      if (phoneController.text.isEmpty && passController.text.isEmpty) {
         setState(() {
           isPhoneAnimation = true;
           isPassAnimation = true;
@@ -133,28 +150,27 @@ class _AuthPageState extends State<AuthPage> {
         await Future.delayed(const Duration(milliseconds: 250));
         setState(() {
           isPhoneAnimation = false;
-           isPassAnimation = false;
-        });
-      } else{
-
-      if (phoneController.text.isEmpty) {
-        setState(() {
-          isPhoneAnimation = true;
-        });
-        await Future.delayed(const Duration(milliseconds: 250));
-        setState(() {
-          isPhoneAnimation = false;
-        });
-      }
-      if (passController.text.isEmpty) {
-        setState(() {
-          isPassAnimation = true;
-        });
-        await Future.delayed(const Duration(milliseconds: 250));
-        setState(() {
           isPassAnimation = false;
         });
-      }
+      } else {
+        if (phoneController.text.isEmpty) {
+          setState(() {
+            isPhoneAnimation = true;
+          });
+          await Future.delayed(const Duration(milliseconds: 250));
+          setState(() {
+            isPhoneAnimation = false;
+          });
+        }
+        if (passController.text.isEmpty) {
+          setState(() {
+            isPassAnimation = true;
+          });
+          await Future.delayed(const Duration(milliseconds: 250));
+          setState(() {
+            isPassAnimation = false;
+          });
+        }
       }
     }
   }

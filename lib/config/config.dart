@@ -32,5 +32,8 @@ class AppConfig {
 
 class Cashe{
   static const String isAuthorized = 'isAuthorized';
+  static const String phone = 'phone';
+  static const String pass = 'pass';
+
 
 }

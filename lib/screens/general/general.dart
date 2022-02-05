@@ -54,12 +54,7 @@ class _GeneralState extends State<General> {
             backgroundColor: theme.backgroundColor,
             appBar: appBar(controller),
             body: PageView(
-                physics: const BouncingScrollPhysics(),
-                onPageChanged: (index) {
-                  setState(() {
-                    setPage(index);
-                  });
-                },
+                physics: const NeverScrollableScrollPhysics(),
                 controller: pageController,
                 children: [
                   ...List.generate(
@@ -108,6 +103,8 @@ class _GeneralState extends State<General> {
       title: controller.appState.value
           .bottomBarItems[controller.appState.value.currentIndex].shortName,
       count: (customers != null) ? customers.length : null,
+      onTap: () {
+      },
     );
   }
 
