@@ -46,11 +46,10 @@ class Requests {
         AuthDataModel authData = AuthDataModel();
         authData = AuthDataModel.fromJson(response.data);
         return authData;
-      } else {
-        return response.statusCode;
       }
-    } catch (e) {
-      log(e.toString());
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
     }
   }
 
@@ -91,11 +90,10 @@ class Requests {
           bottomBarItems,
           customers,
         ];
-      } else {
-        return response.statusCode;
       }
-    } catch (e) {
-      log(e.toString());
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
     }
   }
 
@@ -136,11 +134,10 @@ class Requests {
           index++;
         }
         return perfomance;
-      } else {
-        return response.statusCode;
       }
-    } catch (e) {
-      log(e.toString());
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
     }
   }
 
@@ -168,11 +165,10 @@ class Requests {
               .add(AvailablePipelineStages.fromJson(element));
         }
         return [detailedInfo, availablePipelineStages];
-      } else {
-        return response.statusCode;
       }
-    } catch (e) {
-      log(e.toString());
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
     }
   }
 
@@ -194,8 +190,9 @@ class Requests {
       } else {
         return response.statusCode;
       }
-    } catch (e) {
-      log(e.toString());
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
     }
   }
 

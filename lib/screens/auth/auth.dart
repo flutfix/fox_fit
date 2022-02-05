@@ -5,6 +5,7 @@ import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/config/routes.dart';
+import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
@@ -111,7 +112,7 @@ class _AuthPageState extends State<AuthPage> {
                       width: width,
                       text: S.of(context).log_in,
                       onTap: () async {
-                        await _validateFields();
+                        await _validateFields(theme);
                       },
                       backgroundColor: theme.colorScheme.secondary,
                       textStyle: theme.textTheme.button!.copyWith(),
@@ -127,14 +128,31 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  Future<dynamic> _validateFields() async {
+  Future<dynamic> _validateFields(ThemeData theme) async {
     if (phoneController.text.isNotEmpty && passController.text.isNotEmpty) {
       var authData = await Requests.auth(
         phone: oldPhone != '' ? oldPhone : maskFormatter.getUnmaskedText(),
         pass: passController.text,
       );
       if (authData is int) {
-        // TODO: Обработка статус кодов != 200
+        if (authData == 401) {
+          Get.snackbar(
+            "Ошибка входа",
+            "Неверный логин или пароль",
+            duration: const Duration(seconds: 2),
+            backgroundColor: theme.canvasColor,
+            colorText: Styles.greyLight,
+            boxShadows: [
+              BoxShadow(
+                color: Styles.black.withOpacity(0.15),
+                offset: const Offset(0, 4),
+                blurRadius: 20,
+              )
+            ],
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+        ;
       } else {
         Get.offNamed(
           Routes.general,
