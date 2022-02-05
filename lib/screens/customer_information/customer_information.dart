@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/images.dart';
@@ -72,7 +74,6 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
               children: [
                 const SizedBox(height: 25),
 
-
                 /// Основная информация
                 DefaultContainer(
                   padding: const EdgeInsets.fromLTRB(15.5, 19, 5.5, 25),
@@ -110,19 +111,25 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                       const SizedBox(height: 4),
 
                       /// Номер телефона
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            Images.phone,
-                            width: 17,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            widget.customer.phone,
-                            style: theme.textTheme.headline2,
-                          ),
-                        ],
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          launch("tel://${widget.customer.phone}");
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              Images.phone,
+                              width: 17,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              widget.customer.phone,
+                              style: theme.textTheme.headline2,
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 4),
 
@@ -167,44 +174,52 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                 else
                   DefaultContainer(
                     padding: const EdgeInsets.fromLTRB(28, 17.45, 19, 22.55),
-                    child: ListView.separated(
-                      itemCount: controller.appState.value.detailedInfo.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      separatorBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            const SizedBox(height: 21),
-                            Divider(
-                              height: 1,
-                              color: theme.dividerColor,
-                            ),
-                            const SizedBox(height: 8),
-                          ],
-                        );
-                      },
-                      itemBuilder: (context, index) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              controller
-                                  .appState.value.detailedInfo[index].header,
+                    child: controller.appState.value.detailedInfo.isNotEmpty
+                        ? ListView.separated(
+                            itemCount:
+                                controller.appState.value.detailedInfo.length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            separatorBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  const SizedBox(height: 21),
+                                  Divider(
+                                    height: 1,
+                                    color: theme.dividerColor,
+                                  ),
+                                  const SizedBox(height: 8),
+                                ],
+                              );
+                            },
+                            itemBuilder: (context, index) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    controller.appState.value
+                                        .detailedInfo[index].header,
+                                    style: theme.textTheme.headline3,
+                                  ),
+                                  const SizedBox(height: 6),
+                                  SizedBox(
+                                    height: 38,
+                                    child: Text(
+                                      controller.appState.value
+                                          .detailedInfo[index].value,
+                                      style: theme.textTheme.headline4,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          )
+                        : Center(
+                            child: Text(
+                              'Информация о клиенте отсутствует',
                               style: theme.textTheme.headline3,
                             ),
-                            const SizedBox(height: 6),
-                            SizedBox(
-                              height: 38,
-                              child: Text(
-                                controller
-                                    .appState.value.detailedInfo[index].value,
-                                style: theme.textTheme.headline4,
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                          ),
                   ),
                 const SizedBox(height: 80),
               ],
