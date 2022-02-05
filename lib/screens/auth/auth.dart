@@ -144,9 +144,9 @@ class _AuthPageState extends State<AuthPage> {
             colorText: Styles.greyLight,
             boxShadows: [
               BoxShadow(
-                color: Styles.black.withOpacity(0.15),
+                color: Styles.black.withOpacity(0.10),
                 offset: const Offset(0, 4),
-                blurRadius: 20,
+                blurRadius: 15,
               )
             ],
             snackPosition: SnackPosition.BOTTOM,
