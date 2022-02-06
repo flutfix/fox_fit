@@ -43,3 +43,8 @@ class Images {
   /// Trainer Choosing
   static const String search = 'lib/assets/icons/search.png';
 }
+
+class Animations{
+   /// Auth
+  static const String testAnimation = 'lib/assets/animations/test_animations.riv';
+}

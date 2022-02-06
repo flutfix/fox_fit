@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "comment_for_recipient":
             MessageLookupByLibrary.simpleMessage("Комментарий для получателя"),
         "confirm": MessageLookupByLibrary.simpleMessage("Подтвердить"),
+        "coordinaor_workspace":
+            MessageLookupByLibrary.simpleMessage("Рабочий стол координатора"),
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),

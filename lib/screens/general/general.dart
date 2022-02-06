@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
 import 'package:fox_fit/screens/more/more.dart';
 import 'package:fox_fit/widgets/bottom_bar.dart';
@@ -23,10 +24,15 @@ class _GeneralState extends State<General> {
   @override
   void initState() {
     controller = Get.put(GeneralController());
-    var authData = Get.arguments;
+    AuthDataModel authData = Get.arguments;
     controller.appState.update((model) {
       model?.auth = authData;
     });
+    if (authData.users!.length > 1) {
+      controller.appState.update((model) {
+        model?.isCoordinator = true;
+      });
+    }
     getCustomers();
     pageController = PageController(initialPage: 0);
     super.initState();
@@ -53,6 +59,8 @@ class _GeneralState extends State<General> {
           return Scaffold(
             backgroundColor: theme.backgroundColor,
             appBar: appBar(controller),
+
+            /// Страницы Разделов Bottom Bar
             body: PageView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: pageController,
@@ -103,8 +111,7 @@ class _GeneralState extends State<General> {
       title: controller.appState.value
           .bottomBarItems[controller.appState.value.currentIndex].shortName,
       count: (customers != null) ? customers.length : null,
-      onTap: () {
-      },
+      onNotification: () {},
     );
   }
 

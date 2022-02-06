@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
-import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/auth.dart';
+import 'package:fox_fit/screens/coordinator/coordinator.dart';
+import 'package:fox_fit/screens/customers/customers.dart';
 import 'package:fox_fit/screens/general/general.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fox_fit/screens/splash/splash_screen.dart';
@@ -13,8 +13,6 @@ import 'package:fox_fit/screens/trainer_choosing/trainer_choosing.dart';
 import 'package:fox_fit/screens/trainer_stats/trainer_stats.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import 'config/config.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -69,6 +67,7 @@ class MyApp extends StatelessWidget {
           getPage(Routes.general, () => const General()),
           getPage(Routes.trainerStats, () => const TrainerStatsPage()),
           getPage(Routes.trinerChoosing, () => const TrainerChoosingPage()),
+          getPage(Routes.coordinator, () => const CoordinatorPage())
         ],
       ),
     );

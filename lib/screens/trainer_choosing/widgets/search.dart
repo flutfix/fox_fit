@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fox_fit/config/images.dart';
+import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
 
