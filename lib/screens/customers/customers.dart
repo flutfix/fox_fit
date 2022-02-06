@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/screens/customer_information/customer_information.dart';
@@ -137,10 +135,11 @@ class _CustomersPageState extends State<CustomersPage> {
           DefaultContainer(
             isVisible: customer.isVisible,
             onTap: () {
+              controller.appState.update((model) {
+                model?.currentCustomer = customer;
+              });
               Get.to(
-                () => CustomerInformationPage(
-                  customer: customer,
-                ),
+                () => const CustomerInformationPage(),
               );
             },
             child: getContainerContent(customer, theme),

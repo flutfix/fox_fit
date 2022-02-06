@@ -200,7 +200,6 @@ class Requests {
       if (response.statusCode == 200) {
         List<DetailedInfo> detailedInfo = [];
         List<AvailablePipelineStages> availablePipelineStages = [];
-
         for (var element in response.data['DetailedInfo']) {
           detailedInfo.add(DetailedInfo.fromJson(element));
         }
@@ -216,7 +215,7 @@ class Requests {
     }
   }
 
-  /// Получение подробной информации о пользователе
+  /// Получение всех тренеров
   static Future<dynamic> getTrainers({required String id}) async {
     const String url = '${Api.url}get_trainers';
     final dioClient = Dio(Api.options);
@@ -232,6 +231,35 @@ class Requests {
         }
         return availableTrainers;
       } else {
+        return response.statusCode;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Перенос слиента по воронке
+  static Future<dynamic> transferClientByTrainerPipeline({
+    required String userUid,
+    required String customerUid,
+    required String trainerPipelineStageUid,
+    required String transferDate,
+    required String? commentText,
+  }) async {
+    const String url = '${Api.url}transfer_client_by_trainer_pipeline';
+    final dioClient = Dio(Api.options);
+    try {
+      var response = await dioClient.post(url, queryParameters: {
+        'UserUid': userUid,
+        'CustomerUid': customerUid,
+
+        /// [Uid] этапа тренерской воронки куда перемещать
+        'TrainerPipelineStageUid': trainerPipelineStageUid,
+        'TransferDate': transferDate,
+        'CommentText': commentText,
+      });
+      if (response.statusCode == 200) {
         return response.statusCode;
       }
     } on DioError catch (e) {

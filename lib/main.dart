@@ -5,7 +5,6 @@ import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/auth.dart';
 import 'package:fox_fit/screens/coordinator/coordinator.dart';
-import 'package:fox_fit/screens/customers/customers.dart';
 import 'package:fox_fit/screens/general/general.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fox_fit/screens/splash/splash_screen.dart';

@@ -30,10 +30,17 @@ class AppConfig {
   static const String supportUrl = 'whatsapp://send?phone=+79323005950';
 }
 
-class Cashe{
+class Cache {
   static const String isAuthorized = 'isAuthorized';
   static const String phone = 'phone';
   static const String pass = 'pass';
+}
 
-
+class StagePipeline {
+  static const String assigned =
+      'e8af182e'; //TODO: Поменять на расширенный вариант
+  static const String transferringRecord =
+      'e8b2d9c8-1550-11ec-d58b-ac1f6b336352';
+  static const String nonCall = 'e8acaa26-1550-11ec-d58b-ac1f6b336352';
+  static const String rejection = 'e8b420f8-1550-11ec-d58b-ac1f6b336352';
 }

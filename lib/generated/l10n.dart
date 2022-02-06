@@ -221,6 +221,46 @@ class S {
   }
 
   /// ``
+  String get server_error {
+    return Intl.message(
+      '',
+      name: 'server_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get status_not_sent {
+    return Intl.message(
+      '',
+      name: 'status_not_sent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get error {
+    return Intl.message(
+      '',
+      name: 'error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get leave_comment {
+    return Intl.message(
+      '',
+      name: 'leave_comment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
   String get coordinaor_workspace {
     return Intl.message(
       '',

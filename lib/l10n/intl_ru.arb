@@ -16,5 +16,9 @@
     "triner_choosing": "Выбор тренера",
     "login_exeption": "Ошибка входа",
     "wrong_login_or_pass": "Неверный логин или пароль",
+    "server_error": "Ошибка сервера",
+    "status_not_sent": "Статус не отправлен",
+    "error": "Ошибка",
+    "leave_comment": "Оставьте комментарий",
     "coordinaor_workspace": "Рабочий стол координатора"
 }

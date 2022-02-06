@@ -160,8 +160,8 @@ class _MorePageState extends State<MorePage> {
                   onTap: () async {
                     Get.delete<GeneralController>();
                     var prefs = await SharedPreferences.getInstance();
-                    prefs.setBool(Cashe.isAuthorized, false);
-                    prefs.setString(Cashe.pass, '');
+                    prefs.setBool(Cache.isAuthorized, false);
+                    prefs.setString(Cache.pass, '');
 
                     Get.offAllNamed(Routes.auth);
                   },

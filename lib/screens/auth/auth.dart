@@ -3,9 +3,9 @@ import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
-import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
+import 'package:fox_fit/utils/snackbar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -58,7 +58,7 @@ class _AuthPageState extends State<AuthPage> {
 
   Future<dynamic> getPhoneFromPrefs() async {
     var phone =
-        await Requests.getPrefs(key: Cashe.phone, prefsType: PrefsType.string);
+        await Requests.getPrefs(key: Cache.phone, prefsType: PrefsType.string);
     if (phone != null) {
       if (phone != '') {
         setState(() {
@@ -147,23 +147,12 @@ class _AuthPageState extends State<AuthPage> {
       );
       if (authData is int) {
         if (authData == 401) {
-          Get.snackbar(
-            S.of(context).login_exeption,
-            S.of(context).wrong_login_or_pass,
-            duration: const Duration(seconds: 2),
-            backgroundColor: theme.canvasColor,
-            colorText: Styles.greyLight,
-            boxShadows: [
-              BoxShadow(
-                color: Styles.black.withOpacity(0.10),
-                offset: const Offset(0, 4),
-                blurRadius: 15,
-              )
-            ],
-            snackPosition: SnackPosition.BOTTOM,
+          Snackbar.getSnackbar(
+            theme: theme,
+            title: S.of(context).login_exeption,
+            message: S.of(context).wrong_login_or_pass,
           );
         }
-        
       } else {
         Get.offAllNamed(
           Routes.general,
