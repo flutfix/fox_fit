@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "chat": MessageLookupByLibrary.simpleMessage(""),
         "comment_for_recipient": MessageLookupByLibrary.simpleMessage(""),
         "confirm": MessageLookupByLibrary.simpleMessage(""),
+        "coordinaor_workspace": MessageLookupByLibrary.simpleMessage(""),
         "coordinator": MessageLookupByLibrary.simpleMessage(""),
         "customer_information": MessageLookupByLibrary.simpleMessage(""),
         "exit": MessageLookupByLibrary.simpleMessage(""),

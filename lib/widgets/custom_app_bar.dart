@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fox_fit/config/images.dart';
+import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +9,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     Key? key,
     this.height = 126,
     required this.title,
-    this.onTap,
+    this.onNotification,
     this.isBackArrow = false,
     this.onBack,
     this.count,
@@ -17,7 +17,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 
   final double height;
   final String title;
-  final Function()? onTap;
+  final Function()? onNotification;
   final bool isBackArrow;
   final Function()? onBack;
   final int? count;
@@ -92,7 +92,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
             ),
             GestureDetector(
               behavior: HitTestBehavior.translucent,
-              onTap: widget.onTap,
+              onTap: widget.onNotification,
               child: Stack(
                 alignment: Alignment.centerRight,
                 children: [

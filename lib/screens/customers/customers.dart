@@ -9,8 +9,9 @@ import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:get/get.dart';
 
 class CustomersPage extends StatefulWidget {
-  const CustomersPage({Key? key}) : super(key: key);
+  const CustomersPage({Key? key, this.isCoordinator = false}) : super(key: key);
 
+  final bool isCoordinator;
   @override
   _CustomersPageState createState() => _CustomersPageState();
 }
@@ -21,9 +22,11 @@ class _CustomersPageState extends State<CustomersPage> {
   late bool isStableCustomersPage;
   late int stableStageIndex;
   late bool _isLoading;
+  late bool _isCoordinator;
   @override
   void initState() {
     _isLoading = false;
+    _isCoordinator = widget.isCoordinator;
     controller = Get.find<GeneralController>();
     _refreshController = RefreshController(initialRefresh: false);
     stableStageIndex = controller.appState.value.bottomBarItems
@@ -34,6 +37,7 @@ class _CustomersPageState extends State<CustomersPage> {
     super.initState();
   }
 
+  /// [Get] Постоянные клиенты
   Future<dynamic> loadStableCustomers() async {
     setState(() {
       _isLoading = true;
@@ -54,69 +58,100 @@ class _CustomersPageState extends State<CustomersPage> {
             physics: const BouncingScrollPhysics(),
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              child: Obx(
-                () => Column(
-                  children: [
-                    const SizedBox(height: 25),
-                    if (controller.appState.value.sortedCustomers[controller
-                            .appState
-                            .value
-                            .bottomBarItems[
-                                controller.appState.value.currentIndex]
-                            .uid] !=
-                        null)
-                      ...List.generate(
-                          controller
-                              .appState
-                              .value
-                              .sortedCustomers[controller
-                                  .appState
-                                  .value
-                                  .bottomBarItems[
-                                      controller.appState.value.currentIndex]
-                                  .uid]!
-                              .length, (index) {
-                        var customer =
-                            controller.appState.value.sortedCustomers[controller
-                                .appState
-                                .value
-                                .bottomBarItems[
-                                    controller.appState.value.currentIndex]
-                                .uid]![index];
-
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            children: [
-                              DefaultContainer(
-                                isVisible: customer.isVisible,
-                                onTap: () {
-                                  Get.to(
-                                    () => CustomerInformationPage(
-                                      customer: customer,
-                                    ),
-                                  );
-                                },
-                                child: getContainerContent(customer, theme),
-                                isHighlight: isContainerBordered(
-                                    balance: customer.paidServicesBalance),
-                                highlightColor:
-                                    theme.colorScheme.primary.withOpacity(0.07),
-                              ),
-                              const SizedBox(height: 6),
-                            ],
-                          ),
-                        );
-                      }),
-                    const SizedBox(height: 19),
-                  ],
-                ),
-              ),
+              child: _isCoordinator
+                  ? _coordinatorCustomers(theme)
+                  : _trainerCustomers(theme),
             ),
           )
         : const Center(
             child: CircularProgressIndicator(),
           );
+  }
+
+  /// Колонка клиентов для координатора
+  Widget _coordinatorCustomers(ThemeData theme) {
+    return Obx(
+      () => Column(
+        children: [
+          const SizedBox(height: 25),
+          if (controller.appState.value.coordinator != null)
+            ...List.generate(
+                controller.appState.value.coordinator!.customers.length,
+                (index) {
+              return _customerContainer(theme,
+                  customer:
+                      controller.appState.value.coordinator!.customers[index]);
+            }),
+          const SizedBox(height: 19),
+        ],
+      ),
+    );
+  }
+
+  /// Колонка клиентов для тренера [Разделы BottomBar]
+  Widget _trainerCustomers(ThemeData theme) {
+    return Obx(
+      () => Column(
+        children: [
+          const SizedBox(height: 25),
+          if (controller.appState.value.sortedCustomers[controller
+                  .appState
+                  .value
+                  .bottomBarItems[controller.appState.value.currentIndex]
+                  .uid] !=
+              null)
+            ...List.generate(
+                controller
+                    .appState
+                    .value
+                    .sortedCustomers[controller
+                        .appState
+                        .value
+                        .bottomBarItems[controller.appState.value.currentIndex]
+                        .uid]!
+                    .length, (index) {
+              return _customerContainer(
+                theme,
+                customer: controller.appState.value.sortedCustomers[controller
+                    .appState
+                    .value
+                    .bottomBarItems[controller.appState.value.currentIndex]
+                    .uid]![index],
+              );
+            }),
+          const SizedBox(height: 19),
+        ],
+      ),
+    );
+  }
+
+  /// Контейнер с клиентом
+  Widget _customerContainer(
+    ThemeData theme, {
+    required CustomerModel customer,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          DefaultContainer(
+            isVisible: customer.isVisible,
+            onTap: () {
+              Get.to(
+                () => CustomerInformationPage(
+                  customer: customer,
+                ),
+              );
+            },
+            child: getContainerContent(customer, theme),
+            isHighlight:
+                isContainerBordered(balance: customer.paidServicesBalance),
+            highlightColor: theme.colorScheme.primary.withOpacity(0.07),
+          ),
+          const SizedBox(height: 6),
+        ],
+      ),
+    );
   }
 
   Widget getContainerContent(CustomerModel customer, ThemeData theme) {

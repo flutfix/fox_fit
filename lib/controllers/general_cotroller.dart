@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/models/app_state.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
+import 'package:fox_fit/models/coordinator_workspace.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
@@ -67,6 +68,23 @@ class GeneralController extends GetxController {
       sortedCustomers[stageUid] = data;
       appState.update((model) {
         model?.sortedCustomers = sortedCustomers;
+      });
+    }
+  }
+
+  /// Запрос на получение рабочего стола координатора
+  Future<dynamic> getCoordinaorWorkSpace(
+      {bool? getRegularCustomersOnly}) async {
+    var data = await Requests.getCoordinaorWorkSpace(
+        id: appState.value.auth!.users![1].id);
+
+    if (data is int) {
+      // TODO: Обработка статус кодов != 200
+    } else {
+      final CoordinatorModel _coordinator =
+          CoordinatorModel(isNewNotification: data[0], customers: data[1]);
+      appState.update((model) {
+        model?.coordinator = _coordinator;
       });
     }
   }

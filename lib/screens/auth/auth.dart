@@ -1,19 +1,14 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
-import 'package:fox_fit/config/images.dart';
+import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
-import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
-import 'package:fox_fit/screens/general/general.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -42,9 +37,24 @@ class _AuthPageState extends State<AuthPage> {
     isPhoneAnimation = false;
     isPassAnimation = false;
     getPhoneFromPrefs();
-
     super.initState();
   }
+
+  /// [Rive Animation]
+  // _initRiveAnimation() async {
+  //   await rootBundle.load(Animations.testAnimation).then(
+  //     (data) async {
+  //       // Load the RiveFile from the binary data.
+  //       final file = RiveFile.import(data);
+  //       final artboard = file.mainArtboard;
+  //       artboard.addController(
+  //           _animationcontroller = SimpleAnimation('Light', autoplay: false));
+  //       // ignore: cascade_invocations
+
+  //       setState(() => _riveArtboard = artboard);
+  //     },
+  //   );
+  // }
 
   Future<dynamic> getPhoneFromPrefs() async {
     var phone =
@@ -112,6 +122,7 @@ class _AuthPageState extends State<AuthPage> {
                       width: width,
                       text: S.of(context).log_in,
                       onTap: () async {
+                        // _togglePlay();
                         await _validateFields(theme);
                       },
                       backgroundColor: theme.colorScheme.secondary,
@@ -152,7 +163,7 @@ class _AuthPageState extends State<AuthPage> {
             snackPosition: SnackPosition.BOTTOM,
           );
         }
-        ;
+        
       } else {
         Get.offAllNamed(
           Routes.general,

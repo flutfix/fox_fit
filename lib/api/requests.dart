@@ -3,8 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:fox_fit/config/config.dart';
-import 'package:fox_fit/config/images.dart';
-import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/customer.dart';
@@ -12,7 +11,6 @@ import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
 import 'package:fox_fit/models/trainer.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
-import 'package:get/get.dart';
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
@@ -235,6 +233,35 @@ class Requests {
         return availableTrainers;
       } else {
         return response.statusCode;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Получение клиентов для рабочего стола координатора
+  static Future<dynamic> getCoordinaorWorkSpace({required String id}) async {
+    const String url = '${Api.url}get_customers';
+    final dioClient = Dio(Api.options);
+    try {
+      var response = await dioClient.get(
+        url,
+        queryParameters: {
+          "UserUid": id,
+        },
+      );
+      if (response.statusCode == 200) {
+        List<CustomerModel> customers = [];
+
+        for (var element in response.data['Customers']) {
+          customers.add(CustomerModel.fromJson(element));
+        }
+        bool isNewNotification = false;
+        if (response.data['NewNotifications'] == 'True') {
+          isNewNotification = true;
+        }
+        return [isNewNotification, customers];
       }
     } on DioError catch (e) {
       log('${e.response?.statusMessage}');
