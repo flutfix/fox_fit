@@ -13,5 +13,7 @@
     "chat": "Чат в WhatsApp",
     "exit": "Выйти",
     "fast_search": "Быстрый поиск",
-    "triner_choosing": "Выбор тренера"
+    "triner_choosing": "Выбор тренера",
+    "login_exeption": "Ошибка входа",
+    "wrong_login_or_pass": "Неверный логин или пароль"
 }

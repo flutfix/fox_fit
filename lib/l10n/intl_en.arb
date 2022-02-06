@@ -13,5 +13,7 @@
     "chat": "",
     "exit": "",
     "fast_search": "",
-    "triner_choosing": ""
+    "triner_choosing": "",
+    "login_exeption": "",
+    "wrong_login_or_pass": ""
 }

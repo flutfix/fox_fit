@@ -33,9 +33,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "kickoff_training": MessageLookupByLibrary.simpleMessage(""),
         "log_in": MessageLookupByLibrary.simpleMessage(""),
         "log_out": MessageLookupByLibrary.simpleMessage(""),
+        "login_exeption": MessageLookupByLibrary.simpleMessage(""),
         "send_to_trainer": MessageLookupByLibrary.simpleMessage(""),
         "support": MessageLookupByLibrary.simpleMessage(""),
         "trainer_stats": MessageLookupByLibrary.simpleMessage(""),
-        "triner_choosing": MessageLookupByLibrary.simpleMessage("")
+        "triner_choosing": MessageLookupByLibrary.simpleMessage(""),
+        "wrong_login_or_pass": MessageLookupByLibrary.simpleMessage("")
       };
 }

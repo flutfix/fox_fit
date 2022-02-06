@@ -64,6 +64,7 @@ class Requests {
   }) async {
     const String url = '${Api.url}get_customers';
     final dioClient = Dio(Api.options);
+
     try {
       var response = await dioClient.get(
         url,
@@ -90,6 +91,33 @@ class Requests {
           bottomBarItems,
           customers,
         ];
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Получение постоянных клиентов
+  static Future<dynamic> getRegularCustomers({
+    required String id,
+  }) async {
+    const String url = '${Api.url}get_customers';
+    final dioClient = Dio(Api.options);
+
+    try {
+      var response = await dioClient.get(
+        url,
+        queryParameters: {"UserUid": id, "GetRegularCustomersOnly": true},
+      );
+      if (response.statusCode == 200) {
+        List<CustomerModel> customers = [];
+
+        for (var element in response.data['Customers']) {
+          customers.add(CustomerModel.fromJson(element));
+        }
+
+        return customers;
       }
     } on DioError catch (e) {
       log('${e.response?.statusMessage}');

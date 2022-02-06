@@ -199,6 +199,26 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get login_exeption {
+    return Intl.message(
+      '',
+      name: 'login_exeption',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get wrong_login_or_pass {
+    return Intl.message(
+      '',
+      name: 'wrong_login_or_pass',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

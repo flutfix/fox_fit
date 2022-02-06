@@ -137,8 +137,8 @@ class _AuthPageState extends State<AuthPage> {
       if (authData is int) {
         if (authData == 401) {
           Get.snackbar(
-            "Ошибка входа",
-            "Неверный логин или пароль",
+            S.of(context).login_exeption,
+            S.of(context).wrong_login_or_pass,
             duration: const Duration(seconds: 2),
             backgroundColor: theme.canvasColor,
             colorText: Styles.greyLight,

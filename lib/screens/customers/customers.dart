@@ -19,89 +19,109 @@ class _CustomersPageState extends State<CustomersPage> {
   late GeneralController controller;
   late RefreshController _refreshController;
   late bool isStableCustomersPage;
-
+  late int stableStageIndex;
+  late bool _isLoading;
   @override
   void initState() {
+    _isLoading = false;
     controller = Get.find<GeneralController>();
     _refreshController = RefreshController(initialRefresh: false);
-
+    stableStageIndex = controller.appState.value.bottomBarItems
+        .indexWhere((element) => element.shortName == 'Постоянные');
+    if (controller.appState.value.currentIndex == stableStageIndex) {
+      loadStableCustomers();
+    }
     super.initState();
+  }
+
+  Future<dynamic> loadStableCustomers() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await controller.getRegularCustomers();
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return SmartRefresher(
-      controller: _refreshController,
-      onRefresh: _refresh,
-      physics: const BouncingScrollPhysics(),
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Obx(
-          () => Column(
-            children: [
-              const SizedBox(height: 25),
-              if (controller.appState.value.sortedCustomers[controller
-                      .appState
-                      .value
-                      .bottomBarItems[controller.appState.value.currentIndex]
-                      .uid] !=
-                  null)
-                ...List.generate(
-                    controller
-                        .appState
-                        .value
-                        .sortedCustomers[controller
+    return !_isLoading
+        ? SmartRefresher(
+            controller: _refreshController,
+            onRefresh: _refresh,
+            physics: const BouncingScrollPhysics(),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Obx(
+                () => Column(
+                  children: [
+                    const SizedBox(height: 25),
+                    if (controller.appState.value.sortedCustomers[controller
                             .appState
                             .value
                             .bottomBarItems[
                                 controller.appState.value.currentIndex]
-                            .uid]!
-                        .length, (index) {
-                  var customer = controller.appState.value.sortedCustomers[
-                      controller
-                          .appState
-                          .value
-                          .bottomBarItems[
-                              controller.appState.value.currentIndex]
-                          .uid]![index];
+                            .uid] !=
+                        null)
+                      ...List.generate(
+                          controller
+                              .appState
+                              .value
+                              .sortedCustomers[controller
+                                  .appState
+                                  .value
+                                  .bottomBarItems[
+                                      controller.appState.value.currentIndex]
+                                  .uid]!
+                              .length, (index) {
+                        var customer =
+                            controller.appState.value.sortedCustomers[controller
+                                .appState
+                                .value
+                                .bottomBarItems[
+                                    controller.appState.value.currentIndex]
+                                .uid]![index];
 
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        DefaultContainer(
-                          isVisible: customer.isVisible,
-                          onTap: () {
-                            Get.to(
-                              () => CustomerInformationPage(
-                                customer: customer,
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              DefaultContainer(
+                                isVisible: customer.isVisible,
+                                onTap: () {
+                                  Get.to(
+                                    () => CustomerInformationPage(
+                                      customer: customer,
+                                    ),
+                                  );
+                                },
+                                child: getContainerContent(customer, theme),
+                                isHighlight: isContainerBordered(
+                                    balance: customer.paidServicesBalance),
+                                highlightColor:
+                                    theme.colorScheme.primary.withOpacity(0.07),
                               ),
-                            );
-                          },
-                          child: getContainerContent(customer, theme),
-                          isHighlight: isContainerBordered(
-                              balance: customer.paidServicesBalance),
-                          highlightColor:
-                              theme.colorScheme.primary.withOpacity(0.07),
-                        ),
-                        const SizedBox(height: 6),
-                      ],
-                    ),
-                  );
-                }),
-              const SizedBox(height: 19),
-            ],
-          ),
-        ),
-      ),
-    );
+                              const SizedBox(height: 6),
+                            ],
+                          ),
+                        );
+                      }),
+                    const SizedBox(height: 19),
+                  ],
+                ),
+              ),
+            ),
+          )
+        : const Center(
+            child: CircularProgressIndicator(),
+          );
   }
 
   Widget getContainerContent(CustomerModel customer, ThemeData theme) {
     ///Индекс раздела Постоянные
-    var stableStageIndex = controller.appState.value.bottomBarItems
-        .indexWhere((element) => element.shortName == 'Постоянные');
+
     if (controller.appState.value.currentIndex == stableStageIndex) {
       return Column(
         mainAxisSize: MainAxisSize.min,

@@ -29,7 +29,7 @@ class GeneralController extends GetxController {
   }
 
   /// Запрос на получение основных данных, необходимых для инициализации приложения
-  Future<dynamic> getCustomers() async {
+  Future<dynamic> getCustomers({bool? getRegularCustomersOnly}) async {
     var data =
         await Requests.getCustomers(id: appState.value.auth!.users![0].id);
     if (data is int) {
@@ -49,6 +49,25 @@ class GeneralController extends GetxController {
 
       _sortBottomBarItems(bottomBarItems: bottomBarItems);
       _sortCustomers(bottomBarItems: bottomBarItems, allCutsomers: customers);
+    }
+  }
+
+  /// Запрос на получение постоянных клиентов
+  Future<dynamic> getRegularCustomers({bool? getRegularCustomersOnly}) async {
+    var data = await Requests.getRegularCustomers(
+        id: appState.value.auth!.users![0].id);
+    if (data is int) {
+      // TODO: Обработка статус кодов != 200
+    } else {
+      // final List<CustomerModel> customers = data;
+      int stableStageIndex = appState.value.bottomBarItems
+          .indexWhere((element) => element.shortName == 'Постоянные');
+      String stageUid = appState.value.bottomBarItems[stableStageIndex].uid;
+      var sortedCustomers = appState.value.sortedCustomers;
+      sortedCustomers[stageUid] = data;
+      appState.update((model) {
+        model?.sortedCustomers = sortedCustomers;
+      });
     }
   }
 

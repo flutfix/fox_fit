@@ -36,11 +36,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Стартовая тренировка"),
         "log_in": MessageLookupByLibrary.simpleMessage("Войти"),
         "log_out": MessageLookupByLibrary.simpleMessage("Выйти из профиля"),
+        "login_exeption": MessageLookupByLibrary.simpleMessage("Ошибка входа"),
         "send_to_trainer":
             MessageLookupByLibrary.simpleMessage("Передать тренеру"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
         "trainer_stats":
             MessageLookupByLibrary.simpleMessage("Статистика тренера"),
-        "triner_choosing": MessageLookupByLibrary.simpleMessage("Выбор тренера")
+        "triner_choosing":
+            MessageLookupByLibrary.simpleMessage("Выбор тренера"),
+        "wrong_login_or_pass":
+            MessageLookupByLibrary.simpleMessage("Неверный логин или пароль")
       };
 }
