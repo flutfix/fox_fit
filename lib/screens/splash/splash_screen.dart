@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/images.dart';
 import 'package:fox_fit/config/routes.dart';
-import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:get/get.dart';
 
 class SpalshScreen extends StatefulWidget {
@@ -27,17 +24,17 @@ class _SpalshScreenState extends State<SpalshScreen> {
 
   Future<void> _load() async {
     var isAuthorized = await Requests.getPrefs(
-      key: Cashe.isAuthorized,
+      key: Cache.isAuthorized,
       prefsType: PrefsType.boolean,
     );
     if (isAuthorized != null) {
       if (isAuthorized) {
         var phone = await Requests.getPrefs(
-          key: Cashe.phone,
+          key: Cache.phone,
           prefsType: PrefsType.string,
         );
         var pass = await Requests.getPrefs(
-          key: Cashe.pass,
+          key: Cache.pass,
           prefsType: PrefsType.string,
         );
 

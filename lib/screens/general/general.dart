@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
@@ -33,7 +31,6 @@ class _GeneralState extends State<General> {
   }
 
   Future<void> getCustomers() async {
-    log('UID: ${controller.appState.value.auth!.users![0].id}');
     controller.appState.update((model) {
       model?.isLoading = true;
     });

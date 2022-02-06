@@ -95,17 +95,17 @@ class EmailsModel {
 class UserModel {
   UserModel({
     this.name = '',
-    this.id = '',
+    this.uid = '',
     this.role = '',
   });
 
   late String name;
-  late String id;
+  late String uid;
   late String role;
 
   UserModel.fromJson(Map<String, dynamic> json) {
     name = json['Name'];
-    id = json['Uid'];
+    uid = json['Uid'];
     role = json['Role'];
   }
 }

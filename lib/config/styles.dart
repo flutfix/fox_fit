@@ -88,6 +88,15 @@ abstract class Styles {
         ),
       ),
 
+      /// Для выбора даты переноса
+      primaryTextTheme: const TextTheme(
+        headline2: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: Styles.orange,
+        ),
+      ),
+
       /// Шрифты
       textTheme: const TextTheme(
         headline1: TextStyle(

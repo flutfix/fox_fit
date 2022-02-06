@@ -30,15 +30,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
+        "error": MessageLookupByLibrary.simpleMessage("Ошибка"),
         "exit": MessageLookupByLibrary.simpleMessage("Выйти"),
         "fast_search": MessageLookupByLibrary.simpleMessage("Быстрый поиск"),
         "kickoff_training":
             MessageLookupByLibrary.simpleMessage("Стартовая тренировка"),
+        "leave_comment":
+            MessageLookupByLibrary.simpleMessage("Оставьте комментарий"),
         "log_in": MessageLookupByLibrary.simpleMessage("Войти"),
         "log_out": MessageLookupByLibrary.simpleMessage("Выйти из профиля"),
         "login_exeption": MessageLookupByLibrary.simpleMessage("Ошибка входа"),
         "send_to_trainer":
             MessageLookupByLibrary.simpleMessage("Передать тренеру"),
+        "server_error": MessageLookupByLibrary.simpleMessage("Ошибка сервера"),
+        "status_not_sent":
+            MessageLookupByLibrary.simpleMessage("Статус не отправлен"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
         "trainer_stats":
             MessageLookupByLibrary.simpleMessage("Статистика тренера"),

@@ -13,7 +13,7 @@ class CustomBottomSheet extends StatelessWidget {
   }) : super(key: key);
 
   final Widget? child;
-  final GeneralController controller = Get.put(GeneralController());
+  final GeneralController controller = Get.find<GeneralController>();
   final Color? backgroundColor;
 
   @override
@@ -57,6 +57,7 @@ class CustomBottomSheet extends StatelessWidget {
                     (index) {
                       var stage = controller
                           .appState.value.availablePipelineStages[index];
+                      // log('${stage.uid}');
                       return Column(
                         children: [
                           GestureDetector(
@@ -64,8 +65,10 @@ class CustomBottomSheet extends StatelessWidget {
                             onTap: () {
                               Get.to(
                                 () => ConfirmationPage(
+                                  stageUid: stage.uid,
                                   image: Enums.getIconStage(
-                                      stage.uid.split('-')[0]),
+                                    iconUid: stage.uid.split('-')[0],
+                                  ),
                                   text: '${stage.name}?',
                                 ),
                               );
@@ -75,7 +78,9 @@ class CustomBottomSheet extends StatelessWidget {
                               child: Row(
                                 children: [
                                   SvgPicture.asset(
-                                    Enums.getIconStage(stage.uid.split('-')[0]),
+                                    Enums.getIconStage(
+                                      iconUid: stage.uid.split('-')[0],
+                                    ),
                                     color: theme.colorScheme.primary,
                                     width: 19,
                                   ),

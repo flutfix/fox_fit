@@ -50,6 +50,9 @@ class AppStateModel {
   /// Доступные тренера
   List<Trainer> availableTrainers;
 
-  /// Отсортированные тренера для поиска
+  /// Отсортированные тренера по поиску
   List<Trainer>? sortedAvailableTrainers;
+
+  /// Отсортированные тренера по поиску
+  CustomerModel? currentCustomer;
 }

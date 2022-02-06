@@ -1,7 +1,7 @@
 class DetailedInfo {
   DetailedInfo({
     this.header = '',
-    this.value = '',
+    this.value = 'Информация отсутствует',
   });
 
   late String header;
@@ -9,7 +9,11 @@ class DetailedInfo {
 
   DetailedInfo.fromJson(Map<String, dynamic> json) {
     header = json['Header'] ?? '';
-    value = json['Value'] ?? '';
+    value = json['Value'] != null
+        ? json['Value'] == ''
+            ? 'Информация отсутствует'
+            : json['Value']
+        : 'Информация отсутствует';
   }
 
   Map<String, dynamic> toJson() {

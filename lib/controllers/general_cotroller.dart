@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/models/app_state.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
@@ -24,14 +22,13 @@ class GeneralController extends GetxController {
       appState.update((model) {
         model?.auth = data;
       });
-      log('UID: ${appState.value.auth!.users![0].id}');
     }
   }
 
   /// Запрос на получение основных данных, необходимых для инициализации приложения
   Future<dynamic> getCustomers({bool? getRegularCustomersOnly}) async {
     var data =
-        await Requests.getCustomers(id: appState.value.auth!.users![0].id);
+        await Requests.getCustomers(id: appState.value.auth!.users![0].uid);
     if (data is int) {
       // TODO: Обработка статус кодов != 200
     } else {
@@ -55,7 +52,7 @@ class GeneralController extends GetxController {
   /// Запрос на получение постоянных клиентов
   Future<dynamic> getRegularCustomers({bool? getRegularCustomersOnly}) async {
     var data = await Requests.getRegularCustomers(
-        id: appState.value.auth!.users![0].id);
+        id: appState.value.auth!.users![0].uid);
     if (data is int) {
       // TODO: Обработка статус кодов != 200
     } else {
@@ -74,7 +71,7 @@ class GeneralController extends GetxController {
   /// Запрос на получение статистики тренера
   Future<dynamic> getTrainerPerfomance() async {
     var data = await Requests.getTrainerPerfomance(
-      id: appState.value.auth!.users![0].id,
+      id: appState.value.auth!.users![0].uid,
     );
     if (data is int) {
       // TODO: Обработка статус кодов != 200
@@ -91,7 +88,7 @@ class GeneralController extends GetxController {
   }) async {
     var data = await Requests.getCustomerInfo(
       customerId: customerId,
-      uId: appState.value.auth!.users![0].id,
+      uId: appState.value.auth!.users![0].uid,
     );
     if (data is int) {
       // TODO: Обработка статус кодов != 200
@@ -108,7 +105,7 @@ class GeneralController extends GetxController {
   /// Получение всех тренеров
   Future<dynamic> getTrainers() async {
     var data =
-        await Requests.getTrainers(id: appState.value.auth!.users![0].id);
+        await Requests.getTrainers(id: appState.value.auth!.users![0].uid);
     if (data is int) {
       // TODO: Обработка статус кодов != 200
     } else {
@@ -116,6 +113,24 @@ class GeneralController extends GetxController {
         model?.availableTrainers = data[0];
       });
     }
+  }
+
+  /// Перенос слиента по воронке
+  Future<dynamic> transferClientByTrainerPipeline({
+    required String userUid,
+    required String customerUid,
+    required String trainerPipelineStageUid,
+    required String transferDate,
+    required String? commentText,
+  }) async {
+    var data = await Requests.transferClientByTrainerPipeline(
+      userUid: userUid,
+      customerUid: customerUid,
+      trainerPipelineStageUid: trainerPipelineStageUid,
+      transferDate: transferDate,
+      commentText: commentText,
+    );
+    return data;
   }
 
   /// Сортировка активных разделов BottomBar
