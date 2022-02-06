@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:fox_fit/config/config.dart';
@@ -64,12 +65,19 @@ class Requests {
   }) async {
     const String url = '${Api.url}get_customers';
     final dioClient = Dio(Api.options);
+    String platform = '';
+    if (Platform.isAndroid) {
+      platform = 'Android';
+    } else if (Platform.isIOS) {
+      platform = 'Ios';
+    }
 
     try {
       var response = await dioClient.get(
         url,
         queryParameters: {
           "UserUid": id,
+          "DevicePlatform": platform,
         },
       );
       if (response.statusCode == 200) {
@@ -104,11 +112,21 @@ class Requests {
   }) async {
     const String url = '${Api.url}get_customers';
     final dioClient = Dio(Api.options);
+    String platform = '';
+    if (Platform.isAndroid) {
+      platform = 'Android';
+    } else if (Platform.isIOS) {
+      platform = 'Ios';
+    }
 
     try {
       var response = await dioClient.get(
         url,
-        queryParameters: {"UserUid": id, "GetRegularCustomersOnly": true},
+        queryParameters: {
+          "UserUid": id,
+          "GetRegularCustomersOnly": true,
+          "DevicePlatform": platform,
+        },
       );
       if (response.statusCode == 200) {
         List<CustomerModel> customers = [];
