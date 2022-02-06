@@ -154,7 +154,7 @@ class _AuthPageState extends State<AuthPage> {
         }
         ;
       } else {
-        Get.offNamed(
+        Get.offAllNamed(
           Routes.general,
           arguments: authData,
         );

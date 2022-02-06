@@ -162,7 +162,7 @@ class _MorePageState extends State<MorePage> {
                     prefs.setBool(Cashe.isAuthorized, false);
                     prefs.setString(Cashe.pass, '');
 
-                    Get.offNamed(Routes.auth);
+                    Get.offAllNamed(Routes.auth);
                   },
                   text: S.of(context).exit,
                   backgroundColor: theme.colorScheme.secondary,
