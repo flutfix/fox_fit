@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fox_fit/config/images.dart';
+import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
 import 'package:get/get.dart';

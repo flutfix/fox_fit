@@ -259,6 +259,16 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get coordinaor_workspace {
+    return Intl.message(
+      '',
+      name: 'coordinaor_workspace',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/config.dart';
-import 'package:fox_fit/config/images.dart';
+import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
@@ -22,12 +22,12 @@ class MorePage extends StatefulWidget {
 
 class _MorePageState extends State<MorePage> {
   late List<MoreCardModel> cards;
-  late GeneralController controller;
+  late GeneralController _controller;
 
   @override
   void initState() {
     cards = [];
-    controller = Get.put(GeneralController());
+    _controller = Get.put(GeneralController());
     super.initState();
   }
 
@@ -59,11 +59,14 @@ class _MorePageState extends State<MorePage> {
           ),
 
           /// Координатор
-          MoreCardModel(
-            text: S.of(context).coordinator,
-            icon: Images.coordinator,
-            onTap: () {},
-          ),
+          if (_controller.appState.value.isCoordinator)
+            MoreCardModel(
+              text: S.of(context).coordinator,
+              icon: Images.coordinator,
+              onTap: () {
+                Get.toNamed(Routes.coordinator);
+              },
+            ),
 
           /// Выйти из профиля
           MoreCardModel(

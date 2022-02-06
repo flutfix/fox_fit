@@ -19,5 +19,6 @@
     "server_error": "Ошибка сервера",
     "status_not_sent": "Статус не отправлен",
     "error": "Ошибка",
-    "leave_comment": "Оставьте комментарий"
+    "leave_comment": "Оставьте комментарий",
+    "coordinaor_workspace": "Рабочий стол координатора"
 }

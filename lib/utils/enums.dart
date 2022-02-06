@@ -1,4 +1,4 @@
-import 'package:fox_fit/config/images.dart';
+import 'package:fox_fit/config/assets.dart';
 
 class Enums {
   /// Для получения иконки стадии воронки по [IconUid]

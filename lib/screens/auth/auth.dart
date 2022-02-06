@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
-import 'package:fox_fit/config/images.dart';
+import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
@@ -37,9 +37,24 @@ class _AuthPageState extends State<AuthPage> {
     isPhoneAnimation = false;
     isPassAnimation = false;
     getPhoneFromPrefs();
-
     super.initState();
   }
+
+  /// [Rive Animation]
+  // _initRiveAnimation() async {
+  //   await rootBundle.load(Animations.testAnimation).then(
+  //     (data) async {
+  //       // Load the RiveFile from the binary data.
+  //       final file = RiveFile.import(data);
+  //       final artboard = file.mainArtboard;
+  //       artboard.addController(
+  //           _animationcontroller = SimpleAnimation('Light', autoplay: false));
+  //       // ignore: cascade_invocations
+
+  //       setState(() => _riveArtboard = artboard);
+  //     },
+  //   );
+  // }
 
   Future<dynamic> getPhoneFromPrefs() async {
     var phone =
@@ -107,6 +122,7 @@ class _AuthPageState extends State<AuthPage> {
                       width: width,
                       text: S.of(context).log_in,
                       onTap: () async {
+                        // _togglePlay();
                         await _validateFields(theme);
                       },
                       backgroundColor: theme.colorScheme.secondary,

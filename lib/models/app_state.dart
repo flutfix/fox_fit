@@ -1,5 +1,6 @@
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
+import 'package:fox_fit/models/coordinator_workspace.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
@@ -11,7 +12,9 @@ class AppStateModel {
     this.isLoading = false,
     this.currentIndex = 0,
     this.isNewNotifications = false,
+    this.isCoordinator = false,
     this.auth,
+    this.coordinator,
     this.customers = const [],
     this.bottomBarItems = const [],
     this.sortedCustomers = const {},
@@ -25,6 +28,7 @@ class AppStateModel {
   bool isLoading;
   int currentIndex;
   bool isNewNotifications;
+  bool isCoordinator;
 
   /// Данные авторизации
   AuthDataModel? auth;
@@ -37,6 +41,9 @@ class AppStateModel {
 
   /// Отсортированные клиенты по разделам BottomBar, где ключ [Uid] раздела
   Map<String, List<CustomerModel>> sortedCustomers;
+
+  /// Рабочий стол координатора
+  CoordinatorModel? coordinator;
 
   /// Подробная информация о клиенте
   List<DetailedInfo> detailedInfo;
