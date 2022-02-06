@@ -179,5 +179,11 @@ class _CustomersPageState extends State<CustomersPage> {
 
   Future<void> _refresh() async {
     await Future.delayed(const Duration(seconds: 1));
+    if (controller.appState.value.currentIndex != stableStageIndex) {
+      controller.getCustomers();
+    } else {
+      controller.getRegularCustomers();
+    }
+    _refreshController.refreshCompleted();
   }
 }
