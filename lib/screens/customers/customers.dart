@@ -48,6 +48,7 @@ class _CustomersPageState extends State<CustomersPage> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    double width = MediaQuery.of(context).size.width;
     return !_isLoading
         ? SmartRefresher(
             controller: _refreshController,
@@ -67,57 +68,95 @@ class _CustomersPageState extends State<CustomersPage> {
 
   /// Колонка клиентов для координатора
   Widget _coordinatorCustomers(ThemeData theme) {
-    return Obx(
-      () => Column(
-        children: [
-          const SizedBox(height: 25),
-          if (controller.appState.value.coordinator != null)
-            ...List.generate(
-                controller.appState.value.coordinator!.customers.length,
-                (index) {
-              return _customerContainer(theme,
-                  customer:
-                      controller.appState.value.coordinator!.customers[index]);
-            }),
-          const SizedBox(height: 19),
-        ],
-      ),
-    );
+    if (controller.appState.value.coordinator != null) {
+      if (controller.appState.value.coordinator!.customers.isNotEmpty) {
+        return Obx(
+          () => Column(
+            children: [
+              const SizedBox(height: 25),
+              ...List.generate(
+                  controller.appState.value.coordinator!.customers.length,
+                  (index) {
+                return _customerContainer(theme,
+                    customer: controller
+                        .appState.value.coordinator!.customers[index]);
+              }),
+              const SizedBox(height: 19),
+            ],
+          ),
+        );
+      } else {
+        return _getEmptyCustomersText(theme);
+      }
+    } else {
+      return _getEmptyCustomersText(theme);
+    }
   }
 
   /// Колонка клиентов для тренера [Разделы BottomBar]
   Widget _trainerCustomers(ThemeData theme) {
-    return Obx(
-      () => Column(
-        children: [
-          const SizedBox(height: 25),
-          if (controller.appState.value.sortedCustomers[controller
-                  .appState
-                  .value
-                  .bottomBarItems[controller.appState.value.currentIndex]
-                  .uid] !=
-              null)
-            ...List.generate(
-                controller
-                    .appState
-                    .value
-                    .sortedCustomers[controller
+    if (controller.appState.value.sortedCustomers[controller.appState.value
+            .bottomBarItems[controller.appState.value.currentIndex].uid] !=
+        null) {
+      if (controller
+          .appState
+          .value
+          .sortedCustomers[controller.appState.value
+              .bottomBarItems[controller.appState.value.currentIndex].uid]!
+          .isNotEmpty) {
+        return Obx(
+          () => Column(
+            children: [
+              const SizedBox(height: 25),
+              if (controller.appState.value.sortedCustomers[controller
+                      .appState
+                      .value
+                      .bottomBarItems[controller.appState.value.currentIndex]
+                      .uid] !=
+                  null)
+                ...List.generate(
+                    controller
                         .appState
                         .value
-                        .bottomBarItems[controller.appState.value.currentIndex]
-                        .uid]!
-                    .length, (index) {
-              return _customerContainer(
-                theme,
-                customer: controller.appState.value.sortedCustomers[controller
-                    .appState
-                    .value
-                    .bottomBarItems[controller.appState.value.currentIndex]
-                    .uid]![index],
-              );
-            }),
-          const SizedBox(height: 19),
-        ],
+                        .sortedCustomers[controller
+                            .appState
+                            .value
+                            .bottomBarItems[
+                                controller.appState.value.currentIndex]
+                            .uid]!
+                        .length, (index) {
+                  return _customerContainer(
+                    theme,
+                    customer: controller.appState.value.sortedCustomers[
+                        controller
+                            .appState
+                            .value
+                            .bottomBarItems[
+                                controller.appState.value.currentIndex]
+                            .uid]![index],
+                  );
+                }),
+              const SizedBox(height: 19),
+            ],
+          ),
+        );
+      } else {
+        return _getEmptyCustomersText(theme);
+      }
+    } else {
+      return _getEmptyCustomersText(theme);
+    }
+  }
+
+  Widget _getEmptyCustomersText(ThemeData theme) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: Center(
+        child: Text(
+          'На данном этапе клиенты отсутствуют',
+          style: theme.textTheme.headline3,
+        ),
       ),
     );
   }
@@ -213,10 +252,14 @@ class _CustomersPageState extends State<CustomersPage> {
 
   Future<void> _refresh() async {
     await Future.delayed(const Duration(seconds: 1));
-    if (controller.appState.value.currentIndex != stableStageIndex) {
-      controller.getCustomers();
+    if (widget.isCoordinator) {
+      controller.getCoordinaorWorkSpace();
     } else {
-      controller.getRegularCustomers();
+      if (controller.appState.value.currentIndex != stableStageIndex) {
+        controller.getCustomers();
+      } else {
+        controller.getRegularCustomers();
+      }
     }
     _refreshController.refreshCompleted();
   }
