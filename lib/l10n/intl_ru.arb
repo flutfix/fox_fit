@@ -20,5 +20,7 @@
     "status_not_sent": "Статус не отправлен",
     "error": "Ошибка",
     "leave_comment": "Оставьте комментарий",
-    "coordinaor_workspace": "Рабочий стол координатора"
+    "coordinaor_workspace": "Рабочий стол координатора",
+    "transmit": "Передать",
+    "to_coach": "Тренеру"
 }

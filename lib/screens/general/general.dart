@@ -57,19 +57,20 @@ class _GeneralState extends State<General> {
             backgroundColor: theme.backgroundColor,
             appBar: appBar(controller),
 
-            /// Страницы Разделов Bottom Bar
+            /// Страницы разделов Bottom Bar
             body: PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: pageController,
-                children: [
-                  ...List.generate(
-                    controller.appState.value.bottomBarItems.length - 1,
-                    (index) {
-                      return const KeepAlivePage(child: CustomersPage());
-                    },
-                  ),
-                  const MorePage(),
-                ]),
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              children: [
+                ...List.generate(
+                  controller.appState.value.bottomBarItems.length - 1,
+                  (index) {
+                    return const KeepAlivePage(child: CustomersPage());
+                  },
+                ),
+                const MorePage(),
+              ],
+            ),
             bottomNavigationBar: Obx(
               () => CustomBottomBar(
                 items: controller.appState.value.bottomBarItems,

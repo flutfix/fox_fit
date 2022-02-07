@@ -128,12 +128,12 @@ class GeneralController extends GetxController {
       // TODO: Обработка статус кодов != 200
     } else {
       appState.update((model) {
-        model?.availableTrainers = data[0];
+        model?.availableTrainers = data;
       });
     }
   }
 
-  /// Перенос слиента по воронке
+  /// Перенос клиента по воронке
   Future<dynamic> transferClientByTrainerPipeline({
     required String userUid,
     required String customerUid,
@@ -147,6 +147,20 @@ class GeneralController extends GetxController {
       trainerPipelineStageUid: trainerPipelineStageUid,
       transferDate: transferDate,
       commentText: commentText,
+    );
+    return data;
+  }
+
+  /// Передача клиента тренеру от координатора
+  Future<dynamic> transferClientToTrainer({
+    required String userUid,
+    required String customerUid,
+    required String trainerUid,
+  }) async {
+    var data = await Requests.transferClientToTrainer(
+      userUid: userUid,
+      customerUid: customerUid,
+      trainerUid: trainerUid,
     );
     return data;
   }

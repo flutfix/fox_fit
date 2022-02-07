@@ -269,6 +269,26 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get transmit {
+    return Intl.message(
+      '',
+      name: 'transmit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get to_coach {
+    return Intl.message(
+      '',
+      name: 'to_coach',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

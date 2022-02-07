@@ -41,7 +41,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "server_error": MessageLookupByLibrary.simpleMessage(""),
         "status_not_sent": MessageLookupByLibrary.simpleMessage(""),
         "support": MessageLookupByLibrary.simpleMessage(""),
+        "to_coach": MessageLookupByLibrary.simpleMessage(""),
         "trainer_stats": MessageLookupByLibrary.simpleMessage(""),
+        "transmit": MessageLookupByLibrary.simpleMessage(""),
         "triner_choosing": MessageLookupByLibrary.simpleMessage(""),
         "wrong_login_or_pass": MessageLookupByLibrary.simpleMessage("")
       };

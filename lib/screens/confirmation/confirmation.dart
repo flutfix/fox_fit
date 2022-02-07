@@ -16,13 +16,17 @@ class ConfirmationPage extends StatelessWidget {
     Key? key,
     required this.stageUid,
     required this.image,
-    required this.text,
+    this.text = '',
+    this.richText,
+    this.textButton,
     this.padding = const EdgeInsets.fromLTRB(20, 150, 20, 20),
   }) : super(key: key);
 
   final String stageUid;
   final String image;
   final String text;
+  final RichText? richText;
+  final String? textButton;
   final EdgeInsetsGeometry padding;
   final TextEditingController textController = TextEditingController();
   final GeneralController controller = Get.find<GeneralController>();
@@ -47,11 +51,14 @@ class ConfirmationPage extends StatelessWidget {
                   color: theme.colorScheme.primary,
                 ),
                 const SizedBox(height: 30),
-                Text(
-                  text,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.headline5,
-                ),
+                if (richText != null)
+                  richText!
+                else
+                  Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.headline5,
+                  ),
                 const SizedBox(height: 12),
                 if (Enums.getIsDisplayComment(stageUid: stageUid.split('-')[0]))
                   Input(
@@ -70,61 +77,10 @@ class ConfirmationPage extends StatelessWidget {
                 if (Enums.getIsDisplayComment(stageUid: stageUid.split('-')[0]))
                   const SizedBox(height: 12),
                 CustomTextButton(
-                  onTap: () async {
-                    //TODO: Поменять на расширенный вариант из класса
-                    if (stageUid == 'e8b420f8-1550-11ec-d58b-ac1f6b336352' &&
-                        textController.text.isNotEmpty) {
-                      await _requestConfirm(
-                        theme: theme,
-                        context: context,
-                        transferDate:
-                            DateTime.now().millisecondsSinceEpoch.toString(),
-                      );
-                      //TODO: Поменять на расширенный вариант из класса
-                    } else if (stageUid ==
-                            'e8b420f8-1550-11ec-d58b-ac1f6b336352' &&
-                        textController.text.isEmpty) {
-                      Snackbar.getSnackbar(
-                        theme: theme,
-                        title: S.of(context).error,
-                        message: S.of(context).leave_comment,
-                      );
-                    } else if (stageUid == StagePipeline.transferringRecord) {
-                      await DatePicker.showDatePicker(
-                        context,
-                        onConfirm: (confirmTime) async {
-                          _requestConfirm(
-                            theme: theme,
-                            context: context,
-                            transferDate:
-                                confirmTime.microsecondsSinceEpoch.toString(),
-                          );
-                        },
-                        minTime: DateTime(
-                          DateTime.now().year,
-                          DateTime.now().month,
-                          DateTime.now().day + 1,
-                        ),
-                        locale: LocaleType.ru,
-                        currentTime: DateTime.now(),
-                        theme: DatePickerTheme(
-                          cancelStyle: theme.textTheme.headline2!,
-                          doneStyle: theme.primaryTextTheme.headline2!,
-                          itemStyle: theme.textTheme.headline2!,
-                          backgroundColor: theme.backgroundColor,
-                          headerColor: theme.backgroundColor,
-                        ),
-                      );
-                    } else {
-                      _requestConfirm(
-                        theme: theme,
-                        context: context,
-                        transferDate:
-                            DateTime.now().millisecondsSinceEpoch.toString(),
-                      );
-                    }
+                  onTap: () {
+                    _requestConfirm(theme: theme, context: context);
                   },
-                  text: S.of(context).confirm,
+                  text: textButton ?? S.of(context).confirm,
                   backgroundColor: theme.colorScheme.secondary,
                   textStyle: theme.textTheme.button!,
                 ),
@@ -149,6 +105,93 @@ class ConfirmationPage extends StatelessWidget {
   }
 
   Future<void> _requestConfirm({
+    required ThemeData theme,
+    required BuildContext context,
+  }) async {
+    /// Если относится к стадии [Назначено] с комментарием
+    //TODO: Поменять на расширенный вариант из класса
+    if (stageUid == 'e8b420f8-1550-11ec-d58b-ac1f6b336352' &&
+        textController.text.isNotEmpty) {
+      await _transferClientByTrainerPipeline(
+        theme: theme,
+        context: context,
+        transferDate: DateTime.now().millisecondsSinceEpoch.toString(),
+      );
+
+      /// Если относится к стадии [Назначено] без комментарием
+      //TODO: Поменять на расширенный вариант из класса
+    } else if (stageUid == 'e8b420f8-1550-11ec-d58b-ac1f6b336352' &&
+        textController.text.isEmpty) {
+      Snackbar.getSnackbar(
+        theme: theme,
+        title: S.of(context).error,
+        message: S.of(context).leave_comment,
+      );
+
+      /// Если относится к стадии [Перенос]
+    } else if (stageUid == StagePipeline.transferringRecord) {
+      await DatePicker.showDatePicker(
+        context,
+        onConfirm: (confirmTime) async {
+          _transferClientByTrainerPipeline(
+            theme: theme,
+            context: context,
+            transferDate: confirmTime.microsecondsSinceEpoch.toString(),
+          );
+        },
+        minTime: DateTime(
+          DateTime.now().year,
+          DateTime.now().month,
+          DateTime.now().day + 1,
+        ),
+        locale: LocaleType.ru,
+        currentTime: DateTime.now(),
+        theme: DatePickerTheme(
+          cancelStyle: theme.textTheme.headline2!,
+          doneStyle: theme.primaryTextTheme.headline2!,
+          itemStyle: theme.textTheme.headline2!,
+          backgroundColor: theme.backgroundColor,
+          headerColor: theme.backgroundColor,
+        ),
+      );
+
+      /// Если было открыто от роли [Координатор]
+    } else if (stageUid == StagePipeline.coordinator) {
+      dynamic data = await controller.transferClientToTrainer(
+        userUid: controller.appState.value.auth!.users![1].uid,
+        customerUid: controller.appState.value.currentCustomer!.uid,
+        trainerUid: controller.appState.value.currentTrainer!.uid,
+      );
+      if (data != 200) {
+        Snackbar.getSnackbar(
+          theme: theme,
+          title: S.of(context).server_error,
+          message: S.of(context).status_not_sent,
+        );
+      } else {
+        controller.appState.update((model) {
+          model?.currentCustomer = null;
+          model?.currentTrainer = null;
+        });
+        await controller.getCustomers();
+        await controller.getTrainers();
+        Get.back();
+        Get.back();
+        Get.back();
+      }
+
+      /// Остальные случаи: запрос на продвижение клиента по воронке
+    } else {
+      _transferClientByTrainerPipeline(
+        theme: theme,
+        context: context,
+        transferDate: DateTime.now().millisecondsSinceEpoch.toString(),
+      );
+    }
+  }
+
+  /// Запрос на продвижение клиента по воронке
+  Future<void> _transferClientByTrainerPipeline({
     required ThemeData theme,
     required BuildContext context,
     required String transferDate,

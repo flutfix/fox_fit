@@ -14,8 +14,9 @@ class CoordinatorPage extends StatefulWidget {
 }
 
 class _CoordinatorPageState extends State<CoordinatorPage> {
-  late GeneralController _controller;
   late bool _isLoading;
+  late GeneralController _controller;
+
   @override
   void initState() {
     _isLoading = false;
@@ -28,7 +29,9 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
     setState(() {
       _isLoading = true;
     });
+
     await _controller.getCoordinaorWorkSpace();
+    
     setState(() {
       _isLoading = false;
     });

@@ -26,14 +26,16 @@ class CustomTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      behavior: HitTestBehavior.translucent,
       child: Container(
         width: width ?? MediaQuery.of(context).size.width,
         height: height,
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(vertical: textPadding),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(borderRadius),
-            color: backgroundColor),
+          borderRadius: BorderRadius.circular(borderRadius),
+          color: backgroundColor,
+        ),
         child: Text(
           text,
           style: textStyle,

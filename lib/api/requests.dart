@@ -268,6 +268,29 @@ class Requests {
     }
   }
 
+  /// Перенос слиента по воронке
+  static Future<dynamic> transferClientToTrainer({
+    required String userUid,
+    required String customerUid,
+    required String trainerUid,
+  }) async {
+    const String url = '${Api.url}transfer_client_to_trainer';
+    final dioClient = Dio(Api.options);
+    try {
+      var response = await dioClient.post(url, queryParameters: {
+        'UserUid': userUid,
+        'CustomerUid': customerUid,
+        'TrainerUid': trainerUid,
+      });
+      if (response.statusCode == 200) {
+        return response.statusCode;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
   /// Получение клиентов для рабочего стола координатора
   static Future<dynamic> getCoordinaorWorkSpace({required String id}) async {
     const String url = '${Api.url}get_customers';
