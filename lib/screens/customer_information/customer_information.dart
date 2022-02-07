@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
+import 'package:fox_fit/utils/snackbar.dart';
 import 'package:fox_fit/widgets/bottom_sheet.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
@@ -143,7 +146,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                       GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () async {
-                          await _switchingToChat();
+                          await _switchingToChat(theme);
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -263,7 +266,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     );
   }
 
-  Future<void> _switchingToChat() async {
+  Future<void> _switchingToChat(ThemeData theme) async {
     dynamic number;
     number = controller.appState.value.currentCustomer!.phone.split(' ');
     number = '${number[0]}${number[1]}${number[2]}';
@@ -271,15 +274,26 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     number = '${number[0]}${number[1]}';
     number = number.split(')');
     number = '${number[0]}${number[1]}';
-
+    String? greeting =
+        controller.appState.value.auth?.data?.whatsAppDefaultGreeting;
+    if (greeting != null) {
+      greeting = greeting.replaceAll('_CustomerName_',
+          controller.appState.value.currentCustomer!.firstName);
+      greeting = greeting.replaceAll(
+          '_TrainerName_', controller.appState.value.auth!.users![0].name);
+      greeting = greeting.replaceAll(
+          '_ClubName_', controller.appState.value.auth!.data!.clubName);
+    }
+    
     await canLaunch('whatsapp://send?phone=$number')
         ? launch(
-            'whatsapp://send?phone=$number&text=${controller.appState.value.currentCustomer!.firstName}, здравствуйте! Меня зовут Андрей,'
-            ' я являюсь персональным тренером фитнес-клуба X-fit «Южный лёд».'
-            'Вы записались на вводную персональную тренировку, и я пишу, чтобы'
-            ' договориться о дате и времени. Напишите, пожалуйста, когда вам будет удобно?',
+            'whatsapp://send?phone=$number&text=$greeting',
           )
-        : print(
-            "open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
+        : Snackbar.getSnackbar(
+            theme: theme,
+            title: S.of(context).whatsapp_exeption,
+            message: S.of(context).whatsapp_exeption_description,
+          );
+    ;
   }
 }

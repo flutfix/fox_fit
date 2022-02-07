@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
@@ -24,10 +25,14 @@ class _AuthPageState extends State<AuthPage> {
   late bool isPhoneAnimation;
   late bool isPassAnimation;
   late String oldPhone;
+  late bool _loading;
+  late bool _canVibrate;
 
   @override
   void initState() {
     oldPhone = '';
+    _loading = false;
+    _canVibrate = false;
     phoneController = TextEditingController();
     passController = TextEditingController();
     maskFormatter = MaskTextInputFormatter(
@@ -37,24 +42,21 @@ class _AuthPageState extends State<AuthPage> {
     isPhoneAnimation = false;
     isPassAnimation = false;
     getPhoneFromPrefs();
+    initVibration();
     super.initState();
   }
 
-  /// [Rive Animation]
-  // _initRiveAnimation() async {
-  //   await rootBundle.load(Animations.testAnimation).then(
-  //     (data) async {
-  //       // Load the RiveFile from the binary data.
-  //       final file = RiveFile.import(data);
-  //       final artboard = file.mainArtboard;
-  //       artboard.addController(
-  //           _animationcontroller = SimpleAnimation('Light', autoplay: false));
-  //       // ignore: cascade_invocations
+  Future<void> initVibration() async {
+    setState(() {
+      _loading = true;
+    });
 
-  //       setState(() => _riveArtboard = artboard);
-  //     },
-  //   );
-  // }
+    _canVibrate = await Vibrate.canVibrate;
+
+    setState(() {
+      _loading = false;
+    });
+  }
 
   Future<dynamic> getPhoneFromPrefs() async {
     var phone =
@@ -122,7 +124,9 @@ class _AuthPageState extends State<AuthPage> {
                       width: width,
                       text: S.of(context).log_in,
                       onTap: () async {
-                        // _togglePlay();
+                        if (_canVibrate) {
+                          Vibrate.feedback(FeedbackType.light);
+                        }
                         await _validateFields(theme);
                       },
                       backgroundColor: theme.colorScheme.secondary,
@@ -141,6 +145,9 @@ class _AuthPageState extends State<AuthPage> {
 
   Future<dynamic> _validateFields(ThemeData theme) async {
     if (phoneController.text.isNotEmpty && passController.text.isNotEmpty) {
+      if (_canVibrate) {
+        Vibrate.feedback(FeedbackType.light);
+      }
       var authData = await Requests.auth(
         phone: oldPhone != '' ? oldPhone : maskFormatter.getUnmaskedText(),
         pass: passController.text,
@@ -160,6 +167,9 @@ class _AuthPageState extends State<AuthPage> {
           );
         }
       } else {
+        if (_canVibrate) {
+          Vibrate.feedback(FeedbackType.success);
+        }
         Get.offAllNamed(
           Routes.general,
           arguments: authData,

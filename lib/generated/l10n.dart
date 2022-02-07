@@ -289,6 +289,26 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get whatsapp_exeption {
+    return Intl.message(
+      '',
+      name: 'whatsapp_exeption',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get whatsapp_exeption_description {
+    return Intl.message(
+      '',
+      name: 'whatsapp_exeption_description',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -45,6 +45,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "trainer_stats": MessageLookupByLibrary.simpleMessage(""),
         "transmit": MessageLookupByLibrary.simpleMessage(""),
         "triner_choosing": MessageLookupByLibrary.simpleMessage(""),
+        "whatsapp_exeption": MessageLookupByLibrary.simpleMessage(""),
+        "whatsapp_exeption_description":
+            MessageLookupByLibrary.simpleMessage(""),
         "wrong_login_or_pass": MessageLookupByLibrary.simpleMessage("")
       };
 }

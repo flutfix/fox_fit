@@ -22,5 +22,7 @@
     "leave_comment": "Оставьте комментарий",
     "coordinaor_workspace": "Рабочий стол координатора",
     "transmit": "Передать",
-    "to_coach": "Тренеру"
+    "to_coach": "Тренеру",
+    "whatsapp_exeption": "Не удалось открыть WhatsApp",
+    "whatsapp_exeption_description": "Попробуйте скачать приложение"
 }

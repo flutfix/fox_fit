@@ -1,3 +1,4 @@
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/models/app_state.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
@@ -10,6 +11,19 @@ import 'package:get/get.dart';
 
 class GeneralController extends GetxController {
   final Rx<AppStateModel> appState = AppStateModel().obs;
+
+  Future<void> initVibration() async {
+    appState.update((model) {
+      model?.isVibrateLoading = true;
+    });
+
+    bool _canVibrate = await Vibrate.canVibrate;
+
+    appState.update((model) {
+      model?.isCanVibrate = _canVibrate;
+      model?.isVibrateLoading = false;
+    });
+  }
 
   ///Авторизация
   Future<dynamic> auth({

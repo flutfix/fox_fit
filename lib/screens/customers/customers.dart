@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/screens/customer_information/customer_information.dart';
 import 'package:fox_fit/widgets/default_container.dart';
@@ -20,6 +21,7 @@ class _CustomersPageState extends State<CustomersPage> {
   late RefreshController _refreshController;
   late int stableStageIndex;
   late bool isStableCustomersPage;
+  late bool _canVibrate;
 
   @override
   void initState() {
@@ -31,6 +33,7 @@ class _CustomersPageState extends State<CustomersPage> {
     if (controller.appState.value.currentIndex == stableStageIndex) {
       loadStableCustomers();
     }
+    _canVibrate = controller.appState.value.isCanVibrate;
     super.initState();
   }
 
@@ -251,6 +254,9 @@ class _CustomersPageState extends State<CustomersPage> {
   }
 
   Future<void> _refresh() async {
+    if (_canVibrate) {
+      Vibrate.feedback(FeedbackType.light);
+    }
     await Future.delayed(const Duration(seconds: 1));
     if (widget.isCoordinator) {
       controller.getCoordinaorWorkSpace();

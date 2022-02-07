@@ -13,6 +13,8 @@ class AppStateModel {
     this.currentIndex = 0,
     this.isNewNotifications = false,
     this.isCoordinator = false,
+    this.isCanVibrate = false,
+    this.isVibrateLoading = false,
     this.auth,
     this.coordinator,
     this.customers = const [],
@@ -31,6 +33,9 @@ class AppStateModel {
   int currentIndex;
   bool isNewNotifications;
   bool isCoordinator;
+
+  bool isCanVibrate;
+  bool isVibrateLoading;
 
   /// Данные авторизации
   AuthDataModel? auth;
