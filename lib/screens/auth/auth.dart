@@ -124,9 +124,6 @@ class _AuthPageState extends State<AuthPage> {
                       width: width,
                       text: S.of(context).log_in,
                       onTap: () async {
-                        if (_canVibrate) {
-                          Vibrate.feedback(FeedbackType.light);
-                        }
                         await _validateFields(theme);
                       },
                       backgroundColor: theme.colorScheme.secondary,
@@ -145,14 +142,14 @@ class _AuthPageState extends State<AuthPage> {
 
   Future<dynamic> _validateFields(ThemeData theme) async {
     if (phoneController.text.isNotEmpty && passController.text.isNotEmpty) {
-      if (_canVibrate) {
-        Vibrate.feedback(FeedbackType.light);
-      }
       var authData = await Requests.auth(
         phone: oldPhone != '' ? oldPhone : maskFormatter.getUnmaskedText(),
         pass: passController.text,
       );
       if (authData is int) {
+        if (_canVibrate) {
+          Vibrate.feedback(FeedbackType.light);
+        }
         if (authData == 401) {
           Snackbar.getSnackbar(
             theme: theme,
@@ -176,6 +173,9 @@ class _AuthPageState extends State<AuthPage> {
         );
       }
     } else {
+      if (_canVibrate) {
+        Vibrate.feedback(FeedbackType.light);
+      }
       if (phoneController.text.isEmpty && passController.text.isEmpty) {
         setState(() {
           isPhoneAnimation = true;
