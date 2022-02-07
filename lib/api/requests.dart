@@ -244,8 +244,8 @@ class Requests {
     required String userUid,
     required String customerUid,
     required String trainerPipelineStageUid,
-    required String transferDate,
-    required String? commentText,
+    String? transferDate,
+    String? commentText,
   }) async {
     const String url = '${Api.url}transfer_client_by_trainer_pipeline';
     final dioClient = Dio(Api.options);
@@ -268,7 +268,7 @@ class Requests {
     }
   }
 
-  /// Перенос слиента по воронке
+  /// Передача клинта тренеру
   static Future<dynamic> transferClientToTrainer({
     required String userUid,
     required String customerUid,

@@ -37,11 +37,19 @@ class Cache {
 }
 
 class StagePipeline {
-  static const String assigned =
-      'e8af182e'; //TODO: Поменять на расширенный вариант
+  /// [Назначено]
+  static const String assigned = 'e8af182e-1550-11ec-d58b-ac1f6b336352';
+
+  /// [Перенесено]
   static const String transferringRecord =
       'e8b2d9c8-1550-11ec-d58b-ac1f6b336352';
+
+  /// [Не дозвонился]
   static const String nonCall = 'e8acaa26-1550-11ec-d58b-ac1f6b336352';
+
+  /// [Отказ клиента]
   static const String rejection = 'e8b420f8-1550-11ec-d58b-ac1f6b336352';
+
+  /// [Координатор]
   static const String coordinator = 'coordinator';
 }
