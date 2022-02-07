@@ -30,6 +30,7 @@ class _GeneralState extends State<General> {
       controller.appState.update((model) {
         model?.isCoordinator = true;
       });
+      controller.initVibration();
     }
     getCustomers();
     pageController = PageController(initialPage: 0);

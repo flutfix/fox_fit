@@ -22,5 +22,7 @@
     "leave_comment": "",
     "coordinaor_workspace": "",
     "transmit": "",
-    "to_coach": ""
+    "to_coach": "",
+    "whatsapp_exeption": "",
+    "whatsapp_exeption_description": ""
 }
