@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
@@ -158,6 +159,9 @@ class _MorePageState extends State<MorePage> {
                 const SizedBox(height: 50),
                 CustomTextButton(
                   onTap: () async {
+                    if (_controller.appState.value.isCanVibrate) {
+                      Vibrate.feedback(FeedbackType.light);
+                    }
                     Get.delete<GeneralController>();
                     var prefs = await SharedPreferences.getInstance();
                     prefs.setBool(Cache.isAuthorized, false);

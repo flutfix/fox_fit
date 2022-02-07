@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/screens/customer_information/customer_information.dart';
 import 'package:fox_fit/widgets/default_container.dart';
@@ -157,7 +158,7 @@ class _CustomersPageState extends State<CustomersPage> {
       height: MediaQuery.of(context).size.height * 0.7,
       child: Center(
         child: Text(
-          'На данном этапе клиенты отсутствуют',
+          S.of(context).empty_customers,
           style: theme.textTheme.headline3,
         ),
       ),

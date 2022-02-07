@@ -309,6 +309,16 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get empty_customers {
+    return Intl.message(
+      '',
+      name: 'empty_customers',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
