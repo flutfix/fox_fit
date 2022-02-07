@@ -67,6 +67,7 @@ class CustomBottomSheet extends StatelessWidget {
                                 () => ConfirmationPage(
                                   stageUid: stage.uid,
                                   image: Enums.getIconStage(
+                                    //TODO: Поменять на расширенный вариант из класса
                                     iconUid: stage.uid.split('-')[0],
                                   ),
                                   text: '${stage.name}?',
@@ -79,6 +80,7 @@ class CustomBottomSheet extends StatelessWidget {
                                 children: [
                                   SvgPicture.asset(
                                     Enums.getIconStage(
+                                      //TODO: Поменять на расширенный вариант из класса
                                       iconUid: stage.uid.split('-')[0],
                                     ),
                                     color: theme.colorScheme.primary,

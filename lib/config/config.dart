@@ -43,4 +43,5 @@ class StagePipeline {
       'e8b2d9c8-1550-11ec-d58b-ac1f6b336352';
   static const String nonCall = 'e8acaa26-1550-11ec-d58b-ac1f6b336352';
   static const String rejection = 'e8b420f8-1550-11ec-d58b-ac1f6b336352';
+  static const String coordinator = 'coordinator';
 }

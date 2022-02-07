@@ -15,16 +15,15 @@ class CustomersPage extends StatefulWidget {
 }
 
 class _CustomersPageState extends State<CustomersPage> {
+  late bool _isLoading;
   late GeneralController controller;
   late RefreshController _refreshController;
-  late bool isStableCustomersPage;
   late int stableStageIndex;
-  late bool _isLoading;
-  late bool _isCoordinator;
+  late bool isStableCustomersPage;
+
   @override
   void initState() {
     _isLoading = false;
-    _isCoordinator = widget.isCoordinator;
     controller = Get.find<GeneralController>();
     _refreshController = RefreshController(initialRefresh: false);
     stableStageIndex = controller.appState.value.bottomBarItems
@@ -56,7 +55,7 @@ class _CustomersPageState extends State<CustomersPage> {
             physics: const BouncingScrollPhysics(),
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              child: _isCoordinator
+              child: widget.isCoordinator
                   ? _coordinatorCustomers(theme)
                   : _trainerCustomers(theme),
             ),
@@ -139,7 +138,9 @@ class _CustomersPageState extends State<CustomersPage> {
                 model?.currentCustomer = customer;
               });
               Get.to(
-                () => const CustomerInformationPage(),
+                () => CustomerInformationPage(
+                  isHandingButton: widget.isCoordinator,
+                ),
               );
             },
             child: getContainerContent(customer, theme),
@@ -154,8 +155,7 @@ class _CustomersPageState extends State<CustomersPage> {
   }
 
   Widget getContainerContent(CustomerModel customer, ThemeData theme) {
-    ///Индекс раздела Постоянные
-
+    /// Индекс раздела Постоянные
     if (controller.appState.value.currentIndex == stableStageIndex) {
       return Column(
         mainAxisSize: MainAxisSize.min,

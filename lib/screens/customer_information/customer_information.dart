@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
+import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/widgets/bottom_sheet.dart';
@@ -235,6 +236,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 64),
                 child: CustomTextButton(
+                  onTap: () {
+                    Get.toNamed(Routes.trinerChoosing);
+                  },
                   height: 51,
                   text: S.of(context).send_to_trainer,
                   backgroundColor: theme.colorScheme.secondary,

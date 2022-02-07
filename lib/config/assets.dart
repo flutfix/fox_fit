@@ -30,7 +30,7 @@ class Images {
   /// More Screen
   static const String trainerStats = 'lib/assets/icons/trainer_stats.png';
   static const String support = 'lib/assets/icons/support.png';
-  static const String coordinator = 'lib/assets/icons/coordinator.png';
+  static const String coordinatorPng = 'lib/assets/icons/coordinator.png';
   static const String logOut = 'lib/assets/icons/log_out.png';
   static const String exit = 'lib/assets/icons/exit.svg';
 
@@ -42,6 +42,7 @@ class Images {
 
   /// Trainer Choosing
   static const String search = 'lib/assets/icons/search.png';
+  static const String coordinatorSvg = 'lib/assets/icons/coordinator.svg';
 }
 
 class Animations{

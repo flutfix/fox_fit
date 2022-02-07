@@ -152,6 +152,12 @@ class _AuthPageState extends State<AuthPage> {
             title: S.of(context).login_exeption,
             message: S.of(context).wrong_login_or_pass,
           );
+        } else {
+          Snackbar.getSnackbar(
+            theme: theme,
+            title: S.of(context).login_exeption,
+            message: authData.toString(),
+          );
         }
       } else {
         Get.offAllNamed(

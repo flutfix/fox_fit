@@ -48,8 +48,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "status_not_sent":
             MessageLookupByLibrary.simpleMessage("Статус не отправлен"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
+        "to_coach": MessageLookupByLibrary.simpleMessage("Тренеру"),
         "trainer_stats":
             MessageLookupByLibrary.simpleMessage("Статистика тренера"),
+        "transmit": MessageLookupByLibrary.simpleMessage("Передать"),
         "triner_choosing":
             MessageLookupByLibrary.simpleMessage("Выбор тренера"),
         "wrong_login_or_pass":

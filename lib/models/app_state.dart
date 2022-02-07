@@ -23,6 +23,8 @@ class AppStateModel {
     this.trainerPerfomance = const [],
     this.availableTrainers = const [],
     this.sortedAvailableTrainers,
+    this.currentCustomer,
+    this.currentTrainer,
   });
 
   bool isLoading;
@@ -60,6 +62,9 @@ class AppStateModel {
   /// Отсортированные тренера по поиску
   List<Trainer>? sortedAvailableTrainers;
 
-  /// Отсортированные тренера по поиску
+  /// Выбранный клиент
   CustomerModel? currentCustomer;
+
+  /// Выбранный тренер
+  Trainer? currentTrainer;
 }

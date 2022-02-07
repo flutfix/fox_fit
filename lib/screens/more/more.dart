@@ -62,7 +62,7 @@ class _MorePageState extends State<MorePage> {
           if (_controller.appState.value.isCoordinator)
             MoreCardModel(
               text: S.of(context).coordinator,
-              icon: Images.coordinator,
+              icon: Images.coordinatorPng,
               onTap: () {
                 Get.toNamed(Routes.coordinator);
               },
