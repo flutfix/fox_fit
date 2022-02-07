@@ -138,8 +138,8 @@ class GeneralController extends GetxController {
     required String userUid,
     required String customerUid,
     required String trainerPipelineStageUid,
-    required String transferDate,
-    required String? commentText,
+    String? transferDate,
+    String? commentText,
   }) async {
     var data = await Requests.transferClientByTrainerPipeline(
       userUid: userUid,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
@@ -57,18 +59,17 @@ class CustomBottomSheet extends StatelessWidget {
                     (index) {
                       var stage = controller
                           .appState.value.availablePipelineStages[index];
-                      // log('${stage.uid}');
                       return Column(
                         children: [
                           GestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: () {
+                              log('${stage.uid}');
                               Get.to(
                                 () => ConfirmationPage(
                                   stageUid: stage.uid,
                                   image: Enums.getIconStage(
-                                    //TODO: Поменять на расширенный вариант из класса
-                                    iconUid: stage.uid.split('-')[0],
+                                    iconUid: stage.uid,
                                   ),
                                   text: '${stage.name}?',
                                 ),
@@ -80,8 +81,7 @@ class CustomBottomSheet extends StatelessWidget {
                                 children: [
                                   SvgPicture.asset(
                                     Enums.getIconStage(
-                                      //TODO: Поменять на расширенный вариант из класса
-                                      iconUid: stage.uid.split('-')[0],
+                                      iconUid: stage.uid,
                                     ),
                                     color: theme.colorScheme.primary,
                                     width: 19,

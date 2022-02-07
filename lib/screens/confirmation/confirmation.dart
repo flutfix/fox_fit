@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -60,7 +62,7 @@ class ConfirmationPage extends StatelessWidget {
                     style: theme.textTheme.headline5,
                   ),
                 const SizedBox(height: 12),
-                if (Enums.getIsDisplayComment(stageUid: stageUid.split('-')[0]))
+                if (Enums.getIsDisplayComment(stageUid: stageUid))
                   Input(
                     textController: textController,
                     hintText: S.of(context).comment_for_recipient,
@@ -74,7 +76,7 @@ class ConfirmationPage extends StatelessWidget {
                   )
                 else
                   const SizedBox(height: 50),
-                if (Enums.getIsDisplayComment(stageUid: stageUid.split('-')[0]))
+                if (Enums.getIsDisplayComment(stageUid: stageUid))
                   const SizedBox(height: 12),
                 CustomTextButton(
                   onTap: () {
@@ -108,19 +110,17 @@ class ConfirmationPage extends StatelessWidget {
     required ThemeData theme,
     required BuildContext context,
   }) async {
-    /// Если относится к стадии [Назначено] с комментарием
-    //TODO: Поменять на расширенный вариант из класса
-    if (stageUid == 'e8b420f8-1550-11ec-d58b-ac1f6b336352' &&
+    log('stageUid: ${stageUid}');
+    /// Если относится к стадии [Отказ клиента] с комментарием
+    if (stageUid == StagePipeline.rejection &&
         textController.text.isNotEmpty) {
       await _transferClientByTrainerPipeline(
         theme: theme,
         context: context,
-        transferDate: DateTime.now().millisecondsSinceEpoch.toString(),
       );
 
-      /// Если относится к стадии [Назначено] без комментарием
-      //TODO: Поменять на расширенный вариант из класса
-    } else if (stageUid == 'e8b420f8-1550-11ec-d58b-ac1f6b336352' &&
+      /// Если относится к стадии [Отказ клиента] без комментарием
+    } else if (stageUid == StagePipeline.rejection &&
         textController.text.isEmpty) {
       Snackbar.getSnackbar(
         theme: theme,
@@ -185,7 +185,6 @@ class ConfirmationPage extends StatelessWidget {
       _transferClientByTrainerPipeline(
         theme: theme,
         context: context,
-        transferDate: DateTime.now().millisecondsSinceEpoch.toString(),
       );
     }
   }
@@ -194,7 +193,7 @@ class ConfirmationPage extends StatelessWidget {
   Future<void> _transferClientByTrainerPipeline({
     required ThemeData theme,
     required BuildContext context,
-    required String transferDate,
+    String? transferDate,
   }) async {
     dynamic data = await controller.transferClientByTrainerPipeline(
       userUid: controller.appState.value.auth!.users![0].uid,
