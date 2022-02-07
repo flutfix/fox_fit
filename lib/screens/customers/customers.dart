@@ -257,7 +257,7 @@ class _CustomersPageState extends State<CustomersPage> {
     if (_canVibrate) {
       Vibrate.feedback(FeedbackType.light);
     }
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 300));
     if (widget.isCoordinator) {
       controller.getCoordinaorWorkSpace();
     } else {
