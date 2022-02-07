@@ -147,8 +147,9 @@ class _AuthPageState extends State<AuthPage> {
         pass: passController.text,
       );
       if (authData is int) {
+        /// Вибрация на запрос с исключением
         if (_canVibrate) {
-          Vibrate.feedback(FeedbackType.light);
+          Vibrate.feedback(FeedbackType.success);
         }
         if (authData == 401) {
           Snackbar.getSnackbar(
@@ -164,8 +165,9 @@ class _AuthPageState extends State<AuthPage> {
           );
         }
       } else {
+        /// Вибрация при успешной авторизации
         if (_canVibrate) {
-          Vibrate.feedback(FeedbackType.success);
+          Vibrate.feedback(FeedbackType.light);
         }
         Get.offAllNamed(
           Routes.general,
@@ -173,8 +175,9 @@ class _AuthPageState extends State<AuthPage> {
         );
       }
     } else {
+      /// Вибрация на незаполненные поля
       if (_canVibrate) {
-        Vibrate.feedback(FeedbackType.light);
+        Vibrate.feedback(FeedbackType.success);
       }
       if (phoneController.text.isEmpty && passController.text.isEmpty) {
         setState(() {

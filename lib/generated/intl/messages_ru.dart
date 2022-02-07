@@ -32,6 +32,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
+        "empty_customers": MessageLookupByLibrary.simpleMessage(
+            "На данном этапе клиенты отсутствуют"),
         "error": MessageLookupByLibrary.simpleMessage("Ошибка"),
         "exit": MessageLookupByLibrary.simpleMessage("Выйти"),
         "fast_search": MessageLookupByLibrary.simpleMessage("Быстрый поиск"),

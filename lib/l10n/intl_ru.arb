@@ -24,5 +24,6 @@
     "transmit": "Передать",
     "to_coach": "Тренеру",
     "whatsapp_exeption": "Не удалось открыть WhatsApp",
-    "whatsapp_exeption_description": "Попробуйте скачать приложение"
+    "whatsapp_exeption_description": "Попробуйте скачать приложение",
+    "empty_customers": "На данном этапе клиенты отсутствуют"
 }
