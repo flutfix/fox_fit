@@ -289,7 +289,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
         ? launch(
             'whatsapp://send?phone=$number&text=$greeting',
           )
-        : Snackbar.getSnackbar(
+        : CustomSnackbar.getSnackbar(
             theme: theme,
             title: S.of(context).whatsapp_exeption,
             message: S.of(context).whatsapp_exeption_description,

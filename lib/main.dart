@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +18,29 @@ import 'package:fox_fit/screens/trainer_stats/trainer_stats.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-const AndroidNotificationChannel channel = AndroidNotificationChannel(
-  'high_importance_channel',
-  'High Importance Ntifications',
-  description: 'This channtl is used for important notifications',
-  importance: Importance.high,
-  playSound: true,
-);
+import 'config/config.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  log('Handling a background message ${message.messageId}');
+  log('${message.notification?.title}');
+  log('${message.notification?.body}');
+
+  flutterLocalNotificationsPlugin.show(
+      message.data.hashCode,
+      message.notification?.title ?? '',
+      message.notification?.body ?? '',
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          AppConfig.pushChannel.id,
+          AppConfig.pushChannel.name,
+          channelDescription: AppConfig.pushChannel.description,
+        ),
+      ));
+}
 
 Future<void> main() async {
   await _init();
@@ -36,8 +54,12 @@ Future<void> main() async {
 Future _init() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-}  
-
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(AppConfig.pushChannel);
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
