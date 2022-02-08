@@ -173,7 +173,7 @@ class ConfirmationPage extends StatelessWidget {
         Snackbar.getSnackbar(
           theme: theme,
           title: S.of(context).server_error,
-          message: S.of(context).status_not_sent,
+          message: S.of(context).confirmation_failed,
         );
       } else {
         controller.appState.update((model) {
@@ -213,7 +213,7 @@ class ConfirmationPage extends StatelessWidget {
       Snackbar.getSnackbar(
         theme: theme,
         title: S.of(context).server_error,
-        message: S.of(context).status_not_sent,
+        message: S.of(context).confirmation_failed,
       );
     } else {
       controller.appState.update((model) {

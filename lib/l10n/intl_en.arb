@@ -17,7 +17,7 @@
     "login_exeption": "",
     "wrong_login_or_pass": "",
     "server_error": "",
-    "status_not_sent": "",
+    "confirmation_failed": "",
     "error": "",
     "leave_comment": "",
     "coordinaor_workspace": "",
