@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
@@ -64,7 +62,6 @@ class CustomBottomSheet extends StatelessWidget {
                           GestureDetector(
                             behavior: HitTestBehavior.translucent,
                             onTap: () {
-                              log('${stage.uid}');
                               Get.to(
                                 () => ConfirmationPage(
                                   stageUid: stage.uid,

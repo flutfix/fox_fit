@@ -250,7 +250,7 @@ class Requests {
     const String url = '${Api.url}transfer_client_by_trainer_pipeline';
     final dioClient = Dio(Api.options);
     try {
-      var response = await dioClient.post(url, queryParameters: {
+      Map<String, dynamic> queryParameters = {
         'UserUid': userUid,
         'CustomerUid': customerUid,
 
@@ -258,7 +258,25 @@ class Requests {
         'TrainerPipelineStageUid': trainerPipelineStageUid,
         'TransferDate': transferDate,
         'CommentText': commentText,
-      });
+      };
+      if (trainerPipelineStageUid == StagePipeline.assigned) {
+        queryParameters.remove('TransferDate');
+        if (commentText == null || commentText == '') {
+          queryParameters.remove('CommentText');
+        }
+      } else if (trainerPipelineStageUid == StagePipeline.transferringRecord) {
+        queryParameters.remove('CommentText');
+      } else if (trainerPipelineStageUid == StagePipeline.nonCall) {
+        queryParameters.remove('TransferDate');
+        queryParameters.remove('CommentText');
+      } else if (trainerPipelineStageUid == StagePipeline.rejection) {
+        queryParameters.remove('TransferDate');
+      }
+
+      var response = await dioClient.post(
+        url,
+        queryParameters: queryParameters,
+      );
       if (response.statusCode == 200) {
         return response.statusCode;
       }

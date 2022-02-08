@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -117,24 +115,26 @@ class ConfirmationPage extends StatelessWidget {
     required ThemeData theme,
     required BuildContext context,
   }) async {
-    log('stageUid: ${stageUid}');
 
-    /// Если относится к стадии [Отказ клиента] с комментарием
-    if (stageUid == StagePipeline.rejection && textController.text.isNotEmpty) {
-      await _transferClientByTrainerPipeline(
-        theme: theme,
-        context: context,
-      );
+    /// Если относится к стадии [Отказ клиента]
+    if (stageUid == StagePipeline.rejection) {
+      /// С комментарием
+      if (textController.text.isNotEmpty) {
+        await _transferClientByTrainerPipeline(
+          theme: theme,
+          context: context,
+        );
 
-      /// Если относится к стадии [Отказ клиента] без комментарием
+        /// Без комментария
+      } else {
+        Snackbar.getSnackbar(
+          theme: theme,
+          title: S.of(context).error,
+          message: S.of(context).leave_comment,
+        );
+      }
     } else if (stageUid == StagePipeline.rejection &&
         textController.text.isEmpty) {
-      Snackbar.getSnackbar(
-        theme: theme,
-        title: S.of(context).error,
-        message: S.of(context).leave_comment,
-      );
-
       /// Если относится к стадии [Перенос]
     } else if (stageUid == StagePipeline.transferringRecord) {
       await DatePicker.showDatePicker(

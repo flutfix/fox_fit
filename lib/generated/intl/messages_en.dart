@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "coordinator": MessageLookupByLibrary.simpleMessage(""),
         "customer_information": MessageLookupByLibrary.simpleMessage(""),
         "empty_customers": MessageLookupByLibrary.simpleMessage(""),
+        "empty_customers_short": MessageLookupByLibrary.simpleMessage(""),
         "error": MessageLookupByLibrary.simpleMessage(""),
         "exit": MessageLookupByLibrary.simpleMessage(""),
         "fast_search": MessageLookupByLibrary.simpleMessage(""),

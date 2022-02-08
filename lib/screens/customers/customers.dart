@@ -52,7 +52,6 @@ class _CustomersPageState extends State<CustomersPage> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    double width = MediaQuery.of(context).size.width;
     return !_isLoading
         ? SmartRefresher(
             controller: _refreshController,
@@ -158,7 +157,9 @@ class _CustomersPageState extends State<CustomersPage> {
       height: MediaQuery.of(context).size.height * 0.7,
       child: Center(
         child: Text(
-          S.of(context).empty_customers,
+          widget.isCoordinator
+              ? S.of(context).empty_customers_short
+              : S.of(context).empty_customers,
           style: theme.textTheme.headline3,
         ),
       ),
