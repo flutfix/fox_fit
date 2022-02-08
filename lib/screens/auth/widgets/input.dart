@@ -57,15 +57,11 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    Color backgroundColor = widget.backgroundColor ?? theme.colorScheme.surface;
-    TextStyle textStyle = widget.textStyle ??
-        theme.textTheme.headline1!
-            .copyWith(fontSize: 16, fontWeight: FontWeight.w400);
     return Container(
       width: widget.width,
       decoration: BoxDecoration(
           borderRadius: widget.borderRadius ?? BorderRadius.circular(100),
-          color: backgroundColor,
+          color: widget.backgroundColor ?? theme.colorScheme.surface,
           border: Border.all(width: 1, color: theme.splashColor)),
       child: Padding(
         padding: widget.padding ??
@@ -104,7 +100,9 @@ class _InputState extends State<Input> {
                 controller: widget.textController,
                 textInputAction: widget.textInputAction,
                 keyboardType: widget.textInputType,
-                style: textStyle,
+                style: widget.textStyle ??
+                    theme.textTheme.headline1!
+                        .copyWith(fontSize: 16, fontWeight: FontWeight.w400),
                 decoration: InputDecoration(
                   isCollapsed: true,
                   hintText: widget.hintText,

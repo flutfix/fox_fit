@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
@@ -284,7 +282,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
       greeting = greeting.replaceAll(
           '_ClubName_', controller.appState.value.auth!.data!.clubName);
     }
-    
+
     await canLaunch('whatsapp://send?phone=$number')
         ? launch(
             'whatsapp://send?phone=$number&text=$greeting',
@@ -294,6 +292,5 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             title: S.of(context).whatsapp_exeption,
             message: S.of(context).whatsapp_exeption_description,
           );
-    ;
   }
 }

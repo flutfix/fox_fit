@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "comment_for_recipient":
             MessageLookupByLibrary.simpleMessage("Комментарий для получателя"),
         "confirm": MessageLookupByLibrary.simpleMessage("Подтвердить"),
+        "confirmation_failed":
+            MessageLookupByLibrary.simpleMessage("Подтверждение не выполнено"),
         "coordinaor_workspace":
             MessageLookupByLibrary.simpleMessage("Рабочий стол координатора"),
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
@@ -34,6 +36,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
         "empty_customers": MessageLookupByLibrary.simpleMessage(
             "На данном этапе клиенты отсутствуют"),
+        "empty_customers_short":
+            MessageLookupByLibrary.simpleMessage("Клиенты отсутствуют"),
         "error": MessageLookupByLibrary.simpleMessage("Ошибка"),
         "exit": MessageLookupByLibrary.simpleMessage("Выйти"),
         "fast_search": MessageLookupByLibrary.simpleMessage("Быстрый поиск"),
@@ -47,8 +51,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "send_to_trainer":
             MessageLookupByLibrary.simpleMessage("Передать тренеру"),
         "server_error": MessageLookupByLibrary.simpleMessage("Ошибка сервера"),
-        "status_not_sent":
-            MessageLookupByLibrary.simpleMessage("Статус не отправлен"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
         "to_coach": MessageLookupByLibrary.simpleMessage("Тренеру"),
         "trainer_stats":

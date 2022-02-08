@@ -231,10 +231,10 @@ class S {
   }
 
   /// ``
-  String get status_not_sent {
+  String get confirmation_failed {
     return Intl.message(
       '',
-      name: 'status_not_sent',
+      name: 'confirmation_failed',
       desc: '',
       args: [],
     );
@@ -315,6 +315,16 @@ class S {
     return Intl.message(
       '',
       name: 'empty_customers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get empty_customers_short {
+    return Intl.message(
+      '',
+      name: 'empty_customers_short',
       desc: '',
       args: [],
     );
