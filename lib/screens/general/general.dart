@@ -22,6 +22,7 @@ class _GeneralState extends State<General> {
   @override
   void initState() {
     controller = Get.put(GeneralController());
+   
     AuthDataModel authData = Get.arguments;
     controller.appState.update((model) {
       model?.auth = authData;
