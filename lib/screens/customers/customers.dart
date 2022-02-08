@@ -77,13 +77,22 @@ class _CustomersPageState extends State<CustomersPage> {
           () => Column(
             children: [
               const SizedBox(height: 25),
-              ...List.generate(
-                  controller.appState.value.coordinator!.customers.length,
-                  (index) {
-                return _customerContainer(theme,
-                    customer: controller
-                        .appState.value.coordinator!.customers[index]);
-              }),
+              GetBuilder<GeneralController>(
+                builder: (_controller) {
+                  return ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount:
+                        controller.appState.value.coordinator!.customers.length,
+                    itemBuilder: (context, index) {
+                      return _customerContainer(
+                        theme,
+                        customer: controller
+                            .appState.value.coordinator!.customers[index],
+                      );
+                    },
+                  );
+                },
+              ),
               const SizedBox(height: 19),
             ],
           ),
