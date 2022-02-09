@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/config/assets.dart';
@@ -159,7 +157,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         Vibrate.feedback(FeedbackType.success);
       }
 
-      Snackbar.getSnackbar(
+       CustomSnackbar.getSnackbar(
         title: S.of(context).data_entered_incorrectly,
         message: S.of(context).least_three_characters,
       );
@@ -167,14 +165,14 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       if (_isCanVibrate) {
         Vibrate.feedback(FeedbackType.success);
       }
-      Snackbar.getSnackbar(
+      CustomSnackbar.getSnackbar(
         title: S.of(context).passwords_do_not_match,
         message: S.of(context).repeat_input,
       );
     } else {
-      log('${_controller.appState.value.auth!.data!.licenseKey}');
-      log('${_controller.appState.value.auth!.users![0].uid}');
-      log('${_newPassAgainController.text}');
+      // log('${_controller.appState.value.auth!.data!.licenseKey}');
+      // log('${_controller.appState.value.auth!.users![0].uid}');
+      // log('${_newPassAgainController.text}');
       var data = await _controller.changeUserPassword(
         key: _controller.appState.value.auth!.data!.licenseKey,
         userUid: _controller.appState.value.auth!.users![0].uid,
@@ -195,7 +193,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         if (_isCanVibrate) {
           Vibrate.feedback(FeedbackType.success);
         }
-        Snackbar.getSnackbar(
+        CustomSnackbar.getSnackbar(
           title: S.of(context).server_error,
           message: S.of(context).password_not_changed,
         );

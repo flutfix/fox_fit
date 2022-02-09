@@ -96,7 +96,7 @@ class MyApp extends StatelessWidget {
           getPage(Routes.auth, () => const AuthPage()),
           getPage(Routes.general, () => const General()),
           getPage(Routes.trainerStats, () => const TrainerStatsPage()),
-          getPage(Routes.trinerChoosing, () => const TrainerChoosingPage()),
+          getPage(Routes.trainerChoosing, () => const TrainerChoosingPage()),
           getPage(Routes.coordinator, () => const CoordinatorPage()),
           getPage(Routes.changePassword, () => const ChangePasswordPage()),
           getPage(Routes.coordinator, () => const CoordinatorPage()),
