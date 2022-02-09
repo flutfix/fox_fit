@@ -53,6 +53,33 @@ class Requests {
     }
   }
 
+  /// Смена пароля
+  static Future<dynamic> changeUserPassword({
+    required String key,
+    required String newPass,
+    required String userUid,
+  }) async {
+    const String url = '${Api.authurl}change_user_password';
+
+    final dioClient = Dio(Api.authOptions);
+    try {
+      var response = await dioClient.post(
+        url,
+        queryParameters: {
+          "LicenseKey": key,
+          "NewPassword": newPass,
+          "UserUid": userUid,
+        },
+      );
+      if (response.statusCode == 200) {
+        return response.statusCode;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
   static String _getBase64String({required String text}) {
     final bytes = utf8.encode(text);
     return base64Encode(bytes);
@@ -380,12 +407,14 @@ class Requests {
   }
 
   static Future<void> _setPrefs({
-    required String phone,
+    String? phone,
     required String pass,
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(Cache.isAuthorized, true);
-    prefs.setString(Cache.phone, phone);
+    if (phone != null) {
+      prefs.setString(Cache.phone, phone);
+    }
     prefs.setString(Cache.pass, pass);
   }
 

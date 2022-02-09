@@ -331,6 +331,106 @@ class S {
   }
 
   /// ``
+  String get change_password {
+    return Intl.message(
+      '',
+      name: 'change_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get changing_password {
+    return Intl.message(
+      '',
+      name: 'changing_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get description_changing_password {
+    return Intl.message(
+      '',
+      name: 'description_changing_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get new_password {
+    return Intl.message(
+      '',
+      name: 'new_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get new_password_again {
+    return Intl.message(
+      '',
+      name: 'new_password_again',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get passwords_do_not_match {
+    return Intl.message(
+      '',
+      name: 'passwords_do_not_match',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get repeat_input {
+    return Intl.message(
+      '',
+      name: 'repeat_input',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get password_not_changed {
+    return Intl.message(
+      '',
+      name: 'password_not_changed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get data_entered_incorrectly {
+    return Intl.message(
+      '',
+      name: 'data_entered_incorrectly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get least_three_characters {
+    return Intl.message(
+      '',
+      name: 'least_three_characters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
   String get notifications {
     return Intl.message(
       '',

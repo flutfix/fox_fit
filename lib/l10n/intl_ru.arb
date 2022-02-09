@@ -27,5 +27,15 @@
     "whatsapp_exeption_description": "Попробуйте скачать приложение",
     "empty_customers": "На данном этапе клиенты отсутствуют",
     "empty_customers_short": "Клиенты отсутствуют",
+    "change_password": "Изменить пароль",
+    "changing_password": "Изменение пароля",
+    "description_changing_password": "Введите новый пароль дважды (не менее трёх символов) и нажмите кнопку Изменить пароль.\n\nПосле успешного завершения процедуры изменения пароля будет выполнен выход из аккаунта.",
+    "new_password": "Новый пароль",
+    "new_password_again": "Новый пароль (повторно)",
+    "passwords_do_not_match": "Введённые пароли не совпадают",
+    "repeat_input": "Повторите ввод",
+    "password_not_changed": "Пароль не изменён",
+    "data_entered_incorrectly": "Данные введены некорректно",
+    "least_three_characters": "Не менее трёх символов",
     "notifications": "Уведомления"
 }

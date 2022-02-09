@@ -7,5 +7,6 @@ class Routes {
   static const String trainerStats = '/trainerStats';
   static const String coordinator = '/coordinator';
   static const String trainerChoosing = '/trainer_choosing';
+  static const String changePassword = '/change_password';
   static const String notifications = '/notifications';
 }

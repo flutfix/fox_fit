@@ -1,5 +1,3 @@
-import 'dart:developer';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,7 +12,7 @@ import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 
-class ConfirmationPage extends StatefulWidget {
+class ConfirmationPage extends StatelessWidget {
   ConfirmationPage({
     Key? key,
     required this.stageUid,
@@ -32,36 +30,10 @@ class ConfirmationPage extends StatefulWidget {
   final String? textButton;
   final EdgeInsetsGeometry padding;
 
-  @override
-  State<ConfirmationPage> createState() => _ConfirmationPageState();
-}
-
-class _ConfirmationPageState extends State<ConfirmationPage> {
+ 
   final TextEditingController textController = TextEditingController();
 
   final GeneralController controller = Get.find<GeneralController>();
-  late bool fcmLoading;
-  @override
-  void initState() {
-    fcmLoading = false;
-    load();
-    super.initState();
-  }
-
-  load() async {
-    setState(() {
-      fcmLoading = true;
-    });
-    String? fcmToken = '';
-    await FirebaseMessaging.instance.getToken().then((token) {
-      log('$token');
-      fcmToken = token;
-    });
-    setState(() {
-      textController.text = fcmToken!;
-      fcmLoading = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,33 +42,32 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: theme.backgroundColor,
-        body: !fcmLoading
-            ? SingleChildScrollView(
+        body: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Padding(
-                  padding: widget.padding,
+                  padding:  padding,
                   child: DefaultContainer(
                     padding: const EdgeInsets.all(45),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SvgPicture.asset(
-                          widget.image,
+                           image,
                           width: 42,
                           color: theme.colorScheme.primary,
                         ),
                         const SizedBox(height: 30),
-                        if (widget.richText != null)
-                          widget.richText!
+                        if ( richText != null)
+                           richText!
                         else
                           Text(
-                            widget.text,
+                             text,
                             textAlign: TextAlign.center,
                             style: theme.textTheme.headline5,
                           ),
                         const SizedBox(height: 12),
                         if (Enums.getIsDisplayComment(
-                            stageUid: widget.stageUid))
+                            stageUid:  stageUid))
                           Input(
                             textController: textController,
                             hintText: S.of(context).comment_for_recipient,
@@ -111,7 +82,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
                         else
                           const SizedBox(height: 50),
                         if (Enums.getIsDisplayComment(
-                            stageUid: widget.stageUid))
+                            stageUid:  stageUid))
                           const SizedBox(height: 12),
                         CustomTextButton(
                           onTap: () {
@@ -120,7 +91,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
                             }
                             _requestConfirm(theme: theme, context: context);
                           },
-                          text: widget.textButton ?? S.of(context).confirm,
+                          text:  textButton ?? S.of(context).confirm,
                           backgroundColor: theme.colorScheme.secondary,
                           textStyle: theme.textTheme.button!,
                         ),
@@ -142,8 +113,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
                     ),
                   ),
                 ),
-              )
-            : CircularProgressIndicator(),
+              ),
       ),
     );
   }
@@ -152,27 +122,26 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
     required ThemeData theme,
     required BuildContext context,
   }) async {
-    log('stageUid: ${widget.stageUid}');
+    /// Если относится к стадии [Отказ клиента]
+    if ( stageUid == StagePipeline.rejection) {
+      /// С комментарием
+      if (textController.text.isNotEmpty) {
+        await _transferClientByTrainerPipeline(
+          theme: theme,
+          context: context,
+        );
 
-    /// Если относится к стадии [Отказ клиента] с комментарием
-    if (widget.stageUid == StagePipeline.rejection &&
-        textController.text.isNotEmpty) {
-      await _transferClientByTrainerPipeline(
-        theme: theme,
-        context: context,
-      );
-
-      /// Если относится к стадии [Отказ клиента] без комментарием
-    } else if (widget.stageUid == StagePipeline.rejection &&
+        /// Без комментария
+      } else {
+        CustomSnackbar.getSnackbar(
+          title: S.of(context).error,
+          message: S.of(context).leave_comment,
+        );
+      }
+    } else if ( stageUid == StagePipeline.rejection &&
         textController.text.isEmpty) {
-      CustomSnackbar.getSnackbar(
-        theme: theme,
-        title: S.of(context).error,
-        message: S.of(context).leave_comment,
-      );
-
       /// Если относится к стадии [Перенос]
-    } else if (widget.stageUid == StagePipeline.transferringRecord) {
+    } else if ( stageUid == StagePipeline.transferringRecord) {
       await DatePicker.showDatePicker(
         context,
         onConfirm: (confirmTime) async {
@@ -199,7 +168,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
       );
 
       /// Если было открыто от роли [Координатор]
-    } else if (widget.stageUid == StagePipeline.coordinator) {
+    } else if ( stageUid == StagePipeline.coordinator) {
       dynamic data = await controller.transferClientToTrainer(
         userUid: controller.appState.value.auth!.users![1].uid,
         customerUid: controller.appState.value.currentCustomer!.uid,
@@ -207,7 +176,6 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
       );
       if (data != 200) {
         CustomSnackbar.getSnackbar(
-          theme: theme,
           title: S.of(context).server_error,
           message: S.of(context).confirmation_failed,
         );
@@ -241,13 +209,12 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
     dynamic data = await controller.transferClientByTrainerPipeline(
       userUid: controller.appState.value.auth!.users![0].uid,
       customerUid: controller.appState.value.currentCustomer!.uid,
-      trainerPipelineStageUid: widget.stageUid,
+      trainerPipelineStageUid:  stageUid,
       transferDate: transferDate,
       commentText: textController.text,
     );
     if (data != 200) {
       CustomSnackbar.getSnackbar(
-        theme: theme,
         title: S.of(context).server_error,
         message: S.of(context).confirmation_failed,
       );

@@ -291,7 +291,6 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             'whatsapp://send?phone=$number&text=$greeting',
           )
         : CustomSnackbar.getSnackbar(
-            theme: theme,
             title: S.of(context).whatsapp_exeption,
             message: S.of(context).whatsapp_exeption_description,
           );

@@ -1,14 +1,12 @@
-import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/auth.dart';
+import 'package:fox_fit/screens/change_password/change_password.dart';
 import 'package:fox_fit/screens/coordinator/coordinator.dart';
 import 'package:fox_fit/screens/general/general.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,8 +16,6 @@ import 'package:fox_fit/screens/trainer_choosing/trainer_choosing.dart';
 import 'package:fox_fit/screens/trainer_stats/trainer_stats.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import 'config/config.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -101,6 +97,8 @@ class MyApp extends StatelessWidget {
           getPage(Routes.general, () => const General()),
           getPage(Routes.trainerStats, () => const TrainerStatsPage()),
           getPage(Routes.trainerChoosing, () => const TrainerChoosingPage()),
+          getPage(Routes.coordinator, () => const CoordinatorPage()),
+          getPage(Routes.changePassword, () => const ChangePasswordPage()),
           getPage(Routes.coordinator, () => const CoordinatorPage()),
           getPage(Routes.notifications, () => const NotificationsPage()),
         ],

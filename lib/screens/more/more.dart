@@ -69,6 +69,16 @@ class _MorePageState extends State<MorePage> {
               },
             ),
 
+          /// Смена пароля
+          if (_controller.appState.value.isCoordinator)
+            MoreCardModel(
+              text: S.of(context).change_password,
+              icon: Images.passPng,
+              onTap: () {
+                Get.toNamed(Routes.changePassword);
+              },
+            ),
+
           /// Выйти из профиля
           MoreCardModel(
             text: S.of(context).log_out,
@@ -96,6 +106,7 @@ class _MorePageState extends State<MorePage> {
                 padding: EdgeInsets.only(
                     bottom: (index != cards.length - 1) ? 5.0 : 0.0),
                 child: _buildCard(
+                  theme: theme,
                   text: cards[index].text,
                   icon: cards[index].icon,
                   onTap: cards[index].onTap,
@@ -109,6 +120,7 @@ class _MorePageState extends State<MorePage> {
   }
 
   Widget _buildCard({
+    required ThemeData theme,
     required String text,
     required String icon,
     Function()? onTap,
@@ -120,6 +132,7 @@ class _MorePageState extends State<MorePage> {
           Image.asset(
             icon,
             width: 18,
+            color: theme.colorScheme.secondary,
             fit: BoxFit.fill,
           ),
           const SizedBox(width: 14),

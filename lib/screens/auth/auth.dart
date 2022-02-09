@@ -75,69 +75,73 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     double width = MediaQuery.of(context).size.width;
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        backgroundColor: theme.backgroundColor,
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              ///TopBar с лого
-              Image.asset(
-                Images.authTop,
-                fit: BoxFit.fill,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 47.0, right: 48.0),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 67),
-
-                    /// Ввод номера телефона
-                    Input(
-                      width: width,
-                      hintText: 'Введите телефон',
-                      icon: Images.phone,
-                      isIconAnimation: isPhoneAnimation,
-                      textInputType: TextInputType.phone,
-                      textController: phoneController,
-                      textInputAction: TextInputAction.next,
-                      textFormatters: [maskFormatter],
-                      scrollPaddingBottom: 120,
-                    ),
-                    const SizedBox(height: 18),
-
-                    /// Ввод пароля
-                    Input(
-                      width: width,
-                      hintText: 'Введите пароль',
-                      icon: Images.pass,
-                      isIconAnimation: isPassAnimation,
-                      obscureText: true,
-                      textController: passController,
-                    ),
-                    const SizedBox(height: 46),
-
-                    /// Кнопка [Войти]
-                    CustomTextButton(
-                      width: width,
-                      text: S.of(context).log_in,
-                      onTap: () async {
-                        await _validateFields(theme);
-                      },
-                      backgroundColor: theme.colorScheme.secondary,
-                      textStyle: theme.textTheme.button!.copyWith(),
-                    ),
-                    const SizedBox(height: 60)
-                  ],
+    if (_loading) {
+      return const SizedBox();
+    } else {
+      return GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          backgroundColor: theme.backgroundColor,
+          body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                ///TopBar с лого
+                Image.asset(
+                  Images.authTop,
+                  fit: BoxFit.fill,
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 47.0, right: 48.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 67),
+
+                      /// Ввод номера телефона
+                      Input(
+                        width: width,
+                        hintText: 'Введите телефон',
+                        icon: Images.phone,
+                        isIconAnimation: isPhoneAnimation,
+                        textInputType: TextInputType.phone,
+                        textController: phoneController,
+                        textInputAction: TextInputAction.next,
+                        textFormatters: [maskFormatter],
+                        scrollPaddingBottom: 120,
+                      ),
+                      const SizedBox(height: 18),
+
+                      /// Ввод пароля
+                      Input(
+                        width: width,
+                        hintText: 'Введите пароль',
+                        icon: Images.passSvg,
+                        isIconAnimation: isPassAnimation,
+                        obscureText: true,
+                        textController: passController,
+                      ),
+                      const SizedBox(height: 46),
+
+                      /// Кнопка [Войти]
+                      CustomTextButton(
+                        width: width,
+                        text: S.of(context).log_in,
+                        onTap: () async {
+                          await _validateFields(theme);
+                        },
+                        backgroundColor: theme.colorScheme.secondary,
+                        textStyle: theme.textTheme.button!.copyWith(),
+                      ),
+                      const SizedBox(height: 60),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Future<dynamic> _validateFields(ThemeData theme) async {
@@ -153,13 +157,11 @@ class _AuthPageState extends State<AuthPage> {
         }
         if (authData == 401) {
           CustomSnackbar.getSnackbar(
-            theme: theme,
             title: S.of(context).login_exeption,
             message: S.of(context).wrong_login_or_pass,
           );
         } else {
           CustomSnackbar.getSnackbar(
-            theme: theme,
             title: S.of(context).login_exeption,
             message: authData.toString(),
           );
