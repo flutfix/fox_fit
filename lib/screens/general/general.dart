@@ -25,13 +25,12 @@ class _GeneralState extends State<General> {
   late GeneralController controller;
   late PageController pageController;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  late String? fcmToken;
+  late String? _fcmToken;
 
   @override
   void initState() {
     controller = Get.put(GeneralController());
 
-    _fcm();
     AuthDataModel authData = Get.arguments;
     controller.appState.update((model) {
       model?.auth = authData;
@@ -40,73 +39,23 @@ class _GeneralState extends State<General> {
       controller.appState.update((model) {
         model?.isCoordinator = true;
       });
+
+      _load();
       controller.initVibration();
     }
-    getCustomers();
     pageController = PageController(initialPage: 0);
     super.initState();
   }
 
-  Future<void> getCustomers() async {
+  Future<void> _load() async {
     controller.appState.update((model) {
       model?.isLoading = true;
     });
-    await controller.getCustomers();
-
+    await _fcm();
+    await controller.getCustomers(fcmToken: _fcmToken);
     controller.appState.update((model) {
       model?.isLoading = false;
     });
-  }
-
-  Future<void> _fcm() async {
-    ///---- Firebase Notifications
-
-    /// Update the iOS foreground notification presentation options to allow
-    /// heads up notifications.
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true, // Required to display a heads up notification
-      badge: true,
-      sound: true,
-    );
-
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    fcmToken = '';
-
-    /// Получение [FCM] токена устройства
-    await FirebaseMessaging.instance.getToken().then((token) {
-      log('$token');
-      fcmToken = token;
-    });
-
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(AppConfig.pushChannel);
-
-    ///Стрим на прослушку оповещений
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              AppConfig.pushChannel.id,
-              AppConfig.pushChannel.name,
-              channelDescription: AppConfig.pushChannel.description,
-              icon: '@drawable/res_notification_logo',
-              color: Colors.orange,
-            ),
-          ),
-        );
-      }
-    });
-    //----
   }
 
   @override
@@ -169,14 +118,10 @@ class _GeneralState extends State<General> {
         .bottomBarItems[controller.appState.value.currentIndex]
         .uid];
     return CustomAppBar(
-      title: controller.appState.value
-          .bottomBarItems[controller.appState.value.currentIndex].shortName,
-      count: (customers != null) ? customers.length : null,
-      onNotification: () {
-        CustomSnackbar.getSnackbar(
-            theme: theme, title: 'FCM', message: '$fcmToken');
-      },
-    );
+        title: controller.appState.value
+            .bottomBarItems[controller.appState.value.currentIndex].shortName,
+        count: (customers != null) ? customers.length : null,
+        onNotification: () {});
   }
 
   void setPage(int index) {
@@ -186,5 +131,46 @@ class _GeneralState extends State<General> {
     pageController.jumpToPage(
       index,
     );
+  }
+
+  ///---- Firebase Notifications liste
+  Future<void> _fcm() async {
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    _fcmToken = '';
+
+    /// Получение [FCM] токена устройства
+    await FirebaseMessaging.instance.getToken().then((token) {
+      log('[FCM Token] $token');
+      _fcmToken = token;
+    });
+
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(AppConfig.pushChannel);
+
+    ///Стрим на прослушку оповещений
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              AppConfig.pushChannel.id,
+              AppConfig.pushChannel.name,
+              channelDescription: AppConfig.pushChannel.description,
+              icon: '@drawable/res_notification_logo',
+              color: Colors.orange,
+            ),
+          ),
+        );
+      }
+    });
+    //----
   }
 }
