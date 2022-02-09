@@ -66,6 +66,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
           onBack: () {
             Get.back();
           },
+          onNotification: () {
+            Get.toNamed(Routes.notifications);
+          },
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),

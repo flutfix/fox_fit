@@ -67,16 +67,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: GetBuilder<GeneralController>(
-                            init: Get.find<GeneralController>(),
-                            builder: (controller) {
-                              return Column(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Obx(
+                          (() => Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: List.generate(
-                                    controller.appState.value.notifications
+                                    _controller.appState.value.notifications
                                         .length, (index) {
-                                  var notification = controller
+                                  var notification = _controller
                                       .appState.value.notifications[index];
 
                                   /// Блок если день сменился
@@ -116,9 +114,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                     );
                                   }
                                 }),
-                              );
-                            },
-                          )),
+                              )),
+                        ),
+                      ),
                     ),
                   )
                 : const Center(child: Text('Уведомлений нет'))
@@ -185,10 +183,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   _onBack() async {
-    dynamic _relevanceDate = DateTime.now().toUtc();
-    _relevanceDate =
-        (_relevanceDate.millisecondsSinceEpoch / 1000).round().toString();
-    await _setPrefs(timestamp: _relevanceDate);
+    await _setPrefs(timestamp: _getRelevanceDate);
     Get.back();
   }
 
@@ -197,8 +192,15 @@ class _NotificationsPageState extends State<NotificationsPage> {
       Vibrate.feedback(FeedbackType.light);
     }
 
-    _controller.getNotifications();
+    await _setPrefs(timestamp: _getRelevanceDate);
+    await _controller.getNotifications();
 
     _refreshController.refreshCompleted();
+  }
+
+  String get _getRelevanceDate {
+    dynamic _relevanceDate = DateTime.now().toUtc();
+    return _relevanceDate =
+        (_relevanceDate.millisecondsSinceEpoch / 1000).round().toString();
   }
 }

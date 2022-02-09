@@ -194,6 +194,7 @@ class GeneralController extends GetxController {
       appState.update((model) {
         model?.notifications = data;
       });
+      log(appState.value.notifications[0].isNew.toString());
     }
   }
 
