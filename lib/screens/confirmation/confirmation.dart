@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -41,27 +40,9 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
   final TextEditingController textController = TextEditingController();
 
   final GeneralController controller = Get.find<GeneralController>();
-  late bool fcmLoading;
   @override
   void initState() {
-    fcmLoading = false;
-    load();
     super.initState();
-  }
-
-  load() async {
-    setState(() {
-      fcmLoading = true;
-    });
-    String? fcmToken = '';
-    await FirebaseMessaging.instance.getToken().then((token) {
-      log('$token');
-      fcmToken = token;
-    });
-    setState(() {
-      textController.text = fcmToken!;
-      fcmLoading = false;
-    });
   }
 
   @override
@@ -70,82 +51,75 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        backgroundColor: theme.backgroundColor,
-        body: !fcmLoading
-            ? SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Padding(
-                  padding: widget.padding,
-                  child: DefaultContainer(
-                    padding: const EdgeInsets.all(45),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SvgPicture.asset(
-                          widget.image,
-                          width: 42,
-                          color: theme.colorScheme.primary,
-                        ),
-                        const SizedBox(height: 30),
-                        if (widget.richText != null)
-                          widget.richText!
-                        else
-                          Text(
-                            widget.text,
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.headline5,
-                          ),
-                        const SizedBox(height: 12),
-                        if (Enums.getIsDisplayComment(
-                            stageUid: widget.stageUid))
-                          Input(
-                            textController: textController,
-                            hintText: S.of(context).comment_for_recipient,
-                            hintStyle: theme.textTheme.bodyText2,
-                            textStyle: theme.textTheme.bodyText2,
-                            cursorColor: theme.colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(10),
-                            padding: const EdgeInsets.all(5),
-                            textCapitalization: TextCapitalization.sentences,
-                            lines: 3,
-                          )
-                        else
-                          const SizedBox(height: 50),
-                        if (Enums.getIsDisplayComment(
-                            stageUid: widget.stageUid))
-                          const SizedBox(height: 12),
-                        CustomTextButton(
-                          onTap: () {
-                            if (controller.appState.value.isCanVibrate) {
-                              Vibrate.feedback(FeedbackType.light);
-                            }
-                            _requestConfirm(theme: theme, context: context);
-                          },
-                          text: widget.textButton ?? S.of(context).confirm,
-                          backgroundColor: theme.colorScheme.secondary,
-                          textStyle: theme.textTheme.button!,
-                        ),
-                        const SizedBox(height: 12),
-                        GestureDetector(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: CustomTextButton(
-                            text: S.of(context).cancel,
-                            backgroundColor:
-                                theme.buttonTheme.colorScheme!.primary,
-                            textStyle: theme.textTheme.button!.copyWith(
-                                color:
-                                    theme.buttonTheme.colorScheme!.secondary),
-                          ),
-                        ),
-                      ],
+          backgroundColor: theme.backgroundColor,
+          body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: widget.padding,
+              child: DefaultContainer(
+                padding: const EdgeInsets.all(45),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
+                      widget.image,
+                      width: 42,
+                      color: theme.colorScheme.primary,
                     ),
-                  ),
+                    const SizedBox(height: 30),
+                    if (widget.richText != null)
+                      widget.richText!
+                    else
+                      Text(
+                        widget.text,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.headline5,
+                      ),
+                    const SizedBox(height: 12),
+                    if (Enums.getIsDisplayComment(stageUid: widget.stageUid))
+                      Input(
+                        textController: textController,
+                        hintText: S.of(context).comment_for_recipient,
+                        hintStyle: theme.textTheme.bodyText2,
+                        textStyle: theme.textTheme.bodyText2,
+                        cursorColor: theme.colorScheme.secondary,
+                        borderRadius: BorderRadius.circular(10),
+                        padding: const EdgeInsets.all(5),
+                        textCapitalization: TextCapitalization.sentences,
+                        lines: 3,
+                      )
+                    else
+                      const SizedBox(height: 50),
+                    if (Enums.getIsDisplayComment(stageUid: widget.stageUid))
+                      const SizedBox(height: 12),
+                    CustomTextButton(
+                      onTap: () {
+                        if (controller.appState.value.isCanVibrate) {
+                          Vibrate.feedback(FeedbackType.light);
+                        }
+                        _requestConfirm(theme: theme, context: context);
+                      },
+                      text: widget.textButton ?? S.of(context).confirm,
+                      backgroundColor: theme.colorScheme.secondary,
+                      textStyle: theme.textTheme.button!,
+                    ),
+                    const SizedBox(height: 12),
+                    GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: CustomTextButton(
+                        text: S.of(context).cancel,
+                        backgroundColor: theme.buttonTheme.colorScheme!.primary,
+                        textStyle: theme.textTheme.button!.copyWith(
+                            color: theme.buttonTheme.colorScheme!.secondary),
+                      ),
+                    ),
+                  ],
                 ),
-              )
-            : CircularProgressIndicator(),
-      ),
+              ),
+            ),
+          )),
     );
   }
 
@@ -210,7 +184,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
         CustomSnackbar.getSnackbar(
           theme: theme,
           title: S.of(context).server_error,
-          message: S.of(context).status_not_sent,
+          message: S.of(context).confirmation_failed,
         );
       } else {
         controller.appState.update((model) {
@@ -250,7 +224,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
       CustomSnackbar.getSnackbar(
         theme: theme,
         title: S.of(context).server_error,
-        message: S.of(context).status_not_sent,
+        message: S.of(context).confirmation_failed,
       );
     } else {
       controller.appState.update((model) {

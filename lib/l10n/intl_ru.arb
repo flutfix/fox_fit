@@ -17,7 +17,7 @@
     "login_exeption": "Ошибка входа",
     "wrong_login_or_pass": "Неверный логин или пароль",
     "server_error": "Ошибка сервера",
-    "status_not_sent": "Статус не отправлен",
+    "confirmation_failed": "Подтверждение не выполнено",
     "error": "Ошибка",
     "leave_comment": "Оставьте комментарий",
     "coordinaor_workspace": "Рабочий стол координатора",
@@ -25,5 +25,6 @@
     "to_coach": "Тренеру",
     "whatsapp_exeption": "Не удалось открыть WhatsApp",
     "whatsapp_exeption_description": "Попробуйте скачать приложение",
-    "empty_customers": "На данном этапе клиенты отсутствуют"
+    "empty_customers": "На данном этапе клиенты отсутствуют",
+    "empty_customers_short": "Клиенты отсутствуют"
 }

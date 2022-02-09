@@ -52,7 +52,6 @@ class _CustomersPageState extends State<CustomersPage> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    double width = MediaQuery.of(context).size.width;
     return !_isLoading
         ? SmartRefresher(
             controller: _refreshController,
@@ -78,13 +77,22 @@ class _CustomersPageState extends State<CustomersPage> {
           () => Column(
             children: [
               const SizedBox(height: 25),
-              ...List.generate(
-                  controller.appState.value.coordinator!.customers.length,
-                  (index) {
-                return _customerContainer(theme,
-                    customer: controller
-                        .appState.value.coordinator!.customers[index]);
-              }),
+              GetBuilder<GeneralController>(
+                builder: (_controller) {
+                  return ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount:
+                        controller.appState.value.coordinator!.customers.length,
+                    itemBuilder: (context, index) {
+                      return _customerContainer(
+                        theme,
+                        customer: controller
+                            .appState.value.coordinator!.customers[index],
+                      );
+                    },
+                  );
+                },
+              ),
               const SizedBox(height: 19),
             ],
           ),
@@ -158,7 +166,9 @@ class _CustomersPageState extends State<CustomersPage> {
       height: MediaQuery.of(context).size.height * 0.7,
       child: Center(
         child: Text(
-          S.of(context).empty_customers,
+          widget.isCoordinator
+              ? S.of(context).empty_customers_short
+              : S.of(context).empty_customers,
           style: theme.textTheme.headline3,
         ),
       ),
