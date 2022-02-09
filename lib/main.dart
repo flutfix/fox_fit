@@ -25,21 +25,19 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  log('Handling a background message ${message.messageId}');
-  log('${message.notification?.title}');
-  log('${message.notification?.body}');
 
   flutterLocalNotificationsPlugin.show(
-      message.data.hashCode,
-      message.notification?.title ?? '',
-      message.notification?.body ?? '',
-      NotificationDetails(
-        android: AndroidNotificationDetails(
-          AppConfig.pushChannel.id,
-          AppConfig.pushChannel.name,
-          channelDescription: AppConfig.pushChannel.description,
-        ),
-      ));
+    message.data.hashCode,
+    message.notification?.title ?? '',
+    message.notification?.body ?? '',
+    NotificationDetails(
+      android: AndroidNotificationDetails(
+        AppConfig.pushChannel.id,
+        AppConfig.pushChannel.name,
+        channelDescription: AppConfig.pushChannel.description,
+      ),
+    ),
+  );
 }
 
 Future<void> main() async {
@@ -54,11 +52,23 @@ Future<void> main() async {
 Future _init() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(AppConfig.pushChannel);
+  FirebaseMessaging _fcm = FirebaseMessaging.instance;
+
+  ///Request permissions for Ios
+  NotificationSettings settings = await _fcm.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true);
+
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // await flutterLocalNotificationsPlugin
+  //     .resolvePlatformSpecificImplementation<
+  //         AndroidFlutterLocalNotificationsPlugin>()
+  //     ?.createNotificationChannel(AppConfig.pushChannel);
 }
 
 class MyApp extends StatelessWidget {

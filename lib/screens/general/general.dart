@@ -99,7 +99,8 @@ class _GeneralState extends State<General> {
               AppConfig.pushChannel.id,
               AppConfig.pushChannel.name,
               channelDescription: AppConfig.pushChannel.description,
-              icon: '@mipmap/ic_launcher',
+              icon: '@drawable/res_notification_logo',
+              color: Colors.orange,
             ),
           ),
         );

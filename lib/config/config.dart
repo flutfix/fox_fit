@@ -32,9 +32,9 @@ class AppConfig {
 
   static const AndroidNotificationChannel pushChannel =
       AndroidNotificationChannel(
-    'high_importance_channel',
-    'High Importance Notifications',
-    description: 'This channel is used for important notifications.',
+    'default_notification_channel',
+    'Notifications',
+    description: 'This channel is used for notifications.',
     importance: Importance.max,
   );
 }
