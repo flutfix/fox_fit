@@ -65,7 +65,8 @@ class _DefaultContainerState extends State<DefaultContainer> {
     if (widget.isVisible) {
       if (widget.isHighlight != null) {
         if (widget.isHighlight!) {
-          color = widget.highlightColor ?? Colors.black;
+          color = widget.highlightColor ??
+              theme.colorScheme.primary.withOpacity(0.07);
         }
       }
     } else {

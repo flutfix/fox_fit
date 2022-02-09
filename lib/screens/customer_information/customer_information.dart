@@ -238,7 +238,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 64),
                 child: CustomTextButton(
                   onTap: () {
-                    Get.toNamed(Routes.trinerChoosing);
+                    Get.toNamed(Routes.trainerChoosing);
                   },
                   height: 51,
                   text: S.of(context).send_to_trainer,

@@ -23,7 +23,7 @@ class Requests {
     required String phone,
     required String pass,
   }) async {
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     var format = DateFormat('dd.MM.y');
     final String formattedDate = format.format(now);
     String key = _getBase64String(text: '$phone$formattedDate');
@@ -384,9 +384,9 @@ class Requests {
     required String pass,
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isAuthorized', true);
-    prefs.setString('phone', phone);
-    prefs.setString('pass', pass);
+    prefs.setBool(Cache.isAuthorized, true);
+    prefs.setString(Cache.phone, phone);
+    prefs.setString(Cache.pass, pass);
   }
 
   static Future<dynamic> getPrefs({

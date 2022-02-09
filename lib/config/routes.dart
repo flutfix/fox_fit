@@ -6,5 +6,6 @@ class Routes {
   static const String confirmation = '/confirmation';
   static const String trainerStats = '/trainerStats';
   static const String coordinator = '/coordinator';
-  static const String trinerChoosing = '/triner_choosing';
+  static const String trainerChoosing = '/trainer_choosing';
+  static const String notifications = '/notifications';
 }

@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fox_fit/config/config.dart';
+import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
@@ -122,7 +123,7 @@ class _GeneralState extends State<General> {
             .bottomBarItems[controller.appState.value.currentIndex].shortName,
         count: (customers != null) ? customers.length : null,
         onNotification: () {
-          controller.getNotifications();
+          Get.toNamed(Routes.notifications);
         });
   }
 

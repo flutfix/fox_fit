@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "log_in": MessageLookupByLibrary.simpleMessage(""),
         "log_out": MessageLookupByLibrary.simpleMessage(""),
         "login_exeption": MessageLookupByLibrary.simpleMessage(""),
+        "notifications": MessageLookupByLibrary.simpleMessage(""),
         "send_to_trainer": MessageLookupByLibrary.simpleMessage(""),
         "server_error": MessageLookupByLibrary.simpleMessage(""),
         "support": MessageLookupByLibrary.simpleMessage(""),

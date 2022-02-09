@@ -12,6 +12,7 @@ import 'package:fox_fit/screens/auth/auth.dart';
 import 'package:fox_fit/screens/coordinator/coordinator.dart';
 import 'package:fox_fit/screens/general/general.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fox_fit/screens/notifications/notifications.dart';
 import 'package:fox_fit/screens/splash/splash_screen.dart';
 import 'package:fox_fit/screens/trainer_choosing/trainer_choosing.dart';
 import 'package:fox_fit/screens/trainer_stats/trainer_stats.dart';
@@ -99,8 +100,9 @@ class MyApp extends StatelessWidget {
           getPage(Routes.auth, () => const AuthPage()),
           getPage(Routes.general, () => const General()),
           getPage(Routes.trainerStats, () => const TrainerStatsPage()),
-          getPage(Routes.trinerChoosing, () => const TrainerChoosingPage()),
-          getPage(Routes.coordinator, () => const CoordinatorPage())
+          getPage(Routes.trainerChoosing, () => const TrainerChoosingPage()),
+          getPage(Routes.coordinator, () => const CoordinatorPage()),
+          getPage(Routes.notifications, () => const NotificationsPage()),
         ],
       ),
     );

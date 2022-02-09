@@ -188,7 +188,6 @@ class GeneralController extends GetxController {
     var data = await Requests.getNotifications(
       id: appState.value.auth!.users![0].uid,
     );
-    log(data.length.toString());
     if (data is int) {
       // TODO: Обработка статус кодов != 200
     } else {
