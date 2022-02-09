@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 
 class Snackbar {
   static void getSnackbar({
-    required ThemeData theme,
     required String title,
     required String message,
   }) {
@@ -12,7 +11,7 @@ class Snackbar {
       title,
       message,
       duration: const Duration(seconds: 2),
-      backgroundColor: theme.canvasColor,
+      backgroundColor: Styles.grey,
       colorText: Styles.greyLight,
       boxShadows: [
         BoxShadow(

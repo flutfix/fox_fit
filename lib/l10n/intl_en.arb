@@ -26,5 +26,15 @@
     "whatsapp_exeption": "",
     "whatsapp_exeption_description": "",
     "empty_customers": "",
-    "empty_customers_short": ""
+    "empty_customers_short": "",
+    "change_password": "",
+    "changing_password": "",
+    "description_changing_password": "",
+    "new_password": "",
+    "new_password_again": "",
+    "passwords_do_not_match": "",
+    "repeat_input": "",
+    "password_not_changed": "",
+    "data_entered_incorrectly": "",
+    "least_three_characters": ""
 }

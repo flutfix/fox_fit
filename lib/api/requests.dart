@@ -22,7 +22,7 @@ class Requests {
     required String phone,
     required String pass,
   }) async {
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     var format = DateFormat('dd.MM.y');
     final String formattedDate = format.format(now);
     String key = _getBase64String(text: '$phone$formattedDate');
@@ -45,6 +45,33 @@ class Requests {
         AuthDataModel authData = AuthDataModel();
         authData = AuthDataModel.fromJson(response.data);
         return authData;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Смена пароля
+  static Future<dynamic> changeUserPassword({
+    required String key,
+    required String newPass,
+    required String userUid,
+  }) async {
+    const String url = '${Api.authurl}change_user_password';
+
+    final dioClient = Dio(Api.authOptions);
+    try {
+      var response = await dioClient.post(
+        url,
+        queryParameters: {
+          "LicenseKey": key,
+          "NewPassword": newPass,
+          "UserUid": userUid,
+        },
+      );
+      if (response.statusCode == 200) {
+        return response.statusCode;
       }
     } on DioError catch (e) {
       log('${e.response?.statusMessage}');
@@ -339,13 +366,16 @@ class Requests {
   }
 
   static Future<void> _setPrefs({
-    required String phone,
+    String? phone,
     required String pass,
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isAuthorized', true);
-    prefs.setString('phone', phone);
-    prefs.setString('pass', pass);
+    prefs.setBool(Cache.isAuthorized, true);
+
+    if (phone != null) {
+      prefs.setString(Cache.phone, phone);
+    }
+    prefs.setString(Cache.pass, pass);
   }
 
   static Future<dynamic> getPrefs({

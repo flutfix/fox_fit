@@ -23,6 +23,10 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "cancel": MessageLookupByLibrary.simpleMessage("Отмена"),
+        "change_password":
+            MessageLookupByLibrary.simpleMessage("Изменить пароль"),
+        "changing_password":
+            MessageLookupByLibrary.simpleMessage("Изменение пароля"),
         "chat": MessageLookupByLibrary.simpleMessage("Чат в WhatsApp"),
         "comment_for_recipient":
             MessageLookupByLibrary.simpleMessage("Комментарий для получателя"),
@@ -34,6 +38,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
+        "data_entered_incorrectly":
+            MessageLookupByLibrary.simpleMessage("Данные введены некорректно"),
+        "description_changing_password": MessageLookupByLibrary.simpleMessage(
+            "Введите новый пароль дважды (не менее трёх символов) и нажмите кнопку Изменить пароль.\n\nПосле успешного завершения процедуры изменения пароля будет выполнен выход из аккаунта."),
         "empty_customers": MessageLookupByLibrary.simpleMessage(
             "На данном этапе клиенты отсутствуют"),
         "empty_customers_short":
@@ -43,11 +51,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "fast_search": MessageLookupByLibrary.simpleMessage("Быстрый поиск"),
         "kickoff_training":
             MessageLookupByLibrary.simpleMessage("Стартовая тренировка"),
+        "least_three_characters":
+            MessageLookupByLibrary.simpleMessage("Не менее трёх символов"),
         "leave_comment":
             MessageLookupByLibrary.simpleMessage("Оставьте комментарий"),
         "log_in": MessageLookupByLibrary.simpleMessage("Войти"),
         "log_out": MessageLookupByLibrary.simpleMessage("Выйти из профиля"),
         "login_exeption": MessageLookupByLibrary.simpleMessage("Ошибка входа"),
+        "new_password": MessageLookupByLibrary.simpleMessage("Новый пароль"),
+        "new_password_again":
+            MessageLookupByLibrary.simpleMessage("Новый пароль (повторно)"),
+        "password_not_changed":
+            MessageLookupByLibrary.simpleMessage("Пароль не изменён"),
+        "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
+            "Введённые пароли не совпадают"),
+        "repeat_input": MessageLookupByLibrary.simpleMessage("Повторите ввод"),
         "send_to_trainer":
             MessageLookupByLibrary.simpleMessage("Передать тренеру"),
         "server_error": MessageLookupByLibrary.simpleMessage("Ошибка сервера"),

@@ -9,6 +9,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     Key? key,
     this.height = 126,
     required this.title,
+    this.isNotification = true,
     this.onNotification,
     this.isBackArrow = false,
     this.onBack,
@@ -17,6 +18,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 
   final double height;
   final String title;
+  final bool isNotification;
   final Function()? onNotification;
   final bool isBackArrow;
   final Function()? onBack;
@@ -90,25 +92,29 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   )
               ],
             ),
-            GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: widget.onNotification,
-              child: Stack(
-                alignment: Alignment.centerRight,
-                children: [
-                  SvgPicture.asset(
-                    Images.notifications,
-                    width: 24,
-                    color: controller.appState.value.isNewNotifications
-                        ? theme.colorScheme.primary
-                        : theme.iconTheme.color,
-                  ),
-                  const SizedBox(
+            widget.isNotification
+                ? GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: widget.onNotification,
+                    child: Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        SvgPicture.asset(
+                          Images.notifications,
+                          width: 24,
+                          color: controller.appState.value.isNewNotifications
+                              ? theme.colorScheme.primary
+                              : theme.iconTheme.color,
+                        ),
+                        const SizedBox(
+                          width: 36,
+                        )
+                      ],
+                    ),
+                  )
+                : const SizedBox(
                     width: 36,
                   )
-                ],
-              ),
-            )
           ],
         ),
       ),

@@ -26,6 +26,7 @@ class Input extends StatefulWidget {
     this.hintStyle,
     this.onChanged,
     this.isIconAnimation = false,
+    this.isBorder = true,
   }) : super(key: key);
 
   final double? width;
@@ -49,6 +50,8 @@ class Input extends StatefulWidget {
   final TextStyle? hintStyle;
   final Function(String)? onChanged;
   final bool isIconAnimation;
+  final bool isBorder;
+
   @override
   _InputState createState() => _InputState();
 }
@@ -57,62 +60,71 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Container(
-      width: widget.width,
-      decoration: BoxDecoration(
-          borderRadius: widget.borderRadius ?? BorderRadius.circular(100),
-          color: widget.backgroundColor ?? theme.colorScheme.surface,
-          border: Border.all(width: 1, color: theme.splashColor)),
-      child: Padding(
-        padding: widget.padding ??
-            const EdgeInsets.symmetric(horizontal: 22.0, vertical: 19),
-        child: Row(
-          children: [
-            if (widget.icon != null)
-              AnimatedOpacity(
-                opacity: widget.isIconAnimation ? 0 : 1,
-                curve: Curves.easeOut,
-                duration: const Duration(milliseconds: 350),
-                child: SvgPicture.asset(
-                  widget.icon!,
-                  width: 18,
-                ),
+    //TODO: добавить assert на иконки
+    if (widget.isBorder) {
+      return Container(
+        width: widget.width,
+        decoration: BoxDecoration(
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(100),
+            color: widget.backgroundColor ?? theme.colorScheme.surface,
+            border: Border.all(width: 1, color: theme.splashColor)),
+        child: _bodyInput(theme),
+      );
+    } else {
+      return _bodyInput(theme);
+    }
+  }
+
+  Padding _bodyInput(ThemeData theme) {
+    return Padding(
+      padding: widget.padding ??
+          const EdgeInsets.symmetric(horizontal: 22.0, vertical: 19),
+      child: Row(
+        children: [
+          if (widget.icon != null)
+            AnimatedOpacity(
+              opacity: widget.isIconAnimation ? 0 : 1,
+              curve: Curves.easeOut,
+              duration: const Duration(milliseconds: 350),
+              child: SvgPicture.asset(
+                widget.icon!,
+                width: 18,
               ),
-            if (widget.iconPng != null)
-              Image.asset(
-                widget.iconPng!,
-                width: widget.iconPngWidth,
+            ),
+          if (widget.iconPng != null)
+            Image.asset(
+              widget.iconPng!,
+              width: widget.iconPngWidth,
+            ),
+          if (widget.icon != null || widget.iconPng != null)
+            const SizedBox(width: 11),
+          Expanded(
+            child: TextField(
+              onChanged: widget.onChanged,
+              cursorColor: widget.cursorColor,
+              textCapitalization: widget.textCapitalization,
+              minLines: widget.lines,
+              maxLines: widget.lines,
+              obscuringCharacter: '*',
+              inputFormatters: widget.textFormatters,
+              obscureText: widget.obscureText,
+              scrollPadding:
+                  EdgeInsets.only(bottom: widget.scrollPaddingBottom),
+              controller: widget.textController,
+              textInputAction: widget.textInputAction,
+              keyboardType: widget.textInputType,
+              style: widget.textStyle ??
+                  theme.textTheme.headline1!
+                      .copyWith(fontSize: 16, fontWeight: FontWeight.w400),
+              decoration: InputDecoration(
+                isCollapsed: true,
+                hintText: widget.hintText,
+                border: InputBorder.none,
+                hintStyle: widget.hintStyle,
               ),
-            if (widget.icon != null || widget.iconPng != null)
-              const SizedBox(width: 11),
-            Expanded(
-              child: TextField(
-                onChanged: widget.onChanged,
-                cursorColor: widget.cursorColor,
-                textCapitalization: widget.textCapitalization,
-                minLines: widget.lines,
-                maxLines: widget.lines,
-                obscuringCharacter: '*',
-                inputFormatters: widget.textFormatters,
-                obscureText: widget.obscureText,
-                scrollPadding:
-                    EdgeInsets.only(bottom: widget.scrollPaddingBottom),
-                controller: widget.textController,
-                textInputAction: widget.textInputAction,
-                keyboardType: widget.textInputType,
-                style: widget.textStyle ??
-                    theme.textTheme.headline1!
-                        .copyWith(fontSize: 16, fontWeight: FontWeight.w400),
-                decoration: InputDecoration(
-                  isCollapsed: true,
-                  hintText: widget.hintText,
-                  border: InputBorder.none,
-                  hintStyle: widget.hintStyle,
-                ),
-              ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

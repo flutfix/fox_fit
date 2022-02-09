@@ -128,7 +128,6 @@ class ConfirmationPage extends StatelessWidget {
         /// Без комментария
       } else {
         Snackbar.getSnackbar(
-          theme: theme,
           title: S.of(context).error,
           message: S.of(context).leave_comment,
         );
@@ -171,7 +170,6 @@ class ConfirmationPage extends StatelessWidget {
       );
       if (data != 200) {
         Snackbar.getSnackbar(
-          theme: theme,
           title: S.of(context).server_error,
           message: S.of(context).confirmation_failed,
         );
@@ -211,7 +209,6 @@ class ConfirmationPage extends StatelessWidget {
     );
     if (data != 200) {
       Snackbar.getSnackbar(
-        theme: theme,
         title: S.of(context).server_error,
         message: S.of(context).confirmation_failed,
       );

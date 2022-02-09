@@ -6,7 +6,7 @@ class Images {
   /// Auth Screen
   static const String authTop = 'lib/assets/icons/auth_top.png';
   static const String phone = 'lib/assets/icons/phone.svg';
-  static const String pass = 'lib/assets/icons/pass.svg';
+  static const String passSvg = 'lib/assets/icons/pass.svg';
 
   /// AppBar
   static const String backArrow = 'lib/assets/icons/back_arrow.svg';
@@ -33,6 +33,7 @@ class Images {
   static const String coordinatorPng = 'lib/assets/icons/coordinator.png';
   static const String logOut = 'lib/assets/icons/log_out.png';
   static const String exit = 'lib/assets/icons/exit.svg';
+  static const String passPng = 'lib/assets/icons/pass.png';
 
   /// Trainer Stats
   static const String funnelNew = 'lib/assets/icons/funnel_new.png';

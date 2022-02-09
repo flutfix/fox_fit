@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/models/app_state.dart';
@@ -25,19 +27,18 @@ class GeneralController extends GetxController {
     });
   }
 
-  ///Авторизация
-  Future<dynamic> auth({
-    required String phone,
-    required String pass,
+  /// Смена пароля
+  Future<dynamic> changeUserPassword({
+    required String key,
+    required String newPass,
+    required String userUid,
   }) async {
-    var data = await Requests.auth(phone: phone, pass: pass);
-    if (data is int) {
-      // TODO: Обработка статус кодов != 200
-    } else {
-      appState.update((model) {
-        model?.auth = data;
-      });
-    }
+    var data = await Requests.changeUserPassword(
+      key: key,
+      newPass: newPass,
+      userUid: userUid,
+    );
+    return data;
   }
 
   /// Запрос на получение основных данных, необходимых для инициализации приложения
@@ -46,6 +47,7 @@ class GeneralController extends GetxController {
         await Requests.getCustomers(id: appState.value.auth!.users![0].uid);
     if (data is int) {
       // TODO: Обработка статус кодов != 200
+      return data;
     } else {
       final String isNewNotifications = data[0];
       final List<ItemBottomBarModel> bottomBarItems = data[1];
@@ -61,6 +63,7 @@ class GeneralController extends GetxController {
 
       _sortBottomBarItems(bottomBarItems: bottomBarItems);
       _sortCustomers(bottomBarItems: bottomBarItems, allCutsomers: customers);
+      return 200;
     }
   }
 
@@ -71,7 +74,6 @@ class GeneralController extends GetxController {
     if (data is int) {
       // TODO: Обработка статус кодов != 200
     } else {
-      // final List<CustomerModel> customers = data;
       int stableStageIndex = appState.value.bottomBarItems
           .indexWhere((element) => element.shortName == 'Постоянные');
       String stageUid = appState.value.bottomBarItems[stableStageIndex].uid;

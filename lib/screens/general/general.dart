@@ -1,8 +1,13 @@
+import 'dart:developer';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
 import 'package:fox_fit/screens/more/more.dart';
+import 'package:fox_fit/utils/snackbar.dart';
 import 'package:fox_fit/widgets/bottom_bar.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/keep_alive_page.dart';
@@ -41,11 +46,23 @@ class _GeneralState extends State<General> {
     controller.appState.update((model) {
       model?.isLoading = true;
     });
-    await controller.getCustomers();
 
-    controller.appState.update((model) {
-      model?.isLoading = false;
-    });
+   
+    var data = await controller.getCustomers();
+    // var connectivityResult = await Connectivity().checkConnectivity();
+    // if (data != 200) {
+    //   if (connectivityResult != ConnectivityResult.ethernet) {
+    //   }
+    //   Snackbar.getSnackbar(
+    //     title: S.of(context).server_error,
+    //     message: 'Загрузка данных не удалась',
+    //   );
+    // } else {
+      controller.appState.update((model) {
+        model?.isLoading = false;
+      });
+    // }
+    // log('${controller.appState.value.isLoading}');
   }
 
   @override
