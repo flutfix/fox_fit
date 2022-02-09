@@ -121,7 +121,9 @@ class _GeneralState extends State<General> {
         title: controller.appState.value
             .bottomBarItems[controller.appState.value.currentIndex].shortName,
         count: (customers != null) ? customers.length : null,
-        onNotification: () {});
+        onNotification: () {
+          controller.getNotifications();
+        });
   }
 
   void setPage(int index) {
