@@ -58,9 +58,8 @@ class Requests {
   }
 
   /// Получение разделов BottomBar и клиентов под них
-  static Future<dynamic> getCustomers({
-    required String id,
-  }) async {
+  static Future<dynamic> getCustomers(
+      {required String id, String? fcmToken}) async {
     const String url = '${Api.url}get_customers';
     final dioClient = Dio(Api.options);
     String platform = '';
@@ -69,14 +68,17 @@ class Requests {
     } else if (Platform.isIOS) {
       platform = 'Ios';
     }
-
+    Map<String, dynamic>? _queryParams = {
+      "UserUid": id,
+      "DevicePlatform": platform,
+    };
+    if (fcmToken != null) {
+      _queryParams['FcmToken'] = fcmToken;
+    }
     try {
       var response = await dioClient.get(
         url,
-        queryParameters: {
-          "UserUid": id,
-          "DevicePlatform": platform,
-        },
+        queryParameters: _queryParams,
       );
       if (response.statusCode == 200) {
         List<CustomerModel> customers = [];

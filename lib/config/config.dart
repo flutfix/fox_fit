@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Api {
   /// API url
@@ -28,6 +29,14 @@ class Api {
 class AppConfig {
   /// Whatsapp url
   static const String supportUrl = 'whatsapp://send?phone=+79323005950';
+
+  static const AndroidNotificationChannel pushChannel =
+      AndroidNotificationChannel(
+    'default_notification_channel',
+    'Notifications',
+    description: 'This channel is used for notifications.',
+    importance: Importance.max,
+  );
 }
 
 class Cache {

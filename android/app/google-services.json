@@ -1,0 +1,39 @@
+  {
+  "project_info": {
+    "project_number": "150088765423",
+    "project_id": "android-foxfit-push",
+    "storage_bucket": "android-foxfit-push.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150088765423:android:86de3045b4e237f856301a",
+        "android_client_info": {
+          "package_name": "com.foxfit.app.FoxFit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "150088765423-6ckfjdd17v4vmujb4t7n1ql3m4i6b55p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZq9fPzZJeTCfpt0p5iDr6NwbcpENS6BQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "150088765423-6ckfjdd17v4vmujb4t7n1ql3m4i6b55p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

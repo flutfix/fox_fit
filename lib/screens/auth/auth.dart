@@ -152,13 +152,13 @@ class _AuthPageState extends State<AuthPage> {
           Vibrate.feedback(FeedbackType.success);
         }
         if (authData == 401) {
-          Snackbar.getSnackbar(
+          CustomSnackbar.getSnackbar(
             theme: theme,
             title: S.of(context).login_exeption,
             message: S.of(context).wrong_login_or_pass,
           );
         } else {
-          Snackbar.getSnackbar(
+          CustomSnackbar.getSnackbar(
             theme: theme,
             title: S.of(context).login_exeption,
             message: authData.toString(),
