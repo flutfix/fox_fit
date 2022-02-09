@@ -48,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "log_in": MessageLookupByLibrary.simpleMessage("Войти"),
         "log_out": MessageLookupByLibrary.simpleMessage("Выйти из профиля"),
         "login_exeption": MessageLookupByLibrary.simpleMessage("Ошибка входа"),
+        "notifications": MessageLookupByLibrary.simpleMessage("Уведомления"),
         "send_to_trainer":
             MessageLookupByLibrary.simpleMessage("Передать тренеру"),
         "server_error": MessageLookupByLibrary.simpleMessage("Ошибка сервера"),

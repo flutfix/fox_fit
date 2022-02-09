@@ -26,5 +26,6 @@
     "whatsapp_exeption": "Не удалось открыть WhatsApp",
     "whatsapp_exeption_description": "Попробуйте скачать приложение",
     "empty_customers": "На данном этапе клиенты отсутствуют",
-    "empty_customers_short": "Клиенты отсутствуют"
+    "empty_customers_short": "Клиенты отсутствуют",
+    "notifications": "Уведомления"
 }

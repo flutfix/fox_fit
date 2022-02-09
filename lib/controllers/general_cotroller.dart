@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/models/app_state.dart';
@@ -179,6 +181,20 @@ class GeneralController extends GetxController {
       trainerUid: trainerUid,
     );
     return data;
+  }
+
+  /// Получение уведомлений
+  Future<dynamic> getNotifications() async {
+    var data = await Requests.getNotifications(
+      id: appState.value.auth!.users![0].uid,
+    );
+    if (data is int) {
+      // TODO: Обработка статус кодов != 200
+    } else {
+      appState.update((model) {
+        model?.notifications = data;
+      });
+    }
   }
 
   /// Сортировка активных разделов BottomBar
