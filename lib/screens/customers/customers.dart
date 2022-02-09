@@ -81,6 +81,7 @@ class _CustomersPageState extends State<CustomersPage> {
                 builder: (_controller) {
                   return ListView.builder(
                     physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
                     itemCount:
                         controller.appState.value.coordinator!.customers.length,
                     itemBuilder: (context, index) {
@@ -126,28 +127,32 @@ class _CustomersPageState extends State<CustomersPage> {
                       .bottomBarItems[controller.appState.value.currentIndex]
                       .uid] !=
                   null)
-                ...List.generate(
-                    controller
-                        .appState
-                        .value
-                        .sortedCustomers[controller
-                            .appState
-                            .value
-                            .bottomBarItems[
-                                controller.appState.value.currentIndex]
-                            .uid]!
-                        .length, (index) {
-                  return _customerContainer(
-                    theme,
-                    customer: controller.appState.value.sortedCustomers[
-                        controller
-                            .appState
-                            .value
-                            .bottomBarItems[
-                                controller.appState.value.currentIndex]
-                            .uid]![index],
-                  );
-                }),
+                ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: controller
+                      .appState
+                      .value
+                      .sortedCustomers[controller
+                          .appState
+                          .value
+                          .bottomBarItems[
+                              controller.appState.value.currentIndex]
+                          .uid]!
+                      .length,
+                  itemBuilder: (context, index) {
+                    return _customerContainer(
+                      theme,
+                      customer: controller.appState.value.sortedCustomers[
+                          controller
+                              .appState
+                              .value
+                              .bottomBarItems[
+                                  controller.appState.value.currentIndex]
+                              .uid]![index],
+                    );
+                  },
+                ),
               const SizedBox(height: 19),
             ],
           ),

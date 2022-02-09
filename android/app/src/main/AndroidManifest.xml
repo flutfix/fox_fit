@@ -1,11 +1,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.fox_fit">
+    package="com.foxfit.app.FoxFit">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE"/>
    <application
-        android:label="fox_fit"
+        android:label="FoxFit"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+          android:name="com.google.firebase.messaging.default_notification_channel_id"
+          android:value="@string/default_notification_channel_id"/>
+        <meta-data
+          android:name="com.google.firebase.messaging.default_notification_icon" 
+          android:resource="@drawable/res_notification_logo" />
+        <meta-data
+          android:name="com.google.firebase.messaging.default_notification_icon" 
+          android:resource="@drawable/res_notification_logo" />
+        <meta-data
+          android:name="com.google.firebase.messaging.default_notification_color"
+          android:resource="@color/colorOrange" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -20,10 +32,13 @@
                  to determine the Window background behind the Flutter UI. -->
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
-              android:resource="@style/NormalTheme"
-              />
+              android:resource="@style/NormalTheme"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="FLUTTER_NOTIFICATION_CLICK"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>

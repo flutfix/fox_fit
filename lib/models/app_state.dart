@@ -4,6 +4,7 @@ import 'package:fox_fit/models/coordinator_workspace.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
+import 'package:fox_fit/models/notification.dart';
 import 'package:fox_fit/models/trainer.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
 
@@ -27,6 +28,7 @@ class AppStateModel {
     this.sortedAvailableTrainers,
     this.currentCustomer,
     this.currentTrainer,
+    this.notifications = const [],
   });
 
   bool isLoading;
@@ -72,4 +74,7 @@ class AppStateModel {
 
   /// Выбранный тренер
   Trainer? currentTrainer;
+
+  /// Список уведомлений
+  List<NotificationModel> notifications;
 }

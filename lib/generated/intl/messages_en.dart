@@ -48,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login_exeption": MessageLookupByLibrary.simpleMessage(""),
         "new_password": MessageLookupByLibrary.simpleMessage(""),
         "new_password_again": MessageLookupByLibrary.simpleMessage(""),
+        "notifications": MessageLookupByLibrary.simpleMessage(""),
         "password_not_changed": MessageLookupByLibrary.simpleMessage(""),
         "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(""),
         "repeat_input": MessageLookupByLibrary.simpleMessage(""),

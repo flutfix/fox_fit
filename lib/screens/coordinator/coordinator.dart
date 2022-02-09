@@ -31,7 +31,7 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
     });
 
     await _controller.getCoordinaorWorkSpace();
-    
+
     setState(() {
       _isLoading = false;
     });
@@ -45,7 +45,7 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
       onSwipeRight: () => Get.back(),
       child: Scaffold(
         backgroundColor: theme.backgroundColor,
-        appBar: _appBar(_controller),
+        appBar: _appBar(),
         body: !_isLoading
             ? const CustomersPage(
                 isCoordinator: true,
@@ -57,7 +57,7 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
     );
   }
 
-  CustomAppBar _appBar(GeneralController controller) {
+  CustomAppBar _appBar() {
     return CustomAppBar(
       title: S.of(context).coordinaor_workspace,
       isBackArrow: true,

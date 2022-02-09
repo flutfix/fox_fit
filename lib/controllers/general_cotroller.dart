@@ -42,9 +42,11 @@ class GeneralController extends GetxController {
   }
 
   /// Запрос на получение основных данных, необходимых для инициализации приложения
-  Future<dynamic> getCustomers({bool? getRegularCustomersOnly}) async {
-    var data =
-        await Requests.getCustomers(id: appState.value.auth!.users![0].uid);
+  Future<dynamic> getCustomers({String? fcmToken}) async {
+    var data = await Requests.getCustomers(
+      id: appState.value.auth!.users![0].uid,
+      fcmToken: fcmToken,
+    );
     if (data is int) {
       // TODO: Обработка статус кодов != 200
       return data;
@@ -179,6 +181,20 @@ class GeneralController extends GetxController {
       trainerUid: trainerUid,
     );
     return data;
+  }
+
+  /// Получение уведомлений
+  Future<dynamic> getNotifications() async {
+    var data = await Requests.getNotifications(
+      id: appState.value.auth!.users![0].uid,
+    );
+    if (data is int) {
+      // TODO: Обработка статус кодов != 200
+    } else {
+      appState.update((model) {
+        model?.notifications = data;
+      });
+    }
   }
 
   /// Сортировка активных разделов BottomBar

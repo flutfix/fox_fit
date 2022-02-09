@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:get/get.dart';
 
-class Snackbar {
+class CustomSnackbar {
   static void getSnackbar({
     required String title,
     required String message,

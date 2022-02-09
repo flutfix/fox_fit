@@ -9,6 +9,7 @@ import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
+import 'package:fox_fit/models/notification.dart';
 import 'package:fox_fit/models/trainer.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
 import 'dart:convert';
@@ -85,9 +86,8 @@ class Requests {
   }
 
   /// Получение разделов BottomBar и клиентов под них
-  static Future<dynamic> getCustomers({
-    required String id,
-  }) async {
+  static Future<dynamic> getCustomers(
+      {required String id, String? fcmToken}) async {
     const String url = '${Api.url}get_customers';
     final dioClient = Dio(Api.options);
     String platform = '';
@@ -96,14 +96,17 @@ class Requests {
     } else if (Platform.isIOS) {
       platform = 'Ios';
     }
-
+    Map<String, dynamic>? _queryParams = {
+      "UserUid": id,
+      "DevicePlatform": platform,
+    };
+    if (fcmToken != null) {
+      _queryParams['FcmToken'] = fcmToken;
+    }
     try {
       var response = await dioClient.get(
         url,
-        queryParameters: {
-          "UserUid": id,
-          "DevicePlatform": platform,
-        },
+        queryParameters: _queryParams,
       );
       if (response.statusCode == 200) {
         List<CustomerModel> customers = [];
@@ -365,13 +368,50 @@ class Requests {
     }
   }
 
+  /// Получение уведомлений
+  static Future<dynamic> getNotifications({required String id}) async {
+    const String url = '${Api.url}get_notifications';
+    final dioClient = Dio(Api.options);
+    var now = DateTime.now();
+    var weekAgo = DateTime(now.year, now.month, now.day - 7);
+
+    ///Timestamp in seconds
+    String endDate = (now.millisecondsSinceEpoch / 1000).round().toString();
+    String startDate =
+        (weekAgo.millisecondsSinceEpoch / 1000).round().toString();
+
+    String? relevanceDate =
+        await getPrefs(key: Cache.relevanceDate, prefsType: PrefsType.string);
+    relevanceDate ??= startDate;
+    try {
+      var response = await dioClient.get(
+        url,
+        queryParameters: {
+          "UserUid": id,
+          "RelevanceDate": relevanceDate,
+          "StartDate": startDate,
+          "EndDate": endDate,
+        },
+      );
+      if (response.statusCode == 200) {
+        List<NotificationModel> notifications = [];
+        for (var element in response.data['Notifications']) {
+          notifications.add(NotificationModel.fromJson(element));
+        }
+        return notifications;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
   static Future<void> _setPrefs({
     String? phone,
     required String pass,
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(Cache.isAuthorized, true);
-
     if (phone != null) {
       prefs.setString(Cache.phone, phone);
     }

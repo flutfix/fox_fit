@@ -61,6 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "new_password": MessageLookupByLibrary.simpleMessage("Новый пароль"),
         "new_password_again":
             MessageLookupByLibrary.simpleMessage("Новый пароль (повторно)"),
+        "notifications": MessageLookupByLibrary.simpleMessage("Уведомления"),
         "password_not_changed":
             MessageLookupByLibrary.simpleMessage("Пароль не изменён"),
         "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(

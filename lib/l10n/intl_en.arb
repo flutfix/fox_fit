@@ -36,5 +36,6 @@
     "repeat_input": "",
     "password_not_changed": "",
     "data_entered_incorrectly": "",
-    "least_three_characters": ""
+    "least_three_characters": "",
+    "notifications": ""
 }

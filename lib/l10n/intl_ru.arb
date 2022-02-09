@@ -36,5 +36,6 @@
     "repeat_input": "Повторите ввод",
     "password_not_changed": "Пароль не изменён",
     "data_entered_incorrectly": "Данные введены некорректно",
-    "least_three_characters": "Не менее трёх символов"
+    "least_three_characters": "Не менее трёх символов",
+    "notifications": "Уведомления"
 }

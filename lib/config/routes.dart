@@ -8,4 +8,5 @@ class Routes {
   static const String coordinator = '/coordinator';
   static const String trinerChoosing = '/triner_choosing';
   static const String changePassword = '/change_password';
+  static const String notifications = '/notifications';
 }
