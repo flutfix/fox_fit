@@ -46,6 +46,11 @@ class Cache {
   static const String relevanceDate = 'relevanceDate';
 }
 
+class PipeLine {
+  /// [Новые]
+  static const String freshStage = 'e8a7b9e4-1550-11ec-d58b-ac1f6b336352';
+}
+
 class StagePipeline {
   /// [Назначено]
   static const String assigned = 'e8af182e-1550-11ec-d58b-ac1f6b336352';

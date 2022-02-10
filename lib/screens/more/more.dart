@@ -9,6 +9,7 @@ import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/more_card.dart';
 import 'package:fox_fit/widgets/bottom_sheet.dart';
 import 'package:fox_fit/widgets/default_container.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,8 +55,10 @@ class _MorePageState extends State<MorePage> {
             onTap: () async {
               await canLaunch(AppConfig.supportUrl)
                   ? launch(AppConfig.supportUrl)
-                  : print(
-                      "open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
+                  : CustomSnackbar.getSnackbar(
+                      title: S.of(context).whatsapp_exeption,
+                      message: S.of(context).whatsapp_exeption_description,
+                    );
             },
           ),
 

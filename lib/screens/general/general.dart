@@ -110,8 +110,9 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
             bottomNavigationBar: Obx(
               () => CustomBottomBar(
                 items: controller.appState.value.bottomBarItems,
-                activeColor: theme.hintColor,
-                inActiveColor: theme.hoverColor,
+                activeColor: theme.colorScheme.primary,
+                inActiveColor: theme.colorScheme.primary,
+                textColor: theme.hintColor,
                 onChange: (index) {
                   setState(() {
                     setPage(index);
