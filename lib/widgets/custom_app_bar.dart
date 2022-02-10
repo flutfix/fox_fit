@@ -32,10 +32,10 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  late GeneralController controller;
+  late GeneralController _controller;
   @override
   void initState() {
-    controller = Get.put(GeneralController());
+    _controller = Get.find<GeneralController>();
     super.initState();
   }
 
@@ -93,25 +93,25 @@ class _CustomAppBarState extends State<CustomAppBar> {
               ],
             ),
             widget.isNotification
-                ? GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: widget.onNotification,
-                    child: Stack(
-                      alignment: Alignment.centerRight,
-                      children: [
-                        SvgPicture.asset(
-                          Images.notifications,
-                          width: 24,
-                          color: controller.appState.value.isNewNotifications
-                              ? theme.colorScheme.primary
-                              : theme.iconTheme.color,
-                        ),
-                        const SizedBox(
-                          width: 36,
-                        )
-                      ],
-                    ),
-                  )
+                ? Obx(() => GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: widget.onNotification,
+                      child: Stack(
+                        alignment: Alignment.centerRight,
+                        children: [
+                          SvgPicture.asset(
+                            Images.notifications,
+                            width: 24,
+                            color: _controller.appState.value.isNewNotifications
+                                ? theme.colorScheme.primary
+                                : theme.iconTheme.color,
+                          ),
+                          const SizedBox(
+                            width: 36,
+                          )
+                        ],
+                      ),
+                    ))
                 : const SizedBox(
                     width: 36,
                   )
