@@ -3,6 +3,7 @@ import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
+import 'package:fox_fit/utils/error_handler.dart';
 import 'package:get/get.dart';
 
 class SpalshScreen extends StatefulWidget {
@@ -22,7 +23,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
     super.initState();
   }
 
-  Future<void> _load() async {
+  Future<dynamic> _load() async {
     var isAuthorized = await Requests.getPrefs(
       key: Cache.isAuthorized,
       prefsType: PrefsType.boolean,
@@ -42,8 +43,8 @@ class _SpalshScreenState extends State<SpalshScreen> {
           phone: phone,
           pass: pass,
         );
-        if (authData is int) {
-          // TODO: Обработка статус кодов != 200
+        if (authData is int || authData == null) {
+          return authData;
         } else {
           await Future.delayed(const Duration(milliseconds: 400));
 
@@ -51,21 +52,24 @@ class _SpalshScreenState extends State<SpalshScreen> {
             Routes.general,
             arguments: authData,
           );
+          return 200;
         }
-      }else {
-      await Future.delayed(const Duration(milliseconds: 400));
-      Get.offNamed(Routes.auth);
-    }
+      } else {
+        await Future.delayed(const Duration(milliseconds: 400));
+        Get.offNamed(Routes.auth);
+        return 200;
+      }
     } else {
       await Future.delayed(const Duration(milliseconds: 400));
       Get.offNamed(Routes.auth);
+      return 200;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     if (!_isCalled) {
-      _load();
+      ErrorHandler.loadingData(context: context, request: _load);
     }
     ThemeData theme = Theme.of(context);
     return Scaffold(

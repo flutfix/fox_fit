@@ -4,7 +4,8 @@ import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
-import 'package:fox_fit/utils/snackbar.dart';
+import 'package:fox_fit/utils/error_handler.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/bottom_sheet.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
@@ -42,8 +43,13 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
       loading = true;
     });
 
-    await controller.getCustomerInfo(
-        customerId: controller.appState.value.currentCustomer!.uid);
+    await ErrorHandler.loadingData(
+      context: context,
+      request: () {
+        return controller.getCustomerInfo(
+            customerId: controller.appState.value.currentCustomer!.uid);
+      },
+    );
 
     setState(() {
       loading = false;

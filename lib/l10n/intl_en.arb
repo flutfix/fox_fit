@@ -37,5 +37,10 @@
     "password_not_changed": "",
     "data_entered_incorrectly": "",
     "least_three_characters": "",
-    "notifications": ""
+    "notifications": "",
+    "no_internet_access": "",
+    "data_download_failed": "",
+    "server_navailable": "",
+    "failed_update_list": "",
+    "authorization_failed": ""
 }

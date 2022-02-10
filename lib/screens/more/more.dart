@@ -70,14 +70,13 @@ class _MorePageState extends State<MorePage> {
             ),
 
           /// Смена пароля
-          if (_controller.appState.value.isCoordinator)
-            MoreCardModel(
-              text: S.of(context).change_password,
-              icon: Images.passPng,
-              onTap: () {
-                Get.toNamed(Routes.changePassword);
-              },
-            ),
+          MoreCardModel(
+            text: S.of(context).change_password,
+            icon: Images.passPng,
+            onTap: () {
+              Get.toNamed(Routes.changePassword);
+            },
+          ),
 
           /// Выйти из профиля
           MoreCardModel(

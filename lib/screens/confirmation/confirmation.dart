@@ -7,7 +7,8 @@ import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
 import 'package:fox_fit/utils/enums.dart';
-import 'package:fox_fit/utils/snackbar.dart';
+import 'package:fox_fit/utils/error_handler.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
@@ -30,7 +31,6 @@ class ConfirmationPage extends StatelessWidget {
   final String? textButton;
   final EdgeInsetsGeometry padding;
 
- 
   final TextEditingController textController = TextEditingController();
 
   final GeneralController controller = Get.find<GeneralController>();
@@ -43,77 +43,73 @@ class ConfirmationPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: theme.backgroundColor,
         body: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Padding(
-                  padding:  padding,
-                  child: DefaultContainer(
-                    padding: const EdgeInsets.all(45),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SvgPicture.asset(
-                           image,
-                          width: 42,
-                          color: theme.colorScheme.primary,
-                        ),
-                        const SizedBox(height: 30),
-                        if ( richText != null)
-                           richText!
-                        else
-                          Text(
-                             text,
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.headline5,
-                          ),
-                        const SizedBox(height: 12),
-                        if (Enums.getIsDisplayComment(
-                            stageUid:  stageUid))
-                          Input(
-                            textController: textController,
-                            hintText: S.of(context).comment_for_recipient,
-                            hintStyle: theme.textTheme.bodyText2,
-                            textStyle: theme.textTheme.bodyText2,
-                            cursorColor: theme.colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(10),
-                            padding: const EdgeInsets.all(5),
-                            textCapitalization: TextCapitalization.sentences,
-                            lines: 3,
-                          )
-                        else
-                          const SizedBox(height: 50),
-                        if (Enums.getIsDisplayComment(
-                            stageUid:  stageUid))
-                          const SizedBox(height: 12),
-                        CustomTextButton(
-                          onTap: () {
-                            if (controller.appState.value.isCanVibrate) {
-                              Vibrate.feedback(FeedbackType.light);
-                            }
-                            _requestConfirm(theme: theme, context: context);
-                          },
-                          text:  textButton ?? S.of(context).confirm,
-                          backgroundColor: theme.colorScheme.secondary,
-                          textStyle: theme.textTheme.button!,
-                        ),
-                        const SizedBox(height: 12),
-                        GestureDetector(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: CustomTextButton(
-                            text: S.of(context).cancel,
-                            backgroundColor:
-                                theme.buttonTheme.colorScheme!.primary,
-                            textStyle: theme.textTheme.button!.copyWith(
-                                color:
-                                    theme.buttonTheme.colorScheme!.secondary),
-                          ),
-                        ),
-                      ],
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: padding,
+            child: DefaultContainer(
+              padding: const EdgeInsets.all(45),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgPicture.asset(
+                    image,
+                    width: 42,
+                    color: theme.colorScheme.primary,
+                  ),
+                  const SizedBox(height: 30),
+                  if (richText != null)
+                    richText!
+                  else
+                    Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.headline5,
+                    ),
+                  const SizedBox(height: 12),
+                  if (Enums.getIsDisplayComment(stageUid: stageUid))
+                    Input(
+                      textController: textController,
+                      hintText: S.of(context).comment_for_recipient,
+                      hintStyle: theme.textTheme.bodyText2,
+                      textStyle: theme.textTheme.bodyText2,
+                      cursorColor: theme.colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(10),
+                      padding: const EdgeInsets.all(5),
+                      textCapitalization: TextCapitalization.sentences,
+                      lines: 3,
+                    )
+                  else
+                    const SizedBox(height: 50),
+                  if (Enums.getIsDisplayComment(stageUid: stageUid))
+                    const SizedBox(height: 12),
+                  CustomTextButton(
+                    onTap: () {
+                      if (controller.appState.value.isCanVibrate) {
+                        Vibrate.feedback(FeedbackType.light);
+                      }
+                      _requestConfirm(theme: theme, context: context);
+                    },
+                    text: textButton ?? S.of(context).confirm,
+                    backgroundColor: theme.colorScheme.secondary,
+                    textStyle: theme.textTheme.button!,
+                  ),
+                  const SizedBox(height: 12),
+                  GestureDetector(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: CustomTextButton(
+                      text: S.of(context).cancel,
+                      backgroundColor: theme.buttonTheme.colorScheme!.primary,
+                      textStyle: theme.textTheme.button!.copyWith(
+                          color: theme.buttonTheme.colorScheme!.secondary),
                     ),
                   ),
-                ),
+                ],
               ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -123,7 +119,7 @@ class ConfirmationPage extends StatelessWidget {
     required BuildContext context,
   }) async {
     /// Если относится к стадии [Отказ клиента]
-    if ( stageUid == StagePipeline.rejection) {
+    if (stageUid == StagePipeline.rejection) {
       /// С комментарием
       if (textController.text.isNotEmpty) {
         await _transferClientByTrainerPipeline(
@@ -138,10 +134,10 @@ class ConfirmationPage extends StatelessWidget {
           message: S.of(context).leave_comment,
         );
       }
-    } else if ( stageUid == StagePipeline.rejection &&
+    } else if (stageUid == StagePipeline.rejection &&
         textController.text.isEmpty) {
       /// Если относится к стадии [Перенос]
-    } else if ( stageUid == StagePipeline.transferringRecord) {
+    } else if (stageUid == StagePipeline.transferringRecord) {
       await DatePicker.showDatePicker(
         context,
         onConfirm: (confirmTime) async {
@@ -168,27 +164,47 @@ class ConfirmationPage extends StatelessWidget {
       );
 
       /// Если было открыто от роли [Координатор]
-    } else if ( stageUid == StagePipeline.coordinator) {
-      dynamic data = await controller.transferClientToTrainer(
-        userUid: controller.appState.value.auth!.users![1].uid,
-        customerUid: controller.appState.value.currentCustomer!.uid,
-        trainerUid: controller.appState.value.currentTrainer!.uid,
+    } else if (stageUid == StagePipeline.coordinator) {
+      dynamic data = await ErrorHandler.singleRequest(
+        context: context,
+        request: () {
+          return controller.transferClientToTrainer(
+            userUid: controller.appState.value.auth!.users![1].uid,
+            customerUid: controller.appState.value.currentCustomer!.uid,
+            trainerUid: controller.appState.value.currentTrainer!.uid,
+          );
+        },
+        handler: () {
+          CustomSnackbar.getSnackbar(
+            title: S.of(context).server_error,
+            message: S.of(context).confirmation_failed,
+          );
+        },
       );
-      if (data != 200) {
-        CustomSnackbar.getSnackbar(
-          title: S.of(context).server_error,
-          message: S.of(context).confirmation_failed,
-        );
-      } else {
+
+      if (data == 200) {
         controller.appState.update((model) {
           model?.currentCustomer = null;
           model?.currentTrainer = null;
         });
-        await controller.getCustomers();
+
         await controller.getTrainers();
+
         Get.back();
         Get.back();
         Get.back();
+
+        await ErrorHandler.singleRequest(
+          context: context,
+          request: controller.getCustomers,
+          skipCheck: true,
+          handler: () {
+            CustomSnackbar.getSnackbar(
+              title: S.of(context).no_internet_access,
+              message: S.of(context).failed_update_list,
+            );
+          },
+        );
       }
 
       /// Остальные случаи: запрос на продвижение клиента по воронке
@@ -206,26 +222,45 @@ class ConfirmationPage extends StatelessWidget {
     required BuildContext context,
     String? transferDate,
   }) async {
-    dynamic data = await controller.transferClientByTrainerPipeline(
-      userUid: controller.appState.value.auth!.users![0].uid,
-      customerUid: controller.appState.value.currentCustomer!.uid,
-      trainerPipelineStageUid:  stageUid,
-      transferDate: transferDate,
-      commentText: textController.text,
+    dynamic data = await ErrorHandler.singleRequest(
+      context: context,
+      request: () {
+        return controller.transferClientByTrainerPipeline(
+          userUid: controller.appState.value.auth!.users![0].uid,
+          customerUid: controller.appState.value.currentCustomer!.uid,
+          trainerPipelineStageUid: stageUid,
+          transferDate: transferDate,
+          commentText: textController.text,
+        );
+      },
+      handler: () {
+        CustomSnackbar.getSnackbar(
+          title: S.of(context).server_error,
+          message: S.of(context).confirmation_failed,
+        );
+      },
     );
-    if (data != 200) {
-      CustomSnackbar.getSnackbar(
-        title: S.of(context).server_error,
-        message: S.of(context).confirmation_failed,
-      );
-    } else {
+
+    if (data == 200) {
       controller.appState.update((model) {
         model?.currentCustomer = null;
       });
-      await controller.getCustomers();
+
       Get.back();
       Get.back();
       Get.back();
+
+      await ErrorHandler.singleRequest(
+          context: context,
+          request: controller.getCustomers,
+          skipCheck: true,
+          handler: () {
+            CustomSnackbar.getSnackbar(
+              title: S.of(context).no_internet_access,
+              message: S.of(context).failed_update_list,
+            );
+          },
+        );
     }
   }
 }

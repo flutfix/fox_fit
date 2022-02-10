@@ -8,7 +8,7 @@ class Input extends StatefulWidget {
     required this.hintText,
     required this.textController,
     this.width,
-    this.icon,
+    this.iconSvg,
     this.iconPng,
     this.iconPngWidth,
     this.textStyle,
@@ -32,7 +32,7 @@ class Input extends StatefulWidget {
   }) : super(key: key);
 
   final double? width;
-  final String? icon;
+  final String? iconSvg;
   final String? iconPng;
   final double? iconPngWidth;
   final String hintText;
@@ -64,7 +64,10 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    //TODO: добавить assert на иконки
+    assert(
+      !(widget.iconSvg != null && widget.iconPng != null),
+      'Обе иконки не могут быть добавлены',
+    );
     if (widget.isBorder) {
       return Container(
         width: widget.width,
@@ -85,13 +88,13 @@ class _InputState extends State<Input> {
           const EdgeInsets.symmetric(horizontal: 22.0, vertical: 19),
       child: Row(
         children: [
-          if (widget.icon != null)
+          if (widget.iconSvg != null)
             AnimatedOpacity(
               opacity: widget.isIconAnimation ? 0 : 1,
               curve: Curves.easeOut,
               duration: const Duration(milliseconds: 350),
               child: SvgPicture.asset(
-                widget.icon!,
+                widget.iconSvg!,
                 width: 18,
               ),
             ),
@@ -100,7 +103,7 @@ class _InputState extends State<Input> {
               widget.iconPng!,
               width: widget.iconPngWidth,
             ),
-          if (widget.icon != null || widget.iconPng != null)
+          if (widget.iconSvg != null || widget.iconPng != null)
             const SizedBox(width: 11),
           Expanded(
             child: TextField(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
+import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:get/get.dart';
 import 'package:swipe/swipe.dart';
@@ -30,7 +31,10 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
       _isLoading = true;
     });
 
-    await _controller.getCoordinaorWorkSpace();
+    await ErrorHandler.loadingData(
+      context: context,
+      request: _controller.getCoordinaorWorkSpace,
+    );
 
     setState(() {
       _isLoading = false;

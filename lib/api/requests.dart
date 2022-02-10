@@ -75,7 +75,7 @@ class Requests {
         return response.statusCode;
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response}');
       return e.response?.statusCode;
     }
   }

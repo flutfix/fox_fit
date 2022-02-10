@@ -9,6 +9,7 @@ import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
 import 'package:fox_fit/screens/more/more.dart';
+import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/bottom_bar.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/keep_alive_page.dart';
@@ -40,7 +41,6 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
       controller.appState.update((model) {
         model?.isCoordinator = true;
       });
-
       controller.initVibration();
     }
     _load();
@@ -70,7 +70,13 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     });
 
     await _fcm();
-    await controller.getCustomers(fcmToken: _fcmToken);
+    await ErrorHandler.loadingData(
+      context: context,
+      request: () {
+        return controller.getCustomers(fcmToken: _fcmToken);
+      },
+    );
+
     controller.appState.update((model) {
       model?.isLoading = false;
     });
