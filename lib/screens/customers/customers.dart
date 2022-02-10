@@ -119,45 +119,38 @@ class _CustomersPageState extends State<CustomersPage> {
           .sortedCustomers[controller.appState.value
               .bottomBarItems[controller.appState.value.currentIndex].uid]!
           .isNotEmpty) {
-        return Obx(
-          () => Column(
-            children: [
-              const SizedBox(height: 25),
-              if (controller.appState.value.sortedCustomers[controller
-                      .appState
-                      .value
-                      .bottomBarItems[controller.appState.value.currentIndex]
-                      .uid] !=
-                  null)
-                ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: controller
-                      .appState
-                      .value
-                      .sortedCustomers[controller
-                          .appState
-                          .value
-                          .bottomBarItems[
-                              controller.appState.value.currentIndex]
-                          .uid]!
-                      .length,
-                  itemBuilder: (context, index) {
-                    return _customerContainer(
-                      theme,
-                      customer: controller.appState.value.sortedCustomers[
-                          controller
-                              .appState
-                              .value
-                              .bottomBarItems[
-                                  controller.appState.value.currentIndex]
-                              .uid]![index],
-                    );
-                  },
-                ),
-              const SizedBox(height: 19),
-            ],
-          ),
+        return Column(
+          children: [
+            const SizedBox(height: 25),
+            GetBuilder<GeneralController>(builder: (_controller) {
+              return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: controller
+                    .appState
+                    .value
+                    .sortedCustomers[controller
+                        .appState
+                        .value
+                        .bottomBarItems[controller.appState.value.currentIndex]
+                        .uid]!
+                    .length,
+                itemBuilder: (context, index) {
+                  return _customerContainer(
+                    theme,
+                    customer: controller.appState.value.sortedCustomers[
+                        controller
+                            .appState
+                            .value
+                            .bottomBarItems[
+                                controller.appState.value.currentIndex]
+                            .uid]![index],
+                  );
+                },
+              );
+            }),
+            const SizedBox(height: 19),
+          ],
         );
       } else {
         return _getEmptyCustomersText(theme);
