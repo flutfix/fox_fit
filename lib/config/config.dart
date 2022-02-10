@@ -54,7 +54,7 @@ class StagePipeline {
   static const String transferringRecord =
       'e8b2d9c8-1550-11ec-d58b-ac1f6b336352';
 
-  /// [Не дозвонился]
+  /// [Недозвон]
   static const String nonCall = 'e8acaa26-1550-11ec-d58b-ac1f6b336352';
 
   /// [Отказ клиента]

@@ -31,7 +31,7 @@ class Enums {
 
       /// Назначена стартовая тренировка
       case 'e8af182e-1550-11ec-d58b-ac1f6b336352':
-        return true;
+        return false;
 
       /// Клиент перенёс запись
       case 'e8b2d9c8-1550-11ec-d58b-ac1f6b336352':
@@ -39,7 +39,7 @@ class Enums {
 
       /// Невозможно дозвониться
       case 'e8acaa26-1550-11ec-d58b-ac1f6b336352':
-        return false;
+        return true;
 
       /// Отказ клиента
       case 'e8b420f8-1550-11ec-d58b-ac1f6b336352':
