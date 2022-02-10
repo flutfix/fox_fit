@@ -25,8 +25,10 @@ class Input extends StatefulWidget {
     this.cursorColor,
     this.hintStyle,
     this.onChanged,
+    this.onEditingComplete,
     this.isIconAnimation = false,
     this.isBorder = true,
+    this.focusNode,
   }) : super(key: key);
 
   final double? width;
@@ -49,8 +51,10 @@ class Input extends StatefulWidget {
   final Color? cursorColor;
   final TextStyle? hintStyle;
   final Function(String)? onChanged;
+  final Function()? onEditingComplete;
   final bool isIconAnimation;
   final bool isBorder;
+  final FocusNode? focusNode;
 
   @override
   _InputState createState() => _InputState();
@@ -100,7 +104,9 @@ class _InputState extends State<Input> {
             const SizedBox(width: 11),
           Expanded(
             child: TextField(
+              focusNode: widget.focusNode,
               onChanged: widget.onChanged,
+              onEditingComplete: widget.onEditingComplete,
               cursorColor: widget.cursorColor,
               textCapitalization: widget.textCapitalization,
               minLines: widget.lines,
