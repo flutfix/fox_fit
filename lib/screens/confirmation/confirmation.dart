@@ -118,8 +118,9 @@ class ConfirmationPage extends StatelessWidget {
     required ThemeData theme,
     required BuildContext context,
   }) async {
-    /// Если относится к стадии [Отказ клиента]
-    if (stageUid == StagePipeline.rejection) {
+    /// Если относится к стадии [Отказ] или [Недозвон]
+    if (stageUid == StagePipeline.rejection ||
+        stageUid == StagePipeline.nonCall) {
       /// С комментарием
       if (textController.text.isNotEmpty) {
         await _transferClientByTrainerPipeline(
@@ -134,8 +135,7 @@ class ConfirmationPage extends StatelessWidget {
           message: S.of(context).leave_comment,
         );
       }
-    } else if (stageUid == StagePipeline.rejection &&
-        textController.text.isEmpty) {
+
       /// Если относится к стадии [Перенос]
     } else if (stageUid == StagePipeline.transferringRecord) {
       await DatePicker.showDatePicker(
@@ -207,7 +207,7 @@ class ConfirmationPage extends StatelessWidget {
         );
       }
 
-      /// Остальные случаи: запрос на продвижение клиента по воронке
+      /// Если относится к стадии [Назначено]
     } else {
       _transferClientByTrainerPipeline(
         theme: theme,
@@ -251,16 +251,16 @@ class ConfirmationPage extends StatelessWidget {
       Get.back();
 
       await ErrorHandler.singleRequest(
-          context: context,
-          request: controller.getCustomers,
-          skipCheck: true,
-          handler: () {
-            CustomSnackbar.getSnackbar(
-              title: S.of(context).no_internet_access,
-              message: S.of(context).failed_update_list,
-            );
-          },
-        );
+        context: context,
+        request: controller.getCustomers,
+        skipCheck: true,
+        handler: () {
+          CustomSnackbar.getSnackbar(
+            title: S.of(context).no_internet_access,
+            message: S.of(context).failed_update_list,
+          );
+        },
+      );
     }
   }
 }
