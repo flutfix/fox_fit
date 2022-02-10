@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
+import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
@@ -292,10 +295,17 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
           '_ClubName_', controller.appState.value.auth!.data!.clubName);
     }
 
+    bool _isFromNewCustomers = controller.appState.value
+            .bottomBarItems[controller.appState.value.currentIndex].uid ==
+        PipeLine.freshStage;
     await canLaunch('whatsapp://send?phone=$number')
-        ? launch(
-            'whatsapp://send?phone=$number&text=$greeting',
-          )
+        ? _isFromNewCustomers
+            ? launch(
+                'whatsapp://send?phone=$number&text=$greeting',
+              )
+            : launch(
+                'whatsapp://send?phone=$number',
+              )
         : CustomSnackbar.getSnackbar(
             title: S.of(context).whatsapp_exeption,
             message: S.of(context).whatsapp_exeption_description,

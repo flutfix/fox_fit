@@ -12,6 +12,7 @@ class CustomBottomBar extends StatefulWidget {
     required this.onChange,
     required this.activeColor,
     required this.inActiveColor,
+    this.textColor,
     this.verticalPadding = 14.0,
     this.duration = 150,
   }) : super(key: key);
@@ -22,6 +23,7 @@ class CustomBottomBar extends StatefulWidget {
   final int duration;
   final Color activeColor;
   final Color inActiveColor;
+  final Color? textColor;
 
   @override
   _CustomBottomBarState createState() => _CustomBottomBarState();
@@ -69,17 +71,20 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                           SvgPicture.asset(
                             getIcon(index),
                             width: 20,
-                            color: index == controller.appState.value.currentIndex
-                                ? widget.activeColor
-                                : widget.inActiveColor,
+                            color:
+                                index == controller.appState.value.currentIndex
+                                    ? widget.activeColor
+                                    : widget.inActiveColor,
                           ),
                           const SizedBox(height: 6),
                           Text(
                             item.shortName,
                             style: theme.textTheme.caption!.copyWith(
-                                color: index == controller.appState.value.currentIndex
-                                    ? widget.activeColor
-                                    : widget.inActiveColor),
+                                color: widget.textColor
+                                // index == controller.appState.value.currentIndex
+                                //     ? widget.activeColor
+                                //     : widget.inActiveColor,
+                                ),
                           ),
                         ],
                       ),
