@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
@@ -28,9 +30,13 @@ class _AuthPageState extends State<AuthPage> {
   late String oldPhone;
   late bool _loading;
   late bool _canVibrate;
+  late FocusNode _phoneFocus;
+  late String _phonePrefix;
 
   @override
   void initState() {
+    _phoneFocus = FocusNode();
+    _phonePrefix = '+7 ';
     oldPhone = '';
     _loading = false;
     _canVibrate = false;
@@ -38,13 +44,30 @@ class _AuthPageState extends State<AuthPage> {
     passController = TextEditingController();
     maskFormatter = MaskTextInputFormatter(
       mask: '+7 ###-###-##-##',
-      filter: {"#": RegExp(r'[0-9]')},
+      filter: {
+        "#": RegExp(r'[0-9]'),
+      },
     );
     isPhoneAnimation = false;
     isPassAnimation = false;
     getPhoneFromPrefs();
     initVibration();
+    _phoneFocus.addListener(_onFocusChange);
     super.initState();
+  }
+
+  /// Подставление [+7] в начало строки, если поле в фокусе
+  void _onFocusChange() {
+    debugPrint("Focus: ${_phoneFocus.hasFocus.toString()}");
+    if (_phoneFocus.hasFocus) {
+      if (phoneController.text.isEmpty) {
+        phoneController.text = _phonePrefix;
+      }
+    } else {
+      if (phoneController.text == _phonePrefix) {
+        phoneController.clear();
+      }
+    }
   }
 
   Future<void> initVibration() async {
@@ -57,19 +80,6 @@ class _AuthPageState extends State<AuthPage> {
     setState(() {
       _loading = false;
     });
-  }
-
-  Future<dynamic> getPhoneFromPrefs() async {
-    var phone =
-        await Requests.getPrefs(key: Cache.phone, prefsType: PrefsType.string);
-    if (phone != null) {
-      if (phone != '') {
-        setState(() {
-          oldPhone = phone;
-          phoneController.text = maskFormatter.maskText(phone);
-        });
-      }
-    }
   }
 
   @override
@@ -109,6 +119,16 @@ class _AuthPageState extends State<AuthPage> {
                         textInputAction: TextInputAction.next,
                         textFormatters: [maskFormatter],
                         scrollPaddingBottom: 120,
+                        focusNode: _phoneFocus,
+                        onChanged: (text) {
+                          if (maskFormatter.getUnmaskedText().isEmpty) {
+                            phoneController.value = TextEditingValue(
+                              text: _phonePrefix,
+                              selection: TextSelection.collapsed(
+                                  offset: _phonePrefix.length),
+                            );
+                          }
+                        },
                       ),
                       const SizedBox(height: 18),
 
@@ -120,6 +140,11 @@ class _AuthPageState extends State<AuthPage> {
                         isIconAnimation: isPassAnimation,
                         obscureText: true,
                         textController: passController,
+                        onEditingComplete: ()async{
+
+                          await _validateFields(theme);
+                        },
+                        
                       ),
                       const SizedBox(height: 46),
 
@@ -194,5 +219,25 @@ class _AuthPageState extends State<AuthPage> {
         });
       }
     }
+  }
+
+  Future<dynamic> getPhoneFromPrefs() async {
+    var phone =
+        await Requests.getPrefs(key: Cache.phone, prefsType: PrefsType.string);
+    if (phone != null) {
+      if (phone != '') {
+        setState(() {
+          oldPhone = phone;
+          phoneController.text = maskFormatter.maskText(phone);
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _phoneFocus.removeListener(_onFocusChange);
+    _phoneFocus.dispose();
   }
 }

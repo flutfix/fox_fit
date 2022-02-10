@@ -22,7 +22,7 @@ class General extends StatefulWidget {
   _GeneralState createState() => _GeneralState();
 }
 
-class _GeneralState extends State<General> {
+class _GeneralState extends State<General> with WidgetsBindingObserver {
   late GeneralController controller;
   late PageController pageController;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -30,6 +30,7 @@ class _GeneralState extends State<General> {
 
   @override
   void initState() {
+    WidgetsBinding.instance?.addObserver(this);
     controller = Get.put(GeneralController());
 
     AuthDataModel authData = Get.arguments;
@@ -47,6 +48,22 @@ class _GeneralState extends State<General> {
     super.initState();
   }
 
+  /// Отслеживание когда приложение возвращается из фонового состояния и обновление данных, если [true]
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) {
+      return;
+    }
+    final isResumed = state == AppLifecycleState.resumed;
+
+    if (isResumed) {
+      log('[State] Was resumed from background');
+      await _load();
+    }
+  }
+
+  /// Функция подгрузки данных, необходимых для инициализации приложения
   Future<void> _load() async {
     controller.appState.update((model) {
       model?.isLoading = true;
@@ -181,5 +198,11 @@ class _GeneralState extends State<General> {
       }
     });
     //----
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
   }
 }

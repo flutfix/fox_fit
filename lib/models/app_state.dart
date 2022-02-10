@@ -14,6 +14,7 @@ class AppStateModel {
     this.currentIndex = 0,
     this.isNewNotifications = false,
     this.isCoordinator = false,
+    this.isAppStateResumed = false,
     this.isCanVibrate = false,
     this.isVibrateLoading = false,
     this.auth,
@@ -35,6 +36,7 @@ class AppStateModel {
   int currentIndex;
   bool isNewNotifications;
   bool isCoordinator;
+  bool isAppStateResumed;
 
   bool isCanVibrate;
   bool isVibrateLoading;
