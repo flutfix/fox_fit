@@ -373,12 +373,12 @@ class Requests {
     const String url = '${Api.url}get_notifications';
     final dioClient = Dio(Api.options);
     var now = DateTime.now();
-    var weekAgo = DateTime(now.year, now.month, now.day - 7);
+    var monthAgo = DateTime(now.year, now.month - 1, now.day);
 
     ///Timestamp in seconds
     String endDate = (now.millisecondsSinceEpoch / 1000).round().toString();
     String startDate =
-        (weekAgo.millisecondsSinceEpoch / 1000).round().toString();
+        (monthAgo.millisecondsSinceEpoch / 1000).round().toString();
 
     String? relevanceDate =
         await getPrefs(key: Cache.relevanceDate, prefsType: PrefsType.string);
