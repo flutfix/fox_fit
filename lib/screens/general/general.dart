@@ -21,7 +21,7 @@ class General extends StatefulWidget {
   _GeneralState createState() => _GeneralState();
 }
 
-class _GeneralState extends State<General> {
+class _GeneralState extends State<General> with WidgetsBindingObserver {
   late GeneralController controller;
   late PageController pageController;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -29,6 +29,7 @@ class _GeneralState extends State<General> {
 
   @override
   void initState() {
+    WidgetsBinding.instance?.addObserver(this);
     controller = Get.put(GeneralController());
 
     AuthDataModel authData = Get.arguments;
@@ -40,34 +41,34 @@ class _GeneralState extends State<General> {
         model?.isCoordinator = true;
       });
 
-      _load();
       controller.initVibration();
     }
+    _load();
     pageController = PageController(initialPage: 0);
     super.initState();
   }
 
+  /// Отслеживание когда приложение возвращается из фонового состояния и обновление данных, если [true]
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) {
+      return;
+    }
+    final isResumed = state == AppLifecycleState.resumed;
+
+    if (isResumed) {
+      log('[State] Was resumed from background');
+      await _load();
+    }
+  }
+
+  /// Функция подгрузки данных, необходимых для инициализации приложения
   Future<void> _load() async {
     controller.appState.update((model) {
       model?.isLoading = true;
     });
 
-   
-    // var data = await controller.getCustomers();
-    // var connectivityResult = await Connectivity().checkConnectivity();
-    // if (data != 200) {
-    //   if (connectivityResult != ConnectivityResult.ethernet) {
-    //   }
-    //   Snackbar.getSnackbar(
-    //     title: S.of(context).server_error,
-    //     message: 'Загрузка данных не удалась',
-    //   );
-    // } else {
-      // controller.appState.update((model) {
-      //   model?.isLoading = false;
-      // });
-    // }
-    // log('${controller.appState.value.isLoading}');
     await _fcm();
     await controller.getCustomers(fcmToken: _fcmToken);
     controller.appState.update((model) {
@@ -191,5 +192,11 @@ class _GeneralState extends State<General> {
       }
     });
     //----
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
   }
 }
