@@ -6,6 +6,7 @@ import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/trainer.dart';
 import 'package:fox_fit/screens/confirmation/confirmation.dart';
 import 'package:fox_fit/screens/trainer_choosing/widgets/search.dart';
+import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:get/get.dart';
 
@@ -34,7 +35,10 @@ class _TrainerChoosingPageState extends State<TrainerChoosingPage> {
       loading = true;
     });
 
-    await controller.getTrainers();
+    await ErrorHandler.loadingData(
+      context: context,
+      request: controller.getTrainers,
+    );
 
     setState(() {
       loading = false;

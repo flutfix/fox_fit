@@ -3,6 +3,7 @@ import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/screens/customer_information/customer_information.dart';
+import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
@@ -43,7 +44,10 @@ class _CustomersPageState extends State<CustomersPage> {
     setState(() {
       _isLoading = true;
     });
-    await controller.getRegularCustomers();
+
+    await ErrorHandler.loadingData(
+        context: context, request: controller.getRegularCustomers);
+
     setState(() {
       _isLoading = false;
     });
@@ -73,30 +77,28 @@ class _CustomersPageState extends State<CustomersPage> {
   Widget _coordinatorCustomers(ThemeData theme) {
     if (controller.appState.value.coordinator != null) {
       if (controller.appState.value.coordinator!.customers.isNotEmpty) {
-        return Obx(
-          () => Column(
-            children: [
-              const SizedBox(height: 25),
-              GetBuilder<GeneralController>(
-                builder: (_controller) {
-                  return ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount:
-                        controller.appState.value.coordinator!.customers.length,
-                    itemBuilder: (context, index) {
-                      return _customerContainer(
-                        theme,
-                        customer: controller
-                            .appState.value.coordinator!.customers[index],
-                      );
-                    },
-                  );
-                },
-              ),
-              const SizedBox(height: 19),
-            ],
-          ),
+        return Column(
+          children: [
+            const SizedBox(height: 25),
+            GetBuilder<GeneralController>(
+              builder: (_controller) {
+                return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount:
+                      controller.appState.value.coordinator!.customers.length,
+                  itemBuilder: (context, index) {
+                    return _customerContainer(
+                      theme,
+                      customer: controller
+                          .appState.value.coordinator!.customers[index],
+                    );
+                  },
+                );
+              },
+            ),
+            const SizedBox(height: 19),
+          ],
         );
       } else {
         return _getEmptyCustomersText(theme);
@@ -275,12 +277,24 @@ class _CustomersPageState extends State<CustomersPage> {
     }
     await Future.delayed(const Duration(milliseconds: 300));
     if (widget.isCoordinator) {
-      controller.getCoordinaorWorkSpace();
+      await ErrorHandler.loadingData(
+        context: context,
+        request: controller.getCoordinaorWorkSpace,
+        repeat: false,
+      );
     } else {
       if (controller.appState.value.currentIndex != stableStageIndex) {
-        controller.getCustomers();
+        await ErrorHandler.loadingData(
+          context: context,
+          request: controller.getCustomers,
+          repeat: false,
+        );
       } else {
-        controller.getRegularCustomers();
+        await ErrorHandler.loadingData(
+          context: context,
+          request: controller.getRegularCustomers,
+          repeat: false,
+        );
       }
     }
     _refreshController.refreshCompleted();

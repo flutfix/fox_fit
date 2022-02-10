@@ -439,6 +439,56 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get no_internet_access {
+    return Intl.message(
+      '',
+      name: 'no_internet_access',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get data_download_failed {
+    return Intl.message(
+      '',
+      name: 'data_download_failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get server_navailable {
+    return Intl.message(
+      '',
+      name: 'server_navailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get failed_update_list {
+    return Intl.message(
+      '',
+      name: 'failed_update_list',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get authorization_failed {
+    return Intl.message(
+      '',
+      name: 'authorization_failed',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

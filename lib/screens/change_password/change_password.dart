@@ -6,7 +6,8 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
-import 'package:fox_fit/utils/snackbar.dart';
+import 'package:fox_fit/utils/error_handler.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
@@ -72,7 +73,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 22.0, vertical: 10),
                 hintText: S.of(context).new_password,
-                icon: Images.passSvg,
+                iconSvg: Images.passSvg,
                 isIconAnimation: _isNewPassAnimation,
                 textController: _newPassController,
                 textInputAction: TextInputAction.next,
@@ -86,7 +87,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 22.0, vertical: 10),
                 hintText: S.of(context).new_password_again,
-                icon: Images.passSvg,
+                iconSvg: Images.passSvg,
                 isIconAnimation: _isNewPassAgainAnimation,
                 textController: _newPassAgainController,
                 scrollPaddingBottom: 120,
@@ -112,55 +113,43 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   }
 
   Future<dynamic> _validateFields(ThemeData theme) async {
-    if (_newPassController.text.isEmpty &&
+    /// Анимация на незаполненные поля
+    if (_newPassController.text.isEmpty ||
         _newPassAgainController.text.isEmpty) {
       if (_isCanVibrate) {
         Vibrate.feedback(FeedbackType.success);
       }
 
       setState(() {
-        _isNewPassAnimation = true;
-        _isNewPassAgainAnimation = true;
+        /// Если не заполнено поле [Новый пароль]
+        if (_newPassController.text.isEmpty) {
+          _isNewPassAnimation = true;
+        }
+
+        /// Если не заполнено поле [Новый пароль (повторно)]
+        if (_newPassAgainController.text.isEmpty) {
+          _isNewPassAgainAnimation = true;
+        }
       });
       await Future.delayed(const Duration(milliseconds: 250));
       setState(() {
         _isNewPassAnimation = false;
         _isNewPassAgainAnimation = false;
       });
-    } else if (_newPassController.text.isEmpty) {
-      if (_isCanVibrate) {
-        Vibrate.feedback(FeedbackType.success);
-      }
 
-      setState(() {
-        _isNewPassAnimation = true;
-      });
-      await Future.delayed(const Duration(milliseconds: 250));
-      setState(() {
-        _isNewPassAnimation = false;
-      });
-    } else if (_newPassAgainController.text.isEmpty) {
-      if (_isCanVibrate) {
-        Vibrate.feedback(FeedbackType.success);
-      }
-
-      setState(() {
-        _isNewPassAgainAnimation = true;
-      });
-      await Future.delayed(const Duration(milliseconds: 250));
-      setState(() {
-        _isNewPassAgainAnimation = false;
-      });
+      /// Если введён менее трёх символов
     } else if (_newPassController.text.length < 3 ||
         _newPassAgainController.text.length < 3) {
       if (_isCanVibrate) {
         Vibrate.feedback(FeedbackType.success);
       }
 
-       CustomSnackbar.getSnackbar(
+      CustomSnackbar.getSnackbar(
         title: S.of(context).data_entered_incorrectly,
         message: S.of(context).least_three_characters,
       );
+
+      /// Если пароли не совпадают
     } else if (_newPassController.text != _newPassAgainController.text) {
       if (_isCanVibrate) {
         Vibrate.feedback(FeedbackType.success);
@@ -169,34 +158,42 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         title: S.of(context).passwords_do_not_match,
         message: S.of(context).repeat_input,
       );
+
+      /// Валидация пройдена
     } else {
-      // log('${_controller.appState.value.auth!.data!.licenseKey}');
-      // log('${_controller.appState.value.auth!.users![0].uid}');
-      // log('${_newPassAgainController.text}');
-      var data = await _controller.changeUserPassword(
-        key: _controller.appState.value.auth!.data!.licenseKey,
-        userUid: _controller.appState.value.auth!.users![0].uid,
-        newPass: _newPassAgainController.text,
+      dynamic data = await ErrorHandler.singleRequest(
+        context: context,
+        request: () {
+          return _controller.changeUserPassword(
+            key: _controller.appState.value.auth!.data!.licenseKey,
+            userUid: _controller.appState.value.auth!.users![0].uid,
+            newPass: _newPassAgainController.text,
+          );
+        },
+        handler: () {
+          if (_isCanVibrate) {
+            Vibrate.feedback(FeedbackType.success);
+          }
+          CustomSnackbar.getSnackbar(
+            title: S.of(context).server_error,
+            message: S.of(context).password_not_changed,
+          );
+        },
       );
+
+      /// Успешная смена пароля
       if (data == 200) {
-        /// Вибрация при успешной смене пароля
         if (_isCanVibrate) {
           Vibrate.feedback(FeedbackType.light);
         }
+
         Get.delete<GeneralController>();
+
         var prefs = await SharedPreferences.getInstance();
         prefs.setBool(Cache.isAuthorized, false);
         prefs.setString(Cache.pass, '');
 
         Get.offAllNamed(Routes.auth);
-      } else {
-        if (_isCanVibrate) {
-          Vibrate.feedback(FeedbackType.success);
-        }
-        CustomSnackbar.getSnackbar(
-          title: S.of(context).server_error,
-          message: S.of(context).password_not_changed,
-        );
       }
     }
   }

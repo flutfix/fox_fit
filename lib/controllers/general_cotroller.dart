@@ -31,7 +31,7 @@ class GeneralController extends GetxController {
     required String newPass,
     required String userUid,
   }) async {
-    var data = await Requests.changeUserPassword(
+    dynamic data = await Requests.changeUserPassword(
       key: key,
       newPass: newPass,
       userUid: userUid,
@@ -45,8 +45,7 @@ class GeneralController extends GetxController {
       id: appState.value.auth!.users![0].uid,
       fcmToken: fcmToken,
     );
-    if (data is int) {
-      // TODO: Обработка статус кодов != 200
+    if (data is int || data == null) {
       return data;
     } else {
       final String isNewNotifications = data[0];
@@ -71,8 +70,8 @@ class GeneralController extends GetxController {
   Future<dynamic> getRegularCustomers({bool? getRegularCustomersOnly}) async {
     var data = await Requests.getRegularCustomers(
         id: appState.value.auth!.users![0].uid);
-    if (data is int) {
-      // TODO: Обработка статус кодов != 200
+    if (data is int || data == null) {
+      return data;
     } else {
       int stableStageIndex = appState.value.bottomBarItems
           .indexWhere((element) => element.shortName == 'Постоянные');
@@ -82,6 +81,7 @@ class GeneralController extends GetxController {
       appState.update((model) {
         model?.sortedCustomers = sortedCustomers;
       });
+      return 200;
     }
   }
 
@@ -91,14 +91,15 @@ class GeneralController extends GetxController {
     var data = await Requests.getCoordinaorWorkSpace(
         id: appState.value.auth!.users![1].uid);
 
-    if (data is int) {
-      // TODO: Обработка статус кодов != 200
+    if (data is int || data == null) {
+      return data;
     } else {
       final CoordinatorModel _coordinator =
           CoordinatorModel(isNewNotification: data[0], customers: data[1]);
       appState.update((model) {
         model?.coordinator = _coordinator;
       });
+      return 200;
     }
   }
 
@@ -107,12 +108,13 @@ class GeneralController extends GetxController {
     var data = await Requests.getTrainerPerfomance(
       id: appState.value.auth!.users![0].uid,
     );
-    if (data is int) {
-      // TODO: Обработка статус кодов != 200
+    if (data is int || data == null) {
+      return data;
     } else {
       appState.update((model) {
         model?.trainerPerfomance = data;
       });
+      return 200;
     }
   }
 
@@ -124,8 +126,8 @@ class GeneralController extends GetxController {
       customerId: customerId,
       uId: appState.value.auth!.users![0].uid,
     );
-    if (data is int) {
-      // TODO: Обработка статус кодов != 200
+    if (data is int || data == null) {
+      return data;
     } else {
       final List<DetailedInfo> detailedInfo = data[0];
       final List<AvailablePipelineStages> availablePipelineStages = data[1];
@@ -133,6 +135,7 @@ class GeneralController extends GetxController {
         model?.detailedInfo = detailedInfo;
         model?.availablePipelineStages = availablePipelineStages;
       });
+      return 200;
     }
   }
 
@@ -140,12 +143,13 @@ class GeneralController extends GetxController {
   Future<dynamic> getTrainers() async {
     var data =
         await Requests.getTrainers(id: appState.value.auth!.users![0].uid);
-    if (data is int) {
-      // TODO: Обработка статус кодов != 200
+    if (data is int || data == null) {
+      return data;
     } else {
       appState.update((model) {
         model?.availableTrainers = data;
       });
+      return 200;
     }
   }
 
@@ -157,7 +161,7 @@ class GeneralController extends GetxController {
     String? transferDate,
     String? commentText,
   }) async {
-    var data = await Requests.transferClientByTrainerPipeline(
+    dynamic data = await Requests.transferClientByTrainerPipeline(
       userUid: userUid,
       customerUid: customerUid,
       trainerPipelineStageUid: trainerPipelineStageUid,
@@ -173,7 +177,7 @@ class GeneralController extends GetxController {
     required String customerUid,
     required String trainerUid,
   }) async {
-    var data = await Requests.transferClientToTrainer(
+    dynamic data = await Requests.transferClientToTrainer(
       userUid: userUid,
       customerUid: customerUid,
       trainerUid: trainerUid,
@@ -186,13 +190,13 @@ class GeneralController extends GetxController {
     var data = await Requests.getNotifications(
       id: appState.value.auth!.users![0].uid,
     );
-    if (data is int) {
-      // TODO: Обработка статус кодов != 200
+    if (data is int || data == null) {
+      return data;
     } else {
       appState.update((model) {
         model?.notifications = data;
       });
-      log(appState.value.notifications[0].isNew.toString());
+      return 200;
     }
   }
 

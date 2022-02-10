@@ -43,13 +43,14 @@ Future _init() async {
 
   ///Request permissions for Ios
   NotificationSettings settings = await _fcm.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true);
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
 }
 
 class MyApp extends StatelessWidget {

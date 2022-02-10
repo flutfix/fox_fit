@@ -4,6 +4,7 @@ import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/notification.dart';
+import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:get/get.dart';
@@ -41,7 +42,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
     setState(() {
       _isLoading = true;
     });
-    await _controller.getNotifications();
+
+    await ErrorHandler.loadingData(
+        context: context, request: _controller.getNotifications);
+
     setState(() {
       _isLoading = false;
     });
@@ -190,7 +194,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
     }
 
     await _setPrefs(timestamp: _getRelevanceDate);
-    await _controller.getNotifications();
+    await ErrorHandler.loadingData(
+      context: context,
+      request: _controller.getNotifications,
+      repeat: false,
+    );
 
     _refreshController.refreshCompleted();
   }

@@ -6,7 +6,8 @@ import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
-import 'package:fox_fit/utils/snackbar.dart';
+import 'package:fox_fit/utils/error_handler.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -101,7 +102,7 @@ class _AuthPageState extends State<AuthPage> {
                       Input(
                         width: width,
                         hintText: 'Введите телефон',
-                        icon: Images.phone,
+                        iconSvg: Images.phone,
                         isIconAnimation: isPhoneAnimation,
                         textInputType: TextInputType.phone,
                         textController: phoneController,
@@ -115,7 +116,7 @@ class _AuthPageState extends State<AuthPage> {
                       Input(
                         width: width,
                         hintText: 'Введите пароль',
-                        icon: Images.passSvg,
+                        iconSvg: Images.passSvg,
                         isIconAnimation: isPassAnimation,
                         obscureText: true,
                         textController: passController,
@@ -146,27 +147,23 @@ class _AuthPageState extends State<AuthPage> {
 
   Future<dynamic> _validateFields(ThemeData theme) async {
     if (phoneController.text.isNotEmpty && passController.text.isNotEmpty) {
-      var authData = await Requests.auth(
-        phone: oldPhone != '' ? oldPhone : maskFormatter.getUnmaskedText(),
-        pass: passController.text,
+      dynamic authData = await ErrorHandler.singleRequest(
+        context: context,
+        request: () {
+          return Requests.auth(
+            phone: oldPhone != '' ? oldPhone : maskFormatter.getUnmaskedText(),
+            pass: passController.text,
+          );
+        },
+        handler: () {
+          CustomSnackbar.getSnackbar(
+            title: S.of(context).server_error,
+            message: S.of(context).authorization_failed,
+          );
+        },
       );
-      if (authData is int) {
-        /// Вибрация на запрос с исключением
-        if (_canVibrate) {
-          Vibrate.feedback(FeedbackType.success);
-        }
-        if (authData == 401) {
-          CustomSnackbar.getSnackbar(
-            title: S.of(context).login_exeption,
-            message: S.of(context).wrong_login_or_pass,
-          );
-        } else {
-          CustomSnackbar.getSnackbar(
-            title: S.of(context).login_exeption,
-            message: authData.toString(),
-          );
-        }
-      } else {
+
+      if (!(authData is int || authData == null)) {
         /// Вибрация при успешной авторизации
         if (_canVibrate) {
           Vibrate.feedback(FeedbackType.light);
@@ -181,35 +178,20 @@ class _AuthPageState extends State<AuthPage> {
       if (_canVibrate) {
         Vibrate.feedback(FeedbackType.success);
       }
-      if (phoneController.text.isEmpty && passController.text.isEmpty) {
+      if (phoneController.text.isEmpty || passController.text.isEmpty) {
         setState(() {
-          isPhoneAnimation = true;
-          isPassAnimation = true;
+          if (phoneController.text.isEmpty) {
+            isPhoneAnimation = true;
+          }
+          if (passController.text.isEmpty) {
+            isPassAnimation = true;
+          }
         });
         await Future.delayed(const Duration(milliseconds: 250));
         setState(() {
           isPhoneAnimation = false;
           isPassAnimation = false;
         });
-      } else {
-        if (phoneController.text.isEmpty) {
-          setState(() {
-            isPhoneAnimation = true;
-          });
-          await Future.delayed(const Duration(milliseconds: 250));
-          setState(() {
-            isPhoneAnimation = false;
-          });
-        }
-        if (passController.text.isEmpty) {
-          setState(() {
-            isPassAnimation = true;
-          });
-          await Future.delayed(const Duration(milliseconds: 250));
-          setState(() {
-            isPassAnimation = false;
-          });
-        }
       }
     }
   }

@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "authorization_failed":
+            MessageLookupByLibrary.simpleMessage("Авторизация не удалась"),
         "cancel": MessageLookupByLibrary.simpleMessage("Отмена"),
         "change_password":
             MessageLookupByLibrary.simpleMessage("Изменить пароль"),
@@ -38,6 +40,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
+        "data_download_failed":
+            MessageLookupByLibrary.simpleMessage("Загрузка данных не удалась"),
         "data_entered_incorrectly":
             MessageLookupByLibrary.simpleMessage("Данные введены некорректно"),
         "description_changing_password": MessageLookupByLibrary.simpleMessage(
@@ -48,6 +52,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Клиенты отсутствуют"),
         "error": MessageLookupByLibrary.simpleMessage("Ошибка"),
         "exit": MessageLookupByLibrary.simpleMessage("Выйти"),
+        "failed_update_list":
+            MessageLookupByLibrary.simpleMessage("Не удалось обновить список"),
         "fast_search": MessageLookupByLibrary.simpleMessage("Быстрый поиск"),
         "kickoff_training":
             MessageLookupByLibrary.simpleMessage("Стартовая тренировка"),
@@ -61,6 +67,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "new_password": MessageLookupByLibrary.simpleMessage("Новый пароль"),
         "new_password_again":
             MessageLookupByLibrary.simpleMessage("Новый пароль (повторно)"),
+        "no_internet_access":
+            MessageLookupByLibrary.simpleMessage("Нет доступа к интернету"),
         "notifications": MessageLookupByLibrary.simpleMessage("Уведомления"),
         "password_not_changed":
             MessageLookupByLibrary.simpleMessage("Пароль не изменён"),
@@ -70,6 +78,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "send_to_trainer":
             MessageLookupByLibrary.simpleMessage("Передать тренеру"),
         "server_error": MessageLookupByLibrary.simpleMessage("Ошибка сервера"),
+        "server_navailable":
+            MessageLookupByLibrary.simpleMessage("Сервер недоступен"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
         "to_coach": MessageLookupByLibrary.simpleMessage("Тренеру"),
         "trainer_stats":

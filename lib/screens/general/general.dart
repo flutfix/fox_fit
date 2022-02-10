@@ -9,6 +9,7 @@ import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
 import 'package:fox_fit/screens/more/more.dart';
+import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/bottom_bar.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/keep_alive_page.dart';
@@ -39,10 +40,9 @@ class _GeneralState extends State<General> {
       controller.appState.update((model) {
         model?.isCoordinator = true;
       });
-
-      _load();
       controller.initVibration();
     }
+    _load();
     pageController = PageController(initialPage: 0);
     super.initState();
   }
@@ -52,24 +52,14 @@ class _GeneralState extends State<General> {
       model?.isLoading = true;
     });
 
-   
-    // var data = await controller.getCustomers();
-    // var connectivityResult = await Connectivity().checkConnectivity();
-    // if (data != 200) {
-    //   if (connectivityResult != ConnectivityResult.ethernet) {
-    //   }
-    //   Snackbar.getSnackbar(
-    //     title: S.of(context).server_error,
-    //     message: 'Загрузка данных не удалась',
-    //   );
-    // } else {
-      // controller.appState.update((model) {
-      //   model?.isLoading = false;
-      // });
-    // }
-    // log('${controller.appState.value.isLoading}');
     await _fcm();
-    await controller.getCustomers(fcmToken: _fcmToken);
+    await ErrorHandler.loadingData(
+      context: context,
+      request: () {
+        return controller.getCustomers(fcmToken: _fcmToken);
+      },
+    );
+
     controller.appState.update((model) {
       model?.isLoading = false;
     });

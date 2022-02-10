@@ -37,5 +37,10 @@
     "password_not_changed": "Пароль не изменён",
     "data_entered_incorrectly": "Данные введены некорректно",
     "least_three_characters": "Не менее трёх символов",
-    "notifications": "Уведомления"
+    "notifications": "Уведомления",
+    "no_internet_access": "Нет доступа к интернету",
+    "data_download_failed": "Загрузка данных не удалась",
+    "server_navailable": "Сервер недоступен",
+    "failed_update_list": "Не удалось обновить список",
+    "authorization_failed": "Авторизация не удалась"
 }
