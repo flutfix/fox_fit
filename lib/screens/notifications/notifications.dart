@@ -64,7 +64,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.only(
+                          left: 20.0,
+                          right: 20.0,
+                          bottom: 60,
+                        ),
                         child: Obx(
                           (() => Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,42 +77,48 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                         .length, (index) {
                                   var notification = _controller
                                       .appState.value.notifications[index];
+                                  if (notification.isVisible) {
+                                    /// Блок если день сменился
+                                    if (_currentDateTimestamp !=
+                                        notification.date) {
+                                      _currentDateTimestamp = notification.date;
 
-                                  /// Блок если день сменился
-                                  if (_currentDateTimestamp !=
-                                      notification.date) {
-                                    _currentDateTimestamp = notification.date;
+                                      dynamic date = _timeStampToFormattedDate(
+                                          timestamp: _currentDateTimestamp);
 
-                                    dynamic date = _timeStampToFormattedDate(
-                                        timestamp: _currentDateTimestamp);
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(height: 25),
-                                        Text(
-                                          date,
-                                          style: theme.textTheme.bodyText2!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        _getNotificationContainer(
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(height: 25),
+                                          Text(
+                                            date,
+                                            style: theme.textTheme.bodyText2!
+                                                .copyWith(
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                          ),
+                                          const SizedBox(height: 16),
+                                          _getNotificationContainer(
+                                            theme,
+                                            notification,
+                                          ),
+                                        ],
+                                      );
+
+                                      /// Просто уведомление если день все тот же
+                                    } else {
+                                      return Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 6.0),
+                                        child: _getNotificationContainer(
                                           theme,
                                           notification,
                                         ),
-                                      ],
-                                    );
-
-                                    /// Просто уведомление если день все тот же
+                                      );
+                                    }
                                   } else {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(top: 6.0),
-                                      child: _getNotificationContainer(
-                                        theme,
-                                        notification,
-                                      ),
-                                    );
+                                    return const SizedBox();
                                   }
                                 }),
                               )),
@@ -134,16 +144,24 @@ class _NotificationsPageState extends State<NotificationsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /// Текст уведомления
-                Text(
-                  notification.text,
-                  style: theme.textTheme.bodyText2,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 120,
+                  child: Text(
+                    notification.text,
+                    style: theme.textTheme.bodyText2,
+                  ),
                 ),
 
+                const SizedBox(height: 4),
+
                 /// Имя клиента
-                Text(
-                  notification.customerName,
-                  style: theme.textTheme.bodyText2!.copyWith(
-                    color: theme.colorScheme.secondary,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 120,
+                  child: Text(
+                    notification.customerName,
+                    style: theme.textTheme.bodyText2!.copyWith(
+                      color: theme.colorScheme.secondary,
+                    ),
                   ),
                 )
               ],
@@ -182,6 +200,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   _onBack() async {
     await _setPrefs(timestamp: _getRelevanceDate);
     Get.back();
+    _updateNotificationIconColor();
   }
 
   Future<void> _refresh() async {
@@ -191,7 +210,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
     await _setPrefs(timestamp: _getRelevanceDate);
     await _controller.getNotifications();
-
+    _updateNotificationIconColor();
     _refreshController.refreshCompleted();
   }
 
@@ -199,5 +218,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
     dynamic _relevanceDate = DateTime.now().toUtc();
     return _relevanceDate =
         (_relevanceDate.millisecondsSinceEpoch / 1000).round().toString();
+  }
+
+  void _updateNotificationIconColor() {
+    _controller.appState.update((model) {
+      model?.isNewNotifications = false;
+    });
   }
 }
