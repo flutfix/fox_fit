@@ -16,7 +16,7 @@ import 'package:get/get.dart';
 class ConfirmationPage extends StatelessWidget {
   ConfirmationPage({
     Key? key,
-    required this.stageUid,
+    required this.stagePipelineType,
     required this.image,
     this.text = '',
     this.richText,
@@ -24,7 +24,7 @@ class ConfirmationPage extends StatelessWidget {
     this.padding = const EdgeInsets.fromLTRB(20, 150, 20, 20),
   }) : super(key: key);
 
-  final String stageUid;
+  final StagePipelineType stagePipelineType;
   final String image;
   final String text;
   final RichText? richText;
@@ -66,7 +66,7 @@ class ConfirmationPage extends StatelessWidget {
                       style: theme.textTheme.headline5,
                     ),
                   const SizedBox(height: 12),
-                  if (Enums.getIsDisplayComment(stageUid: stageUid))
+                  if (Enums.getIsDisplayComment(stageType: stagePipelineType))
                     Input(
                       textController: textController,
                       hintText: S.of(context).comment_for_recipient,
@@ -80,7 +80,7 @@ class ConfirmationPage extends StatelessWidget {
                     )
                   else
                     const SizedBox(height: 50),
-                  if (Enums.getIsDisplayComment(stageUid: stageUid))
+                  if (Enums.getIsDisplayComment(stageType: stagePipelineType))
                     const SizedBox(height: 12),
                   CustomTextButton(
                     onTap: () {
@@ -119,8 +119,8 @@ class ConfirmationPage extends StatelessWidget {
     required BuildContext context,
   }) async {
     /// Если относится к стадии [Отказ] или [Недозвон]
-    if (stageUid == StagePipeline.rejection ||
-        stageUid == StagePipeline.nonCall) {
+    if (stagePipelineType == StagePipelineType.rejection ||
+        stagePipelineType == StagePipelineType.nonCall) {
       /// С комментарием
       if (textController.text.isNotEmpty) {
         await _transferClientByTrainerPipeline(
@@ -137,7 +137,7 @@ class ConfirmationPage extends StatelessWidget {
       }
 
       /// Если относится к стадии [Перенос]
-    } else if (stageUid == StagePipeline.transferringRecord) {
+    } else if (stagePipelineType == StagePipelineType.transferringRecord) {
       await DatePicker.showDatePicker(
         context,
         onConfirm: (confirmTime) async {
@@ -164,7 +164,7 @@ class ConfirmationPage extends StatelessWidget {
       );
 
       /// Если было открыто от роли [Координатор]
-    } else if (stageUid == StagePipeline.coordinator) {
+    } else if (stagePipelineType == StagePipelineType.coordinator) {
       dynamic data = await ErrorHandler.singleRequest(
         context: context,
         request: () {
@@ -233,7 +233,9 @@ class ConfirmationPage extends StatelessWidget {
         return controller.transferClientByTrainerPipeline(
           userUid: controller.appState.value.auth!.users![0].uid,
           customerUid: controller.appState.value.currentCustomer!.uid,
-          trainerPipelineStageUid: stageUid,
+          trainerPipelineStageUid: Enums.getStagePipelineUid(
+            stagePipelineType: stagePipelineType,
+          ),
           transferDate: transferDate,
           commentText: textController.text,
         );

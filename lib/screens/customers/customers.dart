@@ -5,6 +5,7 @@ import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/screens/customer_information/customer_information.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -94,6 +95,7 @@ class _CustomersPageState extends State<CustomersPage> {
               itemBuilder: (context, index) {
                 return _customerContainer(
                   theme,
+                  clientType: ClientType.coordinator,
                   customer:
                       _controller.appState.value.coordinator!.customers[index],
                 );
@@ -121,12 +123,9 @@ class _CustomersPageState extends State<CustomersPage> {
           .sortedCustomers[_controller.appState.value
               .bottomBarItems[_controller.appState.value.currentIndex].uid]!
           .isNotEmpty) {
-        log('${_controller.appState.value.sortedCustomers[_controller.appState.value.bottomBarItems[_controller.appState.value.currentIndex].uid]}');
         return Column(
           children: [
             const SizedBox(height: 25),
-
-            // log('${_controller.appState.value.sortedCustomers[_controller.appState.value.bottomBarItems[_controller.appState.value.currentIndex].uid]}');
             ListView.builder(
               physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
@@ -142,6 +141,13 @@ class _CustomersPageState extends State<CustomersPage> {
               itemBuilder: (context, index) {
                 return _customerContainer(
                   theme,
+                  clientType: Enums.getClientType(
+                    clientUid: _controller
+                        .appState
+                        .value
+                        .bottomBarItems[_controller.appState.value.currentIndex]
+                        .uid,
+                  ),
                   customer: _controller.appState.value.sortedCustomers[
                       _controller
                           .appState
@@ -152,7 +158,6 @@ class _CustomersPageState extends State<CustomersPage> {
                 );
               },
             ),
-
             const SizedBox(height: 19),
           ],
         );
@@ -183,6 +188,7 @@ class _CustomersPageState extends State<CustomersPage> {
   Widget _customerContainer(
     ThemeData theme, {
     required CustomerModel customer,
+    required ClientType clientType,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -196,6 +202,7 @@ class _CustomersPageState extends State<CustomersPage> {
               });
               Get.to(
                 () => CustomerInformationPage(
+                  clientType: clientType,
                   isHandingButton: widget.isCoordinator,
                 ),
               );

@@ -1,24 +1,20 @@
 import 'package:fox_fit/config/assets.dart';
+import 'package:fox_fit/config/config.dart';
 
 class Enums {
   /// Для получения иконки стадии воронки по [IconUid]
-  static String getIconStage({required String iconUid}) {
-    switch (iconUid) {
-
-      /// Назначена стартовая тренировка
-      case 'e8af182e-1550-11ec-d58b-ac1f6b336352':
+  static String getIconStage({required StagePipelineType stageType}) {
+    switch (stageType) {
+      case StagePipelineType.assigned:
         return Images.assigned;
 
-      /// Клиент перенёс запись
-      case 'e8b2d9c8-1550-11ec-d58b-ac1f6b336352':
+      case StagePipelineType.transferringRecord:
         return Images.refresh;
 
-      /// Невозможно дозвониться
-      case 'e8acaa26-1550-11ec-d58b-ac1f6b336352':
+      case StagePipelineType.nonCall:
         return Images.phoneMinus;
 
-      /// Отказ клиента
-      case 'e8b420f8-1550-11ec-d58b-ac1f6b336352':
+      case StagePipelineType.rejection:
         return Images.cross;
       default:
         return Images.assigned;
@@ -26,26 +22,108 @@ class Enums {
   }
 
   /// Для отображения комментария
-  static bool getIsDisplayComment({required String stageUid}) {
-    switch (stageUid) {
-
-      /// Назначена стартовая тренировка
-      case 'e8af182e-1550-11ec-d58b-ac1f6b336352':
+  static bool getIsDisplayComment({required StagePipelineType stageType}) {
+    switch (stageType) {
+      case StagePipelineType.assigned:
         return false;
 
-      /// Клиент перенёс запись
-      case 'e8b2d9c8-1550-11ec-d58b-ac1f6b336352':
+      case StagePipelineType.transferringRecord:
         return false;
 
-      /// Невозможно дозвониться
-      case 'e8acaa26-1550-11ec-d58b-ac1f6b336352':
+      case StagePipelineType.nonCall:
         return true;
 
-      /// Отказ клиента
-      case 'e8b420f8-1550-11ec-d58b-ac1f6b336352':
+      case StagePipelineType.rejection:
         return true;
+
       default:
         return false;
     }
   }
+
+  static getClientType({required String clientUid}) {
+    switch (clientUid) {
+      case Client.fresh:
+        return ClientType.fresh;
+
+      case Client.assigned:
+        return ClientType.assigned;
+
+      case Client.conducted:
+        return ClientType.conducted;
+
+      case Client.permanent:
+        return ClientType.permanent;
+
+      // case Client.sleeping:
+      //   return ClientType.fresh;
+
+      case Client.coordinator:
+        return ClientType.coordinator;
+
+      default:
+        return ClientType.fresh;
+    }
+  }
+
+  static getStagePipelineType({required String stageUid}) {
+    switch (stageUid) {
+      case StagePipeline.assigned:
+        return StagePipelineType.assigned;
+
+      case StagePipeline.transferringRecord:
+        return StagePipelineType.transferringRecord;
+
+      case StagePipeline.nonCall:
+        return StagePipelineType.nonCall;
+
+      case StagePipeline.rejection:
+        return StagePipelineType.rejection;
+
+      case StagePipeline.coordinator:
+        return StagePipelineType.coordinator;
+
+      default:
+        return StagePipelineType.assigned;
+    }
+  }
+
+  static getStagePipelineUid({required StagePipelineType stagePipelineType}) {
+    switch (stagePipelineType) {
+      case StagePipelineType.assigned:
+        return StagePipeline.assigned;
+
+      case StagePipelineType.transferringRecord:
+        return StagePipeline.transferringRecord;
+
+      case StagePipelineType.nonCall:
+        return StagePipeline.nonCall;
+
+      case StagePipelineType.rejection:
+        return StagePipeline.rejection;
+
+      case StagePipelineType.coordinator:
+        return StagePipeline.coordinator;
+
+      default:
+        return StagePipeline.assigned;
+    }
+  }
+}
+
+enum StagePipelineType {
+  assigned,
+  transferringRecord,
+  nonCall,
+  rejection,
+  coordinator,
+}
+
+enum ClientType {
+  fresh,
+  assigned,
+  conducted,
+  permanent,
+  sleeping,
+  coordinator,
 }
