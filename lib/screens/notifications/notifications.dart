@@ -7,6 +7,7 @@ import 'package:fox_fit/models/notification.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/default_container.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -205,6 +206,17 @@ class _NotificationsPageState extends State<NotificationsPage> {
     await _setPrefs(timestamp: _getRelevanceDate);
     Get.back();
     _updateNotificationIconColor();
+    await ErrorHandler.singleRequest(
+      context: context,
+      request: _controller.getCustomers,
+      skipCheck: true,
+      handler: () {
+        CustomSnackbar.getSnackbar(
+          title: S.of(context).no_internet_access,
+          message: S.of(context).failed_update_list,
+        );
+      },
+    );
   }
 
   Future<void> _refresh() async {
