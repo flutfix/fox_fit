@@ -46,9 +46,24 @@ class Cache {
   static const String relevanceDate = 'relevanceDate';
 }
 
-class PipeLine {
+class Client {
   /// [Новые]
-  static const String freshStage = 'e8a7b9e4-1550-11ec-d58b-ac1f6b336352';
+  static const String fresh = 'e8a7b9e4-1550-11ec-d58b-ac1f6b336352';
+
+  /// [Назначено]
+  static const String assigned = 'e8af182e-1550-11ec-d58b-ac1f6b336352';
+
+  /// [Проведено]
+  static const String conducted = 'e8b05c5c-1550-11ec-d58b-ac1f6b336352';
+
+  /// [Постоянные]
+  static const String permanent = 'e8b19892-1550-11ec-d58b-ac1f6b336352';
+
+  /// [Спящие]
+  // static const String sleeping = '';
+
+  /// [Координатор]
+  static const String coordinator = 'coordinator';
 }
 
 class StagePipeline {

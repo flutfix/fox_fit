@@ -7,6 +7,7 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/more_card.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/widgets/bottom_sheet.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
@@ -157,6 +158,7 @@ class _MorePageState extends State<MorePage> {
       isScrollControlled: true,
       builder: (context) {
         return CustomBottomSheet(
+          clientType: ClientType.coordinator,
           backgroundColor: theme.backgroundColor,
           child: Padding(
             padding: const EdgeInsets.symmetric(

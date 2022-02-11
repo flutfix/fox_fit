@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/screens/confirmation/confirmation.dart';
 import 'package:fox_fit/utils/enums.dart';
@@ -8,13 +9,16 @@ import 'package:get/get.dart';
 class CustomBottomSheet extends StatelessWidget {
   CustomBottomSheet({
     Key? key,
-    this.child,
+    required this.clientType,
     this.backgroundColor,
+    this.child,
   }) : super(key: key);
 
-  final Widget? child;
-  final GeneralController controller = Get.find<GeneralController>();
+  final ClientType clientType;
   final Color? backgroundColor;
+  final Widget? child;
+
+  final GeneralController controller = Get.find<GeneralController>();
 
   @override
   Widget build(BuildContext context) {
@@ -55,51 +59,68 @@ class CustomBottomSheet extends StatelessWidget {
                   ...List.generate(
                     controller.appState.value.availablePipelineStages.length,
                     (index) {
-                      var stage = controller
+                      dynamic stagePipeline = controller
                           .appState.value.availablePipelineStages[index];
-                      return Column(
-                        children: [
-                          GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              Get.to(
-                                () => ConfirmationPage(
-                                  stageUid: stage.uid,
-                                  image: Enums.getIconStage(
-                                    iconUid: stage.uid,
-                                  ),
-                                  text: '${stage.name}?',
-                                ),
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    Enums.getIconStage(
-                                      iconUid: stage.uid,
+                      StagePipelineType stagePipelineType =
+                          Enums.getStagePipelineType(
+                        stageUid: stagePipeline.uid,
+                      );
+                      if (clientType == ClientType.assigned &&
+                          (stagePipeline.uid == StagePipeline.assigned)) {
+                        return const SizedBox();
+                      } else if (clientType == ClientType.conducted &&
+                          (stagePipeline.uid != StagePipeline.nonCall)) {
+                        return const SizedBox();
+                      } else if (clientType == ClientType.permanent &&
+                          (stagePipeline.uid != StagePipeline.nonCall)) {
+                        return const SizedBox();
+                      } else {
+                        return Column(
+                          children: [
+                            GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                Get.to(
+                                  () => ConfirmationPage(
+                                    stagePipelineType: stagePipelineType,
+                                    image: Enums.getIconStage(
+                                      stageType: stagePipelineType,
                                     ),
-                                    color: theme.colorScheme.primary,
-                                    width: 19,
+                                    text: '${stagePipeline.name}?',
                                   ),
-                                  const SizedBox(width: 16),
-                                  Text(
-                                    stage.name,
-                                    style: theme.textTheme.headline3,
-                                  )
-                                ],
+                                );
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      Enums.getIconStage(
+                                        stageType: stagePipelineType,
+                                      ),
+                                      color: theme.colorScheme.primary,
+                                      width: 19,
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Text(
+                                      stagePipeline.name,
+                                      style: theme.textTheme.headline3,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          Divider(
-                            color: theme.bottomSheetTheme.modalBackgroundColor!
-                                .withOpacity(0.1),
-                          ),
-                          const SizedBox(height: 16),
-                        ],
-                      );
+                            const SizedBox(height: 16),
+                            Divider(
+                              color: theme
+                                  .bottomSheetTheme.modalBackgroundColor!
+                                  .withOpacity(0.1),
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                        );
+                      }
                     },
                   ),
                   const SizedBox(height: 100),

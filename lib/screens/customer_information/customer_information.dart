@@ -5,6 +5,7 @@ import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/bottom_sheet.dart';
@@ -18,9 +19,11 @@ import 'package:url_launcher/url_launcher.dart';
 class CustomerInformationPage extends StatefulWidget {
   const CustomerInformationPage({
     Key? key,
+    required this.clientType,
     this.isHandingButton = false,
   }) : super(key: key);
 
+  final ClientType clientType;
   final bool isHandingButton;
 
   @override
@@ -285,7 +288,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (context) {
-        return CustomBottomSheet();
+        return CustomBottomSheet(clientType: widget.clientType);
       },
     );
   }
@@ -311,7 +314,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
     bool _isFromNewCustomers = controller.appState.value
             .bottomBarItems[controller.appState.value.currentIndex].uid ==
-        PipeLine.freshStage;
+        Client.fresh;
     await canLaunch('whatsapp://send?phone=$number')
         ? _isFromNewCustomers
             ? launch(
