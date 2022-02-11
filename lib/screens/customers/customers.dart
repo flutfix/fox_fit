@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/generated/l10n.dart';
@@ -19,7 +21,7 @@ class CustomersPage extends StatefulWidget {
 
 class _CustomersPageState extends State<CustomersPage> {
   late bool _isLoading;
-  late GeneralController controller;
+  late GeneralController _controller;
   late RefreshController _refreshController;
   late int stableStageIndex;
   late bool isStableCustomersPage;
@@ -28,14 +30,14 @@ class _CustomersPageState extends State<CustomersPage> {
   @override
   void initState() {
     _isLoading = false;
-    controller = Get.find<GeneralController>();
+    _controller = Get.find<GeneralController>();
     _refreshController = RefreshController(initialRefresh: false);
-    stableStageIndex = controller.appState.value.bottomBarItems
+    stableStageIndex = _controller.appState.value.bottomBarItems
         .indexWhere((element) => element.shortName == 'Постоянные');
-    if (controller.appState.value.currentIndex == stableStageIndex) {
+    if (_controller.appState.value.currentIndex == stableStageIndex) {
       loadStableCustomers();
     }
-    _canVibrate = controller.appState.value.isCanVibrate;
+    _canVibrate = _controller.appState.value.isCanVibrate;
     super.initState();
   }
 
@@ -46,7 +48,7 @@ class _CustomersPageState extends State<CustomersPage> {
     });
 
     await ErrorHandler.loadingData(
-        context: context, request: controller.getRegularCustomers);
+        context: context, request: _controller.getRegularCustomers);
 
     setState(() {
       _isLoading = false;
@@ -57,16 +59,20 @@ class _CustomersPageState extends State<CustomersPage> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return !_isLoading
-        ? SmartRefresher(
-            controller: _refreshController,
-            onRefresh: _refresh,
-            physics: const BouncingScrollPhysics(),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: widget.isCoordinator
-                  ? _coordinatorCustomers(theme)
-                  : _trainerCustomers(theme),
-            ),
+        ? Obx(
+            () {
+              return SmartRefresher(
+                controller: _refreshController,
+                onRefresh: _refresh,
+                physics: const BouncingScrollPhysics(),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: widget.isCoordinator
+                      ? _coordinatorCustomers(theme)
+                      : _trainerCustomers(theme),
+                ),
+              );
+            },
           )
         : const Center(
             child: CircularProgressIndicator(),
@@ -75,25 +81,21 @@ class _CustomersPageState extends State<CustomersPage> {
 
   /// Колонка клиентов для координатора
   Widget _coordinatorCustomers(ThemeData theme) {
-    if (controller.appState.value.coordinator != null) {
-      if (controller.appState.value.coordinator!.customers.isNotEmpty) {
+    if (_controller.appState.value.coordinator != null) {
+      if (_controller.appState.value.coordinator!.customers.isNotEmpty) {
         return Column(
           children: [
             const SizedBox(height: 25),
-            GetBuilder<GeneralController>(
-              builder: (_controller) {
-                return ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount:
-                      controller.appState.value.coordinator!.customers.length,
-                  itemBuilder: (context, index) {
-                    return _customerContainer(
-                      theme,
-                      customer: controller
-                          .appState.value.coordinator!.customers[index],
-                    );
-                  },
+            ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount:
+                  _controller.appState.value.coordinator!.customers.length,
+              itemBuilder: (context, index) {
+                return _customerContainer(
+                  theme,
+                  customer:
+                      _controller.appState.value.coordinator!.customers[index],
                 );
               },
             ),
@@ -110,45 +112,47 @@ class _CustomersPageState extends State<CustomersPage> {
 
   /// Колонка клиентов для тренера [Разделы BottomBar]
   Widget _trainerCustomers(ThemeData theme) {
-    if (controller.appState.value.sortedCustomers[controller.appState.value
-            .bottomBarItems[controller.appState.value.currentIndex].uid] !=
+    if (_controller.appState.value.sortedCustomers[_controller.appState.value
+            .bottomBarItems[_controller.appState.value.currentIndex].uid] !=
         null) {
-      if (controller
+      if (_controller
           .appState
           .value
-          .sortedCustomers[controller.appState.value
-              .bottomBarItems[controller.appState.value.currentIndex].uid]!
+          .sortedCustomers[_controller.appState.value
+              .bottomBarItems[_controller.appState.value.currentIndex].uid]!
           .isNotEmpty) {
+        log('${_controller.appState.value.sortedCustomers[_controller.appState.value.bottomBarItems[_controller.appState.value.currentIndex].uid]}');
         return Column(
           children: [
             const SizedBox(height: 25),
-            GetBuilder<GeneralController>(builder: (_controller) {
-              return ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: controller
-                    .appState
-                    .value
-                    .sortedCustomers[controller
-                        .appState
-                        .value
-                        .bottomBarItems[controller.appState.value.currentIndex]
-                        .uid]!
-                    .length,
-                itemBuilder: (context, index) {
-                  return _customerContainer(
-                    theme,
-                    customer: controller.appState.value.sortedCustomers[
-                        controller
-                            .appState
-                            .value
-                            .bottomBarItems[
-                                controller.appState.value.currentIndex]
-                            .uid]![index],
-                  );
-                },
-              );
-            }),
+
+            // log('${_controller.appState.value.sortedCustomers[_controller.appState.value.bottomBarItems[_controller.appState.value.currentIndex].uid]}');
+            ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: _controller
+                  .appState
+                  .value
+                  .sortedCustomers[_controller
+                      .appState
+                      .value
+                      .bottomBarItems[_controller.appState.value.currentIndex]
+                      .uid]!
+                  .length,
+              itemBuilder: (context, index) {
+                return _customerContainer(
+                  theme,
+                  customer: _controller.appState.value.sortedCustomers[
+                      _controller
+                          .appState
+                          .value
+                          .bottomBarItems[
+                              _controller.appState.value.currentIndex]
+                          .uid]![index],
+                );
+              },
+            ),
+
             const SizedBox(height: 19),
           ],
         );
@@ -187,7 +191,7 @@ class _CustomersPageState extends State<CustomersPage> {
           DefaultContainer(
             isVisible: customer.isVisible,
             onTap: () {
-              controller.appState.update((model) {
+              _controller.appState.update((model) {
                 model?.currentCustomer = customer;
               });
               Get.to(
@@ -209,7 +213,7 @@ class _CustomersPageState extends State<CustomersPage> {
 
   Widget getContainerContent(CustomerModel customer, ThemeData theme) {
     /// Индекс раздела Постоянные
-    if (controller.appState.value.currentIndex == stableStageIndex) {
+    if (_controller.appState.value.currentIndex == stableStageIndex) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,10 +250,10 @@ class _CustomersPageState extends State<CustomersPage> {
 
   bool isContainerBordered({required int? balance}) {
     ///Индекс раздела Постоянные
-    var stableStageIndex = controller.appState.value.bottomBarItems
+    var stableStageIndex = _controller.appState.value.bottomBarItems
         .indexWhere((element) => element.shortName == 'Постоянные');
 
-    if (controller.appState.value.currentIndex == stableStageIndex) {
+    if (_controller.appState.value.currentIndex == stableStageIndex) {
       if (balance != null) {
         if (balance <= 3) {
           return true;
@@ -272,20 +276,20 @@ class _CustomersPageState extends State<CustomersPage> {
     if (widget.isCoordinator) {
       await ErrorHandler.loadingData(
         context: context,
-        request: controller.getCoordinaorWorkSpace,
+        request: _controller.getCoordinaorWorkSpace,
         repeat: false,
       );
     } else {
-      if (controller.appState.value.currentIndex != stableStageIndex) {
+      if (_controller.appState.value.currentIndex != stableStageIndex) {
         await ErrorHandler.loadingData(
           context: context,
-          request: controller.getCustomers,
+          request: _controller.getCustomers,
           repeat: false,
         );
       } else {
         await ErrorHandler.loadingData(
           context: context,
-          request: controller.getRegularCustomers,
+          request: _controller.getRegularCustomers,
           repeat: false,
         );
       }

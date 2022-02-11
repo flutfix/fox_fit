@@ -6,6 +6,7 @@ import 'package:fox_fit/screens/trainer_stats/widgets/moths.dart';
 import 'package:fox_fit/screens/trainer_stats/widgets/stats_card.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:swipe/swipe.dart';
 
@@ -54,8 +55,19 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
         appBar: CustomAppBar(
           title: S.of(context).trainer_stats,
           isBackArrow: true,
-          onBack: () {
+          onBack: () async {
             Get.back();
+            await ErrorHandler.singleRequest(
+              context: context,
+              request: controller.getCustomers,
+              skipCheck: true,
+              handler: () {
+                CustomSnackbar.getSnackbar(
+                  title: S.of(context).no_internet_access,
+                  message: S.of(context).failed_update_list,
+                );
+              },
+            );
           },
         ),
         body: !isLoading

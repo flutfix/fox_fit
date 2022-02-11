@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
@@ -72,8 +70,24 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
         appBar: CustomAppBar(
           title: S.of(context).customer_information,
           isBackArrow: true,
-          onBack: () {
+          onBack: () async {
+            controller.appState.update((model) {
+              model?.currentCustomer = null;
+            });
+
             Get.back();
+
+            await ErrorHandler.singleRequest(
+              context: context,
+              request: controller.getCustomers,
+              skipCheck: true,
+              handler: () {
+                CustomSnackbar.getSnackbar(
+                  title: S.of(context).no_internet_access,
+                  message: S.of(context).failed_update_list,
+                );
+              },
+            );
           },
           onNotification: () {
             Get.toNamed(Routes.notifications);

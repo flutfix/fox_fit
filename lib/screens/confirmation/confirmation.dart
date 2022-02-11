@@ -194,9 +194,14 @@ class ConfirmationPage extends StatelessWidget {
         Get.back();
         Get.back();
 
-        await ErrorHandler.singleRequest(
+        ErrorHandler.singleRequest(
           context: context,
           request: controller.getCustomers,
+          skipCheck: true,
+        );
+        await ErrorHandler.singleRequest(
+          context: context,
+          request: controller.getCoordinaorWorkSpace,
           skipCheck: true,
           handler: () {
             CustomSnackbar.getSnackbar(

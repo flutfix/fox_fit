@@ -4,6 +4,7 @@ import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:swipe/swipe.dart';
 
@@ -65,8 +66,19 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
     return CustomAppBar(
       title: S.of(context).coordinaor_workspace,
       isBackArrow: true,
-      onBack: () {
+      onBack: () async {
         Get.back();
+        await ErrorHandler.singleRequest(
+              context: context,
+              request: _controller.getCustomers,
+              skipCheck: true,
+              handler: () {
+                CustomSnackbar.getSnackbar(
+                  title: S.of(context).no_internet_access,
+                  message: S.of(context).failed_update_list,
+                );
+              },
+            );
       },
       onNotification: () {},
     );

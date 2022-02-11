@@ -52,8 +52,19 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           title: S.of(context).changing_password,
           isBackArrow: true,
           isNotification: false,
-          onBack: () {
+          onBack: () async {
             Get.back();
+            await ErrorHandler.singleRequest(
+              context: context,
+              request: _controller.getCustomers,
+              skipCheck: true,
+              handler: () {
+                CustomSnackbar.getSnackbar(
+                  title: S.of(context).no_internet_access,
+                  message: S.of(context).failed_update_list,
+                );
+              },
+            );
           },
         ),
         body: SingleChildScrollView(
