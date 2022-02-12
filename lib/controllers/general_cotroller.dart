@@ -48,7 +48,7 @@ class GeneralController extends GetxController {
     if (data is int || data == null) {
       return data;
     } else {
-      final String isNewNotifications = data[0];
+      final String isNewNotifications = data[0] ?? 'False';
       final List<ItemBottomBarModel> bottomBarItems = data[1];
       final List<CustomerModel> customers = data[2];
 

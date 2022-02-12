@@ -43,7 +43,7 @@ class Cache {
   static const String isAuthorized = 'isAuthorized';
   static const String phone = 'phone';
   static const String pass = 'pass';
-  static const String relevanceDate = 'relevanceDate';
+  static const String lastCheckNotifications = 'relevanceDate';
 }
 
 class Client {
