@@ -191,7 +191,6 @@ class _CustomersPageState extends State<CustomersPage> {
 
   /// Колонка спящих клиентов
   Widget _inactiveCustomers(ThemeData theme) {
-    log('${_controller.appState.value.inactiveCustomers.length}');
     if (_controller.appState.value.inactiveCustomers.isNotEmpty) {
       return Column(
         children: [
@@ -214,6 +213,7 @@ class _CustomersPageState extends State<CustomersPage> {
       return _getEmptyCustomersText(theme);
     }
   }
+
 
   Widget _getEmptyCustomersText(ThemeData theme) {
     return SizedBox(
