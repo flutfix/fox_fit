@@ -58,8 +58,8 @@ class Enums {
       // case Client.sleeping:
       //   return ClientType.fresh;
 
-      case Client.coordinator:
-        return ClientType.coordinator;
+      // case Client.coordinator:
+      //   return ClientType.coordinator;
 
       default:
         return ClientType.fresh;
@@ -126,4 +126,17 @@ enum ClientType {
   permanent,
   sleeping,
   coordinator,
+}
+
+enum CustomersPageType{
+  general,
+  coordinator,
+  sleep
+
+}
+
+enum CustomersContainerType {
+  justName,
+  age,
+  services,
 }

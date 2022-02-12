@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
@@ -53,7 +54,7 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
         appBar: _appBar(),
         body: !_isLoading
             ? const CustomersPage(
-                isCoordinator: true,
+                pageType: CustomersPageType.coordinator,
               )
             : const Center(
                 child: CircularProgressIndicator(),

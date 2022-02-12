@@ -42,5 +42,6 @@
     "data_download_failed": "",
     "server_navailable": "",
     "failed_update_list": "",
-    "authorization_failed": ""
+    "authorization_failed": "",
+    "inactiveCustomers": ""
 }

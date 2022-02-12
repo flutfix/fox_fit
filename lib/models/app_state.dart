@@ -30,6 +30,7 @@ class AppStateModel {
     this.currentCustomer,
     this.currentTrainer,
     this.notifications = const [],
+    this.inactiveCustomers = const [],
   });
 
   bool isLoading;
@@ -52,6 +53,9 @@ class AppStateModel {
 
   /// Отсортированные клиенты по разделам BottomBar, где ключ [Uid] раздела
   Map<String, List<CustomerModel>> sortedCustomers;
+
+  /// Только Спящие клиенты
+  List<CustomerModel> inactiveCustomers;
 
   /// Рабочий стол координатора
   CoordinatorModel? coordinator;

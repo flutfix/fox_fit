@@ -153,15 +153,25 @@ class Requests {
     } else if (Platform.isIOS) {
       platform = 'Ios';
     }
+    final Map<String, dynamic> _queryParams = {
+      "UserUid": id,
+      "GetRegularCustomersOnly": true,
+      "DevicePlatform": platform,
+    };
+
+    String? lastCheckNotifications = await getPrefs(
+      key: Cache.lastCheckNotifications,
+      prefsType: PrefsType.string,
+    );
+
+    if (lastCheckNotifications != null) {
+      _queryParams['LastCheckingDate'] = lastCheckNotifications;
+    }
 
     try {
       var response = await dioClient.get(
         url,
-        queryParameters: {
-          "UserUid": id,
-          "GetRegularCustomersOnly": true,
-          "DevicePlatform": platform,
-        },
+        queryParameters: _queryParams,
       );
       if (response.statusCode == 200) {
         List<CustomerModel> customers = [];
@@ -170,6 +180,52 @@ class Requests {
           customers.add(CustomerModel.fromJson(element));
         }
 
+        return customers;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Получение постоянных клиентов
+  static Future<dynamic> getOnlyInactiveCustomers({
+    required String id,
+  }) async {
+    const String url = '${Api.url}get_customers';
+    final dioClient = Dio(Api.options);
+    String platform = '';
+    if (Platform.isAndroid) {
+      platform = 'Android';
+    } else if (Platform.isIOS) {
+      platform = 'Ios';
+    }
+    final Map<String, dynamic> _queryParams = {
+      "UserUid": id,
+      "OnlyInactiveCustomers": true,
+      "DevicePlatform": platform,
+    };
+
+    String? lastCheckNotifications = await getPrefs(
+      key: Cache.lastCheckNotifications,
+      prefsType: PrefsType.string,
+    );
+
+    if (lastCheckNotifications != null) {
+      _queryParams['LastCheckingDate'] = lastCheckNotifications;
+    }
+
+    try {
+      var response = await dioClient.get(
+        url,
+        queryParameters: _queryParams,
+      );
+      if (response.statusCode == 200) {
+        List<CustomerModel> customers = [];
+
+        for (var element in response.data['Customers']) {
+          customers.add(CustomerModel.fromJson(element));
+        }
         return customers;
       }
     } on DioError catch (e) {
