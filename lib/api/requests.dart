@@ -91,6 +91,10 @@ class Requests {
     const String url = '${Api.url}get_customers';
     final dioClient = Dio(Api.options);
     String platform = '';
+    String? lastCheckNotifications = await getPrefs(
+      key: Cache.lastCheckNotifications,
+      prefsType: PrefsType.string,
+    );
     if (Platform.isAndroid) {
       platform = 'Android';
     } else if (Platform.isIOS) {
@@ -100,6 +104,9 @@ class Requests {
       "UserUid": id,
       "DevicePlatform": platform,
     };
+    if (lastCheckNotifications != null) {
+      _queryParams['LastCheckingDate'] = lastCheckNotifications;
+    }
     if (fcmToken != null) {
       _queryParams['FcmToken'] = fcmToken;
     }
@@ -380,8 +387,8 @@ class Requests {
     String startDate =
         (monthAgo.millisecondsSinceEpoch / 1000).round().toString();
 
-    String? relevanceDate =
-        await getPrefs(key: Cache.relevanceDate, prefsType: PrefsType.string);
+    String? relevanceDate = await getPrefs(
+        key: Cache.lastCheckNotifications, prefsType: PrefsType.string);
     relevanceDate ??= startDate;
     try {
       var response = await dioClient.get(

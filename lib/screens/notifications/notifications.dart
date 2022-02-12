@@ -199,7 +199,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   Future<void> _setPrefs({required String timestamp}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    prefs.setString(Cache.relevanceDate, timestamp);
+    prefs.setString(Cache.lastCheckNotifications, timestamp);
   }
 
   _onBack() async {
