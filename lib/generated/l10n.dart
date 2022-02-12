@@ -489,6 +489,16 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get inactiveCustomers {
+    return Intl.message(
+      '',
+      name: 'inactiveCustomers',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

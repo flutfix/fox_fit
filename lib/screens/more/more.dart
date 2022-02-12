@@ -40,7 +40,7 @@ class _MorePageState extends State<MorePage> {
     if (cards.isEmpty) {
       setState(() {
         cards = [
-          /// Статистика тренера
+          /// [Статистика тренера]
           MoreCardModel(
             text: S.of(context).trainer_stats,
             icon: Images.trainerStats,
@@ -49,7 +49,16 @@ class _MorePageState extends State<MorePage> {
             },
           ),
 
-          /// Поддержка
+          /// ["Спящие" клиенты]
+          MoreCardModel(
+            text: S.of(context).inactiveCustomers,
+            icon: Images.trainerStats,
+            onTap: () {
+              // Get.toNamed();
+            },
+          ),
+
+          /// [Поддержка]
           MoreCardModel(
             text: S.of(context).support,
             icon: Images.support,
@@ -63,7 +72,7 @@ class _MorePageState extends State<MorePage> {
             },
           ),
 
-          /// Координатор
+          /// [Координатор]
           if (_controller.appState.value.isCoordinator)
             MoreCardModel(
               text: S.of(context).coordinator,
@@ -73,7 +82,7 @@ class _MorePageState extends State<MorePage> {
               },
             ),
 
-          /// Смена пароля
+          /// [Смена пароля]
           MoreCardModel(
             text: S.of(context).change_password,
             icon: Images.passPng,
@@ -82,7 +91,7 @@ class _MorePageState extends State<MorePage> {
             },
           ),
 
-          /// Выйти из профиля
+          /// [Выйти из профиля]
           MoreCardModel(
             text: S.of(context).log_out,
             icon: Images.logOut,

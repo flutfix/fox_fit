@@ -85,6 +85,22 @@ class GeneralController extends GetxController {
     }
   }
 
+  /// Запрос на получение постоянных клиентов
+  Future<dynamic> getOnlyInactiveCustomers(
+      {bool? getRegularCustomersOnly}) async {
+    var data = await Requests.getOnlyInactiveCustomers(
+        id: appState.value.auth!.users![0].uid);
+    if (data is int || data == null) {
+      return data;
+    } else {
+      var inactiveCustomers = data;
+      appState.update((model) {
+        model?.inactiveCustomers = inactiveCustomers;
+      });
+      return 200;
+    }
+  }
+
   /// Запрос на получение рабочего стола координатора
   Future<dynamic> getCoordinaorWorkSpace(
       {bool? getRegularCustomersOnly}) async {

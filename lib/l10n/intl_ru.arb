@@ -42,5 +42,6 @@
     "data_download_failed": "Загрузка данных не удалась",
     "server_navailable": "Сервер недоступен",
     "failed_update_list": "Не удалось обновить список",
-    "authorization_failed": "Авторизация не удалась"
+    "authorization_failed": "Авторизация не удалась",
+    "inactiveCustomers": "\"Спящие\" клиенты"
 }
