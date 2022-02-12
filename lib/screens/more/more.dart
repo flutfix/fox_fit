@@ -54,7 +54,7 @@ class _MorePageState extends State<MorePage> {
             text: S.of(context).inactiveCustomers,
             icon: Images.trainerStats,
             onTap: () {
-              // Get.toNamed();
+              Get.toNamed(Routes.inactiveCustomers);
             },
           ),
 

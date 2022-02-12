@@ -202,7 +202,7 @@ class Requests {
     }
     final Map<String, dynamic> _queryParams = {
       "UserUid": id,
-      "GetRegularCustomersOnly": true,
+      "OnlyInactiveCustomers": true,
       "DevicePlatform": platform,
     };
 
@@ -226,7 +226,6 @@ class Requests {
         for (var element in response.data['Customers']) {
           customers.add(CustomerModel.fromJson(element));
         }
-
         return customers;
       }
     } on DioError catch (e) {

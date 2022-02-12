@@ -9,6 +9,7 @@ import 'package:fox_fit/screens/auth/auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fox_fit/screens/home/general.dart';
 import 'package:fox_fit/screens/more/pages/change_password/change_password.dart';
+import 'package:fox_fit/screens/more/pages/inactive_customers/inactive_customers.dart';
 import 'package:fox_fit/screens/notifications/notifications.dart';
 import 'package:fox_fit/screens/splash/splash_screen.dart';
 import 'package:fox_fit/screens/trainer_choosing/trainer_choosing.dart';
@@ -103,6 +104,8 @@ class MyApp extends StatelessWidget {
           getPage(Routes.changePassword, () => const ChangePasswordPage()),
           getPage(Routes.coordinator, () => const CoordinatorPage()),
           getPage(Routes.notifications, () => const NotificationsPage()),
+          getPage(
+              Routes.inactiveCustomers, () => const InactiveCustomersPage()),
         ],
       ),
     );

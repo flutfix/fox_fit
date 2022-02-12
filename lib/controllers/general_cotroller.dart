@@ -67,7 +67,7 @@ class GeneralController extends GetxController {
   }
 
   /// Запрос на получение постоянных клиентов
-  Future<dynamic> getRegularCustomers({bool? getRegularCustomersOnly}) async {
+  Future<dynamic> getRegularCustomers() async {
     var data = await Requests.getRegularCustomers(
         id: appState.value.auth!.users![0].uid);
     if (data is int || data == null) {
@@ -86,8 +86,7 @@ class GeneralController extends GetxController {
   }
 
   /// Запрос на получение постоянных клиентов
-  Future<dynamic> getOnlyInactiveCustomers(
-      {bool? getRegularCustomersOnly}) async {
+  Future<dynamic> getInactiveCustomers() async {
     var data = await Requests.getOnlyInactiveCustomers(
         id: appState.value.auth!.users![0].uid);
     if (data is int || data == null) {
@@ -102,8 +101,7 @@ class GeneralController extends GetxController {
   }
 
   /// Запрос на получение рабочего стола координатора
-  Future<dynamic> getCoordinaorWorkSpace(
-      {bool? getRegularCustomersOnly}) async {
+  Future<dynamic> getCoordinaorWorkSpace() async {
     var data = await Requests.getCoordinaorWorkSpace(
         id: appState.value.auth!.users![1].uid);
 
