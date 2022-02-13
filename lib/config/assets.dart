@@ -34,6 +34,7 @@ class Images {
   static const String logOut = 'lib/assets/icons/log_out.png';
   static const String exit = 'lib/assets/icons/exit.svg';
   static const String passPng = 'lib/assets/icons/pass.png';
+  static const String inactiveCustomers = 'lib/assets/icons/sleep.png';
 
   /// Trainer Stats
   static const String funnelNew = 'lib/assets/icons/funnel_new.png';

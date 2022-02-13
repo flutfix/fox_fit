@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/config/config.dart';
+import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/notification.dart';
@@ -141,6 +142,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
       ThemeData theme, NotificationModel notification) {
     return DefaultContainer(
         isHighlight: notification.isNew,
+        highlightColor: Styles.green.withOpacity(0.2),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,15 +162,15 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 const SizedBox(height: 4),
 
                 /// Имя клиента
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 120,
-                  child: Text(
-                    notification.customerName,
-                    style: theme.textTheme.bodyText2!.copyWith(
-                      color: theme.colorScheme.secondary,
-                    ),
-                  ),
-                )
+                // SizedBox(
+                //   width: MediaQuery.of(context).size.width - 120,
+                //   child: Text(
+                //     notification.customerName,
+                //     style: theme.textTheme.bodyText2!.copyWith(
+                //       color: theme.colorScheme.secondary,
+                //     ),
+                //   ),
+                // )
               ],
             ),
 

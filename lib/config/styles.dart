@@ -21,6 +21,7 @@ abstract class Styles {
   static const Color darkBlue = Color(0xFF1D7AB9);
   static const Color darkGrey = Color(0xFFD7D7D7);
   static const Color darkOrange = Color(0xFFE55000);
+  static const Color green = Colors.green;
 
   /// Стандартный шрифт
   static const String mainFontFamily = 'Open Sans';
@@ -77,6 +78,9 @@ abstract class Styles {
 
       ///Синий
       disabledColor: Styles.darkBlue,
+
+      /// [Уведомления] цвет непрочитанных
+      indicatorColor: Styles.green.withOpacity(0.2),
 
       /// Цвет неактивного колокольчика уведомлений
       iconTheme: const IconThemeData(color: Styles.greyLight3),

@@ -52,7 +52,7 @@ class _MorePageState extends State<MorePage> {
           /// ["Спящие" клиенты]
           MoreCardModel(
             text: S.of(context).inactiveCustomers,
-            icon: Images.trainerStats,
+            icon: Images.inactiveCustomers,
             onTap: () {
               Get.toNamed(Routes.inactiveCustomers);
             },
