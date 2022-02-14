@@ -352,18 +352,12 @@ class Requests {
         'TransferDate': transferDate,
         'CommentText': commentText,
       };
-      if (trainerPipelineStageUid == StagePipeline.assigned) {
+
+      if (transferDate == null || transferDate == '') {
         queryParameters.remove('TransferDate');
-        if (commentText == null || commentText == '') {
-          queryParameters.remove('CommentText');
-        }
-      } else if (trainerPipelineStageUid == StagePipeline.transferringRecord) {
+      }
+      if (commentText == null || commentText == '') {
         queryParameters.remove('CommentText');
-      } else if (trainerPipelineStageUid == StagePipeline.nonCall) {
-        queryParameters.remove('TransferDate');
-        queryParameters.remove('CommentText');
-      } else if (trainerPipelineStageUid == StagePipeline.rejection) {
-        queryParameters.remove('TransferDate');
       }
 
       var response = await dioClient.post(
