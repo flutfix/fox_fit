@@ -13,6 +13,7 @@ import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
+import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 import 'package:swipe/swipe.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -64,9 +65,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     double width = MediaQuery.of(context).size.width;
-    return Swipe(
-      onSwipeRight: () => Get.back(),
-      onSwipeUp: () => _showBottomSheet(theme: theme),
+    return SimpleGestureDetector(
+      onHorizontalSwipe: _onHorizontalSwipe,
+      onVerticalSwipe: _onVerticalSwipe,
       child: Scaffold(
         backgroundColor: theme.backgroundColor,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -131,7 +132,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  _showBottomSheet(theme: theme);
+                                  _showBottomSheet();
                                 },
                                 behavior: HitTestBehavior.translucent,
                                 child: const SizedBox(
@@ -282,11 +283,12 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   /// Открывает нижлий лист с доступными вариантами
   /// передачи клиента дальше по воронке
-  void _showBottomSheet({required ThemeData theme}) {
+  void _showBottomSheet() {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
+      useRootNavigator: true,
       builder: (context) {
         return CustomBottomSheet(clientType: widget.clientType);
       },
@@ -327,5 +329,17 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             title: S.of(context).whatsapp_exeption,
             message: S.of(context).whatsapp_exeption_description,
           );
+  }
+
+  void _onHorizontalSwipe(SwipeDirection direction) {
+    if (direction == SwipeDirection.right) {
+      Get.back();
+    }
+  }
+
+  void _onVerticalSwipe(SwipeDirection direction) {
+    if (direction == SwipeDirection.up) {
+      _showBottomSheet();
+    }
   }
 }
