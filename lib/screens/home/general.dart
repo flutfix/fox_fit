@@ -43,7 +43,17 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
       });
       controller.initVibration();
     }
+
+    /// Если приложение закрыто и пользователь нажимает на уведомление - его перекидывает на страницу [Уведомления]
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      log(message.toString());
+      if (message != null) {
+        Get.toNamed(Routes.notifications);
+      }
+    });
+
     _load();
+
     pageController = PageController(initialPage: 0);
     super.initState();
   }
@@ -197,6 +207,11 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
           ),
         );
       }
+    });
+
+    /// Когда приложение в фоновом состоянии и юзер нажал на уведомление
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      Get.toNamed(Routes.notifications);
     });
     //----
   }
