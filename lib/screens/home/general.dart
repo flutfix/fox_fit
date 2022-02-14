@@ -170,7 +170,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     );
   }
 
-  ///---- Firebase Notifications liste
+  ///---- Firebase Notifications
   Future<void> _fcm() async {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     _fcmToken = '';
@@ -186,6 +186,15 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(AppConfig.pushChannel);
 
+    await flutterLocalNotificationsPlugin.initialize(
+        const InitializationSettings(
+          android:
+              AndroidInitializationSettings('@drawable/res_notification_logo'),
+          iOS: IOSInitializationSettings(),
+        ), onSelectNotification: (payload) {
+      Get.toNamed(Routes.notifications);
+    });
+
     ///Стрим на прослушку оповещений
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
@@ -197,6 +206,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
           notification.title,
           notification.body,
           NotificationDetails(
+            iOS: const IOSNotificationDetails(),
             android: AndroidNotificationDetails(
               AppConfig.pushChannel.id,
               AppConfig.pushChannel.name,
