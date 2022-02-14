@@ -43,7 +43,17 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
       });
       controller.initVibration();
     }
+
+    /// Если приложение закрыто и пользователь нажимает на уведомление - его перекидывает на страницу [Уведомления]
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      log(message.toString());
+      if (message != null) {
+        Get.toNamed(Routes.notifications);
+      }
+    });
+
     _load();
+
     pageController = PageController(initialPage: 0);
     super.initState();
   }
@@ -160,7 +170,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     );
   }
 
-  ///---- Firebase Notifications liste
+  ///---- Firebase Notifications
   Future<void> _fcm() async {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     _fcmToken = '';
@@ -176,6 +186,15 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(AppConfig.pushChannel);
 
+    await flutterLocalNotificationsPlugin.initialize(
+        const InitializationSettings(
+          android:
+              AndroidInitializationSettings('@drawable/res_notification_logo'),
+          iOS: IOSInitializationSettings(),
+        ), onSelectNotification: (payload) {
+      Get.toNamed(Routes.notifications);
+    });
+
     ///Стрим на прослушку оповещений
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
@@ -187,6 +206,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
           notification.title,
           notification.body,
           NotificationDetails(
+            iOS: const IOSNotificationDetails(),
             android: AndroidNotificationDetails(
               AppConfig.pushChannel.id,
               AppConfig.pushChannel.name,
@@ -197,6 +217,11 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
           ),
         );
       }
+    });
+
+    /// Когда приложение в фоновом состоянии и юзер нажал на уведомление
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      Get.toNamed(Routes.notifications);
     });
     //----
   }
