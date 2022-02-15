@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/assets.dart';
+import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/trainer_stats/widgets/moths.dart';
@@ -33,9 +34,12 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
     setState(() {
       isLoading = true;
     });
-    
-    await ErrorHandler.loadingData(context: context, request: controller.getTrainerPerfomance,);
-    
+
+    await ErrorHandler.loadingData(
+      context: context,
+      request: controller.getTrainerPerfomance,
+    );
+
     currentIndex = controller.appState.value.trainerPerfomance
         .indexWhere((element) => element.isActive);
 
@@ -53,6 +57,9 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
       child: Scaffold(
         backgroundColor: theme.backgroundColor,
         appBar: CustomAppBar(
+          onNotification: () {
+            Get.toNamed(Routes.notifications);
+          },
           title: S.of(context).trainer_stats,
           isBackArrow: true,
           onBack: () async {
