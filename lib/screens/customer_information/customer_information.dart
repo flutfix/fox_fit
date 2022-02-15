@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
@@ -36,7 +38,8 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
   late GeneralController _controller;
   late ScrollController _scrollController;
   late bool _isOpenedBootomSheet;
-  late double _position;
+  late double _currentPosition;
+  late double _startPosition;
   late double _sensitivityFactor;
 
   @override
@@ -45,7 +48,8 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     _controller = Get.find<GeneralController>();
     _scrollController = ScrollController();
     _isOpenedBootomSheet = false;
-    _position = 0.0;
+    _currentPosition = 0.0;
+    _startPosition = 0.0;
     _sensitivityFactor = 10;
     load();
   }
@@ -217,11 +221,13 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
               NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
                   /// Проверка на скролл вверх
-                  if (notification.metrics.pixels - _position >=
+                  if (notification.metrics.pixels - _currentPosition >=
                       _sensitivityFactor) {
-                    /// Проверка, происходит ли скролл внизу
-                    if (_scrollController.position.pixels >=
-                            _scrollController.position.maxScrollExtent &&
+                    /// Проверка, происходит ли скролл внизу, в пределах 20 пикселей
+                    if (_startPosition >=
+                            _scrollController.position.maxScrollExtent - 10 &&
+                        _startPosition <=
+                            _scrollController.position.maxScrollExtent + 10 &&
                         !_isOpenedBootomSheet) {
                       if (widget.clientType != ClientType.conducted &&
                           widget.clientType != ClientType.permanent &&
@@ -230,7 +236,11 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                       }
                     }
                   }
-                  _position = notification.metrics.pixels;
+
+                  if (notification is ScrollEndNotification) {
+                    _startPosition = notification.metrics.pixels;
+                  }
+                  _currentPosition = notification.metrics.pixels;
 
                   return true;
                 },
