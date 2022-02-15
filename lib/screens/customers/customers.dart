@@ -1,14 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/generated/l10n.dart';
-import 'package:fox_fit/models/customer.dart';
-import 'package:fox_fit/screens/customer_information/customer_information.dart';
 import 'package:fox_fit/screens/customers/widgets/customer_coontainer.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
-import 'package:fox_fit/widgets/default_container.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:get/get.dart';
