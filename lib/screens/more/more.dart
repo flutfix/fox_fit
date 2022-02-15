@@ -136,6 +136,7 @@ class _MorePageState extends State<MorePage> {
     required String text,
     required String icon,
     Function()? onTap,
+    double iconSize = 19,
   }) {
     return DefaultContainer(
       onTap: onTap,
@@ -143,7 +144,7 @@ class _MorePageState extends State<MorePage> {
         children: [
           Image.asset(
             icon,
-            width: 18,
+            width: iconSize,
             color: theme.colorScheme.secondary,
             fit: BoxFit.fill,
           ),

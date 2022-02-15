@@ -351,6 +351,16 @@ class S {
   }
 
   /// ``
+  String get save_edits {
+    return Intl.message(
+      '',
+      name: 'save_edits',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
   String get description_changing_password {
     return Intl.message(
       '',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
@@ -70,18 +71,20 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
       onBack: () async {
         Get.back();
         await ErrorHandler.singleRequest(
-              context: context,
-              request: _controller.getCustomers,
-              skipCheck: true,
-              handler: () {
-                CustomSnackbar.getSnackbar(
-                  title: S.of(context).no_internet_access,
-                  message: S.of(context).failed_update_list,
-                );
-              },
+          context: context,
+          request: _controller.getCustomers,
+          skipCheck: true,
+          handler: () {
+            CustomSnackbar.getSnackbar(
+              title: S.of(context).no_internet_access,
+              message: S.of(context).failed_update_list,
             );
+          },
+        );
       },
-      onNotification: () {},
+      onNotification: () {
+        Get.toNamed(Routes.notifications);
+      },
     );
   }
 }

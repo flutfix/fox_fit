@@ -57,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "password_not_changed": MessageLookupByLibrary.simpleMessage(""),
         "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(""),
         "repeat_input": MessageLookupByLibrary.simpleMessage(""),
+        "save_edits": MessageLookupByLibrary.simpleMessage(""),
         "send_to_trainer": MessageLookupByLibrary.simpleMessage(""),
         "server_error": MessageLookupByLibrary.simpleMessage(""),
         "server_navailable": MessageLookupByLibrary.simpleMessage(""),

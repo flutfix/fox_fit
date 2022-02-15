@@ -13,6 +13,7 @@ class CustomBottomBar extends StatefulWidget {
     required this.activeColor,
     required this.inActiveColor,
     this.textColor,
+    this.lineColor,
     this.verticalPadding = 14.0,
     this.duration = 150,
   }) : super(key: key);
@@ -24,6 +25,7 @@ class CustomBottomBar extends StatefulWidget {
   final Color activeColor;
   final Color inActiveColor;
   final Color? textColor;
+  final Color? lineColor;
 
   @override
   _CustomBottomBarState createState() => _CustomBottomBarState();
@@ -80,10 +82,10 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                           Text(
                             item.shortName,
                             style: theme.textTheme.caption!.copyWith(
-                                color: widget.textColor
-                                // index == controller.appState.value.currentIndex
-                                //     ? widget.activeColor
-                                //     : widget.inActiveColor,
+                                color: 
+                                index == controller.appState.value.currentIndex
+                                    ? widget.activeColor
+                                    : widget.textColor,
                                 ),
                           ),
                         ],
@@ -103,7 +105,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
               width: (width - 40) / widget.items.length,
               height: 2,
               decoration: BoxDecoration(
-                  color: theme.hintColor,
+                  color: widget.lineColor ?? theme.hintColor,
                   borderRadius: BorderRadius.circular(1)),
             ),
             duration: Duration(milliseconds: widget.duration),
