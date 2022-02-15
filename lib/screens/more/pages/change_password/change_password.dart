@@ -76,6 +76,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 S.of(context).description_changing_password,
                 style: theme.textTheme.bodyText1,
               ),
+              const SizedBox(height: 16),
               Divider(color: theme.dividerColor),
 
               /// Ввод нового пароля
@@ -114,7 +115,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               _validateFields(theme);
             },
             height: 51,
-            text: S.of(context).change_password,
+            text: S.of(context).save_edits,
             backgroundColor: theme.colorScheme.secondary,
             textStyle: theme.textTheme.button!,
           ),
