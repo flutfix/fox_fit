@@ -44,5 +44,6 @@
     "server_navailable": "",
     "failed_update_list": "",
     "authorization_failed": "",
-    "inactiveCustomers": ""
+    "inactiveCustomers": "",
+    "error_transferring_record": ""
 }

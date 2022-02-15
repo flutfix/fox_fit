@@ -61,7 +61,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
               context: context,
               request: controller.getCustomers,
               skipCheck: true,
-              handler: () {
+              handler: (_) {
                 CustomSnackbar.getSnackbar(
                   title: S.of(context).no_internet_access,
                   message: S.of(context).failed_update_list,

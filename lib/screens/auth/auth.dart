@@ -178,7 +178,7 @@ class _AuthPageState extends State<AuthPage> {
             pass: passController.text,
           );
         },
-        handler: () {
+        handler: (_) {
           CustomSnackbar.getSnackbar(
             title: S.of(context).server_error,
             message: S.of(context).authorization_failed,

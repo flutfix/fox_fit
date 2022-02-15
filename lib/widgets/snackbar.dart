@@ -6,11 +6,12 @@ class CustomSnackbar {
   static void getSnackbar({
     required String title,
     required String message,
+    int duration = 2,
   }) {
     Get.snackbar(
       title,
       message,
-      duration: const Duration(seconds: 2),
+      duration: Duration(seconds: duration),
       backgroundColor: Styles.grey,
       colorText: Styles.greyLight,
       boxShadows: [

@@ -509,6 +509,16 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get error_transferring_record {
+    return Intl.message(
+      '',
+      name: 'error_transferring_record',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
