@@ -125,25 +125,28 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                           style: theme.textTheme.bodyText1,
                         ),
                       ),
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            Images.more,
-                            width: 4,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              _showBottomSheet();
-                            },
-                            behavior: HitTestBehavior.translucent,
-                            child: const SizedBox(
-                              width: 24,
-                              height: 24,
+                      if (widget.clientType != ClientType.conducted &&
+                          widget.clientType != ClientType.permanent &&
+                          widget.clientType != ClientType.sleeping)
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              Images.more,
+                              width: 4,
                             ),
-                          ),
-                        ],
-                      ),
+                            GestureDetector(
+                              onTap: () {
+                                _showBottomSheet();
+                              },
+                              behavior: HitTestBehavior.translucent,
+                              child: const SizedBox(
+                                width: 24,
+                                height: 24,
+                              ),
+                            ),
+                          ],
+                        ),
                     ],
                   ),
                   const SizedBox(height: 4),
@@ -220,7 +223,11 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                     if (_scrollController.position.pixels >=
                             _scrollController.position.maxScrollExtent &&
                         !_isOpenedBootomSheet) {
-                      _showBottomSheet();
+                      if (widget.clientType != ClientType.conducted &&
+                          widget.clientType != ClientType.permanent &&
+                          widget.clientType != ClientType.sleeping) {
+                        _showBottomSheet();
+                      }
                     }
                   }
                   _position = notification.metrics.pixels;
@@ -374,7 +381,11 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   void _onVerticalSwipe(SwipeDirection direction) {
     if (direction == SwipeDirection.up) {
-      _showBottomSheet();
+      if (widget.clientType != ClientType.conducted &&
+          widget.clientType != ClientType.permanent &&
+          widget.clientType != ClientType.sleeping) {
+        _showBottomSheet();
+      }
     }
   }
 }
