@@ -51,6 +51,7 @@ class _CustomerContainerState extends State<CustomerContainer> {
                   clientType: widget.clientType,
                   isHandingButton: _isHandlingButton(widget.clientType),
                 ),
+                transition: Transition.fadeIn,
               );
             },
             child: getContainerContent(widget.customer, theme),

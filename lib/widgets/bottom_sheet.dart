@@ -98,6 +98,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                                     ),
                                     text: '${stagePipeline.name}?',
                                   ),
+                                  transition: Transition.fadeIn,
                                 );
                               },
                               child: Padding(
