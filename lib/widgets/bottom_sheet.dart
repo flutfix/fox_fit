@@ -81,12 +81,6 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                       if (widget.clientType == ClientType.assigned &&
                           (stagePipeline.uid == StagePipeline.assigned)) {
                         return const SizedBox();
-                      } else if (widget.clientType == ClientType.conducted &&
-                          (stagePipeline.uid != StagePipeline.nonCall)) {
-                        return const SizedBox();
-                      } else if (widget.clientType == ClientType.permanent &&
-                          (stagePipeline.uid != StagePipeline.nonCall)) {
-                        return const SizedBox();
                       } else {
                         setState(() {
                           _countPipeline++;

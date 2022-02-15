@@ -52,7 +52,7 @@ class ErrorHandler {
   static Future<dynamic> singleRequest({
     required BuildContext context,
     required Future<dynamic> Function() request,
-    void Function()? handler,
+    void Function(dynamic data)? handler,
     bool skipCheck = false,
     bool canVibrate = false,
   }) async {
@@ -87,7 +87,7 @@ class ErrorHandler {
         /// Сценарий поведения после ошибки
       } else {
         if (handler != null) {
-          handler();
+          handler(data);
         }
         return data;
       }

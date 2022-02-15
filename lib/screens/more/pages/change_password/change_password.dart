@@ -58,7 +58,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               context: context,
               request: _controller.getCustomers,
               skipCheck: true,
-              handler: () {
+              handler: (_) {
                 CustomSnackbar.getSnackbar(
                   title: S.of(context).no_internet_access,
                   message: S.of(context).failed_update_list,
@@ -182,7 +182,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             newPass: _newPassAgainController.text,
           );
         },
-        handler: () {
+        handler: (_) {
           if (_isCanVibrate) {
             Vibrate.feedback(FeedbackType.success);
           }

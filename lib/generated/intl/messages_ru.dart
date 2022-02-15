@@ -51,6 +51,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "empty_customers_short":
             MessageLookupByLibrary.simpleMessage("Клиенты отсутствуют"),
         "error": MessageLookupByLibrary.simpleMessage("Ошибка"),
+        "error_transferring_record": MessageLookupByLibrary.simpleMessage(
+            "Этот клиент уже у администратора, чтобы там все не запутались, передай его позже, пожалуйста 🙏"),
         "exit": MessageLookupByLibrary.simpleMessage("Выйти"),
         "failed_update_list":
             MessageLookupByLibrary.simpleMessage("Не удалось обновить список"),

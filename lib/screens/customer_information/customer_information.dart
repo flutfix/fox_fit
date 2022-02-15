@@ -96,7 +96,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
               context: context,
               request: _controller.getCustomers,
               skipCheck: true,
-              handler: () {
+              handler: (_) {
                 CustomSnackbar.getSnackbar(
                   title: S.of(context).no_internet_access,
                   message: S.of(context).failed_update_list,

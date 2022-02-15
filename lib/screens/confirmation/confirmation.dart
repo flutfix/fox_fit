@@ -149,6 +149,7 @@ class ConfirmationPage extends StatelessWidget {
             context: context,
             transferDate:
                 confirmTime.millisecondsSinceEpoch.toString().substring(0, 10),
+            isTransferringRecord: true,
           );
         },
         minTime: DateTime(
@@ -178,7 +179,7 @@ class ConfirmationPage extends StatelessWidget {
             trainerUid: controller.appState.value.currentTrainer!.uid,
           );
         },
-        handler: () {
+        handler: (_) {
           CustomSnackbar.getSnackbar(
             title: S.of(context).server_error,
             message: S.of(context).confirmation_failed,
@@ -207,7 +208,7 @@ class ConfirmationPage extends StatelessWidget {
           context: context,
           request: controller.getCoordinaorWorkSpace,
           skipCheck: true,
-          handler: () {
+          handler: (_) {
             CustomSnackbar.getSnackbar(
               title: S.of(context).no_internet_access,
               message: S.of(context).failed_update_list,
@@ -229,6 +230,7 @@ class ConfirmationPage extends StatelessWidget {
   Future<void> _transferClientByTrainerPipeline({
     required ThemeData theme,
     required BuildContext context,
+    bool isTransferringRecord = false,
     String? transferDate,
   }) async {
     dynamic data = await ErrorHandler.singleRequest(
@@ -244,11 +246,21 @@ class ConfirmationPage extends StatelessWidget {
           commentText: textController.text,
         );
       },
-      handler: () {
-        CustomSnackbar.getSnackbar(
-          title: S.of(context).server_error,
-          message: S.of(context).confirmation_failed,
-        );
+      handler: (dynamic data) {
+        if (isTransferringRecord) {
+          if (data == 400) {
+            CustomSnackbar.getSnackbar(
+              duration: 5,
+              title: S.of(context).error,
+              message: S.of(context).error_transferring_record,
+            );
+          }
+        } else {
+          CustomSnackbar.getSnackbar(
+            title: S.of(context).server_error,
+            message: S.of(context).confirmation_failed,
+          );
+        }
       },
     );
 
@@ -265,7 +277,7 @@ class ConfirmationPage extends StatelessWidget {
         context: context,
         request: controller.getCustomers,
         skipCheck: true,
-        handler: () {
+        handler: (_) {
           CustomSnackbar.getSnackbar(
             title: S.of(context).no_internet_access,
             message: S.of(context).failed_update_list,
