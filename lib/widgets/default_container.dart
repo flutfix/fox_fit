@@ -7,6 +7,7 @@ class DefaultContainer extends StatefulWidget {
     this.isVisible = true,
     this.onTap,
     this.padding = const EdgeInsets.symmetric(vertical: 18, horizontal: 15),
+    this.margin,
     required this.child,
     this.isHighlight,
     this.highlightColor,
@@ -15,6 +16,7 @@ class DefaultContainer extends StatefulWidget {
   final bool isVisible;
   final Function()? onTap;
   final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? margin;
   final Widget child;
   final bool? isHighlight;
   final Color? highlightColor;
@@ -51,6 +53,7 @@ class _DefaultContainerState extends State<DefaultContainer> {
       child: Container(
         width: width,
         padding: widget.padding,
+        margin: widget.margin,
         decoration: BoxDecoration(
           color: getContainerColor(theme),
           borderRadius: BorderRadius.circular(10),

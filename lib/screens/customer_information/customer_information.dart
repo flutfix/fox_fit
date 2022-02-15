@@ -14,7 +14,6 @@ import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
-import 'package:swipe/swipe.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomerInformationPage extends StatefulWidget {
@@ -33,31 +32,39 @@ class CustomerInformationPage extends StatefulWidget {
 }
 
 class _CustomerInformationPageState extends State<CustomerInformationPage> {
-  late bool loading;
-  late GeneralController controller;
+  late bool _loading;
+  late GeneralController _controller;
+  late ScrollController _scrollController;
+  late bool _isOpenedBootomSheet;
+  late double _position;
+  late double _sensitivityFactor;
 
   @override
   void initState() {
-    controller = Get.find<GeneralController>();
-    load();
     super.initState();
+    _controller = Get.find<GeneralController>();
+    _scrollController = ScrollController();
+    _isOpenedBootomSheet = false;
+    _position = 0.0;
+    _sensitivityFactor = 10;
+    load();
   }
 
   Future<void> load() async {
     setState(() {
-      loading = true;
+      _loading = true;
     });
 
     await ErrorHandler.loadingData(
       context: context,
       request: () {
-        return controller.getCustomerInfo(
-            customerId: controller.appState.value.currentCustomer!.uid);
+        return _controller.getCustomerInfo(
+            customerId: _controller.appState.value.currentCustomer!.uid);
       },
     );
 
     setState(() {
-      loading = false;
+      _loading = false;
     });
   }
 
@@ -75,7 +82,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
           title: S.of(context).customer_information,
           isBackArrow: true,
           onBack: () async {
-            controller.appState.update((model) {
+            _controller.appState.update((model) {
               model?.currentCustomer = null;
             });
 
@@ -83,7 +90,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
             await ErrorHandler.singleRequest(
               context: context,
-              request: controller.getCustomers,
+              request: _controller.getCustomers,
               skipCheck: true,
               handler: () {
                 CustomSnackbar.getSnackbar(
@@ -97,171 +104,193 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             Get.toNamed(Routes.notifications);
           },
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(
-                parent: NeverScrollableScrollPhysics()),
-            child: Column(
-              children: [
-                const SizedBox(height: 25),
+        body: Column(
+          children: [
+            const SizedBox(height: 25),
 
-                /// Основная информация
-                DefaultContainer(
-                  padding: const EdgeInsets.fromLTRB(15.5, 19, 5.5, 25),
-                  child: Column(
+            /// Основная информация
+            DefaultContainer(
+              padding: const EdgeInsets.fromLTRB(15.5, 19, 5.5, 25),
+              margin: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  /// ФИО
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      /// ФИО
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      SizedBox(
+                        width: width - 90,
+                        child: Text(
+                          _controller.appState.value.currentCustomer!.fullName,
+                          style: theme.textTheme.bodyText1,
+                        ),
+                      ),
+                      Stack(
+                        alignment: Alignment.center,
                         children: [
-                          SizedBox(
-                            width: width - 90,
-                            child: Text(
-                              controller
-                                  .appState.value.currentCustomer!.fullName,
-                              style: theme.textTheme.bodyText1,
-                            ),
+                          SvgPicture.asset(
+                            Images.more,
+                            width: 4,
                           ),
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                Images.more,
-                                width: 4,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  _showBottomSheet();
-                                },
-                                behavior: HitTestBehavior.translucent,
-                                child: const SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                ),
-                              ),
-                            ],
+                          GestureDetector(
+                            onTap: () {
+                              _showBottomSheet();
+                            },
+                            behavior: HitTestBehavior.translucent,
+                            child: const SizedBox(
+                              width: 24,
+                              height: 24,
+                            ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 4),
-
-                      /// Номер телефона
-                      GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          launch(
-                              "tel://${controller.appState.value.currentCustomer!.phone}");
-                        },
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              Images.phone,
-                              width: 17,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              controller.appState.value.currentCustomer!.phone,
-                              style: theme.textTheme.headline2,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-
-                      /// Переход в чат
-                      GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () async {
-                          await _switchingToChat(theme);
-                        },
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              Images.chat,
-                              width: 20,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              S.of(context).chat,
-                              style: theme.textTheme.headline2,
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 24),
+                  const SizedBox(height: 4),
 
-                /// Подробная инфромация о клиенте
-                /// [Цели], [Травмы], [Пожелания], [Комментарии], [Дата рождения]
-                if (loading)
-                  const Center(
-                    child: SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                      ),
+                  /// Номер телефона
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      launch(
+                          "tel://${_controller.appState.value.currentCustomer!.phone}");
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          Images.phone,
+                          width: 17,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          _controller.appState.value.currentCustomer!.phone,
+                          style: theme.textTheme.headline2,
+                        ),
+                      ],
                     ),
-                  )
-                else
-                  DefaultContainer(
-                    padding: const EdgeInsets.fromLTRB(28, 17.45, 19, 22.55),
-                    child: controller.appState.value.detailedInfo.isNotEmpty
-                        ? ListView.separated(
-                            itemCount:
-                                controller.appState.value.detailedInfo.length,
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            separatorBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  const SizedBox(height: 21),
-                                  Divider(
-                                    height: 1,
-                                    color: theme.dividerColor,
-                                  ),
-                                  const SizedBox(height: 8),
-                                ],
-                              );
-                            },
-                            itemBuilder: (context, index) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    controller.appState.value
-                                        .detailedInfo[index].header,
+                  ),
+                  const SizedBox(height: 4),
+
+                  /// Переход в чат
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () async {
+                      await _switchingToChat(theme);
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          Images.chat,
+                          width: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          S.of(context).chat,
+                          style: theme.textTheme.headline2,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            /// Подробная инфромация о клиенте
+            /// [Цели], [Травмы], [Пожелания], [Комментарии], [Дата рождения]
+            if (_loading)
+              const Center(
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                ),
+              )
+            else
+              NotificationListener<ScrollNotification>(
+                onNotification: (notification) {
+                  /// Проверка на скролл вверх
+                  if (notification.metrics.pixels - _position >=
+                      _sensitivityFactor) {
+                    /// Проверка, происходит ли скролл внизу
+                    if (_scrollController.position.pixels >=
+                            _scrollController.position.maxScrollExtent &&
+                        !_isOpenedBootomSheet) {
+                      _showBottomSheet();
+                    }
+                  }
+                  _position = notification.metrics.pixels;
+
+                  return true;
+                },
+                child: Expanded(
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: Column(
+                      children: [
+                        DefaultContainer(
+                          padding:
+                              const EdgeInsets.fromLTRB(28, 17.45, 19, 22.55),
+                          child: _controller
+                                  .appState.value.detailedInfo.isNotEmpty
+                              ? ListView.separated(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: _controller
+                                      .appState.value.detailedInfo.length,
+                                  separatorBuilder: (context, index) {
+                                    return Column(
+                                      children: [
+                                        const SizedBox(height: 21),
+                                        Divider(
+                                          height: 1,
+                                          color: theme.dividerColor,
+                                        ),
+                                        const SizedBox(height: 8),
+                                      ],
+                                    );
+                                  },
+                                  itemBuilder: (context, index) {
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          _controller.appState.value
+                                              .detailedInfo[index].header,
+                                          style: theme.textTheme.headline3,
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          _controller.appState.value
+                                              .detailedInfo[index].value,
+                                          style: theme.textTheme.headline4,
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                )
+                              : Center(
+                                  child: Text(
+                                    'Информация о клиенте отсутствует',
                                     style: theme.textTheme.headline3,
                                   ),
-                                  const SizedBox(height: 6),
-                                  SizedBox(
-                                    height: 38,
-                                    child: Text(
-                                      controller.appState.value
-                                          .detailedInfo[index].value,
-                                      style: theme.textTheme.headline4,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          )
-                        : Center(
-                            child: Text(
-                              'Информация о клиенте отсутствует',
-                              style: theme.textTheme.headline3,
-                            ),
-                          ),
+                                ),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
-                const SizedBox(height: 80),
-              ],
-            ),
-          ),
+                ),
+              ),
+          ],
         ),
         floatingActionButton: widget.isHandingButton
             ? Padding(
@@ -283,8 +312,11 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   /// Открывает нижлий лист с доступными вариантами
   /// передачи клиента дальше по воронке
-  void _showBottomSheet() {
-    showModalBottomSheet(
+  Future _showBottomSheet() async {
+    setState(() {
+      _isOpenedBootomSheet = true;
+    });
+    await showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
@@ -293,29 +325,32 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
         return CustomBottomSheet(clientType: widget.clientType);
       },
     );
+    setState(() {
+      _isOpenedBootomSheet = false;
+    });
   }
 
   Future<void> _switchingToChat(ThemeData theme) async {
     dynamic number;
-    number = controller.appState.value.currentCustomer!.phone.split(' ');
+    number = _controller.appState.value.currentCustomer!.phone.split(' ');
     number = '${number[0]}${number[1]}${number[2]}';
     number = number.split('(');
     number = '${number[0]}${number[1]}';
     number = number.split(')');
     number = '${number[0]}${number[1]}';
     String? greeting =
-        controller.appState.value.auth?.data?.whatsAppDefaultGreeting;
+        _controller.appState.value.auth?.data?.whatsAppDefaultGreeting;
     if (greeting != null) {
       greeting = greeting.replaceAll('_CustomerName_',
-          controller.appState.value.currentCustomer!.firstName);
+          _controller.appState.value.currentCustomer!.firstName);
       greeting = greeting.replaceAll(
-          '_TrainerName_', controller.appState.value.auth!.users![0].name);
+          '_TrainerName_', _controller.appState.value.auth!.users![0].name);
       greeting = greeting.replaceAll(
-          '_ClubName_', controller.appState.value.auth!.data!.clubName);
+          '_ClubName_', _controller.appState.value.auth!.data!.clubName);
     }
 
-    bool _isFromNewCustomers = controller.appState.value
-            .bottomBarItems[controller.appState.value.currentIndex].uid ==
+    bool _isFromNewCustomers = _controller.appState.value
+            .bottomBarItems[_controller.appState.value.currentIndex].uid ==
         Client.fresh;
     await canLaunch('whatsapp://send?phone=$number')
         ? _isFromNewCustomers
