@@ -69,7 +69,6 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
     if (isResumed) {
       log('[State] Was resumed from background');
-      log('${controller.appState.value.currentIndex}');
       if (controller.appState.value.currentIndex != 4) {
         await _load();
       }
@@ -81,7 +80,6 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     controller.appState.update((model) {
       model?.isLoading = true;
     });
-    log('${controller.appState.value.currentIndex}');
     await _fcm();
     await ErrorHandler.loadingData(
       context: context,

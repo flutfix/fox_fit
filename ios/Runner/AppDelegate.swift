@@ -1,6 +1,5 @@
 import UIKit
 import Flutter
-import Firebase
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -12,12 +11,4 @@ import Firebase
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
-    func application(_application: UIApplication,
-                     didFinishLaunchingWithOption launchOptions:
-                     [UIApplicationLaunchOptionsKey: Any]?) -> Bool{
-        FirebaseApp.configure()
-        return true
-    }
-}
+
