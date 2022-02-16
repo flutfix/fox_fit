@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
@@ -97,6 +96,10 @@ class ConfirmationPage extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       Get.back();
+                      if (stagePipelineType ==
+                          StagePipelineType.transferringRecord) {
+                        Get.back();
+                      }
                     },
                     child: CustomTextButton(
                       text: S.of(context).cancel,
@@ -144,7 +147,8 @@ class ConfirmationPage extends StatelessWidget {
           _transferClientByTrainerPipeline(
             theme: theme,
             context: context,
-            transferDate: confirmTime.microsecondsSinceEpoch.toString(),
+            transferDate:
+                confirmTime.millisecondsSinceEpoch.toString().substring(0, 10),
           );
         },
         minTime: DateTime(

@@ -6,8 +6,8 @@ import 'package:fox_fit/screens/confirmation/confirmation.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:get/get.dart';
 
-class CustomBottomSheet extends StatelessWidget {
-  CustomBottomSheet({
+class CustomBottomSheet extends StatefulWidget {
+  const CustomBottomSheet({
     Key? key,
     required this.clientType,
     this.backgroundColor,
@@ -18,14 +18,27 @@ class CustomBottomSheet extends StatelessWidget {
   final Color? backgroundColor;
   final Widget? child;
 
-  final GeneralController controller = Get.find<GeneralController>();
+  @override
+  State<CustomBottomSheet> createState() => _CustomBottomSheetState();
+}
+
+class _CustomBottomSheetState extends State<CustomBottomSheet> {
+  late final GeneralController _controller;
+  late int _countPipeline = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = Get.find<GeneralController>();
+    _countPipeline = 0;
+  }
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: backgroundColor ?? theme.bottomSheetTheme.backgroundColor,
+        color: widget.backgroundColor ?? theme.bottomSheetTheme.backgroundColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -49,32 +62,35 @@ class CustomBottomSheet extends StatelessWidget {
           const SizedBox(height: 25),
 
           /// Основной контент
-          if (child != null)
-            child!
+          if (widget.child != null)
+            widget.child!
           else
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 33),
               child: Column(
                 children: [
                   ...List.generate(
-                    controller.appState.value.availablePipelineStages.length,
+                    _controller.appState.value.availablePipelineStages.length,
                     (index) {
-                      dynamic stagePipeline = controller
+                      dynamic stagePipeline = _controller
                           .appState.value.availablePipelineStages[index];
                       StagePipelineType stagePipelineType =
                           Enums.getStagePipelineType(
                         stageUid: stagePipeline.uid,
                       );
-                      if (clientType == ClientType.assigned &&
+                      if (widget.clientType == ClientType.assigned &&
                           (stagePipeline.uid == StagePipeline.assigned)) {
                         return const SizedBox();
-                      } else if (clientType == ClientType.conducted &&
+                      } else if (widget.clientType == ClientType.conducted &&
                           (stagePipeline.uid != StagePipeline.nonCall)) {
                         return const SizedBox();
-                      } else if (clientType == ClientType.permanent &&
+                      } else if (widget.clientType == ClientType.permanent &&
                           (stagePipeline.uid != StagePipeline.nonCall)) {
                         return const SizedBox();
                       } else {
+                        setState(() {
+                          _countPipeline++;
+                        });
                         return Column(
                           children: [
                             GestureDetector(
@@ -123,7 +139,7 @@ class CustomBottomSheet extends StatelessWidget {
                       }
                     },
                   ),
-                  const SizedBox(height: 100),
+                  if (_countPipeline != 1) const SizedBox(height: 100),
                 ],
               ),
             ),
