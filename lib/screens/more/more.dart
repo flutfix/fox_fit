@@ -121,6 +121,8 @@ class _MorePageState extends State<MorePage> {
                   theme: theme,
                   text: cards[index].text,
                   icon: cards[index].icon,
+                  iconSize:
+                      cards[index].icon == Images.coordinatorPng ? 21 : 19,
                   onTap: cards[index].onTap,
                 ),
               );
@@ -130,7 +132,7 @@ class _MorePageState extends State<MorePage> {
       ),
     );
   }
-
+  
   Widget _buildCard({
     required ThemeData theme,
     required String text,

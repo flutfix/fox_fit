@@ -125,7 +125,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
                 items: controller.appState.value.bottomBarItems,
                 lineColor: theme.colorScheme.primary,
                 activeColor: theme.colorScheme.primary,
-                inActiveColor: theme.dividerColor,
+                inActiveColor: theme.dividerColor.withOpacity(0.5),
                 textColor: theme.hintColor,
                 onChange: (index) {
                   setState(() {
