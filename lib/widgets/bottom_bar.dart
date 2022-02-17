@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
@@ -14,7 +16,7 @@ class CustomBottomBar extends StatefulWidget {
     required this.inActiveColor,
     this.textColor,
     this.lineColor,
-    this.verticalPadding = 14.0,
+    this.verticalPadding = 14.5,
     this.duration = 150,
   }) : super(key: key);
 
@@ -49,50 +51,51 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
         Padding(
           padding: const EdgeInsets.only(top: 1.0),
           child: Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: 20.0, vertical: widget.verticalPadding),
+            padding: getPadding(),
             width: width,
             alignment: Alignment.center,
             height: getHeight,
             color: theme.canvasColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(
-                widget.items.length,
-                (index) {
-                  var item = widget.items[index];
-                  return GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      widget.onChange(index);
-                    },
-                    child: SizedBox(
-                      width: (width - 40) / widget.items.length,
-                      child: Column(
-                        children: [
-                          SvgPicture.asset(
-                            getIcon(index),
-                            width: 20,
-                            color:
-                                index == controller.appState.value.currentIndex
-                                    ? widget.activeColor
-                                    : widget.inActiveColor,
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            item.shortName,
-                            style: theme.textTheme.caption!.copyWith(
-                                color: 
-                                index == controller.appState.value.currentIndex
+            child: SafeArea(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(
+                  widget.items.length,
+                  (index) {
+                    var item = widget.items[index];
+                    return GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        widget.onChange(index);
+                      },
+                      child: SizedBox(
+                        width: (width - 40) / widget.items.length,
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(
+                              getIcon(index),
+                              width: 20,
+                              color: index ==
+                                      controller.appState.value.currentIndex
+                                  ? widget.activeColor
+                                  : widget.inActiveColor,
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              item.shortName,
+                              style: theme.textTheme.caption!.copyWith(
+                                color: index ==
+                                        controller.appState.value.currentIndex
                                     ? widget.activeColor
                                     : widget.textColor,
-                                ),
-                          ),
-                        ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -115,7 +118,22 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
     );
   }
 
-  double get getHeight => (widget.verticalPadding * 2) + 38;
+  EdgeInsetsGeometry getPadding() {
+    // if (Platform.isIOS) {
+    //   return const EdgeInsets.fromLTRB(20, 14, 20, 20);
+    // } else {
+    return EdgeInsets.symmetric(
+        horizontal: 20, vertical: widget.verticalPadding);
+    // }
+  }
+
+  double get getHeight {
+    // if (Platform.isIOS) {
+    //   return 72;
+    // } else {
+    return (widget.verticalPadding * 2) + 38;
+    // }
+  }
 
   double get getAnimatedPaddding =>
       controller.appState.value.currentIndex *
