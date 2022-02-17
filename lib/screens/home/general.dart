@@ -46,7 +46,6 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
     /// Если приложение закрыто и пользователь нажимает на уведомление - его перекидывает на страницу [Уведомления]
     FirebaseMessaging.instance.getInitialMessage().then((message) {
-      log(message.toString());
       if (message != null) {
         Get.toNamed(Routes.notifications);
       }
@@ -200,9 +199,9 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     ///Стрим на прослушку оповещений
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
+      // AndroidNotification? android = message.notification?.android;
 
-      if (notification != null && android != null) {
+      if (notification != null) {
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
           notification.title,
