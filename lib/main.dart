@@ -9,6 +9,7 @@ import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fox_fit/screens/customer_information/customer_information.dart';
 import 'package:fox_fit/screens/home/general.dart';
 import 'package:fox_fit/screens/more/pages/change_password/change_password.dart';
 import 'package:fox_fit/screens/more/pages/inactive_customers/inactive_customers.dart';
