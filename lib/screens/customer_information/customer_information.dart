@@ -23,10 +23,12 @@ class CustomerInformationPage extends StatefulWidget {
     Key? key,
     required this.clientType,
     this.isHandingButton = false,
+    this.isFromNotification = false,
   }) : super(key: key);
 
   final ClientType clientType;
   final bool isHandingButton;
+  final bool isFromNotification;
 
   @override
   _CustomerInformationPageState createState() =>
@@ -41,10 +43,13 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
   late double _currentPosition;
   late double _startPosition;
   late double _sensitivityFactor;
+  late bool _isFromNotification;
+  late String? _phone;
 
   @override
   void initState() {
     super.initState();
+    _isFromNotification = widget.isFromNotification;
     _controller = Get.find<GeneralController>();
     _scrollController = ScrollController();
     _isOpenedBootomSheet = false;
@@ -59,6 +64,16 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
       _loading = true;
     });
 
+    if (_isFromNotification) {
+      _phone = '';
+      _phone = await Get.arguments;
+      await ErrorHandler.loadingData(
+        context: context,
+        request: () {
+          return _controller.getCustomerByPhone(phone: _phone.toString());
+        },
+      );
+    }
     await ErrorHandler.loadingData(
       context: context,
       request: () {
@@ -108,216 +123,215 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             Get.toNamed(Routes.notifications);
           },
         ),
-        body: _controller.appState.value.currentCustomer != null
-            ? Column(
-                children: [
-                  const SizedBox(height: 25),
+        body: !_loading
+            ? _controller.appState.value.currentCustomer != null
+                ? Column(
+                    children: [
+                      const SizedBox(height: 25),
 
-                  /// Основная информация
-                  DefaultContainer(
-                    padding: const EdgeInsets.fromLTRB(15.5, 19, 5.5, 25),
-                    margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      children: [
-                        /// ФИО
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      /// Основная информация
+                      DefaultContainer(
+                        padding: const EdgeInsets.fromLTRB(15.5, 19, 5.5, 25),
+                        margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Column(
                           children: [
-                            SizedBox(
-                              width: width - 90,
-                              child: Text(
-                                _controller
-                                    .appState.value.currentCustomer!.fullName,
-                                style: theme.textTheme.bodyText1,
-                              ),
+                            /// ФИО
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: width - 90,
+                                  child: Text(
+                                    _controller.appState.value.currentCustomer!
+                                        .fullName,
+                                    style: theme.textTheme.bodyText1,
+                                  ),
+                                ),
+                                if (widget.clientType != ClientType.conducted &&
+                                    widget.clientType != ClientType.permanent &&
+                                    widget.clientType != ClientType.sleeping)
+                                  Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        Images.more,
+                                        width: 4,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          _showBottomSheet();
+                                        },
+                                        behavior: HitTestBehavior.translucent,
+                                        child: const SizedBox(
+                                          width: 24,
+                                          height: 24,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                              ],
                             ),
-                            if (widget.clientType != ClientType.conducted &&
-                                widget.clientType != ClientType.permanent &&
-                                widget.clientType != ClientType.sleeping)
-                              Stack(
-                                alignment: Alignment.center,
+                            const SizedBox(height: 4),
+
+                            /// Номер телефона
+                            GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                launch(
+                                    "tel://${_controller.appState.value.currentCustomer!.phone}");
+                              },
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   SvgPicture.asset(
-                                    Images.more,
-                                    width: 4,
+                                    Images.phone,
+                                    width: 17,
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      _showBottomSheet();
-                                    },
-                                    behavior: HitTestBehavior.translucent,
-                                    child: const SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                    ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    _controller
+                                        .appState.value.currentCustomer!.phone,
+                                    style: theme.textTheme.headline2,
                                   ),
                                 ],
                               ),
+                            ),
+                            const SizedBox(height: 4),
+
+                            /// Переход в чат
+                            GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () async {
+                                await _switchingToChat(theme);
+                              },
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    Images.chat,
+                                    width: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    S.of(context).chat,
+                                    style: theme.textTheme.headline2,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
-                        const SizedBox(height: 4),
-
-                        /// Номер телефона
-                        GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            launch(
-                                "tel://${_controller.appState.value.currentCustomer!.phone}");
-                          },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                Images.phone,
-                                width: 17,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                _controller
-                                    .appState.value.currentCustomer!.phone,
-                                style: theme.textTheme.headline2,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-
-                        /// Переход в чат
-                        GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () async {
-                            await _switchingToChat(theme);
-                          },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                Images.chat,
-                                width: 20,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                S.of(context).chat,
-                                style: theme.textTheme.headline2,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  /// Подробная инфромация о клиенте
-                  /// [Цели], [Травмы], [Пожелания], [Комментарии], [Дата рождения]
-                  if (_loading)
-                    const Center(
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
                       ),
-                    )
-                  else
-                    NotificationListener<ScrollNotification>(
-                      onNotification: (notification) {
-                        /// Проверка на скролл вверх
-                        if (notification.metrics.pixels - _currentPosition >=
-                            _sensitivityFactor) {
-                          /// Проверка, происходит ли скролл внизу, в пределах 20 пикселей
-                          if (_startPosition >=
-                                  _scrollController.position.maxScrollExtent -
-                                      10 &&
-                              _startPosition <=
-                                  _scrollController.position.maxScrollExtent +
-                                      10 &&
-                              !_isOpenedBootomSheet) {
-                            if (widget.clientType != ClientType.conducted &&
-                                widget.clientType != ClientType.permanent &&
-                                widget.clientType != ClientType.sleeping) {
-                              _showBottomSheet();
+                      const SizedBox(height: 24),
+
+                      /// Подробная инфромация о клиенте
+                      /// [Цели], [Травмы], [Пожелания], [Комментарии], [Дата рождения]
+                      NotificationListener<ScrollNotification>(
+                        onNotification: (notification) {
+                          /// Проверка на скролл вверх
+                          if (notification.metrics.pixels - _currentPosition >=
+                              _sensitivityFactor) {
+                            /// Проверка, происходит ли скролл внизу, в пределах 20 пикселей
+                            if (_startPosition >=
+                                    _scrollController.position.maxScrollExtent -
+                                        10 &&
+                                _startPosition <=
+                                    _scrollController.position.maxScrollExtent +
+                                        10 &&
+                                !_isOpenedBootomSheet) {
+                              if (widget.clientType != ClientType.conducted &&
+                                  widget.clientType != ClientType.permanent &&
+                                  widget.clientType != ClientType.sleeping) {
+                                _showBottomSheet();
+                              }
                             }
                           }
-                        }
 
-                        if (notification is ScrollEndNotification) {
-                          _startPosition = notification.metrics.pixels;
-                        }
-                        _currentPosition = notification.metrics.pixels;
+                          if (notification is ScrollEndNotification) {
+                            _startPosition = notification.metrics.pixels;
+                          }
+                          _currentPosition = notification.metrics.pixels;
 
-                        return true;
-                      },
-                      child: Expanded(
-                        child: SingleChildScrollView(
-                          controller: _scrollController,
-                          physics: const BouncingScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: Column(
-                            children: [
-                              DefaultContainer(
-                                padding: const EdgeInsets.fromLTRB(
-                                    28, 17.45, 19, 22.55),
-                                child: _controller
-                                        .appState.value.detailedInfo.isNotEmpty
-                                    ? ListView.separated(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: _controller
-                                            .appState.value.detailedInfo.length,
-                                        separatorBuilder: (context, index) {
-                                          return Column(
-                                            children: [
-                                              const SizedBox(height: 21),
-                                              Divider(
-                                                height: 1,
-                                                color: theme.dividerColor,
-                                              ),
-                                              const SizedBox(height: 8),
-                                            ],
-                                          );
-                                        },
-                                        itemBuilder: (context, index) {
-                                          return Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                _controller.appState.value
-                                                    .detailedInfo[index].header,
-                                                style:
-                                                    theme.textTheme.headline3,
-                                              ),
-                                              const SizedBox(height: 6),
-                                              Text(
-                                                _controller.appState.value
-                                                    .detailedInfo[index].value,
-                                                style:
-                                                    theme.textTheme.headline4,
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      )
-                                    : Center(
-                                        child: Text(
-                                          'Информация о клиенте отсутствует',
-                                          style: theme.textTheme.headline3,
+                          return true;
+                        },
+                        child: Expanded(
+                          child: SingleChildScrollView(
+                            controller: _scrollController,
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Column(
+                              children: [
+                                DefaultContainer(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      28, 17.45, 19, 22.55),
+                                  child: _controller.appState.value.detailedInfo
+                                          .isNotEmpty
+                                      ? ListView.separated(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: _controller.appState.value
+                                              .detailedInfo.length,
+                                          separatorBuilder: (context, index) {
+                                            return Column(
+                                              children: [
+                                                const SizedBox(height: 21),
+                                                Divider(
+                                                  height: 1,
+                                                  color: theme.dividerColor,
+                                                ),
+                                                const SizedBox(height: 8),
+                                              ],
+                                            );
+                                          },
+                                          itemBuilder: (context, index) {
+                                            return Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  _controller
+                                                      .appState
+                                                      .value
+                                                      .detailedInfo[index]
+                                                      .header,
+                                                  style:
+                                                      theme.textTheme.headline3,
+                                                ),
+                                                const SizedBox(height: 6),
+                                                Text(
+                                                  _controller
+                                                      .appState
+                                                      .value
+                                                      .detailedInfo[index]
+                                                      .value,
+                                                  style:
+                                                      theme.textTheme.headline4,
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        )
+                                      : Center(
+                                          child: Text(
+                                            'Информация о клиенте отсутствует',
+                                            style: theme.textTheme.headline3,
+                                          ),
                                         ),
-                                      ),
-                              ),
-                              const SizedBox(height: 20),
-                            ],
+                                ),
+                                const SizedBox(height: 20),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                ],
-              )
-            : const SizedBox(),
+                    ],
+                  )
+                : const SizedBox()
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
         floatingActionButton: widget.isHandingButton
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 64),

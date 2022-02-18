@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/models/app_state.dart';
@@ -209,6 +211,22 @@ class GeneralController extends GetxController {
     } else {
       appState.update((model) {
         model?.notifications = data;
+      });
+      return 200;
+    }
+  }
+
+  /// Получение клиента по номеру телефона
+  Future<dynamic> getCustomerByPhone({required String phone}) async {
+    var data = await Requests.getCustomerByPhone(
+      licenseKey: appState.value.auth!.data!.licenseKey,
+      phone: phone,
+    );
+    if (data is int || data == null) {
+      return data;
+    } else {
+      appState.update((model) {
+        model?.currentCustomer = data;
       });
       return 200;
     }
