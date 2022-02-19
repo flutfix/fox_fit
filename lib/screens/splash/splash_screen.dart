@@ -52,7 +52,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
             Routes.general,
             arguments: authData,
           );
-          
+
           return 200;
         }
       } else {

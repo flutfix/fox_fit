@@ -45,5 +45,7 @@
     "failed_update_list": "",
     "authorization_failed": "",
     "inactiveCustomers": "",
-    "error_transferring_record": ""
+    "error_transferring_record": "",
+    "schedule": "",
+    "record": ""
 }

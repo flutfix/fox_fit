@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
+import 'package:fox_fit/models/appointment.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/customer.dart';
@@ -254,23 +255,19 @@ class Requests {
           "UserUid": id,
         },
       );
+
       if (response.statusCode == 200) {
-        List<TrainerPerfomanceModel> perfomance = [];
-        int index = 0;
+        List<TrainerPerfomanceModel> trainerPerfomance = [];
+        List<String> trainerPerfomanceMonth = [];
+
         for (var element in response.data['TrainerPerformance']) {
-          if (index == response.data['TrainerPerformance'].length - 1) {
-            perfomance.add(
-              TrainerPerfomanceModel.fromJson(
-                element,
-                isCurrentMonth: true,
-              ),
-            );
-          } else {
-            perfomance.add(TrainerPerfomanceModel.fromJson(element));
-          }
-          index++;
+          trainerPerfomance.add(
+            TrainerPerfomanceModel.fromJson(element),
+          );
+          trainerPerfomanceMonth.add(element["Month"]);
         }
-        return perfomance;
+
+        return [trainerPerfomance, trainerPerfomanceMonth];
       }
     } on DioError catch (e) {
       log('${e.response?.statusMessage}');
@@ -332,7 +329,7 @@ class Requests {
     }
   }
 
-  /// Перенос слиента по воронке
+  /// Перенос клиента по воронке
   static Future<dynamic> transferClientByTrainerPipeline({
     required String userUid,
     required String customerUid,
@@ -373,7 +370,7 @@ class Requests {
     }
   }
 
-  /// Передача клинта тренеру
+  /// Передача клиента тренеру
   static Future<dynamic> transferClientToTrainer({
     required String userUid,
     required String customerUid,
@@ -456,6 +453,46 @@ class Requests {
           notifications.add(NotificationModel.fromJson(element));
         }
         return notifications;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Получение списка всех занятий за период
+  static Future<dynamic> getAppointments({
+    required String userUid,
+    required DateTime dateNow,
+  }) async {
+    const String url = '${Api.url}get_appointments';
+    final dioClient = Dio(Api.options);
+
+    /// Конвертация даты в формат Timestamp
+    DateTime dateStart = DateTime(dateNow.year, dateNow.month, dateNow.day);
+    DateTime dateEnd = DateTime(dateNow.year, dateNow.month, dateNow.day + 1);
+    String timestampDateStart =
+        dateStart.millisecondsSinceEpoch.toString().substring(0, 10);
+    String timestampDateEnd =
+        dateEnd.millisecondsSinceEpoch.toString().substring(0, 10);
+
+    try {
+      var response = await dioClient.get(
+        url,
+        queryParameters: {
+          "UserUid": userUid,
+          "start_date": timestampDateStart,
+          "end_date": timestampDateEnd,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<AppointmentModel> appointments = [];
+        for (var element in response.data['Appointments']) {
+          appointments.add(AppointmentModel.fromJson(element));
+        }
+
+        return appointments;
       }
     } on DioError catch (e) {
       log('${e.response?.statusMessage}');

@@ -1,3 +1,4 @@
+import 'package:fox_fit/models/appointment.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/coordinator_workspace.dart';
@@ -25,12 +26,14 @@ class AppStateModel {
     this.detailedInfo = const [],
     this.availablePipelineStages = const [],
     this.trainerPerfomance = const [],
+    this.trainerPerfomanceMonth = const [],
     this.availableTrainers = const [],
     this.sortedAvailableTrainers,
     this.currentCustomer,
     this.currentTrainer,
     this.notifications = const [],
     this.inactiveCustomers = const [],
+    this.appointments = const [],
   });
 
   bool isLoading;
@@ -69,6 +72,9 @@ class AppStateModel {
   /// Статистика тренера
   List<TrainerPerfomanceModel> trainerPerfomance;
 
+  /// Месяцы статистики тренера
+  List<String> trainerPerfomanceMonth;
+
   /// Доступные тренера
   List<Trainer> availableTrainers;
 
@@ -83,4 +89,7 @@ class AppStateModel {
 
   /// Список уведомлений
   List<NotificationModel> notifications;
+
+  /// Список всех занятий
+  List<AppointmentModel> appointments;
 }

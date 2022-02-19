@@ -11,6 +11,7 @@ import 'package:fox_fit/screens/home/general.dart';
 import 'package:fox_fit/screens/more/pages/change_password/change_password.dart';
 import 'package:fox_fit/screens/more/pages/inactive_customers/inactive_customers.dart';
 import 'package:fox_fit/screens/notifications/notifications.dart';
+import 'package:fox_fit/screens/schedule/schedule.dart';
 import 'package:fox_fit/screens/splash/splash_screen.dart';
 import 'package:fox_fit/screens/trainer_choosing/trainer_choosing.dart';
 import 'package:fox_fit/screens/trainer_stats/trainer_stats.dart';
@@ -106,6 +107,7 @@ class MyApp extends StatelessWidget {
           getPage(Routes.notifications, () => const NotificationsPage()),
           getPage(
               Routes.inactiveCustomers, () => const InactiveCustomersPage()),
+          getPage(Routes.schedule, () => const SchedulePage()),
         ],
       ),
     );

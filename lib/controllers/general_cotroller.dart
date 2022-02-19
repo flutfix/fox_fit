@@ -7,6 +7,7 @@ import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
 import 'package:fox_fit/models/trainer.dart';
+import 'package:fox_fit/models/trainer_stats.dart';
 import 'package:get/get.dart';
 
 class GeneralController extends GetxController {
@@ -125,8 +126,12 @@ class GeneralController extends GetxController {
     if (data is int || data == null) {
       return data;
     } else {
+      List<TrainerPerfomanceModel> perfomance = data[0];
+      List<String> trainerPerfomanceMonth = data[1];
+
       appState.update((model) {
-        model?.trainerPerfomance = data;
+        model?.trainerPerfomance = perfomance;
+        model?.trainerPerfomanceMonth = trainerPerfomanceMonth;
       });
       return 200;
     }
@@ -209,6 +214,25 @@ class GeneralController extends GetxController {
     } else {
       appState.update((model) {
         model?.notifications = data;
+      });
+      return 200;
+    }
+  }
+
+  /// Получение уведомлений
+  Future<dynamic> getAppointments({
+    required String userUid,
+    required DateTime dateNow,
+  }) async {
+    var data = await Requests.getAppointments(
+      userUid: userUid,
+      dateNow: dateNow,
+    );
+    if (data is int || data == null) {
+      return data;
+    } else {
+      appState.update((model) {
+        model?.appointments = data;
       });
       return 200;
     }

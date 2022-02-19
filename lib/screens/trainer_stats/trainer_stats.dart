@@ -3,7 +3,7 @@ import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
-import 'package:fox_fit/screens/trainer_stats/widgets/moths.dart';
+import 'package:fox_fit/widgets/months.dart';
 import 'package:fox_fit/screens/trainer_stats/widgets/stats_card.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
@@ -20,11 +20,13 @@ class TrainerStatsPage extends StatefulWidget {
 
 class _TrainerStatsPageState extends State<TrainerStatsPage> {
   late GeneralController controller;
-  late int currentIndex;
+  late int _currentMonth;
   late bool isLoading;
+
   @override
   void initState() {
     controller = Get.put(GeneralController());
+    _currentMonth = 0;
     getPerfomance();
 
     super.initState();
@@ -39,9 +41,6 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
       context: context,
       request: controller.getTrainerPerfomance,
     );
-
-    currentIndex = controller.appState.value.trainerPerfomance
-        .indexWhere((element) => element.isActive);
 
     setState(() {
       isLoading = false;
@@ -89,33 +88,22 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                     children: [
                       Months(
                         width: width,
-                        items: controller.appState.value.trainerPerfomance,
-                        currentIndex: currentIndex,
+                        months: controller.appState.value.trainerPerfomanceMonth,
+                        currentIndex: _currentMonth,
                         onChange: (index) {
-                          int oldIndex = controller
-                              .appState.value.trainerPerfomance
-                              .indexWhere((element) => element.isActive);
-                          if (index != oldIndex) {
-                            setState(() {
-                              controller.appState.value
-                                  .trainerPerfomance[oldIndex].isActive = false;
-                              controller.appState.value.trainerPerfomance[index]
-                                  .isActive = true;
-                            });
-                          }
                           setState(() {
-                            currentIndex = index;
+                            _currentMonth = index;
                           });
                         },
                       ),
                       const SizedBox(height: 24),
                       StatsCard(
                         sales: controller.appState.value
-                            .trainerPerfomance[currentIndex].amount,
+                            .trainerPerfomance[_currentMonth].amount,
                         plan: controller.appState.value
-                            .trainerPerfomance[currentIndex].plan,
+                            .trainerPerfomance[_currentMonth].plan,
                         progress: controller.appState.value
-                            .trainerPerfomance[currentIndex].done,
+                            .trainerPerfomance[_currentMonth].done,
                         duration: 350,
                       ),
                       const SizedBox(height: 24),
@@ -129,19 +117,19 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                             name: controller
                                 .appState
                                 .value
-                                .trainerPerfomance[currentIndex]
+                                .trainerPerfomance[_currentMonth]
                                 .perfomanceStages[0]
                                 .name,
                             count: controller
                                 .appState
                                 .value
-                                .trainerPerfomance[currentIndex]
+                                .trainerPerfomance[_currentMonth]
                                 .perfomanceStages[0]
                                 .quantity,
                             conversion: controller
                                 .appState
                                 .value
-                                .trainerPerfomance[currentIndex]
+                                .trainerPerfomance[_currentMonth]
                                 .perfomanceStages[0]
                                 .conversion,
                             lineWidth: width * 0.15,
@@ -154,19 +142,19 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                             name: controller
                                 .appState
                                 .value
-                                .trainerPerfomance[currentIndex]
+                                .trainerPerfomance[_currentMonth]
                                 .perfomanceStages[1]
                                 .name,
                             count: controller
                                 .appState
                                 .value
-                                .trainerPerfomance[currentIndex]
+                                .trainerPerfomance[_currentMonth]
                                 .perfomanceStages[1]
                                 .quantity,
                             conversion: controller
                                 .appState
                                 .value
-                                .trainerPerfomance[currentIndex]
+                                .trainerPerfomance[_currentMonth]
                                 .perfomanceStages[1]
                                 .conversion,
                             lineColor: theme.cardColor,
@@ -183,19 +171,19 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                             name: controller
                                 .appState
                                 .value
-                                .trainerPerfomance[currentIndex]
+                                .trainerPerfomance[_currentMonth]
                                 .perfomanceStages[2]
                                 .name,
                             count: controller
                                 .appState
                                 .value
-                                .trainerPerfomance[currentIndex]
+                                .trainerPerfomance[_currentMonth]
                                 .perfomanceStages[2]
                                 .quantity,
                             conversion: controller
                                 .appState
                                 .value
-                                .trainerPerfomance[currentIndex]
+                                .trainerPerfomance[_currentMonth]
                                 .perfomanceStages[2]
                                 .conversion,
                             lineColor: theme.highlightColor,
@@ -212,19 +200,19 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                             name: controller
                                 .appState
                                 .value
-                                .trainerPerfomance[currentIndex]
+                                .trainerPerfomance[_currentMonth]
                                 .perfomanceStages[3]
                                 .name,
                             count: controller
                                 .appState
                                 .value
-                                .trainerPerfomance[currentIndex]
+                                .trainerPerfomance[_currentMonth]
                                 .perfomanceStages[3]
                                 .quantity,
                             conversion: controller
                                 .appState
                                 .value
-                                .trainerPerfomance[currentIndex]
+                                .trainerPerfomance[_currentMonth]
                                 .perfomanceStages[3]
                                 .conversion,
                             lineColor: theme.disabledColor,

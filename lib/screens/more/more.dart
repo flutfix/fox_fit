@@ -40,6 +40,15 @@ class _MorePageState extends State<MorePage> {
     if (cards.isEmpty) {
       setState(() {
         cards = [
+          /// [Расписание]
+          MoreCardModel(
+            text: S.of(context).schedule,
+            icon: Images.schedule,
+            onTap: () {
+              Get.toNamed(Routes.schedule);
+            },
+          ),
+
           /// [Статистика тренера]
           MoreCardModel(
             text: S.of(context).trainer_stats,

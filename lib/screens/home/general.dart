@@ -46,7 +46,6 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
     /// Если приложение закрыто и пользователь нажимает на уведомление - его перекидывает на страницу [Уведомления]
     FirebaseMessaging.instance.getInitialMessage().then((message) {
-      log(message.toString());
       if (message != null) {
         Get.toNamed(Routes.notifications);
       }

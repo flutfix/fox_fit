@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
@@ -143,7 +141,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      _showBottomSheet();
+                                      if (!_loading) {
+                                        _showBottomSheet();
+                                      }
                                     },
                                     behavior: HitTestBehavior.translucent,
                                     child: const SizedBox(
@@ -403,7 +403,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
       if (widget.clientType != ClientType.conducted &&
           widget.clientType != ClientType.permanent &&
           widget.clientType != ClientType.sleeping) {
-        _showBottomSheet();
+        if (!_loading) {
+          _showBottomSheet();
+        }
       }
     }
   }

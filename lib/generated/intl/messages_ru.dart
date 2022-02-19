@@ -78,8 +78,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Пароль не изменён"),
         "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
             "Введённые пароли не совпадают"),
+        "record": MessageLookupByLibrary.simpleMessage("Записать"),
         "repeat_input": MessageLookupByLibrary.simpleMessage("Повторите ввод"),
         "save_edits": MessageLookupByLibrary.simpleMessage("Изменить"),
+        "schedule": MessageLookupByLibrary.simpleMessage("Расписание"),
         "send_to_trainer":
             MessageLookupByLibrary.simpleMessage("Передать тренеру"),
         "server_error": MessageLookupByLibrary.simpleMessage("Ошибка сервера"),

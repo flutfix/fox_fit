@@ -10,5 +10,5 @@ class Routes {
   static const String changePassword = '/change_password';
   static const String notifications = '/notifications';
   static const String inactiveCustomers = '/inactive_customers';
-
+  static const String schedule = '/schedule';
 }

@@ -519,6 +519,26 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get schedule {
+    return Intl.message(
+      '',
+      name: 'schedule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get record {
+    return Intl.message(
+      '',
+      name: 'record',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
