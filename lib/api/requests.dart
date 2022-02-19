@@ -433,7 +433,6 @@ class Requests {
     String endDate = (now.millisecondsSinceEpoch / 1000).round().toString();
     String startDate =
         (monthAgo.millisecondsSinceEpoch / 1000).round().toString();
-
     String? relevanceDate = await getPrefs(
         key: Cache.lastCheckNotifications, prefsType: PrefsType.string);
     relevanceDate ??= startDate;
@@ -494,6 +493,33 @@ class Requests {
 
         return appointments;
       }
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Получение клиента по номеру телефона
+  static Future<dynamic> getCustomerByPhone({
+    required String phone,
+    required String licenseKey,
+  }) async {
+    const String url = '${Api.url}get_customer_by_phone_number';
+    final dioClient = Dio(Api.options);
+    try {
+      var response = await dioClient.get(
+        url,
+        queryParameters: {
+          "phone_number": phone,
+          "LicenseKey": licenseKey,
+        },
+      );
+      if (response.statusCode == 200) {
+        CustomerModel customer =
+            CustomerModel.fromJson(response.data['Customers'][0]);
+            
+        return customer;
+        }
     } on DioError catch (e) {
       log('${e.response?.statusMessage}');
       return e.response?.statusCode;

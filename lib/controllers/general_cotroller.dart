@@ -219,7 +219,7 @@ class GeneralController extends GetxController {
     }
   }
 
-  /// Получение уведомлений
+  /// Получение списка всех занятий за период
   Future<dynamic> getAppointments({
     required String userUid,
     required DateTime dateNow,
@@ -234,6 +234,22 @@ class GeneralController extends GetxController {
       appState.update((model) {
         model?.appointments = data;
       });
+      return 200;
+    }
+  }
+
+  /// Получение клиента по номеру телефона
+  Future<dynamic> getCustomerByPhone({required String phone}) async {
+    var data = await Requests.getCustomerByPhone(
+      licenseKey: appState.value.auth!.data!.licenseKey,
+      phone: phone,
+      );
+    if (data is int || data == null) {
+      return data;
+    } else {
+      appState.update((model) {
+        model?.currentCustomer = data;
+         });
       return 200;
     }
   }

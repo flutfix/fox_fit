@@ -5,6 +5,8 @@ import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/notification.dart';
+import 'package:fox_fit/screens/customer_information/customer_information.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/default_container.dart';
@@ -70,11 +72,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20.0,
-                          right: 20.0,
-                          bottom: 60,
-                        ),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 60),
                         child: Obx(
                           (() => Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,48 +81,47 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                         .length, (index) {
                                   var notification = _controller
                                       .appState.value.notifications[index];
-                                  if (notification.isVisible) {
-                                    /// Блок если день сменился
-                                    if (_currentDateTimestamp !=
-                                        notification.date) {
-                                      _currentDateTimestamp = notification.date;
 
-                                      dynamic date = _timeStampToFormattedDate(
-                                          timestamp: _currentDateTimestamp);
+                                  /// Блок если день сменился
+                                  if (_currentDateTimestamp !=
+                                      notification.date) {
+                                    _currentDateTimestamp = notification.date;
 
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(height: 25),
-                                          Text(
-                                            date,
-                                            style: theme.textTheme.bodyText2!
-                                                .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                          ),
-                                          const SizedBox(height: 16),
-                                          _getNotificationContainer(
-                                            theme,
-                                            notification,
-                                          ),
-                                        ],
-                                      );
+                                    dynamic date = _timeStampToFormattedDate(
+                                        timestamp: _currentDateTimestamp);
 
-                                      /// Просто уведомление если день все тот же
-                                    } else {
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 6.0),
-                                        child: _getNotificationContainer(
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(height: 25),
+                                        Text(
+                                          date,
+                                          style: theme.textTheme.bodyText2!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w600),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        _getNotificationContainer(
                                           theme,
                                           notification,
+                                          onTap: () =>
+                                              onNotificationTap(notification),
                                         ),
-                                      );
-                                    }
+                                      ],
+                                    );
+
+                                    /// Просто уведомление если день все тот же
                                   } else {
-                                    return const SizedBox();
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 6.0),
+                                      child: _getNotificationContainer(
+                                        theme,
+                                        notification,
+                                        onTap: () =>
+                                            onNotificationTap(notification),
+                                      ),
+                                    );
                                   }
                                 }),
                               )),
@@ -138,49 +135,60 @@ class _NotificationsPageState extends State<NotificationsPage> {
     );
   }
 
+  onNotificationTap(NotificationModel notification) {
+    if (notification.isVisible) {
+      if (notification.phone != '' && notification.pipelineUid != '') {
+        Get.to(
+          () =>  CustomerInformationPage(
+            clientType: Enums.getClientType(clientUid: notification.pipelineUid),
+            isFromNotification: true,
+          ),
+          arguments: notification.phone,
+          transition: Transition.fadeIn,
+        );
+      }
+    }
+  }
+
   Widget _getNotificationContainer(
-      ThemeData theme, NotificationModel notification) {
-    return DefaultContainer(
-        isHighlight: notification.isNew,
-        highlightColor: Styles.green.withOpacity(0.2),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /// Текст уведомления
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 120,
-                  child: Text(
-                    notification.text,
-                    style: theme.textTheme.bodyText2,
+    ThemeData theme,
+    NotificationModel notification, {
+    required Function() onTap,
+  }) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: onTap,
+      child: DefaultContainer(
+          isHighlight: notification.isNew,
+          highlightColor: Styles.green.withOpacity(0.2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Текст уведомления
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 120,
+                    child: Text(
+                      notification.text,
+                      style: theme.textTheme.bodyText2,
+                    ),
                   ),
-                ),
 
-                const SizedBox(height: 4),
+                  const SizedBox(height: 4),
+                ],
+              ),
 
-                /// Имя клиента
-                // SizedBox(
-                //   width: MediaQuery.of(context).size.width - 120,
-                //   child: Text(
-                //     notification.customerName,
-                //     style: theme.textTheme.bodyText2!.copyWith(
-                //       color: theme.colorScheme.secondary,
-                //     ),
-                //   ),
-                // )
-              ],
-            ),
-
-            /// Время
-            Text(
-              notification.time,
-              style: theme.textTheme.overline,
-            ),
-          ],
-        ));
+              /// Время
+              Text(
+                notification.time,
+                style: theme.textTheme.overline,
+              ),
+            ],
+          )),
+    );
   }
 
   CustomAppBar _appBar() {

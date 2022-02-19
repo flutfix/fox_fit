@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
