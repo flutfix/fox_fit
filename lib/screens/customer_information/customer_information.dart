@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -176,9 +177,25 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                             /// Номер телефона
                             GestureDetector(
                               behavior: HitTestBehavior.translucent,
-                              onTap: () {
-                                launch(
-                                    "tel://${_controller.appState.value.currentCustomer!.phone}");
+                              onTap: () async {
+                                if (Platform.isIOS) {
+                                  dynamic number = _controller
+                                      .appState.value.currentCustomer!.phone
+                                      .split(' ');
+                                  number =
+                                      '${number[0]}${number[1]}${number[2]}';
+                                  number = number.split('(');
+                                  number = '${number[0]}${number[1]}';
+                                  number = number.split(')');
+                                  number = '${number[0]}${number[1]}';
+                                  number = number.split('+7');
+                                  number = '8${number[1]}';
+                                  log(number);
+                                  await launch("tel://$number");
+                                } else {
+                                  await launch(
+                                      "tel://${_controller.appState.value.currentCustomer!.phone}");
+                                }
                               },
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -370,6 +387,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     });
   }
 
+  /// Переход в WhatsApp чат с клиентом
   Future<void> _switchingToChat(ThemeData theme) async {
     dynamic number;
     number = _controller.appState.value.currentCustomer!.phone.split(' ');
@@ -392,18 +410,49 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     bool _isFromNewCustomers = _controller.appState.value
             .bottomBarItems[_controller.appState.value.currentIndex].uid ==
         Client.fresh;
-    await canLaunch('whatsapp://send?phone=$number')
-        ? _isFromNewCustomers
-            ? launch(
-                'whatsapp://send?phone=$number&text=$greeting',
-              )
-            : launch(
-                'whatsapp://send?phone=$number',
-              )
-        : CustomSnackbar.getSnackbar(
-            title: S.of(context).whatsapp_exeption,
-            message: S.of(context).whatsapp_exeption_description,
-          );
+
+    /// Открытие whatsapp для IOS
+    if (Platform.isIOS) {
+      tryLaunchWhatsapp(
+        whatsappLink: 'https://wa.me/$number',
+        text: '?text=$greeting',
+        isFromNewCustomers: _isFromNewCustomers,
+      );
+
+      /// Открытие whatsapp для Android
+    } else {
+      tryLaunchWhatsapp(
+        whatsappLink: 'whatsapp://send?phone=$number',
+        text: '&text=$greeting',
+        isFromNewCustomers: _isFromNewCustomers,
+      );
+    }
+  }
+
+  /// Открытие WhatsApp
+  tryLaunchWhatsapp({
+    required String whatsappLink,
+    required bool isFromNewCustomers,
+    required String? text,
+  }) async {
+    if (await canLaunch(whatsappLink)) {
+      /// Если из новых, то с приветствием
+      if (isFromNewCustomers) {
+        await launch(whatsappLink + '$text');
+      } else {
+        await launch(whatsappLink);
+      }
+    } else {
+      getErrorWhatsappLaunch;
+    }
+  }
+
+  ///Уведомление об ошибке открытия WhatsApp
+  get getErrorWhatsappLaunch {
+    CustomSnackbar.getSnackbar(
+      title: S.of(context).whatsapp_exeption,
+      message: S.of(context).whatsapp_exeption_description,
+    );
   }
 
   void _onHorizontalSwipe(SwipeDirection direction) {

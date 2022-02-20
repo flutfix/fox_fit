@@ -138,11 +138,9 @@ class _AuthPageState extends State<AuthPage> {
                         isIconAnimation: isPassAnimation,
                         obscureText: true,
                         textController: passController,
-                        onEditingComplete: ()async{
-
+                        onEditingComplete: () async {
                           await _validateFields(theme);
                         },
-                        
                       ),
                       const SizedBox(height: 46),
 
@@ -174,7 +172,9 @@ class _AuthPageState extends State<AuthPage> {
         context: context,
         request: () {
           return Requests.auth(
-            phone: oldPhone != '' ? oldPhone : maskFormatter.getUnmaskedText(),
+            phone: maskFormatter.getUnmaskedText() == ''
+                ? oldPhone
+                : maskFormatter.getUnmaskedText(),
             pass: passController.text,
           );
         },
