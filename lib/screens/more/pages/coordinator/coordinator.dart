@@ -66,7 +66,7 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
 
   CustomAppBar _appBar() {
     return CustomAppBar(
-      title: S.of(context).coordinaor_workspace,
+      title: S.of(context).coordinator,
       isBackArrow: true,
       onBack: () async {
         Get.back();
@@ -74,7 +74,7 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
           context: context,
           request: _controller.getCustomers,
           skipCheck: true,
-          handler: (_)async {
+          handler: (_) async {
             CustomSnackbar.getSnackbar(
               title: S.of(context).no_internet_access,
               message: S.of(context).failed_update_list,

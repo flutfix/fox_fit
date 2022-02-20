@@ -30,7 +30,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "comment_for_recipient": MessageLookupByLibrary.simpleMessage(""),
         "confirm": MessageLookupByLibrary.simpleMessage(""),
         "confirmation_failed": MessageLookupByLibrary.simpleMessage(""),
-        "coordinaor_workspace": MessageLookupByLibrary.simpleMessage(""),
         "coordinator": MessageLookupByLibrary.simpleMessage(""),
         "customer_information": MessageLookupByLibrary.simpleMessage(""),
         "data_download_failed": MessageLookupByLibrary.simpleMessage(""),

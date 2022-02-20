@@ -35,8 +35,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm": MessageLookupByLibrary.simpleMessage("Подтвердить"),
         "confirmation_failed":
             MessageLookupByLibrary.simpleMessage("Подтверждение не выполнено"),
-        "coordinaor_workspace":
-            MessageLookupByLibrary.simpleMessage("Рабочий стол координатора"),
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),

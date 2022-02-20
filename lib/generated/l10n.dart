@@ -261,16 +261,6 @@ class S {
   }
 
   /// ``
-  String get coordinaor_workspace {
-    return Intl.message(
-      '',
-      name: 'coordinaor_workspace',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
   String get transmit {
     return Intl.message(
       '',
