@@ -54,11 +54,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           isNotification: false,
           onBack: () async {
             Get.back();
-            await ErrorHandler.singleRequest(
+            await ErrorHandler.request(
               context: context,
               request: _controller.getCustomers,
               skipCheck: true,
-              handler: (_) {
+              handler: (_)async {
                 CustomSnackbar.getSnackbar(
                   title: S.of(context).no_internet_access,
                   message: S.of(context).failed_update_list,
@@ -173,7 +173,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
       /// Валидация пройдена
     } else {
-      dynamic data = await ErrorHandler.singleRequest(
+      dynamic data = await ErrorHandler.request(
         context: context,
         request: () {
           return _controller.changeUserPassword(
@@ -182,7 +182,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             newPass: _newPassAgainController.text,
           );
         },
-        handler: (_) {
+        handler: (_)async {
           if (_isCanVibrate) {
             Vibrate.feedback(FeedbackType.success);
           }

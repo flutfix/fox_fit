@@ -48,6 +48,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "kickoff_training": MessageLookupByLibrary.simpleMessage(""),
         "least_three_characters": MessageLookupByLibrary.simpleMessage(""),
         "leave_comment": MessageLookupByLibrary.simpleMessage(""),
+        "license_error_body": MessageLookupByLibrary.simpleMessage(""),
+        "license_error_title": MessageLookupByLibrary.simpleMessage(""),
         "log_in": MessageLookupByLibrary.simpleMessage(""),
         "log_out": MessageLookupByLibrary.simpleMessage(""),
         "login_exeption": MessageLookupByLibrary.simpleMessage(""),

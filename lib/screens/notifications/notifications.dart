@@ -51,7 +51,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
       _isLoading = true;
     });
 
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
         context: context, request: _controller.getNotifications);
 
     setState(() {
@@ -220,11 +220,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
     await _setPrefs(timestamp: _getRelevanceDate);
     Get.back();
     _updateNotificationIconColor();
-    await ErrorHandler.singleRequest(
+    await ErrorHandler.request(
       context: context,
       request: _controller.getCustomers,
       skipCheck: true,
-      handler: (_) {
+      handler: (_) async{
         CustomSnackbar.getSnackbar(
           title: S.of(context).no_internet_access,
           message: S.of(context).failed_update_list,
@@ -239,7 +239,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     }
 
     await _setPrefs(timestamp: _getRelevanceDate);
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
       context: context,
       request: _controller.getNotifications,
       repeat: false,

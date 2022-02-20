@@ -519,6 +519,26 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get license_error_title {
+    return Intl.message(
+      '',
+      name: 'license_error_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get license_error_body {
+    return Intl.message(
+      '',
+      name: 'license_error_body',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

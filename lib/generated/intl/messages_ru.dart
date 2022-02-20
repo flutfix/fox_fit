@@ -65,6 +65,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Не менее трёх символов"),
         "leave_comment":
             MessageLookupByLibrary.simpleMessage("Оставьте комментарий"),
+        "license_error_body":
+            MessageLookupByLibrary.simpleMessage("У Вас закончилась лицензия"),
+        "license_error_title":
+            MessageLookupByLibrary.simpleMessage("Невозможно загрузить данные"),
         "log_in": MessageLookupByLibrary.simpleMessage("Войти"),
         "log_out": MessageLookupByLibrary.simpleMessage("Выйти из профиля"),
         "login_exeption": MessageLookupByLibrary.simpleMessage("Ошибка входа"),

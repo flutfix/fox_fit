@@ -12,6 +12,7 @@ import 'package:fox_fit/models/item_bottom_bar.dart';
 import 'package:fox_fit/models/notification.dart';
 import 'package:fox_fit/models/trainer.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
+import 'package:fox_fit/utils/prefs.dart';
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
@@ -91,7 +92,7 @@ class Requests {
     const String url = '${Api.url}get_customers';
     final dioClient = Dio(Api.options);
     String platform = '';
-    String? lastCheckNotifications = await getPrefs(
+    String? lastCheckNotifications = await Prefs.getPrefs(
       key: Cache.lastCheckNotifications,
       prefsType: PrefsType.string,
     );
@@ -159,7 +160,7 @@ class Requests {
       "DevicePlatform": platform,
     };
 
-    String? lastCheckNotifications = await getPrefs(
+    String? lastCheckNotifications = await Prefs.getPrefs(
       key: Cache.lastCheckNotifications,
       prefsType: PrefsType.string,
     );
@@ -206,7 +207,7 @@ class Requests {
       "DevicePlatform": platform,
     };
 
-    String? lastCheckNotifications = await getPrefs(
+    String? lastCheckNotifications = await Prefs.getPrefs(
       key: Cache.lastCheckNotifications,
       prefsType: PrefsType.string,
     );
@@ -436,7 +437,7 @@ class Requests {
     String endDate = (now.millisecondsSinceEpoch / 1000).round().toString();
     String startDate =
         (monthAgo.millisecondsSinceEpoch / 1000).round().toString();
-    String? relevanceDate = await getPrefs(
+    String? relevanceDate = await Prefs.getPrefs(
         key: Cache.lastCheckNotifications, prefsType: PrefsType.string);
     relevanceDate ??= startDate;
     try {
@@ -500,23 +501,4 @@ class Requests {
     }
     prefs.setString(Cache.pass, pass);
   }
-
-  static Future<dynamic> getPrefs({
-    required String key,
-    required PrefsType prefsType,
-  }) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    switch (prefsType) {
-      case PrefsType.string:
-        return prefs.getString(key);
-      case PrefsType.boolean:
-        return prefs.getBool(key);
-    }
-  }
-}
-
-enum PrefsType {
-  string,
-  boolean,
 }

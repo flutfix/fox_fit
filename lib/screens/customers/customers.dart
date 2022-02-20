@@ -48,7 +48,7 @@ class _CustomersPageState extends State<CustomersPage> {
       _isLoading = true;
     });
 
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
         context: context, request: _controller.getRegularCustomers);
 
     setState(() {
@@ -237,20 +237,20 @@ class _CustomersPageState extends State<CustomersPage> {
     }
     await Future.delayed(const Duration(milliseconds: 300));
     if (widget.pageType == CustomersPageType.coordinator) {
-      await ErrorHandler.loadingData(
+      await ErrorHandler.request(
         context: context,
         request: _controller.getCoordinaorWorkSpace,
         repeat: false,
       );
     } else {
       if (_controller.appState.value.currentIndex != stableStageIndex) {
-        await ErrorHandler.loadingData(
+        await ErrorHandler.request(
           context: context,
           request: _controller.getCustomers,
           repeat: false,
         );
       } else {
-        await ErrorHandler.loadingData(
+        await ErrorHandler.request(
           context: context,
           request: _controller.getRegularCustomers,
           repeat: false,

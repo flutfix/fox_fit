@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
@@ -5,8 +7,10 @@ import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/generated/l10n.dart';
+import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
 import 'package:fox_fit/utils/error_handler.dart';
+import 'package:fox_fit/utils/prefs.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
@@ -168,7 +172,7 @@ class _AuthPageState extends State<AuthPage> {
 
   Future<dynamic> _validateFields(ThemeData theme) async {
     if (phoneController.text.isNotEmpty && passController.text.isNotEmpty) {
-      dynamic authData = await ErrorHandler.singleRequest(
+      dynamic data = await ErrorHandler.request(
         context: context,
         request: () {
           return Requests.auth(
@@ -178,22 +182,23 @@ class _AuthPageState extends State<AuthPage> {
             pass: passController.text,
           );
         },
-        handler: (_) {
+        handler: (data) async {
           CustomSnackbar.getSnackbar(
             title: S.of(context).server_error,
             message: S.of(context).authorization_failed,
           );
+
+          return false;
         },
       );
-
-      if (!(authData is int || authData == null)) {
+      if (data is AuthDataModel) {
         /// Вибрация при успешной авторизации
         if (_canVibrate) {
           Vibrate.feedback(FeedbackType.light);
         }
         Get.offAllNamed(
           Routes.general,
-          arguments: authData,
+          arguments: data,
         );
       }
     } else {
@@ -221,7 +226,7 @@ class _AuthPageState extends State<AuthPage> {
 
   Future<dynamic> getPhoneFromPrefs() async {
     var phone =
-        await Requests.getPrefs(key: Cache.phone, prefsType: PrefsType.string);
+        await Prefs.getPrefs(key: Cache.phone, prefsType: PrefsType.string);
     if (phone != null) {
       if (phone != '') {
         setState(() {

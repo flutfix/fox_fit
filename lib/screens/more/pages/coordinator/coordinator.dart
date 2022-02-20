@@ -34,7 +34,7 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
       _isLoading = true;
     });
 
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
       context: context,
       request: _controller.getCoordinaorWorkSpace,
     );
@@ -70,11 +70,11 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
       isBackArrow: true,
       onBack: () async {
         Get.back();
-        await ErrorHandler.singleRequest(
+        await ErrorHandler.request(
           context: context,
           request: _controller.getCustomers,
           skipCheck: true,
-          handler: (_) {
+          handler: (_)async {
             CustomSnackbar.getSnackbar(
               title: S.of(context).no_internet_access,
               message: S.of(context).failed_update_list,

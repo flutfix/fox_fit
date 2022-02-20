@@ -34,7 +34,7 @@ class _InactiveCustomersPageState extends State<InactiveCustomersPage> {
       _isLoading = true;
     });
 
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
       context: context,
       request: () {
         return _controller.getInactiveCustomers();
@@ -72,11 +72,11 @@ class _InactiveCustomersPageState extends State<InactiveCustomersPage> {
       isBackArrow: true,
       onBack: () async {
         Get.back();
-        await ErrorHandler.singleRequest(
+        await ErrorHandler.request(
           context: context,
           request: _controller.getCustomers,
           skipCheck: true,
-          handler: (_) {
+          handler: (_) async {
             CustomSnackbar.getSnackbar(
               title: S.of(context).no_internet_access,
               message: S.of(context).failed_update_list,

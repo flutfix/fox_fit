@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
 import 'package:fox_fit/screens/more/more.dart';
@@ -13,7 +14,9 @@ import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/bottom_bar.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/keep_alive_page.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class General extends StatefulWidget {
   const General({Key? key}) : super(key: key);
@@ -79,13 +82,32 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     controller.appState.update((model) {
       model?.isLoading = true;
     });
+    var prefs = await SharedPreferences.getInstance();
     await _fcm();
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
       context: context,
       request: () {
         return controller.getCustomers(fcmToken: _fcmToken);
       },
+      handler: (data) async {
+        if (data == 401) {
+          log('data: $data');
+          CustomSnackbar.getSnackbar(
+            title: S.of(context).license_error_title,
+            message: S.of(context).license_error_body,
+          );
+          Get.delete<GeneralController>();
+          prefs.setBool(Cache.isAuthorized, false);
+          prefs.setString(Cache.pass, '');
+
+          return false;
+        }
+      },
     );
+
+    if (prefs.getBool(Cache.isAuthorized) == false) {
+      await Get.offAllNamed(Routes.auth);
+    }
 
     controller.appState.update((model) {
       model?.isLoading = false;

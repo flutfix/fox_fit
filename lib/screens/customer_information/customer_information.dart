@@ -68,14 +68,14 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     if (_isFromNotification) {
       _phone = '';
       _phone = await Get.arguments;
-      await ErrorHandler.loadingData(
+      await ErrorHandler.request(
         context: context,
         request: () {
           return _controller.getCustomerByPhone(phone: _phone.toString());
         },
       );
     }
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
       context: context,
       request: () {
         return _controller.getCustomerInfo(
@@ -108,11 +108,11 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
             Get.back();
 
-            await ErrorHandler.singleRequest(
+            await ErrorHandler.request(
               context: context,
               request: _controller.getCustomers,
               skipCheck: true,
-              handler: (_) {
+              handler: (_) async{
                 CustomSnackbar.getSnackbar(
                   title: S.of(context).no_internet_access,
                   message: S.of(context).failed_update_list,
