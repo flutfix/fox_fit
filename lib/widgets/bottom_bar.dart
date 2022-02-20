@@ -56,8 +56,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
             alignment: Alignment.center,
             height: getHeight,
             color: theme.canvasColor,
-            child: SafeArea(
-              child: Row(
+            child:  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(
                   widget.items.length,
@@ -98,7 +97,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                 ),
               ),
             ),
-          ),
+
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -119,20 +118,20 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   }
 
   EdgeInsetsGeometry getPadding() {
-    // if (Platform.isIOS) {
-    //   return const EdgeInsets.fromLTRB(20, 14, 20, 20);
-    // } else {
+     if (Platform.isIOS) {
+       return const EdgeInsets.fromLTRB(20, 14, 20, 20);
+     } else {
     return EdgeInsets.symmetric(
         horizontal: 20, vertical: widget.verticalPadding);
-    // }
+     }
   }
 
   double get getHeight {
-    // if (Platform.isIOS) {
-    //   return 72;
-    // } else {
+     if (Platform.isIOS) {
+       return 72;
+     } else {
     return (widget.verticalPadding * 2) + 38;
-    // }
+     }
   }
 
   double get getAnimatedPaddding =>

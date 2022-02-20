@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -9,7 +10,6 @@ import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:fox_fit/screens/customer_information/customer_information.dart';
 import 'package:fox_fit/screens/home/general.dart';
 import 'package:fox_fit/screens/more/pages/change_password/change_password.dart';
 import 'package:fox_fit/screens/more/pages/inactive_customers/inactive_customers.dart';
@@ -23,8 +23,15 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'screens/more/pages/coordinator/coordinator.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-
+  if(Platform.isIOS){
+    await Firebase.initializeApp(options: const FirebaseOptions(
+      apiKey: "AIzaSyDlDrc6NbcGVR4rr8DTfV82dAk_vD3Jpi0",
+      appId: "1:150088765423:ios:23edb87f9ecb47a756301a",
+      messagingSenderId: "150088765423",
+      projectId: "android-foxfit-push",));
+  } else {
+    await Firebase.initializeApp();
+  }
   log("[Firebase] Handling a background message: ${message.messageId}");
 }
 
@@ -40,7 +47,14 @@ Future<void> main() async {
 }
 
 Future _init() async {
-  await Firebase.initializeApp();
+  if(Platform.isIOS){
+    await Firebase.initializeApp(options: const FirebaseOptions(
+        apiKey: "AIzaSyDlDrc6NbcGVR4rr8DTfV82dAk_vD3Jpi0",
+        appId: "1:150088765423:ios:23edb87f9ecb47a756301a",
+        messagingSenderId: "150088765423",
+        projectId: "android-foxfit-push",));
+  }else {
+  await Firebase.initializeApp();}
   FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   ///Request permissions for Ios
