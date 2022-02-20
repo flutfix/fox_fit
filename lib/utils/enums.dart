@@ -6,7 +6,7 @@ class Enums {
   static String getIconStage({required StagePipelineType stageType}) {
     switch (stageType) {
       case StagePipelineType.assigned:
-        return Images.assigned;
+        return Images.checkMark;
 
       case StagePipelineType.transferringRecord:
         return Images.refresh;
