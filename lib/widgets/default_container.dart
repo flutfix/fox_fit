@@ -11,6 +11,7 @@ class DefaultContainer extends StatefulWidget {
     required this.child,
     this.isHighlight,
     this.highlightColor,
+    this.width,
     this.height,
   }) : super(key: key);
 
@@ -21,6 +22,7 @@ class DefaultContainer extends StatefulWidget {
   final Widget child;
   final bool? isHighlight;
   final Color? highlightColor;
+  final double? width;
   final double? height;
 
   @override
@@ -53,7 +55,7 @@ class _DefaultContainerState extends State<DefaultContainer> {
       behavior: HitTestBehavior.translucent,
       onTap: widget.onTap,
       child: Container(
-        width: width,
+        width: widget.width ?? width,
         height: widget.height,
         padding: widget.padding,
         margin: widget.margin,

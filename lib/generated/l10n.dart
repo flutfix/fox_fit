@@ -539,6 +539,116 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get sign_up_training_session {
+    return Intl.message(
+      '',
+      name: 'sign_up_training_session',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get select_client {
+    return Intl.message(
+      '',
+      name: 'select_client',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get choice_client {
+    return Intl.message(
+      '',
+      name: 'choice_client',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get duration {
+    return Intl.message(
+      '',
+      name: 'duration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get personal {
+    return Intl.message(
+      '',
+      name: 'personal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get split {
+    return Intl.message(
+      '',
+      name: 'split',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get service {
+    return Intl.message(
+      '',
+      name: 'service',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get date_event {
+    return Intl.message(
+      '',
+      name: 'date_event',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get time_lesson {
+    return Intl.message(
+      '',
+      name: 'time_lesson',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get enter_full_number {
+    return Intl.message(
+      '',
+      name: 'enter_full_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get client_not_found {
+    return Intl.message(
+      '',
+      name: 'client_not_found',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -243,13 +243,13 @@ class GeneralController extends GetxController {
     var data = await Requests.getCustomerByPhone(
       licenseKey: appState.value.auth!.data!.licenseKey,
       phone: phone,
-      );
+    );
     if (data is int || data == null) {
       return data;
     } else {
       appState.update((model) {
         model?.currentCustomer = data;
-         });
+      });
       return 200;
     }
   }

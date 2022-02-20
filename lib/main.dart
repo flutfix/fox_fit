@@ -9,12 +9,13 @@ import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:fox_fit/screens/customer_information/customer_information.dart';
 import 'package:fox_fit/screens/home/general.dart';
 import 'package:fox_fit/screens/more/pages/change_password/change_password.dart';
 import 'package:fox_fit/screens/more/pages/inactive_customers/inactive_customers.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/schedule.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/sign_up_training_session.dart';
 import 'package:fox_fit/screens/notifications/notifications.dart';
-import 'package:fox_fit/screens/schedule/schedule.dart';
 import 'package:fox_fit/screens/splash/splash_screen.dart';
 import 'package:fox_fit/screens/trainer_choosing/trainer_choosing.dart';
 import 'package:fox_fit/screens/trainer_stats/trainer_stats.dart';
@@ -45,7 +46,7 @@ Future _init() async {
   FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   ///Request permissions for Ios
-  NotificationSettings settings = await _fcm.requestPermission(
+  await _fcm.requestPermission(
     alert: true,
     announcement: false,
     badge: true,
@@ -108,6 +109,7 @@ class MyApp extends StatelessWidget {
           getPage(
               Routes.inactiveCustomers, () => const InactiveCustomersPage()),
           getPage(Routes.schedule, () => const SchedulePage()),
+          getPage(Routes.signUpTrainingSession, () => const SignUpTrainingSessionPage()),
         ],
       ),
     );

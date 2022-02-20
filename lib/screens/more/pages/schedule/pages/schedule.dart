@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fox_fit/config/assets.dart';
+import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/month.dart';
-import 'package:fox_fit/screens/schedule/widgets/lessons.dart';
-import 'package:fox_fit/screens/schedule/widgets/time_feed.dart';
+import 'package:fox_fit/screens/more/pages/schedule/widgets/lessons.dart';
+import 'package:fox_fit/screens/more/pages/schedule/widgets/time_feed.dart';
 import 'package:fox_fit/utils/behavior.dart';
 import 'package:fox_fit/widgets/days.dart';
 import 'package:fox_fit/widgets/months.dart';
@@ -100,20 +101,20 @@ class _SchedulePageState extends State<SchedulePage> {
           isBackArrow: true,
           isNotification: false,
           action: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      child: Stack(
-                        alignment: Alignment.centerRight,
-                        children: [
-                          SvgPicture.asset(
-                            Images.filtres,
-                            width: 17.5,
-                          ),
-                          const SizedBox(
-                            width: 36,
-                          )
-                        ],
-                      ),
-                    ),
+            behavior: HitTestBehavior.translucent,
+            child: Stack(
+              alignment: Alignment.centerRight,
+              children: [
+                SvgPicture.asset(
+                  Images.filtres,
+                  width: 17.5,
+                ),
+                const SizedBox(
+                  width: 36,
+                )
+              ],
+            ),
+          ),
           onBack: () {
             Get.back();
           },
@@ -185,46 +186,43 @@ class _SchedulePageState extends State<SchedulePage> {
             /// Лента времени
             !_isLoading
                 ? Expanded(
-                    child: ScrollConfiguration(
-                      behavior: CustomBehavior(),
-                      child: Stack(
-                        children: [
-                          SingleChildScrollView(
-                            controller: _scrollControllerLessons,
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.fromLTRB(33, 12, 20, 100),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TimeFeed(),
-                                const SizedBox(width: 17),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 13.0),
-                                  child: Lessons(),
-                                ),
-                              ],
-                            ),
+                    child: Stack(
+                      children: [
+                        SingleChildScrollView(
+                          controller: _scrollControllerLessons,
+                          physics: const BouncingScrollPhysics(),
+                          padding: const EdgeInsets.fromLTRB(33, 12, 20, 100),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TimeFeed(),
+                              const SizedBox(width: 17),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 13.0),
+                                child: Lessons(),
+                              ),
+                            ],
                           ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Container(
-                              height: 150,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    theme.backgroundColor.withOpacity(0),
-                                    theme.backgroundColor.withOpacity(0.9),
-                                    theme.backgroundColor,
-                                  ],
-                                ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            height: 150,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  theme.backgroundColor.withOpacity(0),
+                                  theme.backgroundColor.withOpacity(0.9),
+                                  theme.backgroundColor,
+                                ],
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   )
                 : const Padding(
@@ -245,7 +243,7 @@ class _SchedulePageState extends State<SchedulePage> {
           padding: const EdgeInsets.symmetric(horizontal: 64),
           child: CustomTextButton(
             onTap: () {
-              // Get.toNamed(Routes.trainerChoosing);
+              Get.toNamed(Routes.signUpTrainingSession);
             },
             height: 51,
             text: S.of(context).record,

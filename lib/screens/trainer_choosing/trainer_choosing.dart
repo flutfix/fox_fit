@@ -26,11 +26,11 @@ class _TrainerChoosingPageState extends State<TrainerChoosingPage> {
   @override
   void initState() {
     controller = Get.find<GeneralController>();
-    load();
+    getTrainers();
     super.initState();
   }
 
-  Future<void> load() async {
+  Future<void> getTrainers() async {
     setState(() {
       loading = true;
     });

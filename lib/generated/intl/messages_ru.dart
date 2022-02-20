@@ -30,6 +30,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "changing_password":
             MessageLookupByLibrary.simpleMessage("Изменение пароля"),
         "chat": MessageLookupByLibrary.simpleMessage("Чат в WhatsApp"),
+        "choice_client": MessageLookupByLibrary.simpleMessage("Выбор клиента"),
+        "client_not_found":
+            MessageLookupByLibrary.simpleMessage("Клиент не найден"),
         "comment_for_recipient":
             MessageLookupByLibrary.simpleMessage("Комментарий для получателя"),
         "confirm": MessageLookupByLibrary.simpleMessage("Подтвердить"),
@@ -44,12 +47,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Загрузка данных не удалась"),
         "data_entered_incorrectly":
             MessageLookupByLibrary.simpleMessage("Данные введены некорректно"),
+        "date_event": MessageLookupByLibrary.simpleMessage("Дата проведения"),
         "description_changing_password": MessageLookupByLibrary.simpleMessage(
             "Введите новый пароль дважды (не менее трёх символов) и нажмите кнопку Изменить пароль.\n\nПосле успешного завершения процедуры изменения пароля будет выполнен выход из аккаунта."),
+        "duration": MessageLookupByLibrary.simpleMessage("Длительность"),
         "empty_customers": MessageLookupByLibrary.simpleMessage(
             "На данном этапе клиенты отсутствуют"),
         "empty_customers_short":
             MessageLookupByLibrary.simpleMessage("Клиенты отсутствуют"),
+        "enter_full_number":
+            MessageLookupByLibrary.simpleMessage("Введите номер полностью"),
         "error": MessageLookupByLibrary.simpleMessage("Ошибка"),
         "error_transferring_record": MessageLookupByLibrary.simpleMessage(
             "Этот клиент уже у администратора, чтобы там все не запутались, передай его позже, пожалуйста 🙏"),
@@ -78,16 +85,25 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Пароль не изменён"),
         "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
             "Введённые пароли не совпадают"),
+        "personal": MessageLookupByLibrary.simpleMessage("Персональная"),
         "record": MessageLookupByLibrary.simpleMessage("Записать"),
         "repeat_input": MessageLookupByLibrary.simpleMessage("Повторите ввод"),
         "save_edits": MessageLookupByLibrary.simpleMessage("Изменить"),
         "schedule": MessageLookupByLibrary.simpleMessage("Расписание"),
+        "select_client":
+            MessageLookupByLibrary.simpleMessage("Выбрать клиента"),
         "send_to_trainer":
             MessageLookupByLibrary.simpleMessage("Передать тренеру"),
         "server_error": MessageLookupByLibrary.simpleMessage("Ошибка сервера"),
         "server_navailable":
             MessageLookupByLibrary.simpleMessage("Сервер недоступен"),
+        "service": MessageLookupByLibrary.simpleMessage("Услуга"),
+        "sign_up_training_session":
+            MessageLookupByLibrary.simpleMessage("Записать на тренировку"),
+        "split": MessageLookupByLibrary.simpleMessage("Сплит"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
+        "time_lesson":
+            MessageLookupByLibrary.simpleMessage("Время проведения занятия"),
         "to_coach": MessageLookupByLibrary.simpleMessage("Тренеру"),
         "trainer_stats":
             MessageLookupByLibrary.simpleMessage("Статистика тренера"),

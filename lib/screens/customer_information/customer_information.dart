@@ -34,7 +34,7 @@ class CustomerInformationPage extends StatefulWidget {
 }
 
 class _CustomerInformationPageState extends State<CustomerInformationPage> {
-  late bool _loading;
+  late bool _isLoading;
   late GeneralController _controller;
   late ScrollController _scrollController;
   late bool _isOpenedBootomSheet;
@@ -59,12 +59,11 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   Future<void> load() async {
     setState(() {
-      _loading = true;
+      _isLoading = true;
     });
 
     if (_isFromNotification) {
-      _phone = '';
-      _phone = await Get.arguments;
+      _phone = Get.arguments;
       await ErrorHandler.loadingData(
         context: context,
         request: () {
@@ -81,7 +80,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     );
 
     setState(() {
-      _loading = false;
+      _isLoading = false;
     });
   }
 
@@ -121,7 +120,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             Get.toNamed(Routes.notifications);
           },
         ),
-        body: !_loading
+        body: !_isLoading
             ? _controller.appState.value.currentCustomer != null
                 ? Column(
                     children: [
@@ -157,7 +156,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          if (!_loading) {
+                                          if (!_isLoading) {
                                             _showBottomSheet();
                                           }
                                         },
@@ -417,7 +416,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
       if (widget.clientType != ClientType.conducted &&
           widget.clientType != ClientType.permanent &&
           widget.clientType != ClientType.sleeping) {
-        if (!_loading) {
+        if (!_isLoading) {
           _showBottomSheet();
         }
       }
