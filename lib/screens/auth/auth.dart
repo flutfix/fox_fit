@@ -173,7 +173,9 @@ class _AuthPageState extends State<AuthPage> {
         context: context,
         request: () {
           return Requests.auth(
-            phone: oldPhone != '' ? oldPhone : maskFormatter.getUnmaskedText(),
+            phone: maskFormatter.getUnmaskedText() == ''
+                ? oldPhone
+                : maskFormatter.getUnmaskedText(),
             pass: passController.text,
           );
         },
