@@ -35,7 +35,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
     _generalController = Get.find<GeneralController>();
     _scheduleController = Get.find<ScheduleController>();
 
-    _isLoading = true;
+    _isLoading = false;
     _phoneController = TextEditingController();
     _phoneFocus = FocusNode();
     _phonePrefix = '+7 ';
@@ -183,8 +183,8 @@ class _SelectClientPageState extends State<SelectClientPage> {
               )
             else
               const Center(
-            child: CircularProgressIndicator(),
-          ),
+                child: CircularProgressIndicator(),
+              ),
           ],
         ),
       ),

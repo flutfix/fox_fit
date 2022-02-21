@@ -65,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "failed_update_list":
             MessageLookupByLibrary.simpleMessage("Не удалось обновить список"),
         "fast_search": MessageLookupByLibrary.simpleMessage("Быстрый поиск"),
+        "fill_previous_fields":
+            MessageLookupByLibrary.simpleMessage("Заполните предыдущие поля"),
         "kickoff_training":
             MessageLookupByLibrary.simpleMessage("Стартовая тренировка"),
         "least_three_characters":

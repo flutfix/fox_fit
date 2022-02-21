@@ -659,6 +659,16 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get fill_previous_fields {
+    return Intl.message(
+      '',
+      name: 'fill_previous_fields',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

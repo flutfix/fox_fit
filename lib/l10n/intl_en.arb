@@ -59,5 +59,6 @@
     "time_lesson": "",
     "enter_full_number": "",
     "client_not_found": "",
-    "choice_service": ""
+    "choice_service": "",
+    "fill_previous_fields": ""
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
@@ -5,11 +7,15 @@ import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/select_service.dart';
+import 'package:fox_fit/utils/date_time_picker/date_time_picker.dart';
+import 'package:fox_fit/utils/date_time_picker/widgets/date_time_picker_theme.dart';
+import 'package:fox_fit/utils/date_time_picker/widgets/i18n_model.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/utils/picker/picker.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/default_container.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 
@@ -115,6 +121,11 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                     });
                                   },
                                 );
+                              } else {
+                                CustomSnackbar.getSnackbar(
+                                  title: S.of(context).error,
+                                  message: S.of(context).fill_previous_fields,
+                                );
                               }
                             },
                           ),
@@ -142,6 +153,12 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                           .update((model) {
                                         model?.type = TrainingType.personal;
                                       });
+                                    } else {
+                                      CustomSnackbar.getSnackbar(
+                                        title: S.of(context).error,
+                                        message:
+                                            S.of(context).fill_previous_fields,
+                                      );
                                     }
                                   },
                                 ),
@@ -165,6 +182,12 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                           .update((model) {
                                         model?.type = TrainingType.group;
                                       });
+                                    } else {
+                                      CustomSnackbar.getSnackbar(
+                                        title: S.of(context).error,
+                                        message:
+                                            S.of(context).fill_previous_fields,
+                                      );
                                     }
                                   },
                                 ),
@@ -193,6 +216,11 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                 ),
                                 transition: Transition.fadeIn,
                               );
+                            } else {
+                              CustomSnackbar.getSnackbar(
+                                title: S.of(context).error,
+                                message: S.of(context).fill_previous_fields,
+                              );
                             }
                           },
                         ),
@@ -203,7 +231,17 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                           context: context,
                           theme: theme,
                           text: S.of(context).date_event,
-                          onTap: () {},
+                          onTap: () {
+                            if (_scheduleController
+                                    .scheduleState.value.service !=
+                                null) {
+                            } else {
+                              CustomSnackbar.getSnackbar(
+                                title: S.of(context).error,
+                                message: S.of(context).fill_previous_fields,
+                              );
+                            }
+                          },
                         ),
                         const SizedBox(height: 17),
 
@@ -212,7 +250,35 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                           context: context,
                           theme: theme,
                           text: S.of(context).time_lesson,
-                          onTap: () {},
+                          onTap: () async {
+                            if (_scheduleController.scheduleState.value.date !=
+                                null) {
+                              await DatePicker.showTimePicker(
+                                context,
+                                onConfirm: (confirmTime) async {
+                                  _scheduleController.scheduleState
+                                      .update((model) {
+                                    model?.time = confirmTime;
+                                  });
+                                },
+                                locale: LocaleType.ru,
+                                currentTime: DateTime.now(),
+                                showSecondsColumn: false,
+                                theme: DatePickerTheme(
+                                  cancelStyle: theme.textTheme.headline2!,
+                                  doneStyle: theme.primaryTextTheme.headline2!,
+                                  itemStyle: theme.textTheme.headline2!,
+                                  backgroundColor: theme.backgroundColor,
+                                  headerColor: theme.backgroundColor,
+                                ),
+                              );
+                            } else {
+                              CustomSnackbar.getSnackbar(
+                                title: S.of(context).error,
+                                message: S.of(context).fill_previous_fields,
+                              );
+                            }
+                          },
                         ),
                       ],
                     ),

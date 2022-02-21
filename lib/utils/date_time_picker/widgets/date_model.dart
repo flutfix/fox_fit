@@ -376,13 +376,11 @@ class DatePickerModel extends CommonPickerModel {
 //a time picker model
 class TimePickerModel extends CommonPickerModel {
   bool showSecondsColumn;
-  List<int> activeColumn;
 
   TimePickerModel({
     DateTime? currentTime,
     LocaleType? locale,
     this.showSecondsColumn = true,
-    this.activeColumn = const [1, 1, 1],
   }) : super(locale: locale) {
     this.currentTime = currentTime ?? DateTime.now();
 
@@ -420,16 +418,12 @@ class TimePickerModel extends CommonPickerModel {
 
   @override
   String leftDivider() {
-    if (activeColumn[0] == 1 && activeColumn[1] == 1) {
-      return ":";
-    } else {
-      return "";
-    }
+    return ":";
   }
 
   @override
   String rightDivider() {
-    if (activeColumn[1] == 1 && activeColumn[2] == 1) {
+    if (showSecondsColumn) {
       return ":";
     } else {
       return "";
@@ -438,7 +432,11 @@ class TimePickerModel extends CommonPickerModel {
 
   @override
   List<int> layoutProportions() {
-    return activeColumn;
+    if (showSecondsColumn) {
+      return [1, 1, 1];
+    } else {
+      return [1, 1, 0];
+    }
   }
 
   @override
