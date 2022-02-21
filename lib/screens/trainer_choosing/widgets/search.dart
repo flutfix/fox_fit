@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Search extends StatefulWidget {
   const Search({

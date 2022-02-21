@@ -501,10 +501,10 @@ class S {
   }
 
   /// ``
-  String get inactiveCustomers {
+  String get sleeping_customers {
     return Intl.message(
       '',
-      name: 'inactiveCustomers',
+      name: 'sleeping_customers',
       desc: '',
       args: [],
     );

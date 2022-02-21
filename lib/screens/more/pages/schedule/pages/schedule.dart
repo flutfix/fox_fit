@@ -7,7 +7,6 @@ import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/month.dart';
 import 'package:fox_fit/screens/more/pages/schedule/widgets/lessons.dart';
 import 'package:fox_fit/screens/more/pages/schedule/widgets/time_feed.dart';
-import 'package:fox_fit/utils/behavior.dart';
 import 'package:fox_fit/widgets/days.dart';
 import 'package:fox_fit/widgets/months.dart';
 import 'package:fox_fit/utils/error_handler.dart';

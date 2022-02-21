@@ -31,13 +31,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   @override
   void initState() {
+    super.initState();
     _controller = Get.find<GeneralController>();
     _newPassController = TextEditingController();
     _newPassAgainController = TextEditingController();
     _isNewPassAnimation = false;
     _isNewPassAgainAnimation = false;
     _isCanVibrate = _controller.appState.value.isCanVibrate;
-    super.initState();
   }
 
   @override

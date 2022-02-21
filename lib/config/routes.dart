@@ -9,7 +9,7 @@ class Routes {
   static const String trainerChoosing = '/trainer_choosing';
   static const String changePassword = '/change_password';
   static const String notifications = '/notifications';
-  static const String inactiveCustomers = '/inactive_customers';
+  static const String sleepingCustomers = '/inactive_customers';
   static const String schedule = '/schedule';
   static const String signUpTrainingSession = '/sign_up_training_session';
   static const String selectClient = '/select_client';

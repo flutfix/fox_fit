@@ -64,8 +64,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "failed_update_list":
             MessageLookupByLibrary.simpleMessage("Не удалось обновить список"),
         "fast_search": MessageLookupByLibrary.simpleMessage("Быстрый поиск"),
-        "inactiveCustomers":
-            MessageLookupByLibrary.simpleMessage("\"Спящие\" клиенты"),
         "kickoff_training":
             MessageLookupByLibrary.simpleMessage("Стартовая тренировка"),
         "least_three_characters":
@@ -100,6 +98,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "service": MessageLookupByLibrary.simpleMessage("Услуга"),
         "sign_up_training_session":
             MessageLookupByLibrary.simpleMessage("Записать на тренировку"),
+        "sleeping_customers":
+            MessageLookupByLibrary.simpleMessage("\"Спящие\" клиенты"),
         "split": MessageLookupByLibrary.simpleMessage("Сплит"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
         "time_lesson":

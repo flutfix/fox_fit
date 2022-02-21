@@ -9,13 +9,21 @@ import 'package:get/get.dart';
 class CustomBottomSheet extends StatefulWidget {
   const CustomBottomSheet({
     Key? key,
-    required this.clientType,
+    this.clientType,
+    this.isDivider = true,
+    this.padding,
     this.backgroundColor,
     this.child,
-  }) : super(key: key);
+  })  : assert(
+          !(child == null && clientType == null),
+          'Если нет [child], должен быть [clientType]',
+        ),
+        super(key: key);
 
-  final ClientType clientType;
+  final ClientType? clientType;
   final Color? backgroundColor;
+  final bool isDivider;
+  final EdgeInsetsGeometry? padding;
   final Widget? child;
 
   @override
@@ -37,6 +45,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
+      padding: widget.padding ?? const EdgeInsets.fromLTRB(0, 24, 0, 0),
       decoration: BoxDecoration(
         color: widget.backgroundColor ?? theme.bottomSheetTheme.backgroundColor,
         borderRadius: const BorderRadius.only(
@@ -47,97 +56,94 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 24),
-
           /// Разделитель
-          Container(
-            height: 5,
-            width: 135,
-            decoration: BoxDecoration(
-              color:
-                  theme.bottomSheetTheme.modalBackgroundColor!.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(100),
-            ),
-          ),
-          const SizedBox(height: 25),
-
-          /// Основной контент
-          if (widget.child != null)
-            widget.child!
-          else
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 33),
-              child: Column(
-                children: [
-                  ...List.generate(
-                    _controller.appState.value.availablePipelineStages.length,
-                    (index) {
-                      dynamic stagePipeline = _controller
-                          .appState.value.availablePipelineStages[index];
-                      StagePipelineType stagePipelineType =
-                          Enums.getStagePipelineType(
-                        stageUid: stagePipeline.uid,
-                      );
-                      if (widget.clientType == ClientType.assigned &&
-                          (stagePipeline.uid == StagePipeline.assigned)) {
-                        return const SizedBox();
-                      } else {
-                        setState(() {
-                          _countPipeline++;
-                        });
-                        return Column(
-                          children: [
-                            GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onTap: () {
-                                Get.to(
-                                  () => ConfirmationPage(
-                                    stagePipelineType: stagePipelineType,
-                                    image: Enums.getIconStage(
-                                      stageType: stagePipelineType,
-                                    ),
-                                    text: '${stagePipeline.name}?',
-                                  ),
-                                  transition: Transition.fadeIn,
-                                );
-                              },
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      Enums.getIconStage(
-                                        stageType: stagePipelineType,
-                                      ),
-                                      color: theme.colorScheme.primary,
-                                      width: 19,
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Text(
-                                      stagePipeline.name,
-                                      style: theme.textTheme.headline3,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Divider(
-                              color: theme
-                                  .bottomSheetTheme.modalBackgroundColor!
-                                  .withOpacity(0.1),
-                            ),
-                            const SizedBox(height: 16),
-                          ],
-                        );
-                      }
-                    },
-                  ),
-                  if (_countPipeline != 1) const SizedBox(height: 100),
-                ],
+          if (widget.isDivider)
+            Container(
+              height: 5,
+              width: 135,
+              decoration: BoxDecoration(
+                color: theme.bottomSheetTheme.modalBackgroundColor!
+                    .withOpacity(0.1),
+                borderRadius: BorderRadius.circular(100),
               ),
             ),
+          if (widget.isDivider) const SizedBox(height: 25),
+
+          /// Основной контент
+          widget.child ??
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 33),
+                child: Column(
+                  children: [
+                    ...List.generate(
+                      _controller.appState.value.availablePipelineStages.length,
+                      (index) {
+                        dynamic stagePipeline = _controller
+                            .appState.value.availablePipelineStages[index];
+                        StagePipelineType stagePipelineType =
+                            Enums.getStagePipelineType(
+                          stageUid: stagePipeline.uid,
+                        );
+                        if (widget.clientType == ClientType.assigned &&
+                            (stagePipeline.uid == StagePipeline.assigned)) {
+                          return const SizedBox();
+                        } else {
+                          setState(() {
+                            _countPipeline++;
+                          });
+                          return Column(
+                            children: [
+                              GestureDetector(
+                                behavior: HitTestBehavior.translucent,
+                                onTap: () {
+                                  Get.to(
+                                    () => ConfirmationPage(
+                                      stagePipelineType: stagePipelineType,
+                                      image: Enums.getIconStage(
+                                        stageType: stagePipelineType,
+                                      ),
+                                      text: '${stagePipeline.name}?',
+                                    ),
+                                    transition: Transition.fadeIn,
+                                  );
+                                },
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 16),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        Enums.getIconStage(
+                                          stageType: stagePipelineType,
+                                        ),
+                                        color: theme.colorScheme.primary,
+                                        width: 19,
+                                      ),
+                                      const SizedBox(width: 16),
+                                      Text(
+                                        stagePipeline.name,
+                                        style: theme.textTheme.headline3,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Divider(
+                                color: theme
+                                    .bottomSheetTheme.modalBackgroundColor!
+                                    .withOpacity(0.1),
+                              ),
+                              const SizedBox(height: 16),
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                    if (_countPipeline != 1) const SizedBox(height: 100),
+                  ],
+                ),
+              ),
         ],
       ),
     );

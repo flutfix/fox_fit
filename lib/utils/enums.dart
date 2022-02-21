@@ -140,3 +140,8 @@ enum CustomersContainerType {
   age,
   services,
 }
+
+enum TrainingType {
+  personal,
+  group,
+}

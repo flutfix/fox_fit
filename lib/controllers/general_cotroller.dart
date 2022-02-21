@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/models/app_state.dart';
@@ -249,6 +251,19 @@ class GeneralController extends GetxController {
     } else {
       appState.update((model) {
         model?.currentCustomer = data;
+      });
+      return 200;
+    }
+  }
+
+  /// Получение длительностей занятий
+  Future<dynamic> getAppointmentsDurations() async {
+    var data = await Requests.getAppointmentsDurations();
+    if (data is int || data == null) {
+      return data;
+    } else {
+      appState.update((model) {
+        model?.appointmentsDurations = data;
       });
       return 200;
     }

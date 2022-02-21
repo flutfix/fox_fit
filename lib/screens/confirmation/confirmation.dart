@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
+import 'package:fox_fit/utils/date_time_picker/date_time_picker.dart';
+import 'package:fox_fit/utils/date_time_picker/widgets/date_time_picker_theme.dart';
+import 'package:fox_fit/utils/date_time_picker/widgets/i18n_model.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/snackbar.dart';

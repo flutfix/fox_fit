@@ -60,10 +60,10 @@ class _MorePageState extends State<MorePage> {
 
           /// ["Спящие" клиенты]
           MoreCardModel(
-            text: S.of(context).inactiveCustomers,
+            text: S.of(context).sleeping_customers,
             icon: Images.inactiveCustomers,
             onTap: () {
-              Get.toNamed(Routes.inactiveCustomers);
+              Get.toNamed(Routes.sleepingCustomers);
             },
           ),
 
@@ -179,7 +179,6 @@ class _MorePageState extends State<MorePage> {
       isScrollControlled: true,
       builder: (context) {
         return CustomBottomSheet(
-          clientType: ClientType.coordinator,
           backgroundColor: theme.backgroundColor,
           child: Padding(
             padding: const EdgeInsets.symmetric(

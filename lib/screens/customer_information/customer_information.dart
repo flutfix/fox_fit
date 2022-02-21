@@ -351,7 +351,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   /// Открывает нижлий лист с доступными вариантами
   /// передачи клиента дальше по воронке
-  Future _showBottomSheet() async {
+  Future<void> _showBottomSheet() async {
     setState(() {
       _isOpenedBootomSheet = true;
     });

@@ -517,9 +517,28 @@ class Requests {
       if (response.statusCode == 200) {
         CustomerModel customer =
             CustomerModel.fromJson(response.data['Customers'][0]);
-            
+
         return customer;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Получение длительностей занятий
+  static Future<dynamic> getAppointmentsDurations() async {
+    const String url = '${Api.url}get_appointments_durations';
+    final dioClient = Dio(Api.options);
+    try {
+      var response = await dioClient.get(url);
+      if (response.statusCode == 200) {
+        List<int> appointmentsDurations = [];
+        for (int duration in response.data) {
+          appointmentsDurations.add(duration);
         }
+        return appointmentsDurations;
+      }
     } on DioError catch (e) {
       log('${e.response?.statusMessage}');
       return e.response?.statusCode;
