@@ -13,4 +13,5 @@ class Routes {
   static const String schedule = '/schedule';
   static const String signUpTrainingSession = '/sign_up_training_session';
   static const String selectClient = '/select_client';
+  static const String selectService = '/select_service';
 }

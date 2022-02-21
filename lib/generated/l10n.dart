@@ -649,6 +649,16 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get choice_service {
+    return Intl.message(
+      '',
+      name: 'choice_service',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

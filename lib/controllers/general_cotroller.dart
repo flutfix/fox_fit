@@ -256,19 +256,6 @@ class GeneralController extends GetxController {
     }
   }
 
-  /// Получение длительностей занятий
-  Future<dynamic> getAppointmentsDurations() async {
-    var data = await Requests.getAppointmentsDurations();
-    if (data is int || data == null) {
-      return data;
-    } else {
-      appState.update((model) {
-        model?.appointmentsDurations = data;
-      });
-      return 200;
-    }
-  }
-
   /// Сортировка активных разделов BottomBar
   void _sortBottomBarItems({required List<ItemBottomBarModel> bottomBarItems}) {
     List<ItemBottomBarModel> sortedList = [];

@@ -1,4 +1,5 @@
 import 'package:fox_fit/models/customer.dart';
+import 'package:fox_fit/models/service.dart';
 
 class AppointmentModel {
   late String appointmentUid;
@@ -70,36 +71,6 @@ class AppointmentModel {
       data['ArrivalStatuses'] =
           arrivalStatuses!.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class Service {
-  late String name;
-  late String uid;
-  late String duration;
-  late bool trial;
-
-  Service({
-    this.name = '',
-    this.uid = '',
-    this.duration = '',
-    this.trial = false,
-  });
-
-  Service.fromJson(Map<String, dynamic> json) {
-    name = json['Name'] ?? '';
-    uid = json['Uid'] ?? '';
-    duration = json['Duration'] ?? '';
-    trial = json['Trial'] ?? false;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['Name'] = name;
-    data['Uid'] = uid;
-    data['Duration'] = duration;
-    data['Trial'] = trial;
     return data;
   }
 }

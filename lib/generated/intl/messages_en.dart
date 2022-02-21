@@ -28,6 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "changing_password": MessageLookupByLibrary.simpleMessage(""),
         "chat": MessageLookupByLibrary.simpleMessage(""),
         "choice_client": MessageLookupByLibrary.simpleMessage(""),
+        "choice_service": MessageLookupByLibrary.simpleMessage(""),
         "client_not_found": MessageLookupByLibrary.simpleMessage(""),
         "comment_for_recipient": MessageLookupByLibrary.simpleMessage(""),
         "confirm": MessageLookupByLibrary.simpleMessage(""),

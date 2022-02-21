@@ -11,6 +11,7 @@ import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
 import 'package:fox_fit/models/notification.dart';
+import 'package:fox_fit/models/service.dart' as service_model;
 import 'package:fox_fit/models/trainer.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
 import 'dart:convert';
@@ -538,6 +539,49 @@ class Requests {
           appointmentsDurations.add(duration);
         }
         return appointmentsDurations;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Получение услуг для занятий
+  static Future<dynamic> getCustomerFitnessServices({
+    required String userUid,
+    required String customerUid,
+    required String duration,
+    required String serviceType,
+  }) async {
+    const String url = '${Api.url}get_customer_fitness_services';
+    final dioClient = Dio(Api.options);
+    try {
+      var response = await dioClient.get(
+        url,
+        queryParameters: {
+          'UserUid': userUid,
+          'CustomerUid': customerUid,
+          'Duration': duration,
+          'ServiceType': serviceType,
+        },
+      );
+      log('$response');
+      if (response.statusCode == 200) {
+        List<service_model.Service> services = [];
+        List<service_model.PaidServiceBalance> paidServicesBalance = [];
+
+        for (var service in response.data['Services']) {
+          services.add(service_model.Service.fromJson(service));
+        }
+        if (response.data['PaidServicesBalance'] != null) {
+          for (var paidServiceBalance in response.data['PaidServicesBalance']) {
+            paidServicesBalance.add(
+              service_model.PaidServiceBalance.fromJson(paidServiceBalance),
+            );
+          }
+        }
+
+        return [services, paidServicesBalance];
       }
     } on DioError catch (e) {
       log('${e.response?.statusMessage}');

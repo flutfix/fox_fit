@@ -3,10 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/month.dart';
 import 'package:fox_fit/screens/more/pages/schedule/widgets/lessons.dart';
 import 'package:fox_fit/screens/more/pages/schedule/widgets/time_feed.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/widgets/days.dart';
 import 'package:fox_fit/widgets/months.dart';
 import 'package:fox_fit/utils/error_handler.dart';
@@ -25,7 +27,8 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   late bool _isLoading;
-  late final GeneralController _controller;
+  late final GeneralController _generalController;
+  late final ScheduleController _scheduleController;
   late DateTime _dateNow;
   late final List<MonthModel> _months;
   late int _currentYear;
@@ -36,7 +39,12 @@ class _SchedulePageState extends State<SchedulePage> {
   void initState() {
     super.initState();
     _isLoading = true;
-    _controller = Get.find<GeneralController>();
+    _generalController = Get.find<GeneralController>();
+    _scheduleController = Get.put(ScheduleController());
+
+    _scheduleController.scheduleState.update((model) {
+      model?.uid = _generalController.appState.value.auth!.users![0].uid;
+    });
 
     _dateNow = DateTime.now();
 
@@ -58,8 +66,8 @@ class _SchedulePageState extends State<SchedulePage> {
     await ErrorHandler.loadingData(
       context: context,
       request: () {
-        return _controller.getAppointments(
-          userUid: _controller.appState.value.auth!.users![0].uid,
+        return _generalController.getAppointments(
+          userUid: _scheduleController.scheduleState.value.uid!,
           dateNow: _dateNow,
         );
       },
@@ -115,6 +123,14 @@ class _SchedulePageState extends State<SchedulePage> {
             ),
           ),
           onBack: () {
+            _scheduleController.scheduleState.update((model) {
+              model?.client = null;
+              model?.duration = null;
+              model?.type = TrainingType.personal;
+              model?.service = null;
+              model?.date = null;
+              model?.time = null;
+            });
             Get.back();
           },
         ),

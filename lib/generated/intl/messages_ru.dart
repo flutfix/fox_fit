@@ -31,8 +31,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Изменение пароля"),
         "chat": MessageLookupByLibrary.simpleMessage("Чат в WhatsApp"),
         "choice_client": MessageLookupByLibrary.simpleMessage("Выбор клиента"),
-        "client_not_found":
-            MessageLookupByLibrary.simpleMessage("Клиент не найден"),
+        "choice_service": MessageLookupByLibrary.simpleMessage("Выбор услуги"),
+        "client_not_found": MessageLookupByLibrary.simpleMessage(
+            "Лиса очень старалась, но не нашла этот номер телефона 😟"),
         "comment_for_recipient":
             MessageLookupByLibrary.simpleMessage("Комментарий для получателя"),
         "confirm": MessageLookupByLibrary.simpleMessage("Подтвердить"),

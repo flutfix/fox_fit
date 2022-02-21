@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/trainer_choosing/widgets/search.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/default_container.dart';
@@ -9,16 +13,15 @@ import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class SelectClientPage extends StatefulWidget {
-  const SelectClientPage({Key? key, required this.callBack}) : super(key: key);
-
-  final Function(String? client) callBack;
+  const SelectClientPage({Key? key}) : super(key: key);
 
   @override
   _SelectClientPageState createState() => _SelectClientPageState();
 }
 
 class _SelectClientPageState extends State<SelectClientPage> {
-  late GeneralController _controller;
+  late GeneralController _generalController;
+  late ScheduleController _scheduleController;
   late bool _isLoading;
   late TextEditingController _phoneController;
   late FocusNode _phoneFocus;
@@ -29,8 +32,10 @@ class _SelectClientPageState extends State<SelectClientPage> {
   @override
   void initState() {
     super.initState();
-    _controller = Get.find<GeneralController>();
-    _isLoading = false;
+    _generalController = Get.find<GeneralController>();
+    _scheduleController = Get.find<ScheduleController>();
+
+    _isLoading = true;
     _phoneController = TextEditingController();
     _phoneFocus = FocusNode();
     _phonePrefix = '+7 ';
@@ -52,7 +57,10 @@ class _SelectClientPageState extends State<SelectClientPage> {
     await ErrorHandler.singleRequest(
       context: context,
       request: () {
-        return _controller.getCustomerByPhone(phone: search);
+        return _scheduleController.getCustomerByPhone(
+          licenseKey: _generalController.appState.value.auth!.data!.licenseKey,
+          phone: search,
+        );
       },
       handler: (data) {
         setState(() {
@@ -81,6 +89,11 @@ class _SelectClientPageState extends State<SelectClientPage> {
         isBackArrow: true,
         isNotification: false,
         onBack: () {
+          _scheduleController.scheduleState.update((model) {
+            model?.client = null;
+            model?.duration = null;
+            model?.type = TrainingType.personal;
+          });
           Get.back();
         },
       ),
@@ -101,6 +114,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
                         TextSelection.collapsed(offset: _phonePrefix.length),
                   );
                 }
+
                 if (search != '') {
                   /// Форматирование номера для запроса
                   List<String> searchSplit = search.split(' ');
@@ -116,13 +130,13 @@ class _SelectClientPageState extends State<SelectClientPage> {
                     }
                   }
 
-                  /// Обработка полностью введён ли номер
+                  /// Обработка полностью ли введён номер
                   if (search.length != 16) {
                     setState(() {
                       _textErrorResultSearch = S.of(context).enter_full_number;
                     });
-                    _controller.appState.update((model) {
-                      model?.currentCustomer = null;
+                    _scheduleController.scheduleState.update((model) {
+                      model?.client = null;
                     });
                   } else {
                     getCustomerByPhone(search: search);
@@ -137,49 +151,40 @@ class _SelectClientPageState extends State<SelectClientPage> {
                   physics: const BouncingScrollPhysics(),
                   child: DefaultContainer(
                     padding: const EdgeInsets.fromLTRB(28, 17.45, 19, 22.55),
-                    child: _controller.appState.value.currentCustomer != null
-                        ? GestureDetector(
-                            onTap: () {
-                              widget.callBack(_controller
-                                  .appState.value.currentCustomer?.fullName);
-                              _controller.appState.update((model) {
-                                model?.currentCustomer = null;
-                              });
-                              Get.back();
-                            },
-                            behavior: HitTestBehavior.translucent,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _controller
-                                      .appState.value.currentCustomer!.fullName,
-                                  style: theme.textTheme.subtitle2!
-                                      .copyWith(fontSize: 14),
+                    child:
+                        _scheduleController.scheduleState.value.client != null
+                            ? GestureDetector(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                behavior: HitTestBehavior.translucent,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      _scheduleController
+                                          .scheduleState.value.client!.fullName,
+                                      style: theme.textTheme.subtitle2!
+                                          .copyWith(fontSize: 14),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          )
-                        : Center(
-                            child: Text(
-                              _textErrorResultSearch ??
-                                  S.of(context).enter_full_number,
-                              style: theme.textTheme.headline3,
-                            ),
-                          ),
+                              )
+                            : Center(
+                                child: Text(
+                                  _textErrorResultSearch ??
+                                      S.of(context).enter_full_number,
+                                  style: theme.textTheme.headline3,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                   ),
                 ),
               )
             else
               const Center(
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
-                ),
-              ),
+            child: CircularProgressIndicator(),
+          ),
           ],
         ),
       ),

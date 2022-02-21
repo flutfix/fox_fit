@@ -58,5 +58,6 @@
     "date_event": "",
     "time_lesson": "",
     "enter_full_number": "",
-    "client_not_found": ""
+    "client_not_found": "",
+    "choice_service": ""
 }

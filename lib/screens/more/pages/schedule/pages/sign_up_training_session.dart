@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/select_service.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/utils/picker/picker.dart';
@@ -20,10 +23,7 @@ class SignUpTrainingSessionPage extends StatefulWidget {
 
 class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
   late bool _isLoading;
-  late GeneralController _controller;
-  String? _client;
-  String? _duration;
-  late TrainingType _type;
+  late ScheduleController _scheduleController;
   String? _service;
   String? _date;
   String? _time;
@@ -31,9 +31,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
   @override
   void initState() {
     super.initState();
-    _controller = Get.find<GeneralController>();
-
-    _type = TrainingType.personal;
+    _scheduleController = Get.find<ScheduleController>();
 
     getAppointmentsDurations();
   }
@@ -45,7 +43,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
 
     await ErrorHandler.loadingData(
       context: context,
-      request: _controller.getAppointmentsDurations,
+      request: _scheduleController.getAppointmentsDurations,
     );
 
     setState(() {
@@ -77,43 +75,49 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                     child: Column(
                       children: [
                         /// Выбор клиента
-                        _buildContainer(
-                          context: context,
-                          theme: theme,
-                          text: _client ?? S.of(context).select_client,
-                          onTap: () {
-                            Get.to(
-                              () => SelectClientPage(
-                                callBack: (String? client) {
-                                  setState(() {
-                                    _client = client;
-                                  });
-                                },
-                              ),
-                              transition: Transition.fadeIn,
-                            );
-                          },
+                        Obx(
+                          () => _buildContainer(
+                            context: context,
+                            theme: theme,
+                            text: _scheduleController
+                                    .scheduleState.value.client?.fullName ??
+                                S.of(context).select_client,
+                            onTap: () async {
+                              Get.toNamed(Routes.selectClient);
+                            },
+                          ),
                         ),
                         const SizedBox(height: 17),
 
                         /// Длительность
-                        _buildContainer(
-                          context: context,
-                          theme: theme,
-                          text: _duration ?? S.of(context).duration,
-                          onTap: () async {
-                            Picker.custom(
-                              context: context,
-                              theme: theme,
-                              values: _controller
-                                  .appState.value.appointmentsDurations,
-                              onConfirm: (value) {
-                                setState(() {
-                                  _duration = '$value мин';
-                                });
-                              },
-                            );
-                          },
+                        Obx(
+                          () => _buildContainer(
+                            context: context,
+                            theme: theme,
+                            text: _scheduleController
+                                        .scheduleState.value.duration !=
+                                    null
+                                ? '${_scheduleController.scheduleState.value.duration} мин'
+                                : S.of(context).duration,
+                            onTap: () async {
+                              if (_scheduleController
+                                      .scheduleState.value.client !=
+                                  null) {
+                                Picker.custom(
+                                  context: context,
+                                  theme: theme,
+                                  values: _scheduleController.scheduleState
+                                      .value.appointmentsDurations,
+                                  onConfirm: (value) {
+                                    _scheduleController.scheduleState
+                                        .update((model) {
+                                      model?.duration = value;
+                                    });
+                                  },
+                                );
+                              }
+                            },
+                          ),
                         ),
                         const SizedBox(height: 17),
 
@@ -123,36 +127,47 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                           child: Row(
                             children: [
                               /// Персональная
-                              _buildContainer(
-                                context: context,
-                                theme: theme,
-                                text: S.of(context).personal,
-                                animation: Animation(activeWidth: 144),
-                                active: _type == TrainingType.personal
-                                    ? true
-                                    : false,
-                                onTap: () {
-                                  setState(() {
-                                    _type = TrainingType.personal;
-                                  });
-                                },
+                              Obx(
+                                () => _buildContainer(
+                                  context: context,
+                                  theme: theme,
+                                  text: S.of(context).personal,
+                                  animation: Animation(activeWidth: 144),
+                                  type: TrainingType.personal,
+                                  onTap: () {
+                                    if (_scheduleController
+                                            .scheduleState.value.duration !=
+                                        null) {
+                                      _scheduleController.scheduleState
+                                          .update((model) {
+                                        model?.type = TrainingType.personal;
+                                      });
+                                    }
+                                  },
+                                ),
                               ),
                               const SizedBox(width: 7),
 
                               /// Сплит
-                              _buildContainer(
-                                context: context,
-                                theme: theme,
-                                text: S.of(context).split,
-                                animation: Animation(
-                                    activeWidth: 77, inactiveWidth: 60),
-                                active:
-                                    _type == TrainingType.group ? true : false,
-                                onTap: () {
-                                  setState(() {
-                                    _type = TrainingType.group;
-                                  });
-                                },
+                              Obx(
+                                () => _buildContainer(
+                                  context: context,
+                                  theme: theme,
+                                  text: S.of(context).split,
+                                  animation: Animation(
+                                      activeWidth: 77, inactiveWidth: 60),
+                                  type: TrainingType.group,
+                                  onTap: () {
+                                    if (_scheduleController
+                                            .scheduleState.value.duration !=
+                                        null) {
+                                      _scheduleController.scheduleState
+                                          .update((model) {
+                                        model?.type = TrainingType.group;
+                                      });
+                                    }
+                                  },
+                                ),
                               ),
                             ],
                           ),
@@ -164,7 +179,22 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                           context: context,
                           theme: theme,
                           text: S.of(context).service,
-                          onTap: () {},
+                          onTap: () {
+                            if (_scheduleController
+                                    .scheduleState.value.duration !=
+                                null) {
+                              Get.to(
+                                () => SelectServicePage(
+                                  callBack: (String? service) {
+                                    setState(() {
+                                      _service = service;
+                                    });
+                                  },
+                                ),
+                                transition: Transition.fadeIn,
+                              );
+                            }
+                          },
                         ),
                         const SizedBox(height: 17),
 
@@ -220,7 +250,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
     required String text,
     required Function() onTap,
     Animation? animation,
-    bool active = false,
+    TrainingType? type,
     double? width,
   }) {
     return GestureDetector(
@@ -232,18 +262,18 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
         duration: Duration(milliseconds: animation?.duration ?? 0),
         curve: Curves.easeOut,
         width: animation != null
-            ? active
+            ? type == _scheduleController.scheduleState.value.type
                 ? animation.activeWidth
                 : animation.inactiveWidth
             : width ?? MediaQuery.of(context).size.width,
         height: animation != null
-            ? active
+            ? type == _scheduleController.scheduleState.value.type
                 ? animation.activeHeight
                 : animation.inactiveHeight
             : null,
         decoration: BoxDecoration(
           border: animation != null
-              ? active
+              ? type == _scheduleController.scheduleState.value.type
                   ? Border.all(color: theme.colorScheme.secondary)
                   : null
               : null,
@@ -257,7 +287,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
             child: AnimatedDefaultTextStyle(
               child: Text(text),
               style: animation != null
-                  ? active
+                  ? type == _scheduleController.scheduleState.value.type
                       ? theme.textTheme.bodyText1!
                       : theme.textTheme.bodyText1!.copyWith(fontSize: 12)
                   : theme.textTheme.bodyText1!,

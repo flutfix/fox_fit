@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/models/customer.dart';
+import 'package:fox_fit/screens/customer_information/customer_information.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:get/get.dart';
-
-import '../../customer_information/customer_information.dart';
 
 class CustomerContainer extends StatefulWidget {
   const CustomerContainer({

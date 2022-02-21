@@ -109,6 +109,19 @@ class Enums {
         return StagePipeline.assigned;
     }
   }
+
+  static getTrainingTypeString({required TrainingType trainingType}) {
+    switch (trainingType) {
+      case TrainingType.personal:
+        return 'Personal';
+
+      case TrainingType.group:
+        return 'Group';
+
+      default:
+        return StagePipeline.assigned;
+    }
+  }
 }
 
 enum StagePipelineType {
@@ -128,11 +141,10 @@ enum ClientType {
   coordinator,
 }
 
-enum CustomersPageType{
+enum CustomersPageType {
   general,
   coordinator,
-  sleep
-
+  sleep,
 }
 
 enum CustomersContainerType {
