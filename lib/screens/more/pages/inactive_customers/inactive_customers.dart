@@ -34,7 +34,7 @@ class _InactiveCustomersPageState extends State<InactiveCustomersPage> {
       _isLoading = true;
     });
 
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
       context: context,
       request: () {
         return _controller.getInactiveCustomers();
@@ -51,7 +51,9 @@ class _InactiveCustomersPageState extends State<InactiveCustomersPage> {
     ThemeData theme = Theme.of(context);
 
     return Swipe(
-      onSwipeRight: () => Get.back(),
+      onSwipeRight: () async {
+        await _onBack();
+      },
       child: Scaffold(
         backgroundColor: theme.backgroundColor,
         appBar: _appBar(),
@@ -66,23 +68,28 @@ class _InactiveCustomersPageState extends State<InactiveCustomersPage> {
     );
   }
 
+  _onBack() async {
+    Get.back();
+    await ErrorHandler.request(
+      context: context,
+      request: _controller.getCustomers,
+      skipCheck: true,
+      repeat: false,
+      handler: (_) async {
+        CustomSnackbar.getSnackbar(
+          title: S.of(context).no_internet_access,
+          message: S.of(context).failed_update_list,
+        );
+      },
+    );
+  }
+
   CustomAppBar _appBar() {
     return CustomAppBar(
       title: S.of(context).inactiveCustomers,
       isBackArrow: true,
-      onBack: () async {
-        Get.back();
-        await ErrorHandler.singleRequest(
-          context: context,
-          request: _controller.getCustomers,
-          skipCheck: true,
-          handler: (_) {
-            CustomSnackbar.getSnackbar(
-              title: S.of(context).no_internet_access,
-              message: S.of(context).failed_update_list,
-            );
-          },
-        );
+      onBack: ()async {
+        await _onBack();
       },
       onNotification: () {
         Get.toNamed(Routes.notifications);

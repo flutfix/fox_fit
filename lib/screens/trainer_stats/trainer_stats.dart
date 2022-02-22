@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
@@ -35,7 +37,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
       isLoading = true;
     });
 
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
       context: context,
       request: controller.getTrainerPerfomance,
     );
@@ -53,7 +55,11 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
     ThemeData theme = Theme.of(context);
     double width = MediaQuery.of(context).size.width;
     return Swipe(
-      onSwipeRight: () => Get.back(),
+      onSwipeRight: () {
+        if (!isLoading) {
+          Get.back();
+        }
+      },
       child: Scaffold(
         backgroundColor: theme.backgroundColor,
         appBar: CustomAppBar(
@@ -63,18 +69,21 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
           title: S.of(context).trainer_stats,
           isBackArrow: true,
           onBack: () async {
-            Get.back();
-            await ErrorHandler.singleRequest(
-              context: context,
-              request: controller.getCustomers,
-              skipCheck: true,
-              handler: (_) {
-                CustomSnackbar.getSnackbar(
-                  title: S.of(context).no_internet_access,
-                  message: S.of(context).failed_update_list,
-                );
-              },
-            );
+            if (!isLoading) {
+              Get.back();
+
+              await ErrorHandler.request(
+                context: context,
+                request: controller.getCustomers,
+                skipCheck: true,
+                handler: (_) async {
+                  CustomSnackbar.getSnackbar(
+                    title: S.of(context).no_internet_access,
+                    message: S.of(context).failed_update_list,
+                  );
+                },
+              );
+            }
           },
         ),
         body: !isLoading

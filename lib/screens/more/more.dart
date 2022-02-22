@@ -132,7 +132,7 @@ class _MorePageState extends State<MorePage> {
       ),
     );
   }
-  
+
   Widget _buildCard({
     required ThemeData theme,
     required String text,

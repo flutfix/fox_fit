@@ -12,12 +12,33 @@ import 'package:fox_fit/models/item_bottom_bar.dart';
 import 'package:fox_fit/models/notification.dart';
 import 'package:fox_fit/models/trainer.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
+import 'package:fox_fit/utils/prefs.dart';
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Requests {
+  /// API url
+  static String url = '';
+  static const String authurl = 'http://zbs-service.ru:8080/SERVICE/hs/tp_v1/';
+
+  /// Default request options
+  static BaseOptions options = BaseOptions(
+    baseUrl: Requests.url,
+    contentType: Headers.jsonContentType,
+    connectTimeout: 10000,
+    receiveTimeout: 10000,
+  );
+
+  /// Request options for auth
+  static BaseOptions authOptions = BaseOptions(
+    baseUrl: Requests.url,
+    contentType: Headers.jsonContentType,
+    connectTimeout: 10000,
+    receiveTimeout: 10000,
+  );
+
   /// Авторизация
   static Future<dynamic> auth({
     required String phone,
@@ -29,9 +50,9 @@ class Requests {
     String key = _getBase64String(text: '$phone$formattedDate');
     key = _getBase64String(text: key);
 
-    const String url = '${Api.authurl}check_credentials';
+    const String url = '${Requests.authurl}check_credentials';
 
-    final dioClient = Dio(Api.authOptions);
+    final dioClient = Dio(Requests.authOptions);
     try {
       var response = await dioClient.get(
         url,
@@ -59,9 +80,9 @@ class Requests {
     required String newPass,
     required String userUid,
   }) async {
-    const String url = '${Api.authurl}change_user_password';
+    const String url = '${Requests.authurl}change_user_password';
 
-    final dioClient = Dio(Api.authOptions);
+    final dioClient = Dio(Requests.authOptions);
     try {
       var response = await dioClient.post(
         url,
@@ -88,10 +109,11 @@ class Requests {
   /// Получение разделов BottomBar и клиентов под них
   static Future<dynamic> getCustomers(
       {required String id, String? fcmToken}) async {
-    const String url = '${Api.url}get_customers';
-    final dioClient = Dio(Api.options);
+    String url = '${Requests.url}get_customers';
+
+    final dioClient = Dio(Requests.options);
     String platform = '';
-    String? lastCheckNotifications = await getPrefs(
+    String? lastCheckNotifications = await Prefs.getPrefs(
       key: Cache.lastCheckNotifications,
       prefsType: PrefsType.string,
     );
@@ -118,7 +140,6 @@ class Requests {
       if (response.statusCode == 200) {
         List<CustomerModel> customers = [];
         List<ItemBottomBarModel> bottomBarItems = [];
-
         for (var element in response.data['Customers']) {
           customers.add(CustomerModel.fromJson(element));
         }
@@ -145,8 +166,8 @@ class Requests {
   static Future<dynamic> getRegularCustomers({
     required String id,
   }) async {
-    const String url = '${Api.url}get_customers';
-    final dioClient = Dio(Api.options);
+    String url = '${Requests.url}get_customers';
+    final dioClient = Dio(Requests.options);
     String platform = '';
     if (Platform.isAndroid) {
       platform = 'Android';
@@ -159,7 +180,7 @@ class Requests {
       "DevicePlatform": platform,
     };
 
-    String? lastCheckNotifications = await getPrefs(
+    String? lastCheckNotifications = await Prefs.getPrefs(
       key: Cache.lastCheckNotifications,
       prefsType: PrefsType.string,
     );
@@ -192,8 +213,8 @@ class Requests {
   static Future<dynamic> getOnlyInactiveCustomers({
     required String id,
   }) async {
-    const String url = '${Api.url}get_customers';
-    final dioClient = Dio(Api.options);
+    String url = '${Requests.url}get_customers';
+    final dioClient = Dio(Requests.options);
     String platform = '';
     if (Platform.isAndroid) {
       platform = 'Android';
@@ -206,7 +227,7 @@ class Requests {
       "DevicePlatform": platform,
     };
 
-    String? lastCheckNotifications = await getPrefs(
+    String? lastCheckNotifications = await Prefs.getPrefs(
       key: Cache.lastCheckNotifications,
       prefsType: PrefsType.string,
     );
@@ -245,8 +266,8 @@ class Requests {
 
   /// Получение воронки конверсии тренера
   static Future<dynamic> getTrainerPerfomance({required String id}) async {
-    const String url = '${Api.url}get_trainer_performance';
-    final dioClient = Dio(Api.options);
+    String url = '${Requests.url}get_trainer_performance';
+    final dioClient = Dio(Requests.options);
     try {
       var response = await dioClient.get(
         url,
@@ -283,8 +304,8 @@ class Requests {
     required String customerId,
     required String uId,
   }) async {
-    const String url = '${Api.url}get_customer_info';
-    final dioClient = Dio(Api.options);
+    String url = '${Requests.url}get_customer_info';
+    final dioClient = Dio(Requests.options);
     try {
       var response = await dioClient.get(url, queryParameters: {
         'ClientUid': customerId,
@@ -310,8 +331,8 @@ class Requests {
 
   /// Получение всех тренеров
   static Future<dynamic> getTrainers({required String id}) async {
-    const String url = '${Api.url}get_trainers';
-    final dioClient = Dio(Api.options);
+    String url = '${Requests.url}get_trainers';
+    final dioClient = Dio(Requests.options);
     try {
       var response = await dioClient.get(url, queryParameters: {
         'UserUid': id,
@@ -340,8 +361,8 @@ class Requests {
     String? transferDate,
     String? commentText,
   }) async {
-    const String url = '${Api.url}transfer_client_by_trainer_pipeline';
-    final dioClient = Dio(Api.options);
+    String url = '${Requests.url}transfer_client_by_trainer_pipeline';
+    final dioClient = Dio(Requests.options);
     try {
       Map<String, dynamic> queryParameters = {
         'UserUid': userUid,
@@ -379,8 +400,8 @@ class Requests {
     required String customerUid,
     required String trainerUid,
   }) async {
-    const String url = '${Api.url}transfer_client_to_trainer';
-    final dioClient = Dio(Api.options);
+    String url = '${Requests.url}transfer_client_to_trainer';
+    final dioClient = Dio(Requests.options);
     try {
       var response = await dioClient.post(url, queryParameters: {
         'UserUid': userUid,
@@ -398,8 +419,8 @@ class Requests {
 
   /// Получение клиентов для рабочего стола координатора
   static Future<dynamic> getCoordinaorWorkSpace({required String id}) async {
-    const String url = '${Api.url}get_customers';
-    final dioClient = Dio(Api.options);
+    String url = '${Requests.url}get_customers';
+    final dioClient = Dio(Requests.options);
     try {
       var response = await dioClient.get(
         url,
@@ -427,8 +448,8 @@ class Requests {
 
   /// Получение уведомлений
   static Future<dynamic> getNotifications({required String id}) async {
-    const String url = '${Api.url}get_notifications';
-    final dioClient = Dio(Api.options);
+    String url = '${Requests.url}get_notifications';
+    final dioClient = Dio(Requests.options);
     var now = DateTime.now();
     var monthAgo = DateTime(now.year, now.month - 1, now.day);
 
@@ -436,7 +457,7 @@ class Requests {
     String endDate = (now.millisecondsSinceEpoch / 1000).round().toString();
     String startDate =
         (monthAgo.millisecondsSinceEpoch / 1000).round().toString();
-    String? relevanceDate = await getPrefs(
+    String? relevanceDate = await Prefs.getPrefs(
         key: Cache.lastCheckNotifications, prefsType: PrefsType.string);
     relevanceDate ??= startDate;
     try {
@@ -467,8 +488,8 @@ class Requests {
     required String phone,
     required String licenseKey,
   }) async {
-    const String url = '${Api.url}get_customer_by_phone_number';
-    final dioClient = Dio(Api.options);
+    String url = '${Requests.url}get_customer_by_phone_number';
+    final dioClient = Dio(Requests.options);
 
     try {
       var response = await dioClient.get(
@@ -500,23 +521,4 @@ class Requests {
     }
     prefs.setString(Cache.pass, pass);
   }
-
-  static Future<dynamic> getPrefs({
-    required String key,
-    required PrefsType prefsType,
-  }) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    switch (prefsType) {
-      case PrefsType.string:
-        return prefs.getString(key);
-      case PrefsType.boolean:
-        return prefs.getBool(key);
-    }
-  }
-}
-
-enum PrefsType {
-  string,
-  boolean,
 }

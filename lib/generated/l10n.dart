@@ -261,16 +261,6 @@ class S {
   }
 
   /// ``
-  String get coordinaor_workspace {
-    return Intl.message(
-      '',
-      name: 'coordinaor_workspace',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
   String get transmit {
     return Intl.message(
       '',
@@ -515,6 +505,26 @@ class S {
     return Intl.message(
       '',
       name: 'error_transferring_record',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get license_error_title {
+    return Intl.message(
+      '',
+      name: 'license_error_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get license_error_body {
+    return Intl.message(
+      '',
+      name: 'license_error_body',
       desc: '',
       args: [],
     );

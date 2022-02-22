@@ -1,9 +1,14 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/utils/error_handler.dart';
+import 'package:fox_fit/utils/prefs.dart';
 import 'package:get/get.dart';
 
 class SpalshScreen extends StatefulWidget {
@@ -24,21 +29,20 @@ class _SpalshScreenState extends State<SpalshScreen> {
   }
 
   Future<dynamic> _load() async {
-    var isAuthorized = await Requests.getPrefs(
+    var isAuthorized = await Prefs.getPrefs(
       key: Cache.isAuthorized,
       prefsType: PrefsType.boolean,
     );
     if (isAuthorized != null) {
       if (isAuthorized) {
-        var phone = await Requests.getPrefs(
+        var phone = await Prefs.getPrefs(
           key: Cache.phone,
           prefsType: PrefsType.string,
         );
-        var pass = await Requests.getPrefs(
+        var pass = await Prefs.getPrefs(
           key: Cache.pass,
           prefsType: PrefsType.string,
         );
-
         var authData = await Requests.auth(
           phone: phone,
           pass: pass,
@@ -47,12 +51,34 @@ class _SpalshScreenState extends State<SpalshScreen> {
           return authData;
         } else {
           await Future.delayed(const Duration(milliseconds: 400));
+          final String pathToBase = await Prefs.getPrefs(
+            key: Cache.pathToBase,
+            prefsType: PrefsType.string,
+          );
+          final String baseAuth = await Prefs.getPrefs(
+            key: Cache.baseAuth,
+            prefsType: PrefsType.string,
+          );
+
+          /// Для идентификации API зазпросов
+          Requests.url = pathToBase;
+          Requests.options = BaseOptions(
+            baseUrl: pathToBase,
+            contentType: Headers.jsonContentType,
+            headers: {
+              HttpHeaders.authorizationHeader: 'Basic $baseAuth',
+            },
+            connectTimeout: 10000,
+            receiveTimeout: 10000,
+          );
+
+          ///--
 
           Get.offNamed(
             Routes.general,
             arguments: authData,
           );
-          
+
           return 200;
         }
       } else {
@@ -70,7 +96,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
   @override
   Widget build(BuildContext context) {
     if (!_isCalled) {
-      ErrorHandler.loadingData(context: context, request: _load);
+      ErrorHandler.request(context: context, request: _load);
     }
     ThemeData theme = Theme.of(context);
     return Scaffold(

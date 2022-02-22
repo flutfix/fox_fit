@@ -20,7 +20,6 @@
     "confirmation_failed": "",
     "error": "",
     "leave_comment": "",
-    "coordinaor_workspace": "",
     "transmit": "",
     "to_coach": "",
     "whatsapp_exeption": "",
@@ -45,5 +44,7 @@
     "failed_update_list": "",
     "authorization_failed": "",
     "inactiveCustomers": "",
-    "error_transferring_record": ""
+    "error_transferring_record": "",
+    "license_error_title": "",
+    "license_error_body": ""
 }
