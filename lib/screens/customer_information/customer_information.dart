@@ -191,8 +191,14 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                                   number = '${number[0]}${number[1]}';
                                   number = number.split('+7');
                                   number = '8${number[1]}';
-                                  log(number);
-                                  await launch("tel://$number");
+
+                                  /// Try to make a phone call
+                                  final String launchLink = 'tel://$number';
+                                  if (await canLaunch(launchLink)) {
+                                    await launch(launchLink);
+                                  } else {
+                                    throw 'Could not launch $launchLink';
+                                  }
                                 } else {
                                   await launch(
                                       "tel://${_controller.appState.value.currentCustomer!.phone}");
