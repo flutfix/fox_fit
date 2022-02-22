@@ -42,28 +42,16 @@ class Enums {
   }
 
   static getClientType({required String clientUid}) {
-    switch (clientUid) {
-      case Client.fresh:
-        return ClientType.fresh;
-
-      case Client.assigned:
-        return ClientType.assigned;
-
-      case Client.conducted:
-        return ClientType.conducted;
-
-      case Client.permanent:
-        return ClientType.permanent;
-
-      // case Client.sleeping:
-      //   return ClientType.fresh;
-
-      // case Client.coordinator:
-      //   return ClientType.coordinator;
-
-      default:
-        return ClientType.fresh;
+    if (clientUid == Client.fresh) {
+      return ClientType.fresh;
+    } else if (clientUid == Client.assigned) {
+      return ClientType.assigned;
+    } else if (clientUid == Client.conducted) {
+      return ClientType.conducted;
+    } else if (clientUid == Client.permanent) {
+      return ClientType.permanent;
     }
+    return ClientType.fresh;
   }
 
   static getStagePipelineType({required String stageUid}) {
@@ -128,12 +116,7 @@ enum ClientType {
   coordinator,
 }
 
-enum CustomersPageType{
-  general,
-  coordinator,
-  sleep
-
-}
+enum CustomersPageType { general, coordinator, sleep }
 
 enum CustomersContainerType {
   justName,

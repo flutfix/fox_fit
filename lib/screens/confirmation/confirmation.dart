@@ -171,6 +171,7 @@ class ConfirmationPage extends StatelessWidget {
       /// Если было открыто от роли [Координатор]
     } else if (stagePipelineType == StagePipelineType.coordinator) {
       dynamic data = await ErrorHandler.request(
+        repeat: false,
         context: context,
         request: () {
           return controller.transferClientToTrainer(
@@ -202,13 +203,15 @@ class ConfirmationPage extends StatelessWidget {
         ErrorHandler.request(
           context: context,
           request: controller.getCustomers,
+          repeat: false,
           skipCheck: true,
         );
         await ErrorHandler.request(
           context: context,
           request: controller.getCoordinaorWorkSpace,
+          repeat: false,
           skipCheck: true,
-          handler: (_)async {
+          handler: (_) async {
             CustomSnackbar.getSnackbar(
               title: S.of(context).no_internet_access,
               message: S.of(context).failed_update_list,
@@ -235,6 +238,7 @@ class ConfirmationPage extends StatelessWidget {
   }) async {
     dynamic data = await ErrorHandler.request(
       context: context,
+      repeat: false,
       request: () {
         return controller.transferClientByTrainerPipeline(
           userUid: controller.appState.value.auth!.users![0].uid,
@@ -246,7 +250,7 @@ class ConfirmationPage extends StatelessWidget {
           commentText: textController.text,
         );
       },
-      handler: (dynamic data)async {
+      handler: (dynamic data) async {
         if (isTransferringRecord) {
           if (data == 400) {
             CustomSnackbar.getSnackbar(
@@ -276,8 +280,9 @@ class ConfirmationPage extends StatelessWidget {
       await ErrorHandler.request(
         context: context,
         request: controller.getCustomers,
+        repeat: false,
         skipCheck: true,
-        handler: (_)async {
+        handler: (_) async {
           CustomSnackbar.getSnackbar(
             title: S.of(context).no_internet_access,
             message: S.of(context).failed_update_list,

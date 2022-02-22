@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
@@ -15,6 +18,7 @@ import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -196,6 +200,29 @@ class _AuthPageState extends State<AuthPage> {
         if (_canVibrate) {
           Vibrate.feedback(FeedbackType.light);
         }
+
+        /// Для идентификации API зазпросов
+        final String pathToBase = '${data.data!.pathToBase}hs/api_v1/';
+        final String login = _getStringFromBase(text: data.data!.hashL);
+        final String pass = _getStringFromBase(text: data.data!.hashP);
+        _setPrefs(
+          pathToBase: pathToBase,
+          baseAuth: _getBase64String(text: '$login:$pass'),
+        );
+        Requests.url = pathToBase;
+        Requests.options = BaseOptions(
+          baseUrl: pathToBase,
+          contentType: Headers.jsonContentType,
+          headers: {
+            HttpHeaders.authorizationHeader:
+                'Basic ${_getBase64String(text: '$login:$pass')}',
+          },
+          connectTimeout: 10000,
+          receiveTimeout: 10000,
+        );
+
+        ///--
+
         Get.offAllNamed(
           Routes.general,
           arguments: data,
@@ -235,6 +262,25 @@ class _AuthPageState extends State<AuthPage> {
         });
       }
     }
+  }
+
+  static Future<void> _setPrefs({
+    required String pathToBase,
+    required String baseAuth,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(Cache.pathToBase, pathToBase);
+    prefs.setString(Cache.baseAuth, baseAuth);
+  }
+
+  static String _getBase64String({required String text}) {
+    final bytes = utf8.encode(text);
+    return base64Encode(bytes);
+  }
+
+  static String _getStringFromBase({required String text}) {
+    final String first = utf8.decode(base64Decode(text));
+    return utf8.decode(base64Decode(first));
   }
 
   @override

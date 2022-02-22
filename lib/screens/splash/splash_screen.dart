@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
@@ -49,6 +51,28 @@ class _SpalshScreenState extends State<SpalshScreen> {
           return authData;
         } else {
           await Future.delayed(const Duration(milliseconds: 400));
+          final String pathToBase = await Prefs.getPrefs(
+            key: Cache.pathToBase,
+            prefsType: PrefsType.string,
+          );
+          final String baseAuth = await Prefs.getPrefs(
+            key: Cache.baseAuth,
+            prefsType: PrefsType.string,
+          );
+
+          /// Для идентификации API зазпросов
+          Requests.url = pathToBase;
+          Requests.options = BaseOptions(
+            baseUrl: pathToBase,
+            contentType: Headers.jsonContentType,
+            headers: {
+              HttpHeaders.authorizationHeader: 'Basic $baseAuth',
+            },
+            connectTimeout: 10000,
+            receiveTimeout: 10000,
+          );
+
+          ///--
 
           Get.offNamed(
             Routes.general,
