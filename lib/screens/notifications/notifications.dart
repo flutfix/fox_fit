@@ -52,7 +52,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
     });
 
     await ErrorHandler.request(
-        context: context, request: _controller.getNotifications);
+      context: context,
+      request: _controller.getNotifications,
+    );
 
     setState(() {
       _isLoading = false;
@@ -143,8 +145,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
     if (notification.isVisible) {
       if (notification.phone != '' && notification.pipelineUid != '') {
         Get.to(
-          () =>  CustomerInformationPage(
-            clientType: Enums.getClientType(clientUid: notification.pipelineUid),
+          () => CustomerInformationPage(
+            clientType:
+                Enums.getClientType(clientUid: notification.pipelineUid),
             isFromNotification: true,
           ),
           arguments: notification.phone,
@@ -223,8 +226,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
     await ErrorHandler.request(
       context: context,
       request: _controller.getCustomers,
+      repeat: false,
       skipCheck: true,
-      handler: (_) async{
+      handler: (_) async {
         CustomSnackbar.getSnackbar(
           title: S.of(context).no_internet_access,
           message: S.of(context).failed_update_list,

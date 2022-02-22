@@ -178,6 +178,7 @@ class _AuthPageState extends State<AuthPage> {
     if (phoneController.text.isNotEmpty && passController.text.isNotEmpty) {
       dynamic data = await ErrorHandler.request(
         context: context,
+        repeat: false,
         request: () {
           return Requests.auth(
             phone: maskFormatter.getUnmaskedText() == ''

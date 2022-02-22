@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/generated/l10n.dart';
@@ -209,7 +211,6 @@ class _CustomersPageState extends State<CustomersPage> {
     }
   }
 
-
   Widget _getEmptyCustomersText(ThemeData theme) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
@@ -240,6 +241,12 @@ class _CustomersPageState extends State<CustomersPage> {
       await ErrorHandler.request(
         context: context,
         request: _controller.getCoordinaorWorkSpace,
+        repeat: false,
+      );
+    } else if (widget.pageType == CustomersPageType.sleep) {
+      await ErrorHandler.request(
+        context: context,
+        request: _controller.getInactiveCustomers,
         repeat: false,
       );
     } else {

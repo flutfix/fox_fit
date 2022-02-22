@@ -111,8 +111,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             await ErrorHandler.request(
               context: context,
               request: _controller.getCustomers,
+              repeat: false,
               skipCheck: true,
-              handler: (_) async{
+              handler: (_) async {
                 CustomSnackbar.getSnackbar(
                   title: S.of(context).no_internet_access,
                   message: S.of(context).failed_update_list,
@@ -455,9 +456,21 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     );
   }
 
-  void _onHorizontalSwipe(SwipeDirection direction) {
+  void _onHorizontalSwipe(SwipeDirection direction) async {
     if (direction == SwipeDirection.right) {
       Get.back();
+      await ErrorHandler.request(
+        context: context,
+        request: _controller.getCustomers,
+        repeat: false,
+        skipCheck: true,
+        handler: (_) async {
+          CustomSnackbar.getSnackbar(
+            title: S.of(context).no_internet_access,
+            message: S.of(context).failed_update_list,
+          );
+        },
+      );
     }
   }
 

@@ -74,6 +74,7 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
           context: context,
           request: _controller.getCustomers,
           skipCheck: true,
+          repeat: false,
           handler: (_) async {
             CustomSnackbar.getSnackbar(
               title: S.of(context).no_internet_access,
