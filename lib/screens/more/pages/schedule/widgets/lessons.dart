@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
-import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/models/appointment.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +11,7 @@ import 'package:intl/intl.dart';
 class Lessons extends StatelessWidget {
   Lessons({Key? key}) : super(key: key);
 
-  final GeneralController _controller = Get.find<GeneralController>();
+  final ScheduleController _controller = Get.find<ScheduleController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +33,26 @@ class Lessons extends StatelessWidget {
         },
         itemBuilder: (context, index) {
           AppointmentModel? appointment = searchLesson(index: index);
+          late PaymentStatusType paymentStatusType;
+          if (appointment != null) {
+            paymentStatusType = Enums.getPaymentStatusType(
+              paymentStatusString:
+                  appointment.arrivalStatuses![0].paymentStatus,
+            );
+          }
           return GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
+              if (appointment != null) {
+                _controller.scheduleState.update((model) {
+                  model?.client = appointment.customers![0];
+                  model?.duration = int.parse(appointment.service!.duration);
+                  model?.type = Enums.getTrainingType(
+                    trainingType: appointment.appointmentType,
+                  );
+                  model?.service = appointment.service;
+                });
+              }
               Get.toNamed(Routes.signUpTrainingSession);
             },
             child: DefaultContainer(
@@ -57,7 +75,13 @@ class Lessons extends StatelessWidget {
                               width: 6,
                               height: 6,
                               decoration: BoxDecoration(
-                                color: Styles.greyLight7,
+                                color: paymentStatusType ==
+                                        PaymentStatusType.doneAndPayed
+                                    ? Styles.green
+                                    : paymentStatusType ==
+                                            PaymentStatusType.plannedAndPayed
+                                        ? Styles.yellow
+                                        : Styles.red,
                                 borderRadius: BorderRadius.circular(90),
                               ),
                             ),
@@ -84,7 +108,7 @@ class Lessons extends StatelessWidget {
 
   /// Сравнивает час каждого занятия с часом ленты времени, являющимся [index]
   AppointmentModel? searchLesson({required int index}) {
-    for (var appointment in _controller.appState.value.appointments) {
+    for (var appointment in _controller.scheduleState.value.appointments) {
       int hour = int.parse(DateFormat('H').format(appointment.startDate!));
       if (hour == index) {
         return appointment;

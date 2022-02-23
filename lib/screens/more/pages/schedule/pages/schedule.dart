@@ -66,7 +66,7 @@ class _SchedulePageState extends State<SchedulePage> {
     await ErrorHandler.loadingData(
       context: context,
       request: () {
-        return _generalController.getAppointments(
+        return _scheduleController.getAppointments(
           userUid: _scheduleController.scheduleState.value.uid!,
           dateNow: _dateNow,
         );
@@ -107,30 +107,8 @@ class _SchedulePageState extends State<SchedulePage> {
           title: S.of(context).schedule,
           isBackArrow: true,
           isNotification: false,
-          action: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            child: Stack(
-              alignment: Alignment.centerRight,
-              children: [
-                SvgPicture.asset(
-                  Images.filtres,
-                  width: 17.5,
-                ),
-                const SizedBox(
-                  width: 36,
-                )
-              ],
-            ),
-          ),
           onBack: () {
-            _scheduleController.scheduleState.update((model) {
-              model?.client = null;
-              model?.duration = null;
-              model?.type = TrainingType.personal;
-              model?.service = null;
-              model?.date = null;
-              model?.time = null;
-            });
+            Get.delete<ScheduleController>();
             Get.back();
           },
         ),
@@ -240,14 +218,16 @@ class _SchedulePageState extends State<SchedulePage> {
                       ],
                     ),
                   )
-                : const Padding(
-                    padding: EdgeInsets.only(top: 16.0),
-                    child: Center(
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
+                : const Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 150),
+                      child: Center(
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
                         ),
                       ),
                     ),

@@ -33,7 +33,6 @@ class AppStateModel {
     this.currentTrainer,
     this.notifications = const [],
     this.inactiveCustomers = const [],
-    this.appointments = const []
   });
 
   bool isLoading;
@@ -89,7 +88,4 @@ class AppStateModel {
 
   /// Список уведомлений
   List<NotificationModel> notifications;
-
-  /// Список всех занятий
-  List<AppointmentModel> appointments;
 }

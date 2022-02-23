@@ -221,25 +221,6 @@ class GeneralController extends GetxController {
     }
   }
 
-  /// Получение списка всех занятий за период
-  Future<dynamic> getAppointments({
-    required String userUid,
-    required DateTime dateNow,
-  }) async {
-    var data = await Requests.getAppointments(
-      userUid: userUid,
-      dateNow: dateNow,
-    );
-    if (data is int || data == null) {
-      return data;
-    } else {
-      appState.update((model) {
-        model?.appointments = data;
-      });
-      return 200;
-    }
-  }
-
   /// Получение клиента по номеру телефона
   Future<dynamic> getCustomerByPhone({required String phone}) async {
     var data = await Requests.getCustomerByPhone(

@@ -400,7 +400,7 @@ class TimePickerModel extends CommonPickerModel {
 
   @override
   String? middleStringAtIndex(int index) {
-    if (index >= 1 && index < 60) {
+    if (index >= 0 && index < 60) {
       return digits(index, 2);
     } else {
       return null;

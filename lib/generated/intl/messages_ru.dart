@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "authorization_failed":
             MessageLookupByLibrary.simpleMessage("Авторизация не удалась"),
+        "back": MessageLookupByLibrary.simpleMessage("Назад"),
         "cancel": MessageLookupByLibrary.simpleMessage("Отмена"),
         "change_password":
             MessageLookupByLibrary.simpleMessage("Изменить пароль"),
@@ -65,6 +66,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "failed_update_list":
             MessageLookupByLibrary.simpleMessage("Не удалось обновить список"),
         "fast_search": MessageLookupByLibrary.simpleMessage("Быстрый поиск"),
+        "fill_all_fields":
+            MessageLookupByLibrary.simpleMessage("Заполните все поля"),
         "fill_previous_fields":
             MessageLookupByLibrary.simpleMessage("Заполните предыдущие поля"),
         "kickoff_training":
@@ -108,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "time_lesson":
             MessageLookupByLibrary.simpleMessage("Время проведения занятия"),
         "to_coach": MessageLookupByLibrary.simpleMessage("Тренеру"),
+        "to_practice": MessageLookupByLibrary.simpleMessage("На тренировку"),
         "trainer_stats":
             MessageLookupByLibrary.simpleMessage("Статистика тренера"),
         "transmit": MessageLookupByLibrary.simpleMessage("Передать"),

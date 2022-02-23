@@ -1,4 +1,5 @@
 import 'package:fox_fit/api/requests.dart';
+import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/schedule_state.dart';
 import 'package:fox_fit/models/service.dart';
 import 'package:get/get.dart';
@@ -6,28 +7,41 @@ import 'package:get/get.dart';
 class ScheduleController extends GetxController {
   final Rx<ScheduleStateModel> scheduleState = ScheduleStateModel().obs;
 
-  /// Получение клиента по номеру телефона
-  Future<dynamic> getCustomerByPhone({
-    required String phone,
-    required String licenseKey,
+  /// Получение списка всех занятий за период
+  Future<dynamic> getAppointments({
+    required String userUid,
+    required DateTime dateNow,
   }) async {
-    var data = await Requests.getCustomerByPhone(
-      licenseKey: licenseKey,
-      phone: phone,
+    var data = await Requests.getAppointments(
+      userUid: userUid,
+      dateNow: dateNow,
     );
     if (data is int || data == null) {
       return data;
     } else {
       scheduleState.update((model) {
-        model?.client = data;
+        model?.appointments = data;
       });
       return 200;
     }
   }
 
+  /// Получение клиента по номеру телефона
+  Future<dynamic> getCustomerByPhone({
+    required String phone,
+    required String licenseKey,
+  }) async {
+    dynamic data = await Requests.getCustomerByPhone(
+      licenseKey: licenseKey,
+      phone: phone,
+    );
+
+    return data;
+  }
+
   /// Получение длительностей занятий
   Future<dynamic> getAppointmentsDurations() async {
-    var data = await Requests.getAppointmentsDurations();
+    dynamic data = await Requests.getAppointmentsDurations();
     if (data is int || data == null) {
       return data;
     } else {
@@ -45,7 +59,7 @@ class ScheduleController extends GetxController {
     required String duration,
     required String serviceType,
   }) async {
-    var data = await Requests.getCustomerFitnessServices(
+    dynamic data = await Requests.getCustomerFitnessServices(
       userUid: userUid,
       customerUid: customerUid,
       duration: duration,
@@ -66,5 +80,29 @@ class ScheduleController extends GetxController {
 
       return 200;
     }
+  }
+
+  /// Запрос на создание занятия в 1с
+  Future<dynamic> addAppointment({
+    required String licenseKey,
+    required String userUid,
+    required List<CustomerModel> customers,
+    required bool arrivalStatus,
+    required String appointmentType,
+    required String dateTimeAppointment,
+    required String serviceUid,
+    required int capacity,
+  }) async {
+    dynamic data = await Requests.addAppointment(
+      licenseKey: licenseKey,
+      userUid: userUid,
+      customers: customers,
+      arrivalStatus: arrivalStatus,
+      appointmentType: appointmentType,
+      dateTimeAppointment: dateTimeAppointment,
+      serviceUid: serviceUid,
+      capacity: capacity,
+    );
+    return data;
   }
 }

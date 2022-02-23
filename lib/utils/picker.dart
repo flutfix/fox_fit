@@ -62,8 +62,8 @@ class Picker {
                 behavior: CustomBehavior(),
                 child: SizedBox(
                   width: 100,
+                  height: 100,
                   child: CupertinoPicker.builder(
-                    backgroundColor: Colors.transparent,
                     itemExtent: 30,
                     onSelectedItemChanged: (int index) {
                       currentIndex = index;

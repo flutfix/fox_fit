@@ -99,9 +99,6 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                                   Get.to(
                                     () => ConfirmationPage(
                                       stagePipelineType: stagePipelineType,
-                                      image: Enums.getIconStage(
-                                        stageType: stagePipelineType,
-                                      ),
                                       text: '${stagePipeline.name}?',
                                     ),
                                     transition: Transition.fadeIn,

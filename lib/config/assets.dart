@@ -51,7 +51,7 @@ class Images {
   static const String pushNotification = 'lib/assets/icons/push_logo.png';
 
   /// Schedule
-  static const String filtres = 'lib/assets/icons/filtres.svg';
+  static const String trashcan = 'lib/assets/icons/trashcan.png';
 }
 
 class Animations {

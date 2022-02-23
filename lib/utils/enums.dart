@@ -16,6 +16,13 @@ class Enums {
 
       case StagePipelineType.rejection:
         return Images.cross;
+
+      case StagePipelineType.coordinator:
+        return Images.coordinatorSvg;
+
+      case StagePipelineType.training:
+        return Images.assigned;
+
       default:
         return Images.assigned;
     }
@@ -35,6 +42,12 @@ class Enums {
 
       case StagePipelineType.rejection:
         return true;
+
+      case StagePipelineType.coordinator:
+        return false;
+
+      case StagePipelineType.training:
+        return false;
 
       default:
         return false;
@@ -56,10 +69,10 @@ class Enums {
         return ClientType.permanent;
 
       // case Client.sleeping:
-      //   return ClientType.fresh;
+      //   return ClientType.sleeping;
 
-      // case Client.coordinator:
-      //   return ClientType.coordinator;
+      case Client.coordinator:
+        return ClientType.coordinator;
 
       default:
         return ClientType.fresh;
@@ -119,6 +132,35 @@ class Enums {
         return 'Group';
 
       default:
+        return 'Personal';
+    }
+  }
+
+  static getTrainingType({required String trainingType}) {
+    switch (trainingType) {
+      case 'Personal':
+        return TrainingType.personal;
+
+      case 'Group':
+        return TrainingType.group;
+
+      default:
+        return TrainingType.personal;
+    }
+  }
+
+  static getPaymentStatusType({required String paymentStatusString}) {
+    switch (paymentStatusString) {
+      case 'DoneAndPayed':
+        return PaymentStatusType.doneAndPayed;
+
+      case 'PlannedAndPayed':
+        return PaymentStatusType.plannedAndPayed;
+
+      case 'ReservedNeedPayment':
+        return PaymentStatusType.reservedNeedPayment;
+
+      default:
         return StagePipeline.assigned;
     }
   }
@@ -130,6 +172,7 @@ enum StagePipelineType {
   nonCall,
   rejection,
   coordinator,
+  training,
 }
 
 enum ClientType {
@@ -156,4 +199,15 @@ enum CustomersContainerType {
 enum TrainingType {
   personal,
   group,
+}
+
+enum PaymentStatusType {
+  /// Проведено и оплачено
+  doneAndPayed,
+
+  /// Запланировано и оплачено
+  plannedAndPayed,
+
+  /// Запланирвоноо и нужна оплата
+  reservedNeedPayment,
 }

@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "authorization_failed": MessageLookupByLibrary.simpleMessage(""),
+        "back": MessageLookupByLibrary.simpleMessage(""),
         "cancel": MessageLookupByLibrary.simpleMessage(""),
         "change_password": MessageLookupByLibrary.simpleMessage(""),
         "changing_password": MessageLookupByLibrary.simpleMessage(""),
@@ -50,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "exit": MessageLookupByLibrary.simpleMessage(""),
         "failed_update_list": MessageLookupByLibrary.simpleMessage(""),
         "fast_search": MessageLookupByLibrary.simpleMessage(""),
+        "fill_all_fields": MessageLookupByLibrary.simpleMessage(""),
         "fill_previous_fields": MessageLookupByLibrary.simpleMessage(""),
         "kickoff_training": MessageLookupByLibrary.simpleMessage(""),
         "least_three_characters": MessageLookupByLibrary.simpleMessage(""),
@@ -79,6 +81,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "support": MessageLookupByLibrary.simpleMessage(""),
         "time_lesson": MessageLookupByLibrary.simpleMessage(""),
         "to_coach": MessageLookupByLibrary.simpleMessage(""),
+        "to_practice": MessageLookupByLibrary.simpleMessage(""),
         "trainer_stats": MessageLookupByLibrary.simpleMessage(""),
         "transmit": MessageLookupByLibrary.simpleMessage(""),
         "triner_choosing": MessageLookupByLibrary.simpleMessage(""),

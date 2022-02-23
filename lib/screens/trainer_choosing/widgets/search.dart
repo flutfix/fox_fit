@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fox_fit/config/assets.dart';
@@ -7,6 +9,7 @@ import 'package:fox_fit/screens/auth/widgets/input.dart';
 class Search extends StatefulWidget {
   const Search({
     Key? key,
+    required this.controller,
     required this.onSearch,
     this.hintText,
     this.textInputType,
@@ -14,6 +17,7 @@ class Search extends StatefulWidget {
     this.phoneFocus,
   }) : super(key: key);
 
+  final TextEditingController controller;
   final Function(String) onSearch;
   final String? hintText;
   final TextInputType? textInputType;
@@ -25,19 +29,17 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  late TextEditingController controller;
-
   @override
   void initState() {
-    controller = TextEditingController();
     super.initState();
+    log('${widget.controller.text}');
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return Input(
-      textController: controller,
+      textController: widget.controller,
       hintText: widget.hintText ?? S.of(context).fast_search,
       hintStyle: theme.textTheme.overline,
       textStyle: theme.textTheme.overline,

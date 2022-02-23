@@ -30,16 +30,16 @@ class Service {
 
 class PaidServiceBalance {
   late String uid;
-  late String balance;
+  late int balance;
 
   PaidServiceBalance({
     this.uid = '',
-    this.balance = '',
+    this.balance = 0,
   });
 
   PaidServiceBalance.fromJson(Map<String, dynamic> json) {
     uid = json['ServiceUid'] ?? '';
-    balance = json['Balance'] ?? '';
+    balance = json['Balance'] ?? 0;
   }
 
   Map<String, dynamic> toJson() {

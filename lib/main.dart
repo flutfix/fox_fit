@@ -9,10 +9,12 @@ import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fox_fit/screens/confirmation/confirmation.dart';
 import 'package:fox_fit/screens/home/general.dart';
 import 'package:fox_fit/screens/more/pages/change_password/change_password.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/schedule.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/select_service.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/sign_up_training_session.dart';
 import 'package:fox_fit/screens/more/pages/sleeping_customers/sleeping_customers.dart';
 import 'package:fox_fit/screens/notifications/notifications.dart';
@@ -104,7 +106,6 @@ class MyApp extends StatelessWidget {
           getPage(Routes.trainerChoosing, () => const TrainerChoosingPage()),
           getPage(Routes.coordinator, () => const CoordinatorPage()),
           getPage(Routes.changePassword, () => const ChangePasswordPage()),
-          getPage(Routes.coordinator, () => const CoordinatorPage()),
           getPage(Routes.notifications, () => const NotificationsPage()),
           getPage(
             Routes.sleepingCustomers,
@@ -112,6 +113,7 @@ class MyApp extends StatelessWidget {
           ),
           getPage(Routes.schedule, () => const SchedulePage()),
           getPage(Routes.selectClient, () => const SelectClientPage()),
+          getPage(Routes.selectService, () => const SelectServicePage()),
           getPage(
             Routes.signUpTrainingSession,
             () => const SignUpTrainingSessionPage(),

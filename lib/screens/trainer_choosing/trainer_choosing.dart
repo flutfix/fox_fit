@@ -62,6 +62,7 @@ class _TrainerChoosingPageState extends State<TrainerChoosingPage> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Search(
+              controller: TextEditingController(),
               onSearch: (search) {
                 setState(() {
                   controller.sortTrainers(search: search.trim());
@@ -114,9 +115,9 @@ class _TrainerChoosingPageState extends State<TrainerChoosingPage> {
                                   });
                                   Get.to(
                                     () => ConfirmationPage(
-                                      stagePipelineType: StagePipelineType.coordinator,
-                                      image: Images.coordinatorSvg,
-                                      textButton: S.of(context).transmit,
+                                      stagePipelineType:
+                                          StagePipelineType.coordinator,
+                                      textButtonDone: S.of(context).transmit,
                                       richText: RichText(
                                         textAlign: TextAlign.center,
                                         text: TextSpan(

@@ -49,7 +49,9 @@ class _CustomersPageState extends State<CustomersPage> {
     });
 
     await ErrorHandler.loadingData(
-        context: context, request: _controller.getRegularCustomers);
+      context: context,
+      request: _controller.getRegularCustomers,
+    );
 
     setState(() {
       _isLoading = false;
@@ -59,7 +61,7 @@ class _CustomersPageState extends State<CustomersPage> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return !_isLoading
+    return (!_isLoading)
         ? Obx(
             () {
               return SmartRefresher(
@@ -208,7 +210,6 @@ class _CustomersPageState extends State<CustomersPage> {
       return _getEmptyCustomersText(theme);
     }
   }
-
 
   Widget _getEmptyCustomersText(ThemeData theme) {
     return SizedBox(

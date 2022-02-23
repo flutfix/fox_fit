@@ -60,5 +60,8 @@
     "enter_full_number": "",
     "client_not_found": "",
     "choice_service": "",
-    "fill_previous_fields": ""
+    "fill_previous_fields": "",
+    "fill_all_fields": "",
+    "to_practice": "",
+    "back": ""
 }

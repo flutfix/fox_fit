@@ -565,7 +565,7 @@ class Requests {
           'ServiceType': serviceType,
         },
       );
-      log('$response');
+      
       if (response.statusCode == 200) {
         List<service_model.Service> services = [];
         List<service_model.PaidServiceBalance> paidServicesBalance = [];
@@ -585,6 +585,53 @@ class Requests {
       }
     } on DioError catch (e) {
       log('${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Запрос на создание занятия в 1с
+  static Future<dynamic> addAppointment({
+    required String licenseKey,
+    required String userUid,
+    required List<CustomerModel> customers,
+    required bool arrivalStatus,
+    required String appointmentType,
+    required String dateTimeAppointment,
+    required String serviceUid,
+    required int capacity,
+  }) async {
+    const String url = '${Api.url}add_appointment';
+    final dioClient = Dio(Api.options);
+
+    List<Map<String, dynamic>> customersList = [];
+
+    for (var customer in customers) {
+      customersList.add(
+        {
+          'CustomerUid': customer.uid,
+          'ArrivalStatus': arrivalStatus,
+        },
+      );
+    }
+
+    try {
+      var response = await dioClient.post(
+        url,
+        queryParameters: {
+          'LicenseKey': licenseKey,
+          'UserUid': userUid,
+          'AppointmentType': appointmentType,
+          'DateTimeAppointment': dateTimeAppointment,
+          'ServiceUid': serviceUid,
+          'Capacity': capacity,
+        },
+        data: {"Customers": customersList},
+      );
+      if (response.statusCode == 200) {
+        return response;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }

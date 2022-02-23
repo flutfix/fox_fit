@@ -371,7 +371,6 @@ class _DatePickerState extends State<_DatePickerComponent> {
               selectedChangedWhenScrolling(index);
             },
             useMagnifier: true,
-            // childCount: 20,
             itemBuilder: (BuildContext context, int index) {
               final content = stringAtIndexCB(index);
               if (content == null) {

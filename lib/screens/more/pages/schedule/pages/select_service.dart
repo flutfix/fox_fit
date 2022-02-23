@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
-import 'package:fox_fit/screens/trainer_choosing/widgets/search.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
@@ -10,9 +8,7 @@ import 'package:fox_fit/widgets/default_container.dart';
 import 'package:get/get.dart';
 
 class SelectServicePage extends StatefulWidget {
-  const SelectServicePage({Key? key, required this.callBack}) : super(key: key);
-
-  final Function(String? client) callBack;
+  const SelectServicePage({Key? key}) : super(key: key);
 
   @override
   _SelectServicePageState createState() => _SelectServicePageState();
@@ -78,6 +74,7 @@ class _SelectServicePageState extends State<SelectServicePage> {
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                   physics: const BouncingScrollPhysics(),
                   child: ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: _controller.scheduleState.value.services.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 5),

@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
 import 'package:fox_fit/utils/date_time_picker/date_time_picker.dart';
@@ -18,23 +22,24 @@ class ConfirmationPage extends StatelessWidget {
   ConfirmationPage({
     Key? key,
     required this.stagePipelineType,
-    required this.image,
     this.text = '',
     this.richText,
-    this.textButton,
+    this.textButtonDone,
+    this.textButtonCancel,
     this.padding = const EdgeInsets.fromLTRB(20, 150, 20, 20),
   }) : super(key: key);
 
   final StagePipelineType stagePipelineType;
-  final String image;
   final String text;
   final RichText? richText;
-  final String? textButton;
+  final String? textButtonDone;
+  final String? textButtonCancel;
   final EdgeInsetsGeometry padding;
 
   final TextEditingController textController = TextEditingController();
 
-  final GeneralController controller = Get.find<GeneralController>();
+  final GeneralController _generalController = Get.find<GeneralController>();
+  final ScheduleController _scheduleController = Get.find<ScheduleController>();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +58,9 @@ class ConfirmationPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SvgPicture.asset(
-                    image,
+                    Enums.getIconStage(
+                      stageType: stagePipelineType,
+                    ),
                     width: 42,
                     color: theme.colorScheme.primary,
                   ),
@@ -85,12 +92,12 @@ class ConfirmationPage extends StatelessWidget {
                     const SizedBox(height: 12),
                   CustomTextButton(
                     onTap: () {
-                      if (controller.appState.value.isCanVibrate) {
+                      if (_generalController.appState.value.isCanVibrate) {
                         Vibrate.feedback(FeedbackType.light);
                       }
                       _requestConfirm(theme: theme, context: context);
                     },
-                    text: textButton ?? S.of(context).confirm,
+                    text: textButtonDone ?? S.of(context).confirm,
                     backgroundColor: theme.colorScheme.secondary,
                     textStyle: theme.textTheme.button!,
                   ),
@@ -104,7 +111,7 @@ class ConfirmationPage extends StatelessWidget {
                       }
                     },
                     child: CustomTextButton(
-                      text: S.of(context).cancel,
+                      text: textButtonCancel ?? S.of(context).cancel,
                       backgroundColor: theme.buttonTheme.colorScheme!.primary,
                       textStyle: theme.textTheme.button!.copyWith(
                           color: theme.buttonTheme.colorScheme!.secondary),
@@ -175,10 +182,10 @@ class ConfirmationPage extends StatelessWidget {
       dynamic data = await ErrorHandler.singleRequest(
         context: context,
         request: () {
-          return controller.transferClientToTrainer(
-            userUid: controller.appState.value.auth!.users![1].uid,
-            customerUid: controller.appState.value.currentCustomer!.uid,
-            trainerUid: controller.appState.value.currentTrainer!.uid,
+          return _generalController.transferClientToTrainer(
+            userUid: _generalController.appState.value.auth!.users![1].uid,
+            customerUid: _generalController.appState.value.currentCustomer!.uid,
+            trainerUid: _generalController.appState.value.currentTrainer!.uid,
           );
         },
         handler: (_) {
@@ -190,12 +197,12 @@ class ConfirmationPage extends StatelessWidget {
       );
 
       if (data == 200) {
-        controller.appState.update((model) {
+        _generalController.appState.update((model) {
           model?.currentCustomer = null;
           model?.currentTrainer = null;
         });
 
-        await controller.getTrainers();
+        await _generalController.getTrainers();
 
         Get.back();
         Get.back();
@@ -203,12 +210,12 @@ class ConfirmationPage extends StatelessWidget {
 
         ErrorHandler.singleRequest(
           context: context,
-          request: controller.getCustomers,
+          request: _generalController.getCustomers,
           skipCheck: true,
         );
         await ErrorHandler.singleRequest(
           context: context,
-          request: controller.getCoordinaorWorkSpace,
+          request: _generalController.getCoordinaorWorkSpace,
           skipCheck: true,
           handler: (_) {
             CustomSnackbar.getSnackbar(
@@ -219,7 +226,49 @@ class ConfirmationPage extends StatelessWidget {
         );
       }
 
-      /// Если относится к стадии [Назначено]
+      /// Если относится к стадии [Занятие]
+    } else if (stagePipelineType == StagePipelineType.training) {
+      String appointmentType = Enums.getTrainingTypeString(
+        trainingType: _scheduleController.scheduleState.value.type,
+      );
+
+      /// Преобразование даты и времени в единый timestamp
+      String dateTimeAppointment = DateTime(
+        _scheduleController.scheduleState.value.date!.year,
+        _scheduleController.scheduleState.value.date!.month,
+        _scheduleController.scheduleState.value.date!.day,
+        _scheduleController.scheduleState.value.time!.hour,
+        _scheduleController.scheduleState.value.time!.minute,
+      ).millisecondsSinceEpoch.toString().substring(0, 10);
+
+      ErrorHandler.singleRequest(
+        context: context,
+        request: () async {
+          return _scheduleController.addAppointment(
+            licenseKey:
+                _generalController.appState.value.auth!.data!.licenseKey,
+            userUid: _generalController.appState.value.auth!.users![0].uid,
+            customers: [_scheduleController.scheduleState.value.client!],
+            arrivalStatus:
+                _scheduleController.scheduleState.value.arrivalStatuses,
+            appointmentType: appointmentType,
+            dateTimeAppointment: dateTimeAppointment,
+            serviceUid: _scheduleController.scheduleState.value.service!.uid,
+            capacity: 1,
+          );
+        },
+        handler: (data) async {
+          if (data != 200) {
+            CustomSnackbar.getSnackbar(
+              title: S.of(context).server_error,
+              message: S.of(context).confirmation_failed,
+            );
+          } else {
+          await Get.delete<ScheduleController>();
+          Get.toNamed(Routes.schedule);
+          }
+        },
+      );
     } else {
       _transferClientByTrainerPipeline(
         theme: theme,
@@ -238,9 +287,9 @@ class ConfirmationPage extends StatelessWidget {
     dynamic data = await ErrorHandler.singleRequest(
       context: context,
       request: () {
-        return controller.transferClientByTrainerPipeline(
-          userUid: controller.appState.value.auth!.users![0].uid,
-          customerUid: controller.appState.value.currentCustomer!.uid,
+        return _generalController.transferClientByTrainerPipeline(
+          userUid: _generalController.appState.value.auth!.users![0].uid,
+          customerUid: _generalController.appState.value.currentCustomer!.uid,
           trainerPipelineStageUid: Enums.getStagePipelineUid(
             stagePipelineType: stagePipelineType,
           ),
@@ -267,7 +316,7 @@ class ConfirmationPage extends StatelessWidget {
     );
 
     if (data == 200) {
-      controller.appState.update((model) {
+      _generalController.appState.update((model) {
         model?.currentCustomer = null;
       });
 
@@ -277,7 +326,7 @@ class ConfirmationPage extends StatelessWidget {
 
       await ErrorHandler.singleRequest(
         context: context,
-        request: controller.getCustomers,
+        request: _generalController.getCustomers,
         skipCheck: true,
         handler: (_) {
           CustomSnackbar.getSnackbar(

@@ -669,6 +669,36 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get fill_all_fields {
+    return Intl.message(
+      '',
+      name: 'fill_all_fields',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get to_practice {
+    return Intl.message(
+      '',
+      name: 'to_practice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get back {
+    return Intl.message(
+      '',
+      name: 'back',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

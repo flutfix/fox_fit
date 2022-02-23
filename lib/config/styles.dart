@@ -24,6 +24,8 @@ abstract class Styles {
   static const Color darkGrey = Color(0xFFD7D7D7);
   static const Color darkOrange = Color(0xFFE55000);
   static const Color green = Colors.green;
+  static const Color yellow = Colors.yellow;
+  static const Color red = Colors.red;
 
   /// Стандартный шрифт
   static const String mainFontFamily = 'Open Sans';
