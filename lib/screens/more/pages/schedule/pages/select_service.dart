@@ -31,7 +31,7 @@ class _SelectServicePageState extends State<SelectServicePage> {
       _isLoading = true;
     });
 
-    await ErrorHandler.singleRequest(
+    await ErrorHandler.request(
       context: context,
       request: () {
         String serviceType = Enums.getTrainingTypeString(

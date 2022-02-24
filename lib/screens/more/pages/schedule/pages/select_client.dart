@@ -62,15 +62,16 @@ class _SelectClientPageState extends State<SelectClientPage> {
       _isLoading = true;
     });
 
-    await ErrorHandler.singleRequest(
+    await ErrorHandler.request(
       context: context,
+      
       request: () {
         return _scheduleController.getCustomerByPhone(
           licenseKey: _generalController.appState.value.auth!.data!.licenseKey,
           phone: search,
         );
       },
-      handler: (data) {
+      handler: (data) async {
         setState(() {
           /// Если клиент не найден
           if (data == 404) {
@@ -81,6 +82,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
             _textErrorResultSearch = null;
           }
         });
+        return false;
       },
     );
 

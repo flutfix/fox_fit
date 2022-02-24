@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
@@ -8,7 +6,6 @@ import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/month.dart';
 import 'package:fox_fit/screens/more/pages/schedule/widgets/lessons.dart';
 import 'package:fox_fit/screens/more/pages/schedule/widgets/time_feed.dart';
-import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/widgets/days.dart';
 import 'package:fox_fit/widgets/months.dart';
 import 'package:fox_fit/utils/error_handler.dart';
@@ -40,7 +37,7 @@ class _SchedulePageState extends State<SchedulePage> {
     super.initState();
     _isLoading = true;
     _generalController = Get.find<GeneralController>();
-    _scheduleController = Get.put(ScheduleController());
+    _scheduleController = Get.find<ScheduleController>();
 
     _scheduleController.scheduleState.update((model) {
       model?.uid = _generalController.appState.value.auth!.users![0].uid;
@@ -63,7 +60,7 @@ class _SchedulePageState extends State<SchedulePage> {
       _isLoading = true;
     });
 
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
       context: context,
       request: () {
         return _scheduleController.getAppointments(

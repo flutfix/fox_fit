@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
+import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/models/app_state.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/coordinator_workspace.dart';
@@ -54,7 +55,6 @@ class GeneralController extends GetxController {
       final String isNewNotifications = data[0] ?? 'False';
       final List<ItemBottomBarModel> bottomBarItems = data[1];
       final List<CustomerModel> customers = data[2];
-
       appState.update((model) {
         if (isNewNotifications == 'True') {
           model?.isNewNotifications = true;
@@ -65,6 +65,7 @@ class GeneralController extends GetxController {
 
       _sortBottomBarItems(bottomBarItems: bottomBarItems);
       _sortCustomers(bottomBarItems: bottomBarItems, allCutsomers: customers);
+      _setStagesPipelinesID();
       return 200;
     }
   }
@@ -247,6 +248,11 @@ class GeneralController extends GetxController {
       if (element.initialStage) {
         sortedList[0] = element;
       }
+
+      /// Установка uid спящих клиентов
+      if (element.name == 'Спящие клиенты') {
+        Client.sleeping = element.uid;
+      }
     }
 
     appState.update((model) {
@@ -310,5 +316,18 @@ class GeneralController extends GetxController {
         model?.sortedAvailableTrainers = null;
       });
     }
+  }
+
+  void _setStagesPipelinesID() {
+    Client.fresh = _getStageUid(shortName: 'Новые');
+    Client.assigned = _getStageUid(shortName: 'Назначено');
+    Client.conducted = _getStageUid(shortName: 'Проведено');
+    Client.permanent = _getStageUid(shortName: 'Постоянные');
+  }
+
+  String _getStageUid({required String shortName}) {
+    var index = appState.value.bottomBarItems
+        .indexWhere((element) => element.shortName == shortName);
+    return appState.value.bottomBarItems[index].uid;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/generated/l10n.dart';
@@ -48,7 +50,7 @@ class _CustomersPageState extends State<CustomersPage> {
       _isLoading = true;
     });
 
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
       context: context,
       request: _controller.getRegularCustomers,
     );
@@ -238,20 +240,26 @@ class _CustomersPageState extends State<CustomersPage> {
     }
     await Future.delayed(const Duration(milliseconds: 300));
     if (widget.pageType == CustomersPageType.coordinator) {
-      await ErrorHandler.loadingData(
+      await ErrorHandler.request(
         context: context,
         request: _controller.getCoordinaorWorkSpace,
         repeat: false,
       );
+    } else if (widget.pageType == CustomersPageType.sleep) {
+      await ErrorHandler.request(
+        context: context,
+        request: _controller.getInactiveCustomers,
+        repeat: false,
+      );
     } else {
       if (_controller.appState.value.currentIndex != stableStageIndex) {
-        await ErrorHandler.loadingData(
+        await ErrorHandler.request(
           context: context,
           request: _controller.getCustomers,
           repeat: false,
         );
       } else {
-        await ErrorHandler.loadingData(
+        await ErrorHandler.request(
           context: context,
           request: _controller.getRegularCustomers,
           repeat: false,

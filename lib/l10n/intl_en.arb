@@ -20,7 +20,6 @@
     "confirmation_failed": "",
     "error": "",
     "leave_comment": "",
-    "coordinaor_workspace": "",
     "transmit": "",
     "to_coach": "",
     "whatsapp_exeption": "",
@@ -63,5 +62,8 @@
     "fill_previous_fields": "",
     "fill_all_fields": "",
     "to_practice": "",
-    "back": ""
+    "back": "",
+    "inactiveCustomers": "",
+    "license_error_title": "",
+    "license_error_body": ""
 }

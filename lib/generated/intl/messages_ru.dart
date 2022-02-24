@@ -40,8 +40,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirm": MessageLookupByLibrary.simpleMessage("Подтвердить"),
         "confirmation_failed":
             MessageLookupByLibrary.simpleMessage("Подтверждение не выполнено"),
-        "coordinaor_workspace":
-            MessageLookupByLibrary.simpleMessage("Рабочий стол координатора"),
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
@@ -70,12 +68,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Заполните все поля"),
         "fill_previous_fields":
             MessageLookupByLibrary.simpleMessage("Заполните предыдущие поля"),
+        "inactiveCustomers":
+            MessageLookupByLibrary.simpleMessage("\"Спящие\" клиенты"),
         "kickoff_training":
             MessageLookupByLibrary.simpleMessage("Стартовая тренировка"),
         "least_three_characters":
             MessageLookupByLibrary.simpleMessage("Не менее трёх символов"),
         "leave_comment":
             MessageLookupByLibrary.simpleMessage("Оставьте комментарий"),
+        "license_error_body":
+            MessageLookupByLibrary.simpleMessage("У Вас закончилась лицензия"),
+        "license_error_title":
+            MessageLookupByLibrary.simpleMessage("Невозможно загрузить данные"),
         "log_in": MessageLookupByLibrary.simpleMessage("Войти"),
         "log_out": MessageLookupByLibrary.simpleMessage("Выйти из профиля"),
         "login_exeption": MessageLookupByLibrary.simpleMessage("Ошибка входа"),

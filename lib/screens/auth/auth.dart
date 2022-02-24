@@ -1,3 +1,8 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
@@ -5,12 +10,15 @@ import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/generated/l10n.dart';
+import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
 import 'package:fox_fit/utils/error_handler.dart';
+import 'package:fox_fit/utils/prefs.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -169,8 +177,9 @@ class _AuthPageState extends State<AuthPage> {
 
   Future<dynamic> _validateFields(ThemeData theme) async {
     if (phoneController.text.isNotEmpty && passController.text.isNotEmpty) {
-      dynamic authData = await ErrorHandler.singleRequest(
+      dynamic data = await ErrorHandler.request(
         context: context,
+        repeat: false,
         request: () {
           return Requests.auth(
             phone: maskFormatter.getUnmaskedText() == ''
@@ -179,22 +188,46 @@ class _AuthPageState extends State<AuthPage> {
             pass: passController.text,
           );
         },
-        handler: (_) {
+        handler: (data) async {
           CustomSnackbar.getSnackbar(
             title: S.of(context).server_error,
             message: S.of(context).authorization_failed,
           );
+
+          return false;
         },
       );
-
-      if (!(authData is int || authData == null)) {
+      if (data is AuthDataModel) {
         /// Вибрация при успешной авторизации
         if (_canVibrate) {
           Vibrate.feedback(FeedbackType.light);
         }
+
+        /// Для идентификации API зазпросов
+        final String pathToBase = '${data.data!.pathToBase}hs/api_v1/';
+        final String login = _getStringFromBase(text: data.data!.hashL);
+        final String pass = _getStringFromBase(text: data.data!.hashP);
+        _setPrefs(
+          pathToBase: pathToBase,
+          baseAuth: _getBase64String(text: '$login:$pass'),
+        );
+        Requests.url = pathToBase;
+        Requests.options = BaseOptions(
+          baseUrl: pathToBase,
+          contentType: Headers.jsonContentType,
+          headers: {
+            HttpHeaders.authorizationHeader:
+                'Basic ${_getBase64String(text: '$login:$pass')}',
+          },
+          connectTimeout: 10000,
+          receiveTimeout: 10000,
+        );
+
+        ///--
+
         Get.offAllNamed(
           Routes.general,
-          arguments: authData,
+          arguments: data,
         );
       }
     } else {
@@ -222,13 +255,32 @@ class _AuthPageState extends State<AuthPage> {
 
   Future<dynamic> getPhoneFromPrefs() async {
     var phone =
-        await Requests.getPrefs(key: Cache.phone, prefsType: PrefsType.string);
+        await Prefs.getPrefs(key: Cache.phone, prefsType: PrefsType.string);
     if (phone != null && phone != '') {
       setState(() {
         oldPhone = phone;
         phoneController.text = maskFormatter.maskText(phone);
       });
     }
+  }
+
+  static Future<void> _setPrefs({
+    required String pathToBase,
+    required String baseAuth,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(Cache.pathToBase, pathToBase);
+    prefs.setString(Cache.baseAuth, baseAuth);
+  }
+
+  static String _getBase64String({required String text}) {
+    final bytes = utf8.encode(text);
+    return base64Encode(bytes);
+  }
+
+  static String _getStringFromBase({required String text}) {
+    final String first = utf8.decode(base64Decode(text));
+    return utf8.decode(base64Decode(first));
   }
 
   @override

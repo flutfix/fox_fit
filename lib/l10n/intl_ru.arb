@@ -20,7 +20,6 @@
     "confirmation_failed": "Подтверждение не выполнено",
     "error": "Ошибка",
     "leave_comment": "Оставьте комментарий",
-    "coordinaor_workspace": "Рабочий стол координатора",
     "transmit": "Передать",
     "to_coach": "Тренеру",
     "whatsapp_exeption": "Не удалось открыть WhatsApp",
@@ -63,5 +62,8 @@
     "fill_previous_fields": "Заполните предыдущие поля",
     "fill_all_fields": "Заполните все поля",
     "to_practice": "На тренировку",
-    "back": "Назад"
+    "back": "Назад",
+    "inactiveCustomers": "\"Спящие\" клиенты",
+    "license_error_title": "Невозможно загрузить данные",
+    "license_error_body": "У Вас закончилась лицензия"
 }

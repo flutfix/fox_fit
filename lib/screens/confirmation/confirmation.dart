@@ -179,7 +179,8 @@ class ConfirmationPage extends StatelessWidget {
 
       /// Если было открыто от роли [Координатор]
     } else if (stagePipelineType == StagePipelineType.coordinator) {
-      dynamic data = await ErrorHandler.singleRequest(
+      dynamic data = await ErrorHandler.request(
+        repeat: false,
         context: context,
         request: () {
           return _generalController.transferClientToTrainer(
@@ -188,7 +189,7 @@ class ConfirmationPage extends StatelessWidget {
             trainerUid: _generalController.appState.value.currentTrainer!.uid,
           );
         },
-        handler: (_) {
+        handler: (_) async {
           CustomSnackbar.getSnackbar(
             title: S.of(context).server_error,
             message: S.of(context).confirmation_failed,
@@ -208,16 +209,18 @@ class ConfirmationPage extends StatelessWidget {
         Get.back();
         Get.back();
 
-        ErrorHandler.singleRequest(
+        ErrorHandler.request(
           context: context,
           request: _generalController.getCustomers,
+          repeat: false,
           skipCheck: true,
         );
-        await ErrorHandler.singleRequest(
+        await ErrorHandler.request(
           context: context,
           request: _generalController.getCoordinaorWorkSpace,
+          repeat: false,
           skipCheck: true,
-          handler: (_) {
+          handler: (_) async {
             CustomSnackbar.getSnackbar(
               title: S.of(context).no_internet_access,
               message: S.of(context).failed_update_list,
@@ -241,8 +244,9 @@ class ConfirmationPage extends StatelessWidget {
         _scheduleController.scheduleState.value.time!.minute,
       ).millisecondsSinceEpoch.toString().substring(0, 10);
 
-      ErrorHandler.singleRequest(
+      ErrorHandler.request(
         context: context,
+        repeat: false,
         request: () async {
           return _scheduleController.addAppointment(
             licenseKey:
@@ -284,8 +288,9 @@ class ConfirmationPage extends StatelessWidget {
     bool isTransferringRecord = false,
     String? transferDate,
   }) async {
-    dynamic data = await ErrorHandler.singleRequest(
+    dynamic data = await ErrorHandler.request(
       context: context,
+      repeat: false,
       request: () {
         return _generalController.transferClientByTrainerPipeline(
           userUid: _generalController.appState.value.auth!.users![0].uid,
@@ -297,7 +302,7 @@ class ConfirmationPage extends StatelessWidget {
           commentText: textController.text,
         );
       },
-      handler: (dynamic data) {
+      handler: (dynamic data) async {
         if (isTransferringRecord) {
           if (data == 400) {
             CustomSnackbar.getSnackbar(
@@ -324,11 +329,12 @@ class ConfirmationPage extends StatelessWidget {
       Get.back();
       Get.back();
 
-      await ErrorHandler.singleRequest(
+      await ErrorHandler.request(
         context: context,
         request: _generalController.getCustomers,
+        repeat: false,
         skipCheck: true,
-        handler: (_) {
+        handler: (_) async {
           CustomSnackbar.getSnackbar(
             title: S.of(context).no_internet_access,
             message: S.of(context).failed_update_list,

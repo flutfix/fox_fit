@@ -6,7 +6,7 @@ class Enums {
   static String getIconStage({required StagePipelineType stageType}) {
     switch (stageType) {
       case StagePipelineType.assigned:
-        return Images.assigned;
+        return Images.checkMark;
 
       case StagePipelineType.transferringRecord:
         return Images.refresh;
@@ -55,28 +55,16 @@ class Enums {
   }
 
   static getClientType({required String clientUid}) {
-    switch (clientUid) {
-      case Client.fresh:
-        return ClientType.fresh;
-
-      case Client.assigned:
-        return ClientType.assigned;
-
-      case Client.conducted:
-        return ClientType.conducted;
-
-      case Client.permanent:
-        return ClientType.permanent;
-
-      // case Client.sleeping:
-      //   return ClientType.sleeping;
-
-      case Client.coordinator:
-        return ClientType.coordinator;
-
-      default:
-        return ClientType.fresh;
+    if (clientUid == Client.fresh) {
+      return ClientType.fresh;
+    } else if (clientUid == Client.assigned) {
+      return ClientType.assigned;
+    } else if (clientUid == Client.conducted) {
+      return ClientType.conducted;
+    } else if (clientUid == Client.permanent) {
+      return ClientType.permanent;
     }
+    return ClientType.fresh;
   }
 
   static getStagePipelineType({required String stageUid}) {

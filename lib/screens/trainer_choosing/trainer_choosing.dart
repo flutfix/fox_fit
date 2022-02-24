@@ -35,7 +35,7 @@ class _TrainerChoosingPageState extends State<TrainerChoosingPage> {
       loading = true;
     });
 
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
       context: context,
       request: controller.getTrainers,
     );

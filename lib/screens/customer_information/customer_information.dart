@@ -66,15 +66,16 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     });
 
     if (_isFromNotification) {
-      _phone = Get.arguments;
-      await ErrorHandler.loadingData(
+      _phone = '';
+      _phone = await Get.arguments;
+      await ErrorHandler.request(
         context: context,
         request: () {
           return _controller.getCustomerByPhone(phone: _phone.toString());
         },
       );
     }
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
       context: context,
       request: () {
         return _controller.getCustomerInfo(
@@ -107,11 +108,12 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
             Get.back();
 
-            await ErrorHandler.singleRequest(
+            await ErrorHandler.request(
               context: context,
               request: _controller.getCustomers,
+              repeat: false,
               skipCheck: true,
-              handler: (_) {
+              handler: (_) async {
                 CustomSnackbar.getSnackbar(
                   title: S.of(context).no_internet_access,
                   message: S.of(context).failed_update_list,
@@ -191,8 +193,14 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                                   number = '${number[0]}${number[1]}';
                                   number = number.split('+7');
                                   number = '8${number[1]}';
-                                  log(number);
-                                  await launch("tel://$number");
+
+                                  /// Try to make a phone call
+                                  final String launchLink = 'tel://$number';
+                                  if (await canLaunch(launchLink)) {
+                                    await launch(launchLink);
+                                  } else {
+                                    throw 'Could not launch $launchLink';
+                                  }
                                 } else {
                                   await launch(
                                       "tel://${_controller.appState.value.currentCustomer!.phone}");
@@ -456,9 +464,21 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     );
   }
 
-  void _onHorizontalSwipe(SwipeDirection direction) {
+  void _onHorizontalSwipe(SwipeDirection direction) async {
     if (direction == SwipeDirection.right) {
       Get.back();
+      await ErrorHandler.request(
+        context: context,
+        request: _controller.getCustomers,
+        repeat: false,
+        skipCheck: true,
+        handler: (_) async {
+          CustomSnackbar.getSnackbar(
+            title: S.of(context).no_internet_access,
+            message: S.of(context).failed_update_list,
+          );
+        },
+      );
     }
   }
 

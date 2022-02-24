@@ -21,6 +21,7 @@ class Images {
 
   /// CustomerInformation Screen
   static const String more = 'lib/assets/icons/more.svg';
+  static const String checkMark = 'lib/assets/icons/check_mark.svg';
   static const String phoneFill = 'lib/assets/icons/phone_fill.svg';
   static const String refresh = 'lib/assets/icons/refresh.svg';
   static const String phoneMinus = 'lib/assets/icons/phone_minus.svg';

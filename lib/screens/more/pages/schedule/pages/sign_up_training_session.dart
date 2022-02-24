@@ -46,7 +46,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
       _isLoading = true;
     });
 
-    await ErrorHandler.loadingData(
+    await ErrorHandler.request(
       context: context,
       request: _scheduleController.getAppointmentsDurations,
     );
