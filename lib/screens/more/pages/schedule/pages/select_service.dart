@@ -35,13 +35,13 @@ class _SelectServicePageState extends State<SelectServicePage> {
       context: context,
       request: () {
         String serviceType = Enums.getTrainingTypeString(
-          trainingType: _controller.scheduleState.value.type,
+          trainingType: _controller.state.value.type,
         );
 
         return _controller.getCustomerFitnessServices(
-          userUid: _controller.scheduleState.value.uid!,
-          customerUid: _controller.scheduleState.value.client!.uid,
-          duration: _controller.scheduleState.value.duration.toString(),
+          userUid: _controller.state.value.uid!,
+          customerUid: _controller.state.value.clients![0].model.uid,
+          duration: _controller.state.value.duration.toString(),
           serviceType: serviceType,
         );
       },
@@ -62,21 +62,18 @@ class _SelectServicePageState extends State<SelectServicePage> {
         isBackArrow: true,
         isNotification: false,
         onBack: () {
-          _controller.scheduleState.update((model) {
-            model?.service = null;
-          });
           Get.back();
         },
       ),
       body: (!_isLoading)
-          ? _controller.scheduleState.value.services.isNotEmpty
+          ? _controller.state.value.services.isNotEmpty
               ? SingleChildScrollView(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                   physics: const BouncingScrollPhysics(),
                   child: ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: _controller.scheduleState.value.services.length,
+                    itemCount: _controller.state.value.services.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 5),
                     itemBuilder: (context, index) {
                       return DefaultContainer(
@@ -84,9 +81,9 @@ class _SelectServicePageState extends State<SelectServicePage> {
                             const EdgeInsets.fromLTRB(28, 17.45, 19, 22.55),
                         child: GestureDetector(
                           onTap: () {
-                            _controller.scheduleState.update((model) {
+                            _controller.state.update((model) {
                               model?.service = _controller
-                                  .scheduleState.value.services[index];
+                                  .state.value.services[index];
                             });
                             Get.back();
                           },
@@ -96,7 +93,7 @@ class _SelectServicePageState extends State<SelectServicePage> {
                             children: [
                               Text(
                                 _controller
-                                    .scheduleState.value.services[index].name,
+                                    .state.value.services[index].name,
                                 style: theme.textTheme.subtitle2!
                                     .copyWith(fontSize: 14),
                               ),

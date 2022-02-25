@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
@@ -225,7 +223,7 @@ class GeneralController extends GetxController {
   /// Получение клиента по номеру телефона
   Future<dynamic> getCustomerByPhone({required String phone}) async {
     var data = await Requests.getCustomerByPhone(
-      licenseKey: appState.value.auth!.data!.licenseKey,
+      userUid: appState.value.auth!.users![0].uid,
       phone: phone,
     );
     if (data is int || data == null) {

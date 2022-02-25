@@ -1,23 +1,28 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
-import 'package:fox_fit/models/appointment.dart';
 import 'package:fox_fit/models/customer.dart';
+import 'package:fox_fit/models/customer_model_state.dart';
+import 'package:fox_fit/models/service.dart';
 import 'package:fox_fit/screens/customers/widgets/customer_coontainer.dart';
 import 'package:fox_fit/screens/trainer_choosing/widgets/search.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/default_container.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class SelectClientPage extends StatefulWidget {
-  const SelectClientPage({Key? key}) : super(key: key);
+  const SelectClientPage({
+    Key? key,
+    required this.trainingRecordType,
+  }) : super(key: key);
+
+  final TrainingRecordType trainingRecordType;
 
   @override
   _SelectClientPageState createState() => _SelectClientPageState();
@@ -64,17 +69,16 @@ class _SelectClientPageState extends State<SelectClientPage> {
 
     await ErrorHandler.request(
       context: context,
-      
       request: () {
         return _scheduleController.getCustomerByPhone(
-          licenseKey: _generalController.appState.value.auth!.data!.licenseKey,
+          userUid: _generalController.appState.value.auth!.users![0].uid,
           phone: search,
         );
       },
       handler: (data) async {
         setState(() {
           /// Если клиент не найден
-          if (data == 404) {
+          if (data == 404 || data == 501) {
             _textErrorResultSearch = S.of(context).client_not_found;
           } else if (data is CustomerModel) {
             _client = data;
@@ -115,7 +119,6 @@ class _SelectClientPageState extends State<SelectClientPage> {
               maskFormatter: [_maskFormatter],
               phoneFocus: _phoneFocus,
               onSearch: (search) {
-                log('message');
                 if (_maskFormatter.getUnmaskedText().isEmpty) {
                   _phoneController.value = TextEditingValue(
                     text: _phonePrefix,
@@ -131,20 +134,17 @@ class _SelectClientPageState extends State<SelectClientPage> {
                 if (search != '') {
                   /// Форматирование номера для запроса
                   List<String> searchSplit = search.split(' ');
-                  searchSplit = [searchSplit[0], ...searchSplit[1].split('-')];
+                  searchSplit = [
+                    searchSplit[0][1],
+                    ...searchSplit[1].split('-')
+                  ];
                   search = '';
                   for (var i = 0; i < searchSplit.length; i++) {
-                    if (i == 1) {
-                      search += ' (${searchSplit[i]})';
-                    } else if (i == 2) {
-                      search += ' ${searchSplit[i]}';
-                    } else {
-                      search += searchSplit[i];
-                    }
+                    search += searchSplit[i];
                   }
 
                   /// Обработка полностью ли введён номер
-                  if (search.length != 16) {
+                  if (search.length != 11) {
                     setState(() {
                       _textErrorResultSearch = S.of(context).enter_full_number;
                       _client = null;
@@ -162,70 +162,155 @@ class _SelectClientPageState extends State<SelectClientPage> {
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: _client != null
+
+                    /// Для найденного клиента
                     ? CustomerContainer(
                         customer: _client!,
                         clientType: ClientType.assigned,
                         onTap: () {
-                          if (_client! !=
-                              _scheduleController.scheduleState.value.client) {
-                            _scheduleController.scheduleState.update((model) {
-                              model?.client = null;
-                              model?.duration = null;
-                              model?.type = TrainingType.personal;
-                              model?.service = null;
-                              model?.date = null;
-                              model?.time = null;
+                          List<CustomerModelState>? clientList =
+                              _scheduleController.state.value.clients;
+
+                          bool check = checkPresenceInList(
+                            clientList: clientList,
+                            currentCustomer: _client!,
+                          );
+
+                          if (check) {
+                            if (_client! !=
+                                _scheduleController
+                                    .state.value.clients?[0].model) {
+                              _scheduleController.clear();
+                            }
+
+                            _scheduleController.state.update((model) {
+                              model?.clients = [
+                                CustomerModelState(
+                                  model: _client!,
+                                  arrivalStatus: false,
+                                ),
+                              ];
+                              model?.duration = _client!.duration;
+                              model?.split = _client!.split ?? false;
+                              if (_client!.serviceUid != null &&
+                                  _client!.serviceName != null) {
+                                model?.service = Service(
+                                  uid: _client!.serviceUid!,
+                                  name: _client!.serviceName!,
+                                );
+                              }
                             });
+
+                            Get.back();
+                          } else {
+                            CustomSnackbar.getSnackbar(
+                              title: S.of(context).error,
+                              message: S.of(context).this_client_supplied,
+                            );
                           }
-
-                          _scheduleController.scheduleState.update((model) {
-                            model?.client = _client!;
-                          });
-
-                          // _checkExists(_client!);
-
-                          Get.back();
                         },
                       )
                     : _search.isEmpty
+
+                        /// Список постоянных клиентов
                         ? ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: _generalController.appState.value
                                 .sortedCustomers[Client.permanent]!.length,
                             itemBuilder: (context, index) {
+                              List<String> phoneList = _generalController
+                                  .appState
+                                  .value
+                                  .sortedCustomers[Client.permanent]![index]
+                                  .phone
+                                  .split(' ');
+
+                              phoneList = [
+                                phoneList[0][1],
+                                phoneList[1].substring(1, 4),
+                                phoneList[2]
+                              ];
+                              String phone = '';
+                              for (var i = 0; i < phoneList.length; i++) {
+                                phone += phoneList[i];
+                              }
+
                               CustomerModel currentCustomer = _generalController
                                   .appState
                                   .value
                                   .sortedCustomers[Client.permanent]![index];
-                              return CustomerContainer(
-                                customer: currentCustomer,
-                                clientType: ClientType.permanent,
-                                onTap: () {
-                                  if (currentCustomer !=
-                                      _scheduleController
-                                          .scheduleState.value.client) {
-                                    _scheduleController.scheduleState
-                                        .update((model) {
-                                      model?.client = null;
-                                      model?.duration = null;
-                                      model?.type = TrainingType.personal;
-                                      model?.service = null;
-                                      model?.date = null;
-                                      model?.time = null;
-                                    });
-                                  }
+                              List<CustomerModelState>? clientList =
+                                  _scheduleController.state.value.clients;
 
-                                  _scheduleController.scheduleState
-                                      .update((model) {
-                                    model?.client = currentCustomer;
-                                  });
-
-                                  // _checkExists(currentCustomer);
-
-                                  Get.back();
-                                },
+                              bool check = checkPresenceInList(
+                                clientList: clientList,
+                                currentCustomer: currentCustomer,
                               );
+
+                              if (check) {
+                                return CustomerContainer(
+                                  customer: currentCustomer,
+                                  clientType: ClientType.permanent,
+                                  onTap: () async {
+                                    if (widget.trainingRecordType !=
+                                        TrainingRecordType.group) {
+                                      await getCustomerByPhone(search: phone);
+                                      if (currentCustomer !=
+                                          _scheduleController
+                                              .state.value.clients?[0].model) {
+                                        _scheduleController.clear();
+                                      }
+
+                                      _scheduleController.state.update((model) {
+                                        model?.clients = [
+                                          CustomerModelState(
+                                            model: currentCustomer,
+                                            arrivalStatus: false,
+                                          ),
+                                        ];
+                                        model?.duration = _client!.duration;
+                                        model?.split = _client!.split ?? false;
+                                        if (_client!.serviceUid != null &&
+                                            _client!.serviceName != null) {
+                                          model?.service = Service(
+                                            uid: _client!.serviceUid!,
+                                            name: _client!.serviceName!,
+                                          );
+                                        }
+                                      });
+                                    } else {
+                                      List<CustomerModelState>? clientList =
+                                          _scheduleController
+                                              .state.value.clients;
+
+                                      if (clientList != null) {
+                                        clientList.add(
+                                          CustomerModelState(
+                                            model: currentCustomer,
+                                            arrivalStatus: false,
+                                          ),
+                                        );
+                                      } else {
+                                        clientList = [
+                                          CustomerModelState(
+                                            model: currentCustomer,
+                                            arrivalStatus: false,
+                                          ),
+                                        ];
+                                      }
+
+                                      _scheduleController.state.update((model) {
+                                        model?.clients = clientList;
+                                      });
+                                    }
+
+                                    Get.back();
+                                  },
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
                             },
                           )
                         : Padding(
@@ -261,34 +346,25 @@ class _SelectClientPageState extends State<SelectClientPage> {
     );
   }
 
-  /// Проверяет есть ли выбранный клиент в списке
-  /// всех занятий для автозаполнения форм
-  // void _checkExists(CustomerModel currentCustomer) {
-  // log('${_scheduleController.scheduleState.value.appointments.length}');
-  // if (_scheduleController.scheduleState.value.appointments.every(
-  //   (element) {
-  //     log('1 ${element.customers![0].uid == currentCustomer.uid}');
-  //     return element.customers![0].uid == currentCustomer.uid;
-  //   },
-  // )) {
-  // AppointmentModel appointment =
-  //     _scheduleController.scheduleState.value.appointments.firstWhere(
-  //   (element) {
-  //     log('2 ${element.customers![0].uid == currentCustomer.uid}');
-  //     return element.customers![0].uid == currentCustomer.uid;
-  //   },
-  // );
-  // _scheduleController.scheduleState.update((model) {
-  //   model?.duration = int.parse(
-  //     appointment.service!.duration,
-  //   );
-  //   model?.type = Enums.getTrainingType(
-  //     trainingType: appointment.appointmentType,
-  //   );
-  //   model?.service = appointment.service;
-  // });
-  // }
-  // }
+  /// Служит для проверки, добавлен ли уже клиент в список
+  bool checkPresenceInList({
+    required List<CustomerModelState>? clientList,
+    required CustomerModel currentCustomer,
+  }) {
+    bool check = true;
+
+    if (clientList != null) {
+      for (var client in clientList) {
+        if (client.model.uid == currentCustomer.uid) {
+          check = false;
+          break;
+        } else {
+          check = true;
+        }
+      }
+    }
+    return check;
+  }
 
   /// Подставление [+7] в начало строки, если поле в фокусе
   void _onFocusChange() {
@@ -296,7 +372,6 @@ class _SelectClientPageState extends State<SelectClientPage> {
     if (_phoneFocus.hasFocus) {
       if (_phoneController.text.isEmpty) {
         _phoneController.text = _phonePrefix;
-        log('${_phoneController.text}');
       }
     } else {
       if (_phoneController.text == _phonePrefix) {

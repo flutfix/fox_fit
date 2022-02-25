@@ -1,12 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/confirmation/confirmation.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
 import 'package:fox_fit/utils/date_time_picker/date_time_picker.dart';
 import 'package:fox_fit/utils/date_time_picker/widgets/date_time_picker_theme.dart';
 import 'package:fox_fit/utils/date_time_picker/widgets/i18n_model.dart';
@@ -21,7 +21,12 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class SignUpTrainingSessionPage extends StatefulWidget {
-  const SignUpTrainingSessionPage({Key? key}) : super(key: key);
+  const SignUpTrainingSessionPage({
+    Key? key,
+    required this.trainingRecordType,
+  }) : super(key: key);
+
+  final TrainingRecordType trainingRecordType;
 
   @override
   _SignUpTrainingSessionPageState createState() =>
@@ -31,7 +36,6 @@ class SignUpTrainingSessionPage extends StatefulWidget {
 class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
   late bool _isLoading;
   late ScheduleController _scheduleController;
-  bool? _activeCheckbox = false;
 
   @override
   void initState() {
@@ -81,14 +85,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
           ),
         ),
         onBack: () {
-          _scheduleController.scheduleState.update((model) {
-            model?.client = null;
-            model?.duration = null;
-            model?.type = TrainingType.personal;
-            model?.service = null;
-            model?.date = null;
-            model?.time = null;
-          });
+          _scheduleController.clear();
           Get.back();
         },
       ),
@@ -101,53 +98,76 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        /// Выбор клиента
-                        Obx(
-                          () => _buildContainer(
-                            context: context,
-                            theme: theme,
-                            isCheckbox: true,
-                            text: _scheduleController
-                                    .scheduleState.value.client?.fullName ??
-                                S.of(context).select_client,
-                            onTap: () async {
-                              Get.toNamed(Routes.selectClient);
-                            },
+                        /// Выбор клиента для не групповой тренировки
+                        if (widget.trainingRecordType !=
+                            TrainingRecordType.group)
+                          Obx(
+                            () => _buildContainer(
+                              context: context,
+                              theme: theme,
+                              isCheckbox:
+                                  _scheduleController.state.value.clients !=
+                                          null
+                                      ? true
+                                      : false,
+                              value: _scheduleController
+                                      .state.value.clients?[0].arrivalStatus ??
+                                  false,
+                              text: _scheduleController
+                                      .state.value.clients?[0].model.fullName ??
+                                  S.of(context).select_client,
+                              onTap: () async {
+                                Get.to(
+                                  () => SelectClientPage(
+                                    trainingRecordType:
+                                        widget.trainingRecordType,
+                                  ),
+                                  transition: Transition.fadeIn,
+                                );
+                              },
+                              onChangedCheckBox: (activeCheckbox) {
+                                _scheduleController.state.update((model) {
+                                  model?.clients![0].arrivalStatus =
+                                      activeCheckbox ?? false;
+                                });
+                              },
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 17),
+                        if (widget.trainingRecordType !=
+                            TrainingRecordType.group)
+                          const SizedBox(height: 17),
 
                         /// Длительность
                         Obx(
                           () => _buildContainer(
                             context: context,
                             theme: theme,
-                            text: _scheduleController
-                                        .scheduleState.value.duration !=
+                            text: _scheduleController.state.value.duration !=
                                     null
-                                ? '${_scheduleController.scheduleState.value.duration} мин'
+                                ? '${_scheduleController.state.value.duration} мин'
                                 : S.of(context).duration,
                             onTap: () async {
-                              if (_scheduleController
-                                      .scheduleState.value.client !=
-                                  null) {
-                                Picker.custom(
-                                  context: context,
-                                  theme: theme,
-                                  values: _scheduleController.scheduleState
-                                      .value.appointmentsDurations,
-                                  onConfirm: (value) {
-                                    _scheduleController.scheduleState
-                                        .update((model) {
-                                      model?.duration = value;
-                                    });
-                                  },
-                                );
-                              } else {
-                                CustomSnackbar.getSnackbar(
-                                  title: S.of(context).error,
-                                  message: S.of(context).fill_previous_fields,
-                                );
+                              if (widget.trainingRecordType !=
+                                  TrainingRecordType.group) {
+                                if (_scheduleController.state.value.clients !=
+                                    null) {
+                                  Picker.custom(
+                                    context: context,
+                                    theme: theme,
+                                    values: _scheduleController
+                                        .state.value.appointmentsDurations,
+                                    onConfirm: (value) {
+                                      _scheduleController.state.update((model) {
+                                        model?.duration = value;
+                                      });
+                                    },
+                                  );
+                                } else {
+                                  CustomSnackbar.getSnackbar(
+                                    title: S.of(context).error,
+                                    message: S.of(context).fill_previous_fields,
+                                  );
+                                }
                               }
                             },
                           ),
@@ -155,90 +175,102 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                         const SizedBox(height: 17),
 
                         /// Вид тренировки
-                        SizedBox(
-                          height: 60,
-                          child: Row(
-                            children: [
-                              /// Персональная
-                              Obx(
-                                () => _buildContainer(
-                                  context: context,
-                                  theme: theme,
-                                  text: S.of(context).personal,
-                                  animation: _Animation(activeWidth: 144),
-                                  type: TrainingType.personal,
-                                  onTap: () {
-                                    if (_scheduleController
-                                            .scheduleState.value.duration !=
-                                        null) {
-                                      _scheduleController.scheduleState
-                                          .update((model) {
-                                        model?.type = TrainingType.personal;
-                                      });
-                                    } else {
-                                      CustomSnackbar.getSnackbar(
-                                        title: S.of(context).error,
-                                        message:
-                                            S.of(context).fill_previous_fields,
-                                      );
-                                    }
-                                  },
-                                ),
-                              ),
-                              const SizedBox(width: 7),
-
-                              /// Сплит
-                              Obx(
-                                () => _buildContainer(
-                                  context: context,
-                                  theme: theme,
-                                  text: S.of(context).split,
-                                  animation: _Animation(
-                                    activeWidth: 77,
-                                    inactiveWidth: 60,
+                        if (widget.trainingRecordType !=
+                            TrainingRecordType.group)
+                          SizedBox(
+                            height: 60,
+                            child: Row(
+                              children: [
+                                /// Персональная
+                                Obx(
+                                  () => _buildContainer(
+                                    context: context,
+                                    theme: theme,
+                                    text: S.of(context).personal,
+                                    animation: _Animation(activeWidth: 144),
+                                    split: _scheduleController.state.value.split
+                                        ? TrainingType.split
+                                        : TrainingType.personal,
+                                    onTap: () {
+                                      if (_scheduleController
+                                              .state.value.duration !=
+                                          null) {
+                                        _scheduleController.state
+                                            .update((model) {
+                                          model?.split = false;
+                                        });
+                                      } else {
+                                        CustomSnackbar.getSnackbar(
+                                          title: S.of(context).error,
+                                          message: S
+                                              .of(context)
+                                              .fill_previous_fields,
+                                        );
+                                      }
+                                    },
                                   ),
-                                  type: TrainingType.group,
-                                  onTap: () {
-                                    if (_scheduleController
-                                            .scheduleState.value.duration !=
-                                        null) {
-                                      _scheduleController.scheduleState
-                                          .update((model) {
-                                        model?.type = TrainingType.group;
-                                      });
-                                    } else {
-                                      CustomSnackbar.getSnackbar(
-                                        title: S.of(context).error,
-                                        message:
-                                            S.of(context).fill_previous_fields,
-                                      );
-                                    }
-                                  },
                                 ),
-                              ),
-                            ],
+                                const SizedBox(width: 7),
+
+                                /// Сплит
+                                Obx(
+                                  () => _buildContainer(
+                                    context: context,
+                                    theme: theme,
+                                    text: S.of(context).split,
+                                    animation: _Animation(
+                                      activeWidth: 77,
+                                      inactiveWidth: 60,
+                                    ),
+                                    split: _scheduleController.state.value.split
+                                        ? TrainingType.personal
+                                        : TrainingType.split,
+                                    onTap: () {
+                                      if (_scheduleController
+                                              .state.value.duration !=
+                                          null) {
+                                        _scheduleController.state
+                                            .update((model) {
+                                          model?.split = true;
+                                        });
+                                      } else {
+                                        CustomSnackbar.getSnackbar(
+                                          title: S.of(context).error,
+                                          message: S
+                                              .of(context)
+                                              .fill_previous_fields,
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 17),
+                        if (widget.trainingRecordType !=
+                            TrainingRecordType.group)
+                          const SizedBox(height: 17),
 
                         /// Услуга
                         Obx(
                           () => _buildContainer(
                             context: context,
                             theme: theme,
-                            text: _scheduleController
-                                    .scheduleState.value.service?.name ??
-                                S.of(context).service,
+                            text:
+                                _scheduleController.state.value.service?.name ??
+                                    S.of(context).service,
                             onTap: () {
-                              if (_scheduleController
-                                      .scheduleState.value.duration !=
-                                  null) {
-                                Get.toNamed(Routes.selectService);
-                              } else {
-                                CustomSnackbar.getSnackbar(
-                                  title: S.of(context).error,
-                                  message: S.of(context).fill_previous_fields,
-                                );
+                              if (widget.trainingRecordType !=
+                                  TrainingRecordType.group) {
+                                if (_scheduleController.state.value.duration !=
+                                    null) {
+                                  Get.toNamed(Routes.selectService);
+                                } else {
+                                  CustomSnackbar.getSnackbar(
+                                    title: S.of(context).error,
+                                    message: S.of(context).fill_previous_fields,
+                                  );
+                                }
                               }
                             },
                           ),
@@ -250,15 +282,14 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                           () {
                             /// Преобразование даты в нужный формат
                             String? dateEvent;
-                            if (_scheduleController.scheduleState.value.date !=
-                                null) {
+                            if (_scheduleController.state.value.date != null) {
                               dateEvent = DateFormat('EEEE d MMMM')
                                       .format(_scheduleController
-                                          .scheduleState.value.date!)[0]
+                                          .state.value.date!)[0]
                                       .toUpperCase() +
                                   DateFormat('EEEE d MMMM')
-                                      .format(_scheduleController
-                                          .scheduleState.value.date!)
+                                      .format(
+                                          _scheduleController.state.value.date!)
                                       .substring(1);
                             }
 
@@ -267,38 +298,41 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                               theme: theme,
                               text: dateEvent ?? S.of(context).date_event,
                               onTap: () async {
-                                if (_scheduleController
-                                        .scheduleState.value.service !=
-                                    null) {
-                                  await DatePicker.showDatePicker(
-                                    context,
-                                    onConfirm: (confirmTime) async {
-                                      _scheduleController.scheduleState
-                                          .update((model) {
-                                        model?.date = confirmTime;
-                                      });
-                                    },
-                                    minTime: DateTime(
-                                      DateTime.now().year,
-                                      DateTime.now().month,
-                                      DateTime.now().day,
-                                    ),
-                                    locale: LocaleType.ru,
-                                    currentTime: DateTime.now(),
-                                    theme: DatePickerTheme(
-                                      cancelStyle: theme.textTheme.headline2!,
-                                      doneStyle:
-                                          theme.primaryTextTheme.headline2!,
-                                      itemStyle: theme.textTheme.headline2!,
-                                      backgroundColor: theme.backgroundColor,
-                                      headerColor: theme.backgroundColor,
-                                    ),
-                                  );
-                                } else {
-                                  CustomSnackbar.getSnackbar(
-                                    title: S.of(context).error,
-                                    message: S.of(context).fill_previous_fields,
-                                  );
+                                if (widget.trainingRecordType !=
+                                    TrainingRecordType.group) {
+                                  if (_scheduleController.state.value.service !=
+                                      null) {
+                                    await DatePicker.showDatePicker(
+                                      context,
+                                      onConfirm: (confirmTime) async {
+                                        _scheduleController.state
+                                            .update((model) {
+                                          model?.date = confirmTime;
+                                        });
+                                      },
+                                      minTime: DateTime(
+                                        DateTime.now().year,
+                                        DateTime.now().month,
+                                        DateTime.now().day,
+                                      ),
+                                      locale: LocaleType.ru,
+                                      currentTime: DateTime.now(),
+                                      theme: DatePickerTheme(
+                                        cancelStyle: theme.textTheme.headline2!,
+                                        doneStyle:
+                                            theme.primaryTextTheme.headline2!,
+                                        itemStyle: theme.textTheme.headline2!,
+                                        backgroundColor: theme.backgroundColor,
+                                        headerColor: theme.backgroundColor,
+                                      ),
+                                    );
+                                  } else {
+                                    CustomSnackbar.getSnackbar(
+                                      title: S.of(context).error,
+                                      message:
+                                          S.of(context).fill_previous_fields,
+                                    );
+                                  }
                                 }
                               },
                             );
@@ -313,10 +347,10 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                             String? timeEventStart;
                             String? timeEventEnd;
                             DateTime? selectedTime =
-                                _scheduleController.scheduleState.value.time;
+                                _scheduleController.state.value.time;
                             if (selectedTime != null) {
                               timeEventStart = DateFormat('HH:mm').format(
-                                _scheduleController.scheduleState.value.time!,
+                                _scheduleController.state.value.time!,
                               );
                               timeEventEnd = DateFormat('HH:mm').format(
                                 DateTime(
@@ -325,8 +359,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                   selectedTime.day,
                                   selectedTime.hour,
                                   selectedTime.minute +
-                                      _scheduleController
-                                          .scheduleState.value.duration!,
+                                      _scheduleController.state.value.duration!,
                                 ),
                               );
                             }
@@ -337,39 +370,119 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                   ? 'c $timeEventStart до $timeEventEnd'
                                   : S.of(context).time_lesson,
                               onTap: () async {
-                                if (_scheduleController
-                                        .scheduleState.value.date !=
-                                    null) {
-                                  await DatePicker.showTimePicker(
-                                    context,
-                                    onConfirm: (confirmTime) async {
-                                      _scheduleController.scheduleState
-                                          .update((model) {
-                                        model?.time = confirmTime;
-                                      });
-                                    },
-                                    locale: LocaleType.ru,
-                                    currentTime: DateTime.now(),
-                                    showSecondsColumn: false,
-                                    theme: DatePickerTheme(
-                                      cancelStyle: theme.textTheme.headline2!,
-                                      doneStyle:
-                                          theme.primaryTextTheme.headline2!,
-                                      itemStyle: theme.textTheme.headline2!,
-                                      backgroundColor: theme.backgroundColor,
-                                      headerColor: theme.backgroundColor,
-                                    ),
-                                  );
-                                } else {
-                                  CustomSnackbar.getSnackbar(
-                                    title: S.of(context).error,
-                                    message: S.of(context).fill_previous_fields,
-                                  );
+                                if (widget.trainingRecordType !=
+                                    TrainingRecordType.group) {
+                                  if (_scheduleController.state.value.date !=
+                                      null) {
+                                    await DatePicker.showTimePicker(
+                                      context,
+                                      onConfirm: (confirmTime) async {
+                                        _scheduleController.state
+                                            .update((model) {
+                                          model?.time = confirmTime;
+                                        });
+                                      },
+                                      locale: LocaleType.ru,
+                                      currentTime: DateTime.now(),
+                                      showSecondsColumn: false,
+                                      theme: DatePickerTheme(
+                                        cancelStyle: theme.textTheme.headline2!,
+                                        doneStyle:
+                                            theme.primaryTextTheme.headline2!,
+                                        itemStyle: theme.textTheme.headline2!,
+                                        backgroundColor: theme.backgroundColor,
+                                        headerColor: theme.backgroundColor,
+                                      ),
+                                    );
+                                  } else {
+                                    CustomSnackbar.getSnackbar(
+                                      title: S.of(context).error,
+                                      message:
+                                          S.of(context).fill_previous_fields,
+                                    );
+                                  }
                                 }
                               },
                             );
                           },
                         ),
+                        if (widget.trainingRecordType ==
+                            TrainingRecordType.group)
+                          const SizedBox(height: 17),
+
+                        /// Выбор клиента для групповой тренировки
+                        if (widget.trainingRecordType ==
+                            TrainingRecordType.group)
+                          Obx(
+                            () => ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: _scheduleController
+                                          .state.value.clients !=
+                                      null
+                                  ? _scheduleController
+                                              .state.value.clients!.length ==
+                                          _scheduleController
+                                              .state.value.capacity
+                                      ? _scheduleController.state.value.capacity
+                                      : _scheduleController
+                                              .state.value.clients!.length +
+                                          1
+                                  : 1,
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(height: 17);
+                              },
+                              itemBuilder: (context, index) {
+                                bool clientIsSelected =
+                                    _scheduleController.state.value.clients !=
+                                            null
+                                        ? index !=
+                                                _scheduleController
+                                                    .state.value.clients!.length
+                                            ? true
+                                            : false
+                                        : false;
+                                return _buildContainer(
+                                  context: context,
+                                  theme: theme,
+                                  isCheckbox: clientIsSelected,
+                                  isButtonDelete: clientIsSelected,
+                                  value: clientIsSelected
+                                      ? _scheduleController.state.value
+                                          .clients![index].arrivalStatus
+                                      : false,
+                                  text: clientIsSelected
+                                      ? _scheduleController.state.value
+                                          .clients![index].model.fullName
+                                      : S.of(context).select_client,
+                                  onTap: () async {
+                                    Get.to(
+                                      () => SelectClientPage(
+                                        trainingRecordType:
+                                            widget.trainingRecordType,
+                                      ),
+                                    );
+                                  },
+                                  onChangedCheckBox: (activeCheckbox) {
+                                    clientIsSelected
+                                        ? _scheduleController.state
+                                            .update((model) {
+                                            model?.clients![index]
+                                                    .arrivalStatus =
+                                                activeCheckbox ?? false;
+                                          })
+                                        : null;
+                                  },
+                                  onDelete: () {
+                                    _scheduleController.state.update((model) {
+                                      model?.clients!.removeAt(index);
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        const SizedBox(height: 75),
                       ],
                     ),
                   ),
@@ -390,10 +503,10 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
               padding: const EdgeInsets.symmetric(horizontal: 64),
               child: CustomTextButton(
                 onTap: () {
-                  if (_scheduleController.scheduleState.value.time != null) {
+                  if (_scheduleController.state.value.time != null) {
                     String dataTime =
-                        '${DateFormat('d.MM.yy').format(_scheduleController.scheduleState.value.date!)} в '
-                        '${DateFormat('HH:mm').format(_scheduleController.scheduleState.value.time!)}';
+                        '${DateFormat('d.MM.yy').format(_scheduleController.state.value.date!)} в '
+                        '${DateFormat('HH:mm').format(_scheduleController.state.value.time!)}';
                     Get.to(
                       () => ConfirmationPage(
                         stagePipelineType: StagePipelineType.training,
@@ -407,14 +520,23 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                 text: '${S.of(context).record}\n',
                                 style: theme.textTheme.headline5,
                               ),
-                              TextSpan(
-                                text:
-                                    '${_scheduleController.scheduleState.value.client!.fullName}\n',
-                                style: theme.textTheme.headline6!.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
+                              if (widget.trainingRecordType !=
+                                  TrainingRecordType.group)
+                                TextSpan(
+                                  text:
+                                      '${_scheduleController.state.value.clients![0].model.fullName}\n',
+                                  style: theme.textTheme.headline6!.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18,
+                                  ),
                                 ),
-                              ),
+                              if (widget.trainingRecordType ==
+                                  TrainingRecordType.group)
+                                TextSpan(
+                                  text:
+                                      '${S.of(context).selected_clients.toLowerCase()}\n',
+                                  style: theme.textTheme.headline5,
+                                ),
                               TextSpan(
                                 text:
                                     '${S.of(context).to_practice.toLowerCase()} ',
@@ -453,8 +575,12 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
     required String text,
     required Function() onTap,
     bool isCheckbox = false,
+    bool isButtonDelete = false,
+    bool value = false,
+    Function(bool? activeCheckbox)? onChangedCheckBox,
+    Function()? onDelete,
     _Animation? animation,
-    TrainingType? type,
+    TrainingType? split,
     double? width,
   }) {
     return GestureDetector(
@@ -465,18 +591,18 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
       child: AnimatedContainer(
         duration: Duration(milliseconds: animation?.duration ?? 0),
         curve: Curves.easeOut,
-        width: type == _scheduleController.scheduleState.value.type
+        width: split == _scheduleController.state.value.type
             ? animation?.activeWidth ??
                 width ??
                 MediaQuery.of(context).size.width
             : animation?.inactiveWidth ??
                 width ??
                 MediaQuery.of(context).size.width,
-        height: type == _scheduleController.scheduleState.value.type
+        height: split == _scheduleController.state.value.type
             ? animation?.activeHeight
             : animation?.inactiveHeight,
         decoration: BoxDecoration(
-          border: type == _scheduleController.scheduleState.value.type
+          border: split == _scheduleController.state.value.type
               ? Border.all(color: theme.colorScheme.secondary)
               : null,
           borderRadius: BorderRadius.circular(10),
@@ -493,7 +619,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                 child: AnimatedDefaultTextStyle(
                   child: Text(text),
                   style: animation != null
-                      ? type == _scheduleController.scheduleState.value.type
+                      ? split == _scheduleController.state.value.type
                           ? theme.textTheme.bodyText1!
                           : theme.textTheme.bodyText1!.copyWith(fontSize: 12)
                       : theme.textTheme.bodyText1!,
@@ -502,19 +628,40 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                 ),
               ),
             ),
-            isCheckbox
-                ? Checkbox(
-                    value:
-                        _scheduleController.scheduleState.value.arrivalStatuses,
-                    activeColor: theme.colorScheme.primary,
-                    side: const BorderSide(color: Styles.greyLight5, width: 1),
-                    onChanged: (activeCheckbox) {
-                      _scheduleController.scheduleState.update((model) {
-                        model?.arrivalStatuses = activeCheckbox ?? false;
-                      });
-                    },
-                  )
-                : const SizedBox()
+            Padding(
+              padding: EdgeInsets.only(right: isButtonDelete ? 15 : 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (isCheckbox)
+                    Checkbox(
+                      value: value,
+                      activeColor: theme.colorScheme.primary,
+                      side:
+                          const BorderSide(color: Styles.greyLight5, width: 1),
+                      onChanged: (activeCheckbox) {
+                        if (onChangedCheckBox != null) {
+                          onChangedCheckBox(activeCheckbox);
+                        }
+                      },
+                    ),
+                  if (isButtonDelete)
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        if (onDelete != null) {
+                          onDelete();
+                        }
+                      },
+                      child: SvgPicture.asset(
+                        Images.cross,
+                        width: 20,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
+                ],
+              ),
+            )
           ],
         ),
       ),

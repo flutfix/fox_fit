@@ -10,6 +10,7 @@ class Months extends StatefulWidget {
     this.controller,
     this.width,
     this.duration = 300,
+    this.attenuation = false,
   }) : super(key: key);
 
   final List<String> months;
@@ -18,6 +19,7 @@ class Months extends StatefulWidget {
   final ScrollController? controller;
   final double? width;
   final int duration;
+  final bool attenuation;
 
   @override
   _MonthsState createState() => _MonthsState();
@@ -49,36 +51,38 @@ class _MonthsState extends State<Months> {
                 );
               },
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                width: 25,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      theme.backgroundColor,
-                      theme.backgroundColor.withOpacity(0.9),
-                      theme.backgroundColor.withOpacity(0),
-                    ],
+            if (widget.attenuation)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  width: 25,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        theme.backgroundColor,
+                        theme.backgroundColor.withOpacity(0.9),
+                        theme.backgroundColor.withOpacity(0),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                width: 25,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      theme.backgroundColor.withOpacity(0),
-                      theme.backgroundColor.withOpacity(0.9),
-                      theme.backgroundColor,
-                    ],
+            if (widget.attenuation)
+              Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                  width: 25,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        theme.backgroundColor.withOpacity(0),
+                        theme.backgroundColor.withOpacity(0.9),
+                        theme.backgroundColor,
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),

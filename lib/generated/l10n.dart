@@ -719,6 +719,36 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get client_could_not_recorded {
+    return Intl.message(
+      '',
+      name: 'client_could_not_recorded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get selected_clients {
+    return Intl.message(
+      '',
+      name: 'selected_clients',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get this_client_supplied {
+    return Intl.message(
+      '',
+      name: 'this_client_supplied',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

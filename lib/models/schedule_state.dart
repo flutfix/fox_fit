@@ -1,5 +1,5 @@
 import 'package:fox_fit/models/appointment.dart';
-import 'package:fox_fit/models/customer.dart';
+import 'package:fox_fit/models/customer_model_state.dart';
 import 'package:fox_fit/models/service.dart';
 import 'package:fox_fit/utils/enums.dart';
 
@@ -7,10 +7,11 @@ class ScheduleStateModel {
   ScheduleStateModel({
     this.appointments = const [],
     this.uid,
-    this.client,
-    this.arrivalStatuses = false,
+    this.clients,
+    this.capacity = 1,
     this.duration,
     this.type = TrainingType.personal,
+    this.split = false,
     this.service,
     this.date,
     this.time,
@@ -25,17 +26,20 @@ class ScheduleStateModel {
   /// [uid] пользователя (тренера)
   String? uid;
 
-  /// Выбранный [клиент]
-  CustomerModel? client;
+  /// Выбранные [клиенты]
+  List<CustomerModelState>? clients;
 
-  /// Статус [прибытия] клиента
-  bool arrivalStatuses;
+  /// [Вместимость] тренировки
+  int capacity;
 
   /// Выбранная [длительность] тренировки
   int? duration;
 
   /// Выбранный [тип] тренировки
   TrainingType type;
+
+  /// Персональная или [сплит]
+  bool split;
 
   /// Выбранная [услуга]
   Service? service;

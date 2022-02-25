@@ -8,6 +8,7 @@ import 'package:fox_fit/models/appointment.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/customer.dart';
+import 'package:fox_fit/models/customer_model_state.dart';
 import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
 import 'package:fox_fit/models/notification.dart';
@@ -71,7 +72,7 @@ class Requests {
         return authData;
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -98,7 +99,7 @@ class Requests {
         return response.statusCode;
       }
     } on DioError catch (e) {
-      log('${e.response}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -159,7 +160,7 @@ class Requests {
         ];
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -206,7 +207,7 @@ class Requests {
         return customers;
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -252,7 +253,7 @@ class Requests {
         return customers;
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -292,7 +293,7 @@ class Requests {
         return [trainerPerfomance, trainerPerfomanceMonth];
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -322,7 +323,7 @@ class Requests {
         return [detailedInfo, availablePipelineStages];
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -346,7 +347,7 @@ class Requests {
         return response.statusCode;
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -387,7 +388,7 @@ class Requests {
         return response.statusCode;
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -410,7 +411,7 @@ class Requests {
         return response.statusCode;
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -439,7 +440,7 @@ class Requests {
         return [isNewNotification, customers];
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -476,7 +477,7 @@ class Requests {
         return notifications;
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -516,7 +517,7 @@ class Requests {
         return appointments;
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -524,7 +525,7 @@ class Requests {
   /// Получение клиента по номеру телефона
   static Future<dynamic> getCustomerByPhone({
     required String phone,
-    required String licenseKey,
+    required String userUid,
   }) async {
     String url = '${Requests.url}get_customer_by_phone_number';
     final dioClient = Dio(Requests.options);
@@ -534,7 +535,7 @@ class Requests {
         url,
         queryParameters: {
           "phone_number": phone,
-          "LicenseKey": licenseKey,
+          "UserUid": userUid,
         },
       );
       if (response.statusCode == 200) {
@@ -544,7 +545,7 @@ class Requests {
         return customer;
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -563,7 +564,7 @@ class Requests {
         return appointmentsDurations;
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -606,7 +607,7 @@ class Requests {
         return [services, paidServicesBalance];
       }
     } on DioError catch (e) {
-      log('${e.response?.statusMessage}');
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
       return e.response?.statusCode;
     }
   }
@@ -615,8 +616,7 @@ class Requests {
   static Future<dynamic> addAppointment({
     required String licenseKey,
     required String userUid,
-    required List<CustomerModel> customers,
-    required bool arrivalStatus,
+    required List<CustomerModelState> customers,
     required String appointmentType,
     required String dateTimeAppointment,
     required String serviceUid,
@@ -630,8 +630,8 @@ class Requests {
     for (var customer in customers) {
       customersList.add(
         {
-          'CustomerUid': customer.uid,
-          'ArrivalStatus': arrivalStatus,
+          'CustomerUid': customer.model.uid,
+          'ArrivalStatus': customer.arrivalStatus,
         },
       );
     }

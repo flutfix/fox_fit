@@ -39,7 +39,7 @@ class _DaysState extends State<Days> {
               scrollDirection: Axis.horizontal,
               controller: widget.controller,
               padding: const EdgeInsets.symmetric(horizontal: 32),
-              physics: const NeverScrollableScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               itemCount: widget.days.length,
               separatorBuilder: (contex, index) => const SizedBox(width: 8),
               itemBuilder: (contex, index) {

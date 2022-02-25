@@ -13,9 +13,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fox_fit/screens/home/general.dart';
 import 'package:fox_fit/screens/more/pages/change_password/change_password.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/schedule.dart';
-import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/select_service.dart';
-import 'package:fox_fit/screens/more/pages/schedule/pages/sign_up_training_session.dart';
 import 'package:fox_fit/screens/more/pages/sleeping_customers/sleeping_customers.dart';
 import 'package:fox_fit/screens/notifications/notifications.dart';
 import 'package:fox_fit/screens/splash/splash_screen.dart';
@@ -27,12 +25,14 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'screens/more/pages/coordinator/coordinator.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  if(Platform.isIOS){
-    await Firebase.initializeApp(options: const FirebaseOptions(
+  if (Platform.isIOS) {
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
       apiKey: "AIzaSyDlDrc6NbcGVR4rr8DTfV82dAk_vD3Jpi0",
       appId: "1:150088765423:ios:23edb87f9ecb47a756301a",
       messagingSenderId: "150088765423",
-      projectId: "android-foxfit-push",));
+      projectId: "android-foxfit-push",
+    ));
   } else {
     await Firebase.initializeApp();
   }
@@ -51,14 +51,17 @@ Future<void> main() async {
 }
 
 Future _init() async {
-  if(Platform.isIOS){
-    await Firebase.initializeApp(options: const FirebaseOptions(
-        apiKey: "AIzaSyDlDrc6NbcGVR4rr8DTfV82dAk_vD3Jpi0",
-        appId: "1:150088765423:ios:23edb87f9ecb47a756301a",
-        messagingSenderId: "150088765423",
-        projectId: "android-foxfit-push",));
-  }else {
-  await Firebase.initializeApp();}
+  if (Platform.isIOS) {
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+      apiKey: "AIzaSyDlDrc6NbcGVR4rr8DTfV82dAk_vD3Jpi0",
+      appId: "1:150088765423:ios:23edb87f9ecb47a756301a",
+      messagingSenderId: "150088765423",
+      projectId: "android-foxfit-push",
+    ));
+  } else {
+    await Firebase.initializeApp();
+  }
   FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   ///Request permissions for Ios
@@ -126,12 +129,7 @@ class MyApp extends StatelessWidget {
             () => const SleepingCustomersPage(),
           ),
           getPage(Routes.schedule, () => const SchedulePage()),
-          getPage(Routes.selectClient, () => const SelectClientPage()),
           getPage(Routes.selectService, () => const SelectServicePage()),
-          getPage(
-            Routes.signUpTrainingSession,
-            () => const SignUpTrainingSessionPage(),
-          ),
         ],
       ),
     );

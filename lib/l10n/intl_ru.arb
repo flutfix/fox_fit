@@ -65,5 +65,8 @@
     "back": "Назад",
     "inactiveCustomers": "\"Спящие\" клиенты",
     "license_error_title": "Невозможно загрузить данные",
-    "license_error_body": "У Вас закончилась лицензия"
+    "license_error_body": "У Вас закончилась лицензия",
+    "client_could_not_recorded": "Записать клиента не удалось",
+    "selected_clients": "Выбранных клиентов",
+    "this_client_supplied": "Этот клиент уже добавлен"
 }

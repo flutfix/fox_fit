@@ -65,5 +65,8 @@
     "back": "",
     "inactiveCustomers": "",
     "license_error_title": "",
-    "license_error_body": ""
+    "license_error_body": "",
+    "client_could_not_recorded": "",
+    "selected_clients": "",
+    "this_client_supplied": ""
 }

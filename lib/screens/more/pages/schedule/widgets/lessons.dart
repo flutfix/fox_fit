@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/models/appointment.dart';
+import 'package:fox_fit/models/customer_model_state.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/sign_up_training_session.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:get/get.dart';
@@ -44,16 +45,48 @@ class Lessons extends StatelessWidget {
             behavior: HitTestBehavior.translucent,
             onTap: () {
               if (appointment != null) {
-                _controller.scheduleState.update((model) {
-                  model?.client = appointment.customers![0];
+                /// Преобразование клиента и его статуса
+                /// с запроса к виду модели на фронте
+                List<CustomerModelState> clients = [];
+                for (var customer in appointment.customers!) {
+                  clients.add(
+                    CustomerModelState(
+                      model: customer,
+                      arrivalStatus: appointment.arrivalStatuses!
+                          .firstWhere(
+                              (element) => element.customerUid == customer.uid)
+                          .status,
+                    ),
+                  );
+                }
+
+                /// Автозаполнение форм
+                _controller.state.update((model) {
+                  model?.clients = clients;
                   model?.duration = int.parse(appointment.service!.duration);
                   model?.type = Enums.getTrainingType(
                     trainingType: appointment.appointmentType,
                   );
+                  // model?.split = appointment.split
                   model?.service = appointment.service;
+                  model?.capacity = int.parse(appointment.capacity);
+                  model?.date = appointment.startDate;
+                  model?.time = appointment.startDate;
                 });
               }
-              Get.toNamed(Routes.signUpTrainingSession);
+
+              Get.to(
+                () => SignUpTrainingSessionPage(
+                  trainingRecordType: appointment == null
+                      ? TrainingRecordType.create
+                      : Enums.getTrainingType(
+                                  trainingType: appointment.appointmentType) ==
+                              TrainingType.personal
+                          ? TrainingRecordType.edit
+                          : TrainingRecordType.group,
+                ),
+                transition: Transition.fadeIn,
+              );
             },
             child: DefaultContainer(
               height: 89,
@@ -108,7 +141,7 @@ class Lessons extends StatelessWidget {
 
   /// Сравнивает час каждого занятия с часом ленты времени, являющимся [index]
   AppointmentModel? searchLesson({required int index}) {
-    for (var appointment in _controller.scheduleState.value.appointments) {
+    for (var appointment in _controller.state.value.appointments) {
       int hour = int.parse(DateFormat('H').format(appointment.startDate!));
       if (hour == index) {
         return appointment;

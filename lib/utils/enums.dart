@@ -116,7 +116,7 @@ class Enums {
       case TrainingType.personal:
         return 'Personal';
 
-      case TrainingType.group:
+      case TrainingType.split:
         return 'Group';
 
       default:
@@ -130,7 +130,7 @@ class Enums {
         return TrainingType.personal;
 
       case 'Group':
-        return TrainingType.group;
+        return TrainingType.split;
 
       default:
         return TrainingType.personal;
@@ -186,7 +186,7 @@ enum CustomersContainerType {
 
 enum TrainingType {
   personal,
-  group,
+  split,
 }
 
 enum PaymentStatusType {
@@ -198,4 +198,10 @@ enum PaymentStatusType {
 
   /// Запланирвоноо и нужна оплата
   reservedNeedPayment,
+}
+
+enum TrainingRecordType {
+  create,
+  edit,
+  group,
 }

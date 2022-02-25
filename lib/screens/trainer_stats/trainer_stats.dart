@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
@@ -89,15 +87,13 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
             ? SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 25.0,
-                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 25.0),
                   child: Column(
                     children: [
                       Months(
                         width: width,
-                        months: controller.appState.value.trainerPerfomanceMonth,
+                        months:
+                            controller.appState.value.trainerPerfomanceMonth,
                         currentIndex: _currentMonth,
                         onChange: (index) {
                           setState(() {
@@ -106,130 +102,136 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                         },
                       ),
                       const SizedBox(height: 24),
-                      StatsCard(
-                        sales: controller.appState.value
-                            .trainerPerfomance[_currentMonth].amount,
-                        plan: controller.appState.value
-                            .trainerPerfomance[_currentMonth].plan,
-                        progress: controller.appState.value
-                            .trainerPerfomance[_currentMonth].done,
-                        duration: 350,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: StatsCard(
+                          sales: controller.appState.value
+                              .trainerPerfomance[_currentMonth].amount,
+                          plan: controller.appState.value
+                              .trainerPerfomance[_currentMonth].plan,
+                          progress: controller.appState.value
+                              .trainerPerfomance[_currentMonth].done,
+                          duration: 350,
+                        ),
                       ),
                       const SizedBox(height: 24),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildFunnel(
-                            theme,
-                            width: width * 0.75,
-                            image: Images.funnelNew,
-                            name: controller
-                                .appState
-                                .value
-                                .trainerPerfomance[_currentMonth]
-                                .perfomanceStages[0]
-                                .name,
-                            count: controller
-                                .appState
-                                .value
-                                .trainerPerfomance[_currentMonth]
-                                .perfomanceStages[0]
-                                .quantity,
-                            conversion: controller
-                                .appState
-                                .value
-                                .trainerPerfomance[_currentMonth]
-                                .perfomanceStages[0]
-                                .conversion,
-                            lineWidth: width * 0.15,
-                          ),
-                          const SizedBox(height: 9),
-                          _buildFunnel(
-                            theme,
-                            width: width * 0.55,
-                            image: Images.funnelAssigned,
-                            name: controller
-                                .appState
-                                .value
-                                .trainerPerfomance[_currentMonth]
-                                .perfomanceStages[1]
-                                .name,
-                            count: controller
-                                .appState
-                                .value
-                                .trainerPerfomance[_currentMonth]
-                                .perfomanceStages[1]
-                                .quantity,
-                            conversion: controller
-                                .appState
-                                .value
-                                .trainerPerfomance[_currentMonth]
-                                .perfomanceStages[1]
-                                .conversion,
-                            lineColor: theme.cardColor,
-                            lineWidth: width * 0.247,
-                            lineTopPadding: 7.2,
-                            isLineExtends: true,
-                          ),
-                          const SizedBox(height: 7.5),
-                          _buildFunnel(
-                            theme,
-                            isLightText: true,
-                            width: width * 0.4,
-                            image: Images.funnelPerfomed,
-                            name: controller
-                                .appState
-                                .value
-                                .trainerPerfomance[_currentMonth]
-                                .perfomanceStages[2]
-                                .name,
-                            count: controller
-                                .appState
-                                .value
-                                .trainerPerfomance[_currentMonth]
-                                .perfomanceStages[2]
-                                .quantity,
-                            conversion: controller
-                                .appState
-                                .value
-                                .trainerPerfomance[_currentMonth]
-                                .perfomanceStages[2]
-                                .conversion,
-                            lineColor: theme.highlightColor,
-                            lineWidth: width * 0.32,
-                            lineTopPadding: 5,
-                            isLineExtends: true,
-                          ),
-                          const SizedBox(height: 7.5),
-                          _buildFunnel(
-                            theme,
-                            isLightText: true,
-                            width: width * 0.29375,
-                            image: Images.funnelStable,
-                            name: controller
-                                .appState
-                                .value
-                                .trainerPerfomance[_currentMonth]
-                                .perfomanceStages[3]
-                                .name,
-                            count: controller
-                                .appState
-                                .value
-                                .trainerPerfomance[_currentMonth]
-                                .perfomanceStages[3]
-                                .quantity,
-                            conversion: controller
-                                .appState
-                                .value
-                                .trainerPerfomance[_currentMonth]
-                                .perfomanceStages[3]
-                                .conversion,
-                            lineColor: theme.disabledColor,
-                            lineWidth: width * 0.369,
-                            lineTopPadding: 4.5,
-                            isLineExtends: true,
-                          ),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildFunnel(
+                              theme,
+                              width: width * 0.75,
+                              image: Images.funnelNew,
+                              name: controller
+                                  .appState
+                                  .value
+                                  .trainerPerfomance[_currentMonth]
+                                  .perfomanceStages[0]
+                                  .name,
+                              count: controller
+                                  .appState
+                                  .value
+                                  .trainerPerfomance[_currentMonth]
+                                  .perfomanceStages[0]
+                                  .quantity,
+                              conversion: controller
+                                  .appState
+                                  .value
+                                  .trainerPerfomance[_currentMonth]
+                                  .perfomanceStages[0]
+                                  .conversion,
+                              lineWidth: width * 0.15,
+                            ),
+                            const SizedBox(height: 9),
+                            _buildFunnel(
+                              theme,
+                              width: width * 0.55,
+                              image: Images.funnelAssigned,
+                              name: controller
+                                  .appState
+                                  .value
+                                  .trainerPerfomance[_currentMonth]
+                                  .perfomanceStages[1]
+                                  .name,
+                              count: controller
+                                  .appState
+                                  .value
+                                  .trainerPerfomance[_currentMonth]
+                                  .perfomanceStages[1]
+                                  .quantity,
+                              conversion: controller
+                                  .appState
+                                  .value
+                                  .trainerPerfomance[_currentMonth]
+                                  .perfomanceStages[1]
+                                  .conversion,
+                              lineColor: theme.cardColor,
+                              lineWidth: width * 0.247,
+                              lineTopPadding: 7.2,
+                              isLineExtends: true,
+                            ),
+                            const SizedBox(height: 7.5),
+                            _buildFunnel(
+                              theme,
+                              isLightText: true,
+                              width: width * 0.4,
+                              image: Images.funnelPerfomed,
+                              name: controller
+                                  .appState
+                                  .value
+                                  .trainerPerfomance[_currentMonth]
+                                  .perfomanceStages[2]
+                                  .name,
+                              count: controller
+                                  .appState
+                                  .value
+                                  .trainerPerfomance[_currentMonth]
+                                  .perfomanceStages[2]
+                                  .quantity,
+                              conversion: controller
+                                  .appState
+                                  .value
+                                  .trainerPerfomance[_currentMonth]
+                                  .perfomanceStages[2]
+                                  .conversion,
+                              lineColor: theme.highlightColor,
+                              lineWidth: width * 0.32,
+                              lineTopPadding: 5,
+                              isLineExtends: true,
+                            ),
+                            const SizedBox(height: 7.5),
+                            _buildFunnel(
+                              theme,
+                              isLightText: true,
+                              width: width * 0.29375,
+                              image: Images.funnelStable,
+                              name: controller
+                                  .appState
+                                  .value
+                                  .trainerPerfomance[_currentMonth]
+                                  .perfomanceStages[3]
+                                  .name,
+                              count: controller
+                                  .appState
+                                  .value
+                                  .trainerPerfomance[_currentMonth]
+                                  .perfomanceStages[3]
+                                  .quantity,
+                              conversion: controller
+                                  .appState
+                                  .value
+                                  .trainerPerfomance[_currentMonth]
+                                  .perfomanceStages[3]
+                                  .conversion,
+                              lineColor: theme.disabledColor,
+                              lineWidth: width * 0.369,
+                              lineTopPadding: 4.5,
+                              isLineExtends: true,
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),

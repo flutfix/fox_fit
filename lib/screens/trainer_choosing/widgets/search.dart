@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fox_fit/config/assets.dart';
@@ -32,7 +30,6 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
-    log('${widget.controller.text}');
   }
 
   @override

@@ -1,4 +1,3 @@
-import 'package:fox_fit/models/appointment.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/coordinator_workspace.dart';

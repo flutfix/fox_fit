@@ -33,6 +33,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "chat": MessageLookupByLibrary.simpleMessage("Чат в WhatsApp"),
         "choice_client": MessageLookupByLibrary.simpleMessage("Выбор клиента"),
         "choice_service": MessageLookupByLibrary.simpleMessage("Выбор услуги"),
+        "client_could_not_recorded":
+            MessageLookupByLibrary.simpleMessage("Записать клиента не удалось"),
         "client_not_found": MessageLookupByLibrary.simpleMessage(
             "Лиса очень старалась, но не нашла этот номер телефона 😟"),
         "comment_for_recipient":
@@ -100,6 +102,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "schedule": MessageLookupByLibrary.simpleMessage("Расписание"),
         "select_client":
             MessageLookupByLibrary.simpleMessage("Выбрать клиента"),
+        "selected_clients":
+            MessageLookupByLibrary.simpleMessage("Выбранных клиентов"),
         "send_to_trainer":
             MessageLookupByLibrary.simpleMessage("Передать тренеру"),
         "server_error": MessageLookupByLibrary.simpleMessage("Ошибка сервера"),
@@ -112,6 +116,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("\"Спящие\" клиенты"),
         "split": MessageLookupByLibrary.simpleMessage("Сплит"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
+        "this_client_supplied":
+            MessageLookupByLibrary.simpleMessage("Этот клиент уже добавлен"),
         "time_lesson":
             MessageLookupByLibrary.simpleMessage("Время проведения занятия"),
         "to_coach": MessageLookupByLibrary.simpleMessage("Тренеру"),

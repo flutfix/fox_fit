@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/month.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/sign_up_training_session.dart';
 import 'package:fox_fit/screens/more/pages/schedule/widgets/lessons.dart';
 import 'package:fox_fit/screens/more/pages/schedule/widgets/time_feed.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/widgets/days.dart';
 import 'package:fox_fit/widgets/months.dart';
 import 'package:fox_fit/utils/error_handler.dart';
@@ -39,7 +40,7 @@ class _SchedulePageState extends State<SchedulePage> {
     _generalController = Get.find<GeneralController>();
     _scheduleController = Get.find<ScheduleController>();
 
-    _scheduleController.scheduleState.update((model) {
+    _scheduleController.state.update((model) {
       model?.uid = _generalController.appState.value.auth!.users![0].uid;
     });
 
@@ -64,7 +65,7 @@ class _SchedulePageState extends State<SchedulePage> {
       context: context,
       request: () {
         return _scheduleController.getAppointments(
-          userUid: _scheduleController.scheduleState.value.uid!,
+          userUid: _scheduleController.state.value.uid!,
           dateNow: _dateNow,
         );
       },
@@ -105,7 +106,6 @@ class _SchedulePageState extends State<SchedulePage> {
           isBackArrow: true,
           isNotification: false,
           onBack: () {
-            Get.delete<ScheduleController>();
             Get.back();
           },
         ),
@@ -120,6 +120,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 for (int i = 0; i < _months.length; i++) _months[i].month
               ],
               currentIndex: _currentMonthIndex,
+              attenuation: true,
               width: width,
               onChange: (index) {
                 int lastIndex = _months.length - 1;
@@ -152,22 +153,18 @@ class _SchedulePageState extends State<SchedulePage> {
               controller: _scrollControllerDays,
               onChange: (index) {
                 int lastIndex = _months[_currentMonthIndex].days.length - 1;
-
-                if (((index - _currentDayIndex).abs() <= 2)) {
+                if (index != 0 &&
+                    index != 1 &&
+                    index != lastIndex &&
+                    index != lastIndex - 1) {
                   _animateDays(
                     scrollControllerDays: _scrollControllerDays,
                     width: width,
                     index: index,
                   );
-                } else if (_currentDayIndex == 0 ||
-                    _currentDayIndex == 1 ||
-                    _currentDayIndex == lastIndex ||
-                    _currentDayIndex == lastIndex - 1) {
-                  _animateDays(
-                    scrollControllerDays: _scrollControllerDays,
-                    width: width,
-                    index: index,
-                  );
+                  _updateDay(index: index);
+                } else {
+                  _updateDay(index: index);
                 }
               },
             ),
@@ -235,7 +232,12 @@ class _SchedulePageState extends State<SchedulePage> {
           padding: const EdgeInsets.symmetric(horizontal: 64),
           child: CustomTextButton(
             onTap: () {
-              Get.toNamed(Routes.signUpTrainingSession);
+              Get.to(
+                () => const SignUpTrainingSessionPage(
+                  trainingRecordType: TrainingRecordType.create,
+                ),
+                transition: Transition.fadeIn,
+              );
             },
             height: 51,
             text: S.of(context).record,
@@ -317,6 +319,7 @@ class _SchedulePageState extends State<SchedulePage> {
           width: width,
           index: _months[_currentMonthIndex].days.length - 1,
         );
+        _updateDay(index: _months[_currentMonthIndex].days.length - 1);
       } else if (index - _currentMonthIndex > 0) {
         _currentMonthIndex = index;
         _animateDays(
@@ -324,6 +327,7 @@ class _SchedulePageState extends State<SchedulePage> {
           width: width,
           index: 0,
         );
+        _updateDay(index: 0);
       }
     });
   }
@@ -339,7 +343,9 @@ class _SchedulePageState extends State<SchedulePage> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
+  }
 
+  _updateDay({required int index}) {
     setState(() {
       _currentDayIndex = index;
       _dateNow = DateTime(

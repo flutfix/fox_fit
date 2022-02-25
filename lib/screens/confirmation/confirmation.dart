@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
@@ -232,16 +229,16 @@ class ConfirmationPage extends StatelessWidget {
       /// Если относится к стадии [Занятие]
     } else if (stagePipelineType == StagePipelineType.training) {
       String appointmentType = Enums.getTrainingTypeString(
-        trainingType: _scheduleController.scheduleState.value.type,
+        trainingType: _scheduleController.state.value.type,
       );
 
       /// Преобразование даты и времени в единый timestamp
       String dateTimeAppointment = DateTime(
-        _scheduleController.scheduleState.value.date!.year,
-        _scheduleController.scheduleState.value.date!.month,
-        _scheduleController.scheduleState.value.date!.day,
-        _scheduleController.scheduleState.value.time!.hour,
-        _scheduleController.scheduleState.value.time!.minute,
+        _scheduleController.state.value.date!.year,
+        _scheduleController.state.value.date!.month,
+        _scheduleController.state.value.date!.day,
+        _scheduleController.state.value.time!.hour,
+        _scheduleController.state.value.time!.minute,
       ).millisecondsSinceEpoch.toString().substring(0, 10);
 
       ErrorHandler.request(
@@ -252,12 +249,10 @@ class ConfirmationPage extends StatelessWidget {
             licenseKey:
                 _generalController.appState.value.auth!.data!.licenseKey,
             userUid: _generalController.appState.value.auth!.users![0].uid,
-            customers: [_scheduleController.scheduleState.value.client!],
-            arrivalStatus:
-                _scheduleController.scheduleState.value.arrivalStatuses,
+            customers: _scheduleController.state.value.clients!,
             appointmentType: appointmentType,
             dateTimeAppointment: dateTimeAppointment,
-            serviceUid: _scheduleController.scheduleState.value.service!.uid,
+            serviceUid: _scheduleController.state.value.service!.uid,
             capacity: 1,
           );
         },
@@ -265,11 +260,12 @@ class ConfirmationPage extends StatelessWidget {
           if (data != 200) {
             CustomSnackbar.getSnackbar(
               title: S.of(context).server_error,
-              message: S.of(context).confirmation_failed,
+              message: S.of(context).client_could_not_recorded,
             );
           } else {
-          await Get.delete<ScheduleController>();
-          Get.toNamed(Routes.schedule);
+            _scheduleController.clear();
+            Get.back();
+            Get.back();
           }
         },
       );

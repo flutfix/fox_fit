@@ -1,11 +1,12 @@
 import 'package:fox_fit/api/requests.dart';
-import 'package:fox_fit/models/customer.dart';
+import 'package:fox_fit/models/customer_model_state.dart';
 import 'package:fox_fit/models/schedule_state.dart';
 import 'package:fox_fit/models/service.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:get/get.dart';
 
 class ScheduleController extends GetxController {
-  final Rx<ScheduleStateModel> scheduleState = ScheduleStateModel().obs;
+  final Rx<ScheduleStateModel> state = ScheduleStateModel().obs;
 
   /// Получение списка всех занятий за период
   Future<dynamic> getAppointments({
@@ -19,7 +20,7 @@ class ScheduleController extends GetxController {
     if (data is int || data == null) {
       return data;
     } else {
-      scheduleState.update((model) {
+      state.update((model) {
         model?.appointments = data;
       });
       return 200;
@@ -29,11 +30,11 @@ class ScheduleController extends GetxController {
   /// Получение клиента по номеру телефона
   Future<dynamic> getCustomerByPhone({
     required String phone,
-    required String licenseKey,
+    required String userUid,
   }) async {
     dynamic data = await Requests.getCustomerByPhone(
-      licenseKey: licenseKey,
       phone: phone,
+      userUid: userUid,
     );
 
     return data;
@@ -45,7 +46,7 @@ class ScheduleController extends GetxController {
     if (data is int || data == null) {
       return data;
     } else {
-      scheduleState.update((model) {
+      state.update((model) {
         model?.appointmentsDurations = data;
       });
       return 200;
@@ -71,7 +72,7 @@ class ScheduleController extends GetxController {
       List<Service> services = data[0];
       List<PaidServiceBalance>? paidServicesBalance = data[1];
 
-      scheduleState.update((model) {
+      state.update((model) {
         model?.services = services;
         if (paidServicesBalance != null) {
           model?.paidServicesBalance = paidServicesBalance;
@@ -86,8 +87,7 @@ class ScheduleController extends GetxController {
   Future<dynamic> addAppointment({
     required String licenseKey,
     required String userUid,
-    required List<CustomerModel> customers,
-    required bool arrivalStatus,
+    required List<CustomerModelState> customers,
     required String appointmentType,
     required String dateTimeAppointment,
     required String serviceUid,
@@ -97,12 +97,23 @@ class ScheduleController extends GetxController {
       licenseKey: licenseKey,
       userUid: userUid,
       customers: customers,
-      arrivalStatus: arrivalStatus,
       appointmentType: appointmentType,
       dateTimeAppointment: dateTimeAppointment,
       serviceUid: serviceUid,
       capacity: capacity,
     );
     return data;
+  }
+
+  void clear() {
+    state.update((model) {
+      model?.clients = null;
+      model?.duration = null;
+      model?.type = TrainingType.personal;
+      model?.split = false;
+      model?.service = null;
+      model?.date = null;
+      model?.time = null;
+    });
   }
 }

@@ -1,13 +1,8 @@
-import 'dart:developer';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/auth_data.dart';
-import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
-import 'package:get/get.dart';
 
 class ErrorHandler {
   static Future<dynamic> request({
@@ -23,7 +18,6 @@ class ErrorHandler {
     do {
       dynamic data = await request();
       var connectivityResult = await Connectivity().checkConnectivity();
-      log('${data}');
       if (data != 200 && data is! AuthDataModel) {
         /// Проверка подключения к интернету
         if (connectivityResult == ConnectivityResult.none && !skipCheck) {
