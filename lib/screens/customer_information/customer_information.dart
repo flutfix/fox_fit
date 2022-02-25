@@ -419,7 +419,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
         Client.fresh;
 
     /// Открытие whatsapp для IOS
-    if (Platform.isIOS) {
+    if (Platform.isAndroid) {
       tryLaunchWhatsapp(
         whatsappLink: 'https://wa.me/$number',
         text: '?text=$greeting',
@@ -442,12 +442,12 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     required bool isFromNewCustomers,
     required String? text,
   }) async {
+    // log('$whatsappLink$text');
     if (await canLaunch(whatsappLink)) {
       try {
         /// Если из новых, то с приветствием
         if (isFromNewCustomers) {
-          log('$whatsappLink$text');
-          await launch(whatsappLink + '$text');
+          await launch('$whatsappLink$text');
         } else {
           await launch(whatsappLink);
         }
