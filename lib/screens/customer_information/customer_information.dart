@@ -16,6 +16,7 @@ import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -419,7 +420,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
         Client.fresh;
 
     /// Открытие whatsapp для IOS
-    if (Platform.isAndroid) {
+    if (Platform.isIOS) {
       tryLaunchWhatsapp(
         whatsappLink: 'https://wa.me/$number',
         text: '?text=$greeting',
@@ -442,12 +443,18 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     required bool isFromNewCustomers,
     required String? text,
   }) async {
-    // log('$whatsappLink$text');
+    String url = '$whatsappLink$text';
+
     if (await canLaunch(whatsappLink)) {
       try {
         /// Если из новых, то с приветствием
         if (isFromNewCustomers) {
-          await launch('$whatsappLink$text');
+          /// Если Ios закодировать ссылку
+          if (Platform.isIOS) {
+            url = Uri.encodeFull('$whatsappLink$text');
+          }
+          log(url);
+          await launch(url);
         } else {
           await launch(whatsappLink);
         }
