@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -443,12 +444,23 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     required bool isFromNewCustomers,
     required String? text,
   }) async {
+    String url = '$whatsappLink$text';
+
     if (await canLaunch(whatsappLink)) {
-      /// Если из новых, то с приветствием
-      if (isFromNewCustomers) {
-        await launch(whatsappLink + '$text');
-      } else {
-        await launch(whatsappLink);
+      try {
+        /// Если из новых, то с приветствием
+        if (isFromNewCustomers) {
+          /// Если Ios закодировать ссылку
+          if (Platform.isIOS) {
+            url = Uri.encodeFull(url);
+          }
+          // log(url);
+          await launch(url);
+        } else {
+          await launch(whatsappLink);
+        }
+      } catch (e) {
+        log(e.toString());
       }
     } else {
       getErrorWhatsappLaunch;

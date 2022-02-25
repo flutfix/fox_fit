@@ -128,7 +128,35 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
         if (!_generalController.appState.value.isLoading) {
           return Scaffold(
             backgroundColor: theme.backgroundColor,
-            appBar: appBar(theme, _generalController),
+            appBar: appBar(
+              theme,
+              _generalController,
+              onNotification: () async {
+                var result = await Get.toNamed(Routes.notifications);
+                if (result != null) {
+                  if (result == 3) {
+                    _generalController.appState.update((model) {
+                      model?.isLoading = true;
+                    });
+                    await ErrorHandler.request(
+                      context: context,
+                      request: _generalController.getRegularCustomers,
+                      repeat: false,
+                      skipCheck: true,
+                      handler: (_) async {
+                        CustomSnackbar.getSnackbar(
+                          title: S.of(context).no_internet_access,
+                          message: S.of(context).failed_update_list,
+                        );
+                      },
+                    );
+                    _generalController.appState.update((model) {
+                      model?.isLoading = false;
+                    });
+                  }
+                }
+              },
+            ),
 
             /// Страницы разделов Bottom Bar
             body: PageView(
@@ -174,7 +202,8 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     );
   }
 
-  CustomAppBar appBar(ThemeData theme, GeneralController controller) {
+  CustomAppBar appBar(ThemeData theme, GeneralController controller,
+      {Function()? onNotification}) {
     var customers = controller.appState.value.sortedCustomers[controller
         .appState
         .value
@@ -184,9 +213,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
         title: controller.appState.value
             .bottomBarItems[controller.appState.value.currentIndex].shortName,
         count: (customers != null) ? customers.length : null,
-        onNotification: () {
-          Get.toNamed(Routes.notifications);
-        });
+        onNotification: onNotification);
   }
 
   void setPage(int index) {

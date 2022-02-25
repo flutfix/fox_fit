@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -204,6 +205,7 @@ class _AuthPageState extends State<AuthPage> {
 
         /// Для идентификации API зазпросов
         final String pathToBase = '${data.data!.pathToBase}hs/api_v1/';
+        log('[PATH] $pathToBase');
         final String login = _getStringFromBase(text: data.data!.hashL);
         final String pass = _getStringFromBase(text: data.data!.hashP);
         _setPrefs(
