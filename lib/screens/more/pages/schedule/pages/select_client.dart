@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
@@ -76,9 +78,10 @@ class _SelectClientPageState extends State<SelectClientPage> {
         );
       },
       handler: (data) async {
+        log('$data');
         setState(() {
           /// Если клиент не найден
-          if (data == 404 || data == 501) {
+          if (data == 404 || data == 500) {
             _textErrorResultSearch = S.of(context).client_not_found;
           } else if (data is CustomerModel) {
             _client = data;
