@@ -443,11 +443,16 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     required String? text,
   }) async {
     if (await canLaunch(whatsappLink)) {
-      /// Если из новых, то с приветствием
-      if (isFromNewCustomers) {
-        await launch(whatsappLink + '$text');
-      } else {
-        await launch(whatsappLink);
+      try {
+        /// Если из новых, то с приветствием
+        if (isFromNewCustomers) {
+          log('$whatsappLink$text');
+          await launch(whatsappLink + '$text');
+        } else {
+          await launch(whatsappLink);
+        }
+      } catch (e) {
+        log(e.toString());
       }
     } else {
       getErrorWhatsappLaunch;
