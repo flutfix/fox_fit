@@ -120,7 +120,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
 
   EdgeInsetsGeometry getPadding() {
     if (Platform.isIOS) {
-      return const EdgeInsets.fromLTRB(20, 14, 20, 32);
+      return const EdgeInsets.fromLTRB(20, 14, 20, 26);
     } else {
       log(MediaQuery.of(context).size.width.toString());
       return EdgeInsets.symmetric(
@@ -130,7 +130,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
 
   double get getHeight {
     if (Platform.isIOS) {
-      return 84;
+      return 78;
     } else {
       return (widget.verticalPadding * 2) + 38;
     }
