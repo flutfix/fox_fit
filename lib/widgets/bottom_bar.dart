@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -56,48 +57,48 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
             alignment: Alignment.center,
             height: getHeight,
             color: theme.canvasColor,
-            child:  Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(
-                  widget.items.length,
-                  (index) {
-                    var item = widget.items[index];
-                    return GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        widget.onChange(index);
-                      },
-                      child: SizedBox(
-                        width: (width - 40) / widget.items.length,
-                        child: Column(
-                          children: [
-                            SvgPicture.asset(
-                              getIcon(index),
-                              width: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(
+                widget.items.length,
+                (index) {
+                  var item = widget.items[index];
+                  return GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      widget.onChange(index);
+                    },
+                    child: SizedBox(
+                      width: (width - 40) / widget.items.length,
+                      child: Column(
+                        children: [
+                          SvgPicture.asset(
+                            getIcon(index),
+                            width: 20,
+                            color:
+                                index == controller.appState.value.currentIndex
+                                    ? widget.activeColor
+                                    : widget.inActiveColor,
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            item.shortName,
+                            maxLines: 1,
+                            style: theme.textTheme.caption!.copyWith(
                               color: index ==
                                       controller.appState.value.currentIndex
                                   ? widget.activeColor
-                                  : widget.inActiveColor,
+                                  : widget.textColor,
                             ),
-                            const SizedBox(height: 6),
-                            Text(
-                              item.shortName,
-                              style: theme.textTheme.caption!.copyWith(
-                                color: index ==
-                                        controller.appState.value.currentIndex
-                                    ? widget.activeColor
-                                    : widget.textColor,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
-
+          ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -118,20 +119,21 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   }
 
   EdgeInsetsGeometry getPadding() {
-     if (Platform.isIOS) {
-       return const EdgeInsets.fromLTRB(20, 14, 20, 20);
-     } else {
-    return EdgeInsets.symmetric(
-        horizontal: 20, vertical: widget.verticalPadding);
-     }
+    if (Platform.isIOS) {
+      return const EdgeInsets.fromLTRB(20, 14, 20, 32);
+    } else {
+      log(MediaQuery.of(context).size.width.toString());
+      return EdgeInsets.symmetric(
+          horizontal: 20, vertical: widget.verticalPadding);
+    }
   }
 
   double get getHeight {
-     if (Platform.isIOS) {
-       return 72;
-     } else {
-    return (widget.verticalPadding * 2) + 38;
-     }
+    if (Platform.isIOS) {
+      return 84;
+    } else {
+      return (widget.verticalPadding * 2) + 38;
+    }
   }
 
   double get getAnimatedPaddding =>
