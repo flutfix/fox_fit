@@ -451,9 +451,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
         if (isFromNewCustomers) {
           /// Если Ios закодировать ссылку
           if (Platform.isIOS) {
-            url = Uri.encodeFull('$whatsappLink$text');
+            url = Uri.encodeFull(url);
           }
-          log(url);
+          // log(url);
           await launch(url);
         } else {
           await launch(whatsappLink);

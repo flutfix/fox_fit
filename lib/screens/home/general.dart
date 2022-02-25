@@ -179,8 +179,30 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
         title: controller.appState.value
             .bottomBarItems[controller.appState.value.currentIndex].shortName,
         count: (customers != null) ? customers.length : null,
-        onNotification: () {
-          Get.toNamed(Routes.notifications);
+        onNotification: () async {
+          var result = await Get.toNamed(Routes.notifications);
+          if (result != null) {
+            if (result == 3) {
+              controller.appState.update((model) {
+                model?.isLoading = true;
+              });
+              await ErrorHandler.request(
+                context: context,
+                request: controller.getRegularCustomers,
+                repeat: false,
+                skipCheck: true,
+                handler: (_) async {
+                  CustomSnackbar.getSnackbar(
+                    title: S.of(context).no_internet_access,
+                    message: S.of(context).failed_update_list,
+                  );
+                },
+              );
+              controller.appState.update((model) {
+                model?.isLoading = false;
+              });
+            }
+          }
         });
   }
 

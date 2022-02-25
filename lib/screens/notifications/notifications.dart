@@ -221,7 +221,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   _onBack() async {
     await _setPrefs(timestamp: _getRelevanceDate);
-    Get.back();
+    Get.back(result: _controller.appState.value.currentIndex);
     _updateNotificationIconColor();
     await ErrorHandler.request(
       context: context,

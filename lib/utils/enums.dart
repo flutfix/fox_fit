@@ -55,25 +55,18 @@ class Enums {
   }
 
   static getStagePipelineType({required String stageUid}) {
-    switch (stageUid) {
-      case StagePipeline.assigned:
-        return StagePipelineType.assigned;
-
-      case StagePipeline.transferringRecord:
-        return StagePipelineType.transferringRecord;
-
-      case StagePipeline.nonCall:
-        return StagePipelineType.nonCall;
-
-      case StagePipeline.rejection:
-        return StagePipelineType.rejection;
-
-      case StagePipeline.coordinator:
-        return StagePipelineType.coordinator;
-
-      default:
-        return StagePipelineType.assigned;
+    if (stageUid == StagePipeline.assigned) {
+      return StagePipelineType.assigned;
+    } else if (stageUid == StagePipeline.transferringRecord) {
+      return StagePipelineType.transferringRecord;
+    } else if (stageUid == StagePipeline.nonCall) {
+      return StagePipelineType.nonCall;
+    } else if (stageUid == StagePipeline.rejection) {
+      return StagePipelineType.rejection;
+    } else if (stageUid == StagePipeline.coordinator) {
+      return StagePipelineType.coordinator;
     }
+    return StagePipelineType.assigned;
   }
 
   static getStagePipelineUid({required StagePipelineType stagePipelineType}) {
