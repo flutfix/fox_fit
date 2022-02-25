@@ -4,9 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class AppConfig {
-  /// Whatsapp url
-  static const String supportUrl = 'whatsapp://send?phone=+79323005950';
-
   static const AndroidNotificationChannel pushChannel =
       AndroidNotificationChannel(
     'default_notification_channel',
@@ -42,23 +39,22 @@ class Client {
   static String sleeping = '';
 
   /// [Координатор]
-  static String coordinator = 'coordinator';
+  static String coordinator = '';
 }
 
 class StagePipeline {
   /// [Назначено]
-  static const String assigned = 'e8af182e-1550-11ec-d58b-ac1f6b336352';
+  static String assigned = '';
 
   /// [Перенесено]
-  static const String transferringRecord =
-      'e8b2d9c8-1550-11ec-d58b-ac1f6b336352';
+  static String transferringRecord = '';
 
   /// [Недозвон]
-  static const String nonCall = 'e8acaa26-1550-11ec-d58b-ac1f6b336352';
+  static String nonCall = '';
 
   /// [Отказ клиента]
-  static const String rejection = 'e8b420f8-1550-11ec-d58b-ac1f6b336352';
+  static String rejection = '';
 
   /// [Координатор]
-  static const String coordinator = 'coordinator';
+  static String coordinator = '';
 }

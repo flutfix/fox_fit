@@ -63,8 +63,10 @@ class _MorePageState extends State<MorePage> {
             text: S.of(context).support,
             icon: Images.support,
             onTap: () async {
-              await canLaunch(AppConfig.supportUrl)
-                  ? launch(AppConfig.supportUrl)
+              String whatsapp =
+                  'whatsapp://send?phone=${_controller.appState.value.auth!.data!.supportPhone}';
+              await canLaunch(whatsapp)
+                  ? launch(whatsapp)
                   : CustomSnackbar.getSnackbar(
                       title: S.of(context).whatsapp_exeption,
                       message: S.of(context).whatsapp_exeption_description,

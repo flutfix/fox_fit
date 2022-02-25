@@ -61,10 +61,10 @@ class GeneralController extends GetxController {
           model?.isNewNotifications = false;
         }
       });
-
+      _setStagesPipelinesID(bottomBarItems: bottomBarItems);
       _sortBottomBarItems(bottomBarItems: bottomBarItems);
       _sortCustomers(bottomBarItems: bottomBarItems, allCutsomers: customers);
-      _setStagesPipelinesID();
+
       return 200;
     }
   }
@@ -313,16 +313,29 @@ class GeneralController extends GetxController {
     }
   }
 
-  void _setStagesPipelinesID() {
-    Client.fresh = _getStageUid(shortName: 'Новые');
-    Client.assigned = _getStageUid(shortName: 'Назначено');
-    Client.conducted = _getStageUid(shortName: 'Проведено');
-    Client.permanent = _getStageUid(shortName: 'Постоянные');
+  void _setStagesPipelinesID(
+      {required List<ItemBottomBarModel> bottomBarItems}) {
+    /// Этапы воронки
+    Client.fresh = _getStageUid(bottomBarItems, shortName: 'Новые');
+    Client.assigned = _getStageUid(bottomBarItems, shortName: 'Назначено');
+    Client.conducted = _getStageUid(bottomBarItems, shortName: 'Проведено');
+    Client.permanent = _getStageUid(bottomBarItems, shortName: 'Постоянные');
+
+    /// Этапы работы с клиентом
+    StagePipeline.assigned =
+        _getStageUid(bottomBarItems, shortName: 'Назначено');
+    StagePipeline.transferringRecord =
+        _getStageUid(bottomBarItems, shortName: 'Клиент перенес запись');
+    StagePipeline.nonCall =
+        _getStageUid(bottomBarItems, shortName: 'Невозможно дозвониться');
+    StagePipeline.rejection =
+        _getStageUid(bottomBarItems, shortName: 'Отказ клиента');
   }
 
-  String _getStageUid({required String shortName}) {
-    var index = appState.value.bottomBarItems
-        .indexWhere((element) => element.shortName == shortName);
-    return appState.value.bottomBarItems[index].uid;
+  String _getStageUid(List<ItemBottomBarModel> bottomBarItems,
+      {required String shortName}) {
+    var index =
+        bottomBarItems.indexWhere((element) => element.shortName == shortName);
+    return bottomBarItems[index].uid;
   }
 }
