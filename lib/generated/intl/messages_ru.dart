@@ -22,10 +22,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "activity_could_not_deleted":
+            MessageLookupByLibrary.simpleMessage("Удалить занятие не удалось"),
         "authorization_failed":
             MessageLookupByLibrary.simpleMessage("Авторизация не удалась"),
         "back": MessageLookupByLibrary.simpleMessage("Назад"),
         "cancel": MessageLookupByLibrary.simpleMessage("Отмена"),
+        "cancel_workout":
+            MessageLookupByLibrary.simpleMessage("Отменить тренировку у"),
         "change_password":
             MessageLookupByLibrary.simpleMessage("Изменить пароль"),
         "changing_password":
@@ -33,8 +37,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "chat": MessageLookupByLibrary.simpleMessage("Чат в WhatsApp"),
         "choice_client": MessageLookupByLibrary.simpleMessage("Выбор клиента"),
         "choice_service": MessageLookupByLibrary.simpleMessage("Выбор услуги"),
-        "client_could_not_recorded":
-            MessageLookupByLibrary.simpleMessage("Записать клиента не удалось"),
         "client_not_found": MessageLookupByLibrary.simpleMessage(
             "Лиса очень старалась, но не нашла этот номер телефона 😟"),
         "comment_for_recipient":
@@ -90,6 +92,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Новый пароль (повторно)"),
         "no_internet_access":
             MessageLookupByLibrary.simpleMessage("Нет доступа к интернету"),
+        "not_find_client":
+            MessageLookupByLibrary.simpleMessage("Не удалось найти клиента"),
         "notifications": MessageLookupByLibrary.simpleMessage("Уведомления"),
         "password_not_changed":
             MessageLookupByLibrary.simpleMessage("Пароль не изменён"),
@@ -98,6 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "personal": MessageLookupByLibrary.simpleMessage("Персональная"),
         "record": MessageLookupByLibrary.simpleMessage("Записать"),
         "repeat_input": MessageLookupByLibrary.simpleMessage("Повторите ввод"),
+        "revoke": MessageLookupByLibrary.simpleMessage("Отменить"),
         "save_edits": MessageLookupByLibrary.simpleMessage("Изменить"),
         "schedule": MessageLookupByLibrary.simpleMessage("Расписание"),
         "select_client":
@@ -127,6 +132,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "transmit": MessageLookupByLibrary.simpleMessage("Передать"),
         "triner_choosing":
             MessageLookupByLibrary.simpleMessage("Выбор тренера"),
+        "trining_could_not_edit": MessageLookupByLibrary.simpleMessage(
+            "Редактировать тренировку не удалось"),
+        "trining_could_not_recorded": MessageLookupByLibrary.simpleMessage(
+            "Записать тренировку не удалось"),
+        "valid_license_not_found": MessageLookupByLibrary.simpleMessage(
+            "Не найдена действующая лицензия"),
         "whatsapp_exeption":
             MessageLookupByLibrary.simpleMessage("Не удалось открыть WhatsApp"),
         "whatsapp_exeption_description": MessageLookupByLibrary.simpleMessage(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/utils/enums.dart';
@@ -16,12 +17,14 @@ class SelectServicePage extends StatefulWidget {
 
 class _SelectServicePageState extends State<SelectServicePage> {
   late bool _isLoading;
-  late ScheduleController _controller;
+  late GeneralController _generalController;
+  late ScheduleController _scheduleController;
 
   @override
   void initState() {
     super.initState();
-    _controller = Get.find<ScheduleController>();
+    _scheduleController = Get.find<ScheduleController>();
+    _generalController = Get.find<GeneralController>();
     _isLoading = true;
     getCustomerFitnessServices();
   }
@@ -35,13 +38,13 @@ class _SelectServicePageState extends State<SelectServicePage> {
       context: context,
       request: () {
         String serviceType = Enums.getTrainingTypeString(
-          trainingType: _controller.state.value.type,
+          trainingType: _scheduleController.state.value.type,
         );
 
-        return _controller.getCustomerFitnessServices(
-          userUid: _controller.state.value.uid!,
-          customerUid: _controller.state.value.clients![0].model.uid,
-          duration: _controller.state.value.duration.toString(),
+        return _scheduleController.getCustomerFitnessServices(
+          userUid: _generalController.appState.value.auth!.users![0].uid,
+          customerUid: _scheduleController.state.value.clients![0].model.uid,
+          duration: _scheduleController.state.value.duration.toString(),
           serviceType: serviceType,
         );
       },
@@ -66,14 +69,14 @@ class _SelectServicePageState extends State<SelectServicePage> {
         },
       ),
       body: (!_isLoading)
-          ? _controller.state.value.services.isNotEmpty
+          ? _scheduleController.state.value.services.isNotEmpty
               ? SingleChildScrollView(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                   physics: const BouncingScrollPhysics(),
                   child: ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: _controller.state.value.services.length,
+                    itemCount: _scheduleController.state.value.services.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 5),
                     itemBuilder: (context, index) {
                       return DefaultContainer(
@@ -81,8 +84,8 @@ class _SelectServicePageState extends State<SelectServicePage> {
                             const EdgeInsets.fromLTRB(28, 17.45, 19, 22.55),
                         child: GestureDetector(
                           onTap: () {
-                            _controller.state.update((model) {
-                              model?.service = _controller
+                            _scheduleController.state.update((model) {
+                              model?.service = _scheduleController
                                   .state.value.services[index];
                             });
                             Get.back();
@@ -92,7 +95,7 @@ class _SelectServicePageState extends State<SelectServicePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                _controller
+                                _scheduleController
                                     .state.value.services[index].name,
                                 style: theme.textTheme.subtitle2!
                                     .copyWith(fontSize: 14),

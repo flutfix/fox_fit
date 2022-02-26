@@ -647,10 +647,87 @@ class Requests {
           'ServiceUid': serviceUid,
           'Capacity': capacity,
         },
-        data: {"Customers": customersList},
+        data: {
+          'Customers': customersList,
+        },
+      );
+      
+      if (response.statusCode == 200) {
+        return response.statusCode;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Запрос на редактирование занятия в 1с
+  static Future<dynamic> editAppointment({
+    required String licenseKey,
+    required String userUid,
+    required List<CustomerModelState> customers,
+    required String appointmentUid,
+    required String appointmentType,
+    required String dateTimeAppointment,
+    required String serviceUid,
+  }) async {
+    String url = '${Requests.url}update_appointment';
+    final dioClient = Dio(Requests.options);
+
+    List<Map<String, dynamic>> customersList = [];
+
+    for (var customer in customers) {
+      customersList.add(
+        {
+          'CustomerUid': customer.model.uid,
+          'ArrivalStatus': customer.arrivalStatus,
+        },
+      );
+    }
+
+    try {
+      var response = await dioClient.post(
+        url,
+        queryParameters: {
+          'LicenseKey': licenseKey,
+          'UserUid': userUid,
+          'AppointmentUid': appointmentUid,
+          'AppointmentType': appointmentType,
+          'DateTimeAppointment': dateTimeAppointment,
+          'ServiceUid': serviceUid,
+        },
+        data: {
+          'Customers': customersList,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return response.statusCode;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Запрос на удаление занятия в 1с
+  static Future<dynamic> deleteAppointment({
+    required String licenseKey,
+    required String appointmentUid,
+  }) async {
+    String url = '${Requests.url}cancel_appointment';
+    final dioClient = Dio(Requests.options);
+
+    try {
+      var response = await dioClient.post(
+        url,
+        queryParameters: {
+          'LicenseKey': licenseKey,
+          'AppointmentUid': appointmentUid,
+        },
       );
       if (response.statusCode == 200) {
-        return response;
+        return response.statusCode;
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');

@@ -3,12 +3,14 @@ class Service {
   late String uid;
   late String duration;
   late bool trial;
+  late bool split;
 
   Service({
     this.name = '',
     this.uid = '',
     this.duration = '',
     this.trial = false,
+    this.split = false,
   });
 
   Service.fromJson(Map<String, dynamic> json) {
@@ -16,6 +18,7 @@ class Service {
     uid = json['Uid'] ?? '';
     duration = json['Duration'] ?? '';
     trial = json['Trial'] ?? false;
+    split = json['Split'] ?? false;
   }
 
   Map<String, dynamic> toJson() {
@@ -24,6 +27,7 @@ class Service {
     data['Uid'] = uid;
     data['Duration'] = duration;
     data['Trial'] = trial;
+    data['Split'] = trial;
     return data;
   }
 }

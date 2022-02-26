@@ -197,4 +197,5 @@ enum TrainingRecordType {
   create,
   edit,
   group,
+  revoke,
 }

@@ -6,12 +6,11 @@ import 'package:fox_fit/utils/enums.dart';
 class ScheduleStateModel {
   ScheduleStateModel({
     this.appointments = const [],
-    this.uid,
+    this.appointment,
     this.clients,
     this.capacity = 1,
     this.duration,
     this.type = TrainingType.personal,
-    this.split = false,
     this.service,
     this.date,
     this.time,
@@ -23,8 +22,8 @@ class ScheduleStateModel {
   /// Список всех занятий
   List<AppointmentModel> appointments;
 
-  /// [uid] пользователя (тренера)
-  String? uid;
+  /// Выбранное [занятие]
+  AppointmentModel? appointment;
 
   /// Выбранные [клиенты]
   List<CustomerModelState>? clients;
@@ -37,9 +36,6 @@ class ScheduleStateModel {
 
   /// Выбранный [тип] тренировки
   TrainingType type;
-
-  /// Персональная или [сплит]
-  bool split;
 
   /// Выбранная [услуга]
   Service? service;

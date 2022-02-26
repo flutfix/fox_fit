@@ -122,7 +122,6 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
     if (Platform.isIOS) {
       return const EdgeInsets.fromLTRB(20, 14, 20, 26);
     } else {
-      log(MediaQuery.of(context).size.width.toString());
       return EdgeInsets.symmetric(
           horizontal: 20, vertical: widget.verticalPadding);
     }

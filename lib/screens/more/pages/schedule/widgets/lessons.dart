@@ -10,9 +10,13 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class Lessons extends StatelessWidget {
-  Lessons({Key? key}) : super(key: key);
+  Lessons({
+    Key? key,
+    required this.date,
+  }) : super(key: key);
 
   final ScheduleController _controller = Get.find<ScheduleController>();
+  final DateTime date;
 
   @override
   Widget build(BuildContext context) {
@@ -62,16 +66,23 @@ class Lessons extends StatelessWidget {
 
                 /// Автозаполнение форм
                 _controller.state.update((model) {
+                  model?.appointment = appointment;
                   model?.clients = clients;
                   model?.duration = int.parse(appointment.service!.duration);
                   model?.type = Enums.getTrainingType(
                     trainingType: appointment.appointmentType,
                   );
-                  // model?.split = appointment.split
                   model?.service = appointment.service;
                   model?.capacity = int.parse(appointment.capacity);
                   model?.date = appointment.startDate;
                   model?.time = appointment.startDate;
+                });
+              }
+
+              /// Автозаполнение форм
+              if (appointment == null) {
+                _controller.state.update((model) {
+                  model?.date = date;
                 });
               }
 

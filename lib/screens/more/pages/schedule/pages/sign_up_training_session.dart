@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
+import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/confirmation/confirmation.dart';
@@ -70,20 +71,56 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
         title: S.of(context).sign_up_training_session,
         isNotification: false,
         isBackArrow: true,
-        action: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          child: Stack(
-            alignment: Alignment.centerRight,
-            children: [
-              Image.asset(
-                Images.trashcan,
-                width: 20,
-                color: theme.colorScheme.primary,
-              ),
-              const SizedBox(width: 36)
-            ],
-          ),
-        ),
+        action: widget.trainingRecordType == TrainingRecordType.edit
+            ? GestureDetector(
+                onTap: () {
+                  Get.to(
+                    () => ConfirmationPage(
+                      stagePipelineType: StagePipelineType.training,
+                      trainingRecordType: TrainingRecordType.revoke,
+                      textButtonDone: S.of(context).revoke,
+                      textButtonCancel: S.of(context).back,
+                      richText: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: '${S.of(context).cancel_workout}\n',
+                              style: theme.textTheme.headline5,
+                            ),
+                            TextSpan(
+                              text: _scheduleController
+                                  .state.value.clients![0].model.fullName,
+                              style: theme.textTheme.headline6!.copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                              ),
+                            ),
+                            TextSpan(
+                              text: ' ?',
+                              style: theme.textTheme.headline5,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    transition: Transition.fadeIn,
+                  );
+                },
+                behavior: HitTestBehavior.translucent,
+                child: Stack(
+                  alignment: Alignment.centerRight,
+                  children: [
+                    Image.asset(
+                      Images.trashcan,
+                      width: 20,
+                      color: theme.colorScheme.primary,
+                    ),
+                    const SizedBox(width: 36)
+                  ],
+                ),
+              )
+            : null,
         onBack: () {
           _scheduleController.clear();
           Get.back();
@@ -188,8 +225,13 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                     theme: theme,
                                     text: S.of(context).personal,
                                     animation: _Animation(activeWidth: 144),
-                                    split: _scheduleController.state.value.split
-                                        ? TrainingType.split
+                                    split: _scheduleController
+                                                .state.value.service !=
+                                            null
+                                        ? _scheduleController
+                                                .state.value.service!.split
+                                            ? TrainingType.split
+                                            : TrainingType.personal
                                         : TrainingType.personal,
                                     onTap: () {
                                       if (_scheduleController
@@ -197,7 +239,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                           null) {
                                         _scheduleController.state
                                             .update((model) {
-                                          model?.split = false;
+                                          model?.service?.split = false;
                                         });
                                       } else {
                                         CustomSnackbar.getSnackbar(
@@ -222,8 +264,13 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                       activeWidth: 77,
                                       inactiveWidth: 60,
                                     ),
-                                    split: _scheduleController.state.value.split
-                                        ? TrainingType.personal
+                                    split: _scheduleController
+                                                .state.value.service !=
+                                            null
+                                        ? _scheduleController
+                                                .state.value.service!.split
+                                            ? TrainingType.personal
+                                            : TrainingType.split
                                         : TrainingType.split,
                                     onTap: () {
                                       if (_scheduleController
@@ -231,7 +278,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                           null) {
                                         _scheduleController.state
                                             .update((model) {
-                                          model?.split = true;
+                                          model?.service?.split = true;
                                         });
                                       } else {
                                         CustomSnackbar.getSnackbar(
@@ -373,7 +420,9 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                 if (widget.trainingRecordType !=
                                     TrainingRecordType.group) {
                                   if (_scheduleController.state.value.date !=
-                                      null) {
+                                          null &&
+                                      _scheduleController.state.value.service !=
+                                          null) {
                                     await DatePicker.showTimePicker(
                                       context,
                                       onConfirm: (confirmTime) async {
@@ -510,6 +559,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                     Get.to(
                       () => ConfirmationPage(
                         stagePipelineType: StagePipelineType.training,
+                        trainingRecordType: widget.trainingRecordType,
                         textButtonDone: S.of(context).record,
                         textButtonCancel: S.of(context).back,
                         richText: RichText(

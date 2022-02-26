@@ -5,6 +5,7 @@ import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/more_card.dart';
 import 'package:fox_fit/widgets/bottom_sheet.dart';
@@ -201,6 +202,7 @@ class _MorePageState extends State<MorePage> {
                       Vibrate.feedback(FeedbackType.light);
                     }
                     Get.delete<GeneralController>();
+                    Get.delete<ScheduleController>();
                     var prefs = await SharedPreferences.getInstance();
                     prefs.setBool(Cache.isAuthorized, false);
                     prefs.setString(Cache.pass, '');

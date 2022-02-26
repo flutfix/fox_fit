@@ -62,6 +62,34 @@ class _SelectClientPageState extends State<SelectClientPage> {
     _search = '';
 
     _phoneFocus.addListener(_onFocusChange);
+
+    _load();
+  }
+
+  Future<void> _load() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await ErrorHandler.request(
+      context: context,
+      request: () {
+        return _generalController.getRegularCustomers();
+      },
+      handler: (data) async {
+        if (data != 200) {
+          CustomSnackbar.getSnackbar(
+            title: S.of(context).server_error,
+            message: S.of(context).data_download_failed,
+          );
+          return false;
+        }
+      },
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future<void> getCustomerByPhone({required String search}) async {
@@ -78,7 +106,6 @@ class _SelectClientPageState extends State<SelectClientPage> {
         );
       },
       handler: (data) async {
-        log('$data');
         setState(() {
           /// Если клиент не найден
           if (data == 404 || data == 500) {
@@ -194,7 +221,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                 ),
                               ];
                               model?.duration = _client!.duration;
-                              model?.split = _client!.split ?? false;
+                              model?.service?.split = _client!.split ?? false;
                               if (_client!.serviceUid != null &&
                                   _client!.serviceName != null) {
                                 model?.service = Service(
@@ -216,115 +243,144 @@ class _SelectClientPageState extends State<SelectClientPage> {
                     : _search.isEmpty
 
                         /// Список постоянных клиентов
-                        ? ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: _generalController.appState.value
-                                .sortedCustomers[Client.permanent]!.length,
-                            itemBuilder: (context, index) {
-                              List<String> phoneList = _generalController
-                                  .appState
-                                  .value
-                                  .sortedCustomers[Client.permanent]![index]
-                                  .phone
-                                  .split(' ');
+                        ? !_isLoading
+                            ? ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 10, 0, 20),
+                                itemCount: _generalController.appState.value
+                                    .sortedCustomers[Client.permanent]!.length,
+                                itemBuilder: (context, index) {
+                                  List<String> phoneList = _generalController
+                                      .appState
+                                      .value
+                                      .sortedCustomers[Client.permanent]![index]
+                                      .phone
+                                      .split(' ');
 
-                              phoneList = [
-                                phoneList[0][1],
-                                phoneList[1].substring(1, 4),
-                                phoneList[2]
-                              ];
-                              String phone = '';
-                              for (var i = 0; i < phoneList.length; i++) {
-                                phone += phoneList[i];
-                              }
-
-                              CustomerModel currentCustomer = _generalController
-                                  .appState
-                                  .value
-                                  .sortedCustomers[Client.permanent]![index];
-                              List<CustomerModelState>? clientList =
-                                  _scheduleController.state.value.clients;
-
-                              bool check = checkPresenceInList(
-                                clientList: clientList,
-                                currentCustomer: currentCustomer,
-                              );
-
-                              if (check) {
-                                return CustomerContainer(
-                                  customer: currentCustomer,
-                                  clientType: ClientType.permanent,
-                                  onTap: () async {
-                                    if (widget.trainingRecordType !=
-                                        TrainingRecordType.group) {
-                                      await getCustomerByPhone(search: phone);
-                                      if (currentCustomer !=
-                                          _scheduleController
-                                              .state.value.clients?[0].model) {
-                                        _scheduleController.clear();
-                                      }
-
-                                      _scheduleController.state.update((model) {
-                                        model?.clients = [
-                                          CustomerModelState(
-                                            model: currentCustomer,
-                                            arrivalStatus: false,
-                                          ),
-                                        ];
-                                        model?.duration = _client!.duration;
-                                        model?.split = _client!.split ?? false;
-                                        if (_client!.serviceUid != null &&
-                                            _client!.serviceName != null) {
-                                          model?.service = Service(
-                                            uid: _client!.serviceUid!,
-                                            name: _client!.serviceName!,
-                                          );
-                                        }
-                                      });
-                                    } else {
-                                      List<CustomerModelState>? clientList =
-                                          _scheduleController
-                                              .state.value.clients;
-
-                                      if (clientList != null) {
-                                        clientList.add(
-                                          CustomerModelState(
-                                            model: currentCustomer,
-                                            arrivalStatus: false,
-                                          ),
-                                        );
-                                      } else {
-                                        clientList = [
-                                          CustomerModelState(
-                                            model: currentCustomer,
-                                            arrivalStatus: false,
-                                          ),
-                                        ];
-                                      }
-
-                                      _scheduleController.state.update((model) {
-                                        model?.clients = clientList;
-                                      });
+                                  String phone = '';
+                                  if (phoneList.length == 3) {
+                                    phoneList = [
+                                      phoneList[0][1],
+                                      phoneList[1].substring(1, 4),
+                                      phoneList[2]
+                                    ];
+                                    for (var i = 0; i < phoneList.length; i++) {
+                                      phone += phoneList[i];
                                     }
+                                  } else {
+                                    phone = phoneList[0];
+                                  }
 
-                                    Get.back();
-                                  },
-                                );
-                              } else {
-                                return const SizedBox();
-                              }
-                            },
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: DefaultContainer(
-                              child: Center(
-                                child: Text(
-                                  _textErrorResultSearch ??
-                                      S.of(context).enter_full_number,
-                                  style: theme.textTheme.headline3,
-                                  textAlign: TextAlign.center,
+                                  CustomerModel currentCustomer =
+                                      _generalController
+                                              .appState.value.sortedCustomers[
+                                          Client.permanent]![index];
+                                  List<CustomerModelState>? clientList =
+                                      _scheduleController.state.value.clients;
+
+                                  bool check = checkPresenceInList(
+                                    clientList: clientList,
+                                    currentCustomer: currentCustomer,
+                                  );
+
+                                  if (check) {
+                                    return CustomerContainer(
+                                      customer: currentCustomer,
+                                      clientType: ClientType.permanent,
+                                      onTap: () async {
+                                        if (widget.trainingRecordType !=
+                                            TrainingRecordType.group) {
+                                          await getCustomerByPhone(
+                                            search: phone,
+                                          );
+                                          if (_scheduleController
+                                                  .state.value.clients !=
+                                              null) {
+                                            if (currentCustomer !=
+                                                _scheduleController.state.value
+                                                    .clients![0].model) {
+                                              _scheduleController.clear();
+                                            }
+                                          }
+
+                                          _scheduleController.state
+                                              .update((model) {
+                                            model?.clients = [
+                                              CustomerModelState(
+                                                model: currentCustomer,
+                                                arrivalStatus: false,
+                                              ),
+                                            ];
+                                            model?.duration = _client?.duration;
+                                            model?.service?.split =
+                                                _client?.split ?? false;
+                                            if (_client?.serviceUid != null &&
+                                                _client?.serviceName != null) {
+                                              model?.service = Service(
+                                                uid: _client!.serviceUid!,
+                                                name: _client!.serviceName!,
+                                              );
+                                            }
+                                          });
+                                        } else {
+                                          List<CustomerModelState>? clientList =
+                                              _scheduleController
+                                                  .state.value.clients;
+
+                                          if (clientList != null) {
+                                            clientList.add(
+                                              CustomerModelState(
+                                                model: currentCustomer,
+                                                arrivalStatus: false,
+                                              ),
+                                            );
+                                          } else {
+                                            clientList = [
+                                              CustomerModelState(
+                                                model: currentCustomer,
+                                                arrivalStatus: false,
+                                              ),
+                                            ];
+                                          }
+
+                                          _scheduleController.state
+                                              .update((model) {
+                                            model?.clients = clientList;
+                                          });
+                                        }
+
+                                        Get.back();
+                                      },
+                                    );
+                                  } else {
+                                    return const SizedBox();
+                                  }
+                                },
+                              )
+                            : Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: DefaultContainer(
+                                  child: Center(
+                                    child: Text(
+                                      _textErrorResultSearch ??
+                                          S.of(context).enter_full_number,
+                                      style: theme.textTheme.headline3,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              )
+                        : const Padding(
+                            padding: EdgeInsets.only(top: 18.0),
+                            child: Center(
+                              child: SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
                                 ),
                               ),
                             ),

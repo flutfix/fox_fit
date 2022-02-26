@@ -40,10 +40,6 @@ class _SchedulePageState extends State<SchedulePage> {
     _generalController = Get.find<GeneralController>();
     _scheduleController = Get.find<ScheduleController>();
 
-    _scheduleController.state.update((model) {
-      model?.uid = _generalController.appState.value.auth!.users![0].uid;
-    });
-
     _dateNow = DateTime.now();
 
     _currentYear = _dateNow.year;
@@ -65,7 +61,7 @@ class _SchedulePageState extends State<SchedulePage> {
       context: context,
       request: () {
         return _scheduleController.getAppointments(
-          userUid: _scheduleController.state.value.uid!,
+          userUid: _generalController.appState.value.auth!.users![0].uid,
           dateNow: _dateNow,
         );
       },
@@ -187,7 +183,7 @@ class _SchedulePageState extends State<SchedulePage> {
                               const SizedBox(width: 17),
                               Padding(
                                 padding: const EdgeInsets.only(top: 13.0),
-                                child: Lessons(),
+                                child: Lessons(date: _dateNow),
                               ),
                             ],
                           ),

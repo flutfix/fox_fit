@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
@@ -19,6 +22,7 @@ class ConfirmationPage extends StatelessWidget {
   ConfirmationPage({
     Key? key,
     required this.stagePipelineType,
+    this.trainingRecordType,
     this.text = '',
     this.richText,
     this.textButtonDone,
@@ -27,6 +31,7 @@ class ConfirmationPage extends StatelessWidget {
   }) : super(key: key);
 
   final StagePipelineType stagePipelineType;
+  final TrainingRecordType? trainingRecordType;
   final String text;
   final RichText? richText;
   final String? textButtonDone;
@@ -241,34 +246,99 @@ class ConfirmationPage extends StatelessWidget {
         _scheduleController.state.value.time!.minute,
       ).millisecondsSinceEpoch.toString().substring(0, 10);
 
-      ErrorHandler.request(
-        context: context,
-        repeat: false,
-        request: () async {
-          return _scheduleController.addAppointment(
-            licenseKey:
-                _generalController.appState.value.auth!.data!.licenseKey,
-            userUid: _generalController.appState.value.auth!.users![0].uid,
-            customers: _scheduleController.state.value.clients!,
-            appointmentType: appointmentType,
-            dateTimeAppointment: dateTimeAppointment,
-            serviceUid: _scheduleController.state.value.service!.uid,
-            capacity: 1,
-          );
-        },
-        handler: (data) async {
-          if (data != 200) {
-            CustomSnackbar.getSnackbar(
-              title: S.of(context).server_error,
-              message: S.of(context).client_could_not_recorded,
+      if (trainingRecordType == TrainingRecordType.create) {
+        dynamic data = await ErrorHandler.request(
+          context: context,
+          repeat: false,
+          request: () async {
+            return _scheduleController.addAppointment(
+              licenseKey:
+                  _generalController.appState.value.auth!.data!.licenseKey,
+              userUid: _generalController.appState.value.auth!.users![0].uid,
+              customers: _scheduleController.state.value.clients!,
+              appointmentType: appointmentType,
+              dateTimeAppointment: dateTimeAppointment,
+              serviceUid: _scheduleController.state.value.service!.uid,
+              capacity: 1,
             );
-          } else {
-            _scheduleController.clear();
-            Get.back();
-            Get.back();
-          }
-        },
-      );
+          },
+          handler: (data) async {
+            if (data == 403) {
+              CustomSnackbar.getSnackbar(
+                title: S.of(context).error,
+                message: S.of(context).valid_license_not_found,
+              );
+            } else {
+              CustomSnackbar.getSnackbar(
+                title: S.of(context).server_error,
+                message: S.of(context).trining_could_not_recorded,
+              );
+            }
+          },
+        );
+
+        if (data == 200) {
+          _scheduleController.clear(appointment: true);
+          Get.offNamed(Routes.schedule);
+        }
+      } else if (trainingRecordType == TrainingRecordType.revoke) {
+        dynamic data = await ErrorHandler.request(
+          context: context,
+          repeat: false,
+          request: () {
+            return _scheduleController.deleteAppointment(
+              licenseKey:
+                  _generalController.appState.value.auth!.data!.licenseKey,
+              appointmentUid:
+                  _scheduleController.state.value.appointment!.appointmentUid,
+            );
+          },
+          handler: (data) async {
+            if (data != 200) {
+              CustomSnackbar.getSnackbar(
+                title: S.of(context).server_error,
+                message: S.of(context).activity_could_not_deleted,
+              );
+            }
+          },
+        );
+
+        if (data == 200) {
+          _scheduleController.clear(appointment: true);
+          Get.offNamed(Routes.schedule);
+        }
+      } else {
+        dynamic data = await ErrorHandler.request(
+          context: context,
+          repeat: false,
+          request: () async {
+            return _scheduleController.editAppointment(
+              licenseKey:
+                  _generalController.appState.value.auth!.data!.licenseKey,
+              userUid: _generalController.appState.value.auth!.users![0].uid,
+              customers: _scheduleController.state.value.clients!,
+              appointmentUid:
+                  _scheduleController.state.value.appointment!.appointmentUid,
+              appointmentType: appointmentType,
+              dateTimeAppointment: dateTimeAppointment,
+              serviceUid: _scheduleController.state.value.service!.uid,
+            );
+          },
+          handler: (data) async {
+            if (data == 403) {
+              CustomSnackbar.getSnackbar(
+                title: S.of(context).error,
+                message: S.of(context).valid_license_not_found,
+              );
+            }
+          },
+        );
+
+        if (data == 200) {
+          _scheduleController.clear(appointment: true);
+          Get.offNamed(Routes.schedule);
+        }
+      }
     } else {
       _transferClientByTrainerPipeline(
         theme: theme,

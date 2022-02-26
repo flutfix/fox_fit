@@ -96,7 +96,6 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
       },
       handler: (data) async {
         if (data == 401) {
-          log('data: $data');
           CustomSnackbar.getSnackbar(
             title: S.of(context).license_error_title,
             message: S.of(context).license_error_body,

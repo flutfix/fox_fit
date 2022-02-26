@@ -105,12 +105,49 @@ class ScheduleController extends GetxController {
     return data;
   }
 
-  void clear() {
+  /// Запрос на редактирование занятия в 1с
+  Future<dynamic> editAppointment({
+    required String licenseKey,
+    required String userUid,
+    required List<CustomerModelState> customers,
+    required String appointmentUid,
+    required String appointmentType,
+    required String dateTimeAppointment,
+    required String serviceUid,
+  }) async {
+    dynamic data = await Requests.editAppointment(
+      licenseKey: licenseKey,
+      userUid: userUid,
+      customers: customers,
+      appointmentUid: appointmentUid,
+      appointmentType: appointmentType,
+      dateTimeAppointment: dateTimeAppointment,
+      serviceUid: serviceUid,
+    );
+    return data;
+  }
+
+  /// Запрос на удаление занятия в 1с
+  Future<dynamic> deleteAppointment({
+    required String licenseKey,
+    required String appointmentUid,
+  }) async {
+    dynamic data = await Requests.deleteAppointment(
+      licenseKey: licenseKey,
+      appointmentUid: appointmentUid,
+    );
+    return data;
+  }
+
+  void clear({bool appointment = false}) {
     state.update((model) {
+      if (appointment) {
+        model?.appointment = null;
+      }
       model?.clients = null;
       model?.duration = null;
       model?.type = TrainingType.personal;
-      model?.split = false;
+      model?.service?.split = false;
       model?.service = null;
       model?.date = null;
       model?.time = null;

@@ -721,10 +721,20 @@ class S {
   }
 
   /// ``
-  String get client_could_not_recorded {
+  String get trining_could_not_recorded {
     return Intl.message(
       '',
-      name: 'client_could_not_recorded',
+      name: 'trining_could_not_recorded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get trining_could_not_edit {
+    return Intl.message(
+      '',
+      name: 'trining_could_not_edit',
       desc: '',
       args: [],
     );
@@ -745,6 +755,56 @@ class S {
     return Intl.message(
       '',
       name: 'this_client_supplied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get activity_could_not_deleted {
+    return Intl.message(
+      '',
+      name: 'activity_could_not_deleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get valid_license_not_found {
+    return Intl.message(
+      '',
+      name: 'valid_license_not_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get not_find_client {
+    return Intl.message(
+      '',
+      name: 'not_find_client',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get cancel_workout {
+    return Intl.message(
+      '',
+      name: 'cancel_workout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get revoke {
+    return Intl.message(
+      '',
+      name: 'revoke',
       desc: '',
       args: [],
     );

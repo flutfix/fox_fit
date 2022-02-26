@@ -13,7 +13,6 @@ class ErrorHandler {
     /// Повторять ли данный запрос
     bool repeat = true,
     bool skipCheck = false,
-    bool canVibrate = false,
   }) async {
     do {
       dynamic data = await request();
