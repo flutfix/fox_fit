@@ -69,20 +69,31 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     if (_isFromNotification) {
       _phone = '';
       _phone = await Get.arguments;
+      String formatPhone = _formatPhone(_phone!);
+      await ErrorHandler.request(
+          context: context,
+          request: () {
+            return _controller.getCustomerByPhone(phone: formatPhone);
+          },
+          handler: (data) async {
+            log('$data');
+            CustomSnackbar.getSnackbar(
+              title: S.of(context).server_error,
+              message: S.of(context).data_download_failed,
+            );
+            log('///////////////////////////////');
+            Get.back();
+            return false;
+          });
+    } else {
       await ErrorHandler.request(
         context: context,
         request: () {
-          return _controller.getCustomerByPhone(phone: _phone.toString());
+          return _controller.getCustomerInfo(
+              customerId: _controller.appState.value.currentCustomer!.uid);
         },
       );
     }
-    await ErrorHandler.request(
-      context: context,
-      request: () {
-        return _controller.getCustomerInfo(
-            customerId: _controller.appState.value.currentCustomer!.uid);
-      },
-    );
 
     setState(() {
       _loading = false;
@@ -476,6 +487,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   void _onHorizontalSwipe(SwipeDirection direction) async {
     if (direction == SwipeDirection.right) {
+      _controller.appState.update((model) {
+        model?.currentCustomer = null;
+      });
       Get.back();
       await ErrorHandler.request(
         context: context,
@@ -490,6 +504,16 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
         },
       );
     }
+  }
+
+  String _formatPhone(String _phone) {
+    dynamic formatPhone = _phone.split(' ');
+    formatPhone = '${formatPhone[1]}${formatPhone[2]}';
+    formatPhone = formatPhone.split(')');
+    formatPhone = '${formatPhone[0]}${formatPhone[1]}';
+    formatPhone = formatPhone.split('(');
+    formatPhone = '${formatPhone[0]}${formatPhone[1]}';
+    return '8$formatPhone';
   }
 
   void _onVerticalSwipe(SwipeDirection direction) {
