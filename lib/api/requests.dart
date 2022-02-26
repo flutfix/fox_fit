@@ -538,6 +538,7 @@ class Requests {
           "UserUid": userUid,
         },
       );
+
       if (response.statusCode == 200) {
         CustomerModel customer =
             CustomerModel.fromJson(response.data['Customers'][0]);
@@ -651,7 +652,7 @@ class Requests {
           'Customers': customersList,
         },
       );
-      
+
       if (response.statusCode == 200) {
         return response.statusCode;
       }

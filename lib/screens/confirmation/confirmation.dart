@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
@@ -279,9 +277,13 @@ class ConfirmationPage extends StatelessWidget {
 
         if (data == 200) {
           _scheduleController.clear(appointment: true);
-          Get.offNamed(Routes.schedule);
+          Get.back();
+          Get.back();
+          Get.back();
+          // Get.toNamed(Routes.signUpTrainingSession);
+          Get.toNamed(Routes.schedule);
         }
-      } else if (trainingRecordType == TrainingRecordType.revoke) {
+      } else if (trainingRecordType == TrainingRecordType.revoke) { 
         dynamic data = await ErrorHandler.request(
           context: context,
           repeat: false,
