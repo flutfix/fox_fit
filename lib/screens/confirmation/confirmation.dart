@@ -184,7 +184,7 @@ class ConfirmationPage extends StatelessWidget {
         context: context,
         request: () {
           return _generalController.transferClientToTrainer(
-            userUid: _generalController.appState.value.auth!.users![1].uid,
+            userUid:  _generalController.getUid(role: UserRole.coordinator),
             customerUid: _generalController.appState.value.currentCustomer!.uid,
             trainerUid: _generalController.appState.value.currentTrainer!.uid,
           );
@@ -252,7 +252,7 @@ class ConfirmationPage extends StatelessWidget {
             return _scheduleController.addAppointment(
               licenseKey:
                   _generalController.appState.value.auth!.data!.licenseKey,
-              userUid: _generalController.appState.value.auth!.users![0].uid,
+              userUid: _generalController.getUid(role: UserRole.trainer),
               customers: _scheduleController.state.value.clients!,
               appointmentType: appointmentType,
               dateTimeAppointment: dateTimeAppointment,
@@ -317,7 +317,7 @@ class ConfirmationPage extends StatelessWidget {
             return _scheduleController.editAppointment(
               licenseKey:
                   _generalController.appState.value.auth!.data!.licenseKey,
-              userUid: _generalController.appState.value.auth!.users![0].uid,
+              userUid: _generalController.getUid(role: UserRole.trainer),
               customers: _scheduleController.state.value.clients!,
               appointmentUid:
                   _scheduleController.state.value.appointment!.appointmentUid,
@@ -361,7 +361,7 @@ class ConfirmationPage extends StatelessWidget {
       repeat: false,
       request: () {
         return _generalController.transferClientByTrainerPipeline(
-          userUid: _generalController.appState.value.auth!.users![0].uid,
+          userUid:_generalController.getUid(role: UserRole.trainer),
           customerUid: _generalController.appState.value.currentCustomer!.uid,
           trainerPipelineStageUid: Enums.getStagePipelineUid(
             stagePipelineType: stagePipelineType,

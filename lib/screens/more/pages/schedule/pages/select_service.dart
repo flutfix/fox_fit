@@ -42,7 +42,7 @@ class _SelectServicePageState extends State<SelectServicePage> {
         );
 
         return _scheduleController.getCustomerFitnessServices(
-          userUid: _generalController.appState.value.auth!.users![0].uid,
+          userUid: _generalController.getUid(role: UserRole.trainer),
           customerUid: _scheduleController.state.value.clients![0].model.uid,
           duration: _scheduleController.state.value.duration.toString(),
           serviceType: serviceType,
