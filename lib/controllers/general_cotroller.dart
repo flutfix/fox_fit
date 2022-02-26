@@ -220,7 +220,7 @@ class GeneralController extends GetxController {
   /// Получение клиента по номеру телефона
   Future<dynamic> getCustomerByPhone({required String phone}) async {
     var data = await Requests.getCustomerByPhone(
-      licenseKey: appState.value.auth!.data!.licenseKey,
+      uid: appState.value.auth!.users![0].uid,
       phone: phone,
     );
     if (data is int || data == null) {

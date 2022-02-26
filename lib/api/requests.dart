@@ -486,7 +486,7 @@ class Requests {
   /// Получение клиента по номеру телефона
   static Future<dynamic> getCustomerByPhone({
     required String phone,
-    required String licenseKey,
+    required String uid,
   }) async {
     String url = '${Requests.url}get_customer_by_phone_number';
     final dioClient = Dio(Requests.options);
@@ -496,9 +496,10 @@ class Requests {
         url,
         queryParameters: {
           "phone_number": phone,
-          "LicenseKey": licenseKey,
+          "UserUid": uid,
         },
       );
+
       if (response.statusCode == 200) {
         CustomerModel customer =
             CustomerModel.fromJson(response.data['Customers'][0]);
