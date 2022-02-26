@@ -99,7 +99,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
       context: context,
       request: () {
         return _scheduleController.getCustomerByPhone(
-          userUid: _generalController.appState.value.auth!.users![0].uid,
+          userUid: _generalController.getUid(role: UserRole.trainer),
           phone: search,
         );
       },

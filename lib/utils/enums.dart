@@ -165,6 +165,11 @@ enum ClientType {
   coordinator,
 }
 
+enum UserRole {
+  trainer,
+  coordinator,
+}
+
 enum CustomersPageType {
   general,
   coordinator,
