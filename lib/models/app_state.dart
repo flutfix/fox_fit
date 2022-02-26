@@ -13,6 +13,8 @@ class AppStateModel {
     this.isLoading = false,
     this.currentIndex = 0,
     this.isNewNotifications = false,
+    this.useSchedule = false,
+    this.useSalesCoach = false,
     this.isCoordinator = false,
     this.isAppStateResumed = false,
     this.isCanVibrate = false,
@@ -36,7 +38,17 @@ class AppStateModel {
   bool isLoading;
   int currentIndex;
   bool isNewNotifications;
+
+  ///Показывать ли раздел [Расписание]
+  bool useSchedule;
+
+  ///Показывать ли раздел [Продажи]
+  bool useSalesCoach;
+
+  /// Является ли юзер координатором
   bool isCoordinator;
+
+  /// Для отслеживания глобального состояния приложения
   bool isAppStateResumed;
 
   bool isCanVibrate;
