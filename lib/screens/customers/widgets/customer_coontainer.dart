@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/models/customer.dart';
+import 'package:fox_fit/screens/customer_information/customer_information.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:get/get.dart';
-
-import '../../customer_information/customer_information.dart';
 
 class CustomerContainer extends StatefulWidget {
   const CustomerContainer({
     Key? key,
     required this.customer,
     required this.clientType,
+    this.onTap,
   }) : super(key: key);
 
   final CustomerModel customer;
   final ClientType clientType;
+  final Function()? onTap;
 
   @override
   State<CustomerContainer> createState() => _CustomerContainerState();
@@ -46,13 +47,17 @@ class _CustomerContainerState extends State<CustomerContainer> {
               _controller.appState.update((model) {
                 model?.currentCustomer = widget.customer;
               });
-              Get.to(
-                () => CustomerInformationPage(
-                  clientType: widget.clientType,
-                  isHandingButton: _isHandlingButton(widget.clientType),
-                ),
-                transition: Transition.fadeIn,
-              );
+              if (widget.onTap != null) {
+                widget.onTap!();
+              } else {
+                Get.to(
+                  () => CustomerInformationPage(
+                    clientType: widget.clientType,
+                    isHandingButton: _isHandlingButton(widget.clientType),
+                  ),
+                  transition: Transition.fadeIn,
+                );
+              }
             },
             child: getContainerContent(widget.customer, theme),
             isHighlight: isContainerBordered(

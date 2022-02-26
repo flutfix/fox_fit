@@ -8,7 +8,6 @@ import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
-import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
@@ -17,7 +16,6 @@ import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -39,7 +37,7 @@ class CustomerInformationPage extends StatefulWidget {
 }
 
 class _CustomerInformationPageState extends State<CustomerInformationPage> {
-  late bool _loading;
+  late bool _isLoading;
   late GeneralController _controller;
   late ScrollController _scrollController;
   late bool _isOpenedBootomSheet;
@@ -64,7 +62,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   Future<void> load() async {
     setState(() {
-      _loading = true;
+      _isLoading = true;
     });
 
     if (_isFromNotification) {
@@ -95,7 +93,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     );
 
     setState(() {
-      _loading = false;
+      _isLoading = false;
     });
   }
 
@@ -136,7 +134,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             Get.toNamed(Routes.notifications);
           },
         ),
-        body: !_loading
+        body: !_isLoading
             ? _controller.appState.value.currentCustomer != null
                 ? Column(
                     children: [
@@ -172,7 +170,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          _showBottomSheet();
+                                          if (!_isLoading) {
+                                            _showBottomSheet();
+                                          }
                                         },
                                         behavior: HitTestBehavior.translucent,
                                         child: const SizedBox(
@@ -386,7 +386,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   /// Открывает нижлий лист с доступными вариантами
   /// передачи клиента дальше по воронке
-  Future _showBottomSheet() async {
+  Future<void> _showBottomSheet() async {
     setState(() {
       _isOpenedBootomSheet = true;
     });
@@ -536,7 +536,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
       if (widget.clientType != ClientType.conducted &&
           widget.clientType != ClientType.permanent &&
           widget.clientType != ClientType.sleeping) {
-        _showBottomSheet();
+        if (!_isLoading) {
+          _showBottomSheet();
+        }
       }
     }
   }

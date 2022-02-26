@@ -2,23 +2,18 @@ class TrainerPerfomanceModel {
   TrainerPerfomanceModel({
     required this.month,
     required this.perfomanceStages,
-    this.isActive = false,
     this.amount = '',
     this.plan = '',
     this.done = '',
   });
 
   late String month;
-  late bool isActive = false;
   late String amount;
   late String plan;
   late String done;
   late List<TrainerPerfomanceStageModel> perfomanceStages;
 
-  TrainerPerfomanceModel.fromJson(
-    Map<String, dynamic> json, {
-    bool isCurrentMonth = false,
-  }) {
+  TrainerPerfomanceModel.fromJson(Map<String, dynamic> json) {
     month = json['Month'] ?? '';
     amount = json['Amount'] ?? '';
     plan = json['Plan'] ?? '';
@@ -29,7 +24,6 @@ class TrainerPerfomanceModel {
         perfomanceStages.add(TrainerPerfomanceStageModel.fromJson(v));
       });
     }
-    isActive = isCurrentMonth;
   }
 }
 

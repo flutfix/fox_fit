@@ -16,6 +16,13 @@ class Enums {
 
       case StagePipelineType.rejection:
         return Images.cross;
+
+      case StagePipelineType.coordinator:
+        return Images.coordinatorSvg;
+
+      case StagePipelineType.training:
+        return Images.assigned;
+
       default:
         return Images.assigned;
     }
@@ -35,6 +42,12 @@ class Enums {
 
       case StagePipelineType.rejection:
         return true;
+
+      case StagePipelineType.coordinator:
+        return false;
+
+      case StagePipelineType.training:
+        return false;
 
       default:
         return false;
@@ -90,6 +103,48 @@ class Enums {
         return StagePipeline.assigned;
     }
   }
+
+  static getTrainingTypeString({required TrainingType trainingType}) {
+    switch (trainingType) {
+      case TrainingType.personal:
+        return 'Personal';
+
+      case TrainingType.split:
+        return 'Group';
+
+      default:
+        return 'Personal';
+    }
+  }
+
+  static getTrainingType({required String trainingType}) {
+    switch (trainingType) {
+      case 'Personal':
+        return TrainingType.personal;
+
+      case 'Group':
+        return TrainingType.split;
+
+      default:
+        return TrainingType.personal;
+    }
+  }
+
+  static getPaymentStatusType({required String paymentStatusString}) {
+    switch (paymentStatusString) {
+      case 'DoneAndPayed':
+        return PaymentStatusType.doneAndPayed;
+
+      case 'PlannedAndPayed':
+        return PaymentStatusType.plannedAndPayed;
+
+      case 'ReservedNeedPayment':
+        return PaymentStatusType.reservedNeedPayment;
+
+      default:
+        return StagePipeline.assigned;
+    }
+  }
 }
 
 enum StagePipelineType {
@@ -98,6 +153,7 @@ enum StagePipelineType {
   nonCall,
   rejection,
   coordinator,
+  training,
 }
 
 enum ClientType {
@@ -109,10 +165,37 @@ enum ClientType {
   coordinator,
 }
 
-enum CustomersPageType { general, coordinator, sleep }
+enum CustomersPageType {
+  general,
+  coordinator,
+  sleep,
+}
 
 enum CustomersContainerType {
   justName,
   age,
   services,
+}
+
+enum TrainingType {
+  personal,
+  split,
+}
+
+enum PaymentStatusType {
+  /// Проведено и оплачено
+  doneAndPayed,
+
+  /// Запланировано и оплачено
+  plannedAndPayed,
+
+  /// Запланирвоноо и нужна оплата
+  reservedNeedPayment,
+}
+
+enum TrainingRecordType {
+  create,
+  edit,
+  group,
+  revoke,
 }

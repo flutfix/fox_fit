@@ -10,6 +10,8 @@ abstract class Styles {
   static const Color greyLight3 = Color(0xFFE0E0E0);
   static const Color greyLight4 = Color(0xFFE7EBEF);
   static const Color greyLight5 = Color(0xFFBDBDBD);
+  static const Color greyLight6 = Color(0xFFF2F2F2);
+  static const Color greyLight7 = Color(0xFF828282);
   static const Color blue = Color(0xFF2692DA);
   static const Color primaryText = Color(0xFF333E63);
   static const Color secondaryText = Color(0xFF3A4060);
@@ -22,6 +24,8 @@ abstract class Styles {
   static const Color darkGrey = Color(0xFFD7D7D7);
   static const Color darkOrange = Color(0xFFE55000);
   static const Color green = Colors.green;
+  static const Color yellow = Colors.yellow;
+  static const Color red = Colors.red;
 
   /// Стандартный шрифт
   static const String mainFontFamily = 'Open Sans';

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
@@ -26,7 +29,8 @@ class General extends StatefulWidget {
 }
 
 class _GeneralState extends State<General> with WidgetsBindingObserver {
-  late GeneralController controller;
+  late GeneralController _generalController;
+  late ScheduleController _scheduleController;
   late PageController pageController;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   late String? _fcmToken;
@@ -34,18 +38,19 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance?.addObserver(this);
-    controller = Get.put(GeneralController());
+    _generalController = Get.put(GeneralController());
+    _scheduleController = Get.put(ScheduleController());
     AuthDataModel authData = Get.arguments;
-    controller.appState.update((model) {
+    _generalController.appState.update((model) {
       model?.auth = authData;
     });
     if (authData.users!.length > 1) {
-      controller.appState.update((model) {
+      _generalController.appState.update((model) {
         model?.isCoordinator = true;
       });
-      controller.initVibration();
+      _generalController.initVibration();
     }
-    log('[Uid] ${controller.appState.value.auth?.users?[0].uid}');
+    log('[Uid] ${_generalController.appState.value.auth?.users?[0].uid}');
 
     /// Если приложение закрыто и пользователь нажимает на уведомление - его перекидывает на страницу [Уведомления]
     FirebaseMessaging.instance.getInitialMessage().then((message) {
@@ -71,7 +76,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
     if (isResumed) {
       log('[State] Was resumed from background');
-      if (controller.appState.value.currentIndex != 4) {
+      if (_generalController.appState.value.currentIndex != 4) {
         await _load();
       }
     }
@@ -79,7 +84,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
   /// Функция подгрузки данных, необходимых для инициализации приложения
   Future<void> _load() async {
-    controller.appState.update((model) {
+    _generalController.appState.update((model) {
       model?.isLoading = true;
     });
     var prefs = await SharedPreferences.getInstance();
@@ -87,11 +92,10 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     await ErrorHandler.request(
       context: context,
       request: () {
-        return controller.getCustomers(fcmToken: _fcmToken);
+        return _generalController.getCustomers(fcmToken: _fcmToken);
       },
       handler: (data) async {
         if (data == 401) {
-          log('data: $data');
           CustomSnackbar.getSnackbar(
             title: S.of(context).license_error_title,
             message: S.of(context).license_error_body,
@@ -109,7 +113,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
       await Get.offAllNamed(Routes.auth);
     }
 
-    controller.appState.update((model) {
+    _generalController.appState.update((model) {
       model?.isLoading = false;
     });
   }
@@ -120,22 +124,22 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
     return Obx(
       () {
-        if (!controller.appState.value.isLoading) {
+        if (!_generalController.appState.value.isLoading) {
           return Scaffold(
             backgroundColor: theme.backgroundColor,
             appBar: appBar(
               theme,
-              controller,
+              _generalController,
               onNotification: () async {
                 var result = await Get.toNamed(Routes.notifications);
                 if (result != null) {
                   if (result == 3) {
-                    controller.appState.update((model) {
+                    _generalController.appState.update((model) {
                       model?.isLoading = true;
                     });
                     await ErrorHandler.request(
                       context: context,
-                      request: controller.getRegularCustomers,
+                      request: _generalController.getRegularCustomers,
                       repeat: false,
                       skipCheck: true,
                       handler: (_) async {
@@ -145,7 +149,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
                         );
                       },
                     );
-                    controller.appState.update((model) {
+                    _generalController.appState.update((model) {
                       model?.isLoading = false;
                     });
                   }
@@ -159,7 +163,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
               controller: pageController,
               children: [
                 ...List.generate(
-                  controller.appState.value.bottomBarItems.length - 1,
+                  _generalController.appState.value.bottomBarItems.length - 1,
                   (index) {
                     return const KeepAlivePage(child: CustomersPage());
                   },
@@ -169,7 +173,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
             ),
             bottomNavigationBar: Obx(
               () => CustomBottomBar(
-                items: controller.appState.value.bottomBarItems,
+                items: _generalController.appState.value.bottomBarItems,
                 lineColor: theme.colorScheme.primary,
                 activeColor: theme.colorScheme.primary,
                 inActiveColor: theme.dividerColor.withOpacity(0.5),

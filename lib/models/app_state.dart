@@ -27,6 +27,7 @@ class AppStateModel {
     this.detailedInfo = const [],
     this.availablePipelineStages = const [],
     this.trainerPerfomance = const [],
+    this.trainerPerfomanceMonth = const [],
     this.availableTrainers = const [],
     this.sortedAvailableTrainers,
     this.currentCustomer,
@@ -80,6 +81,9 @@ class AppStateModel {
 
   /// Статистика тренера
   List<TrainerPerfomanceModel> trainerPerfomance;
+
+  /// Месяцы статистики тренера
+  List<String> trainerPerfomanceMonth;
 
   /// Доступные тренера
   List<Trainer> availableTrainers;
