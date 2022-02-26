@@ -5,9 +5,9 @@ import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/more_card.dart';
-import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/widgets/bottom_sheet.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
@@ -40,6 +40,16 @@ class _MorePageState extends State<MorePage> {
     if (cards.isEmpty) {
       setState(() {
         cards = [
+          /// [Расписание]
+          if (_controller.appState.value.useSchedule)
+            MoreCardModel(
+              text: S.of(context).schedule,
+              icon: Images.schedule,
+              onTap: () {
+                Get.toNamed(Routes.schedule);
+              },
+            ),
+
           /// [Статистика тренера]
           MoreCardModel(
             text: S.of(context).trainer_stats,
@@ -51,10 +61,10 @@ class _MorePageState extends State<MorePage> {
 
           /// ["Спящие" клиенты]
           MoreCardModel(
-            text: S.of(context).inactiveCustomers,
+            text: S.of(context).sleeping_customers,
             icon: Images.inactiveCustomers,
             onTap: () {
-              Get.toNamed(Routes.inactiveCustomers);
+              Get.toNamed(Routes.sleepingCustomers);
             },
           ),
 
@@ -172,7 +182,6 @@ class _MorePageState extends State<MorePage> {
       isScrollControlled: true,
       builder: (context) {
         return CustomBottomSheet(
-          clientType: ClientType.coordinator,
           backgroundColor: theme.backgroundColor,
           child: Padding(
             padding: const EdgeInsets.symmetric(
@@ -194,6 +203,7 @@ class _MorePageState extends State<MorePage> {
                       Vibrate.feedback(FeedbackType.light);
                     }
                     Get.delete<GeneralController>();
+                    Get.delete<ScheduleController>();
                     var prefs = await SharedPreferences.getInstance();
                     prefs.setBool(Cache.isAuthorized, false);
                     prefs.setString(Cache.pass, '');

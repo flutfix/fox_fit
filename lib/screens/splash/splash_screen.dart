@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -60,7 +59,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
             prefsType: PrefsType.string,
           );
 
-          /// Для идентификации API зазпросов
+          /// Для идентификации API запросов
           Requests.url = pathToBase;
           Requests.options = BaseOptions(
             baseUrl: pathToBase,

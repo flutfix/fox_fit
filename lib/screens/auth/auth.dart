@@ -131,7 +131,8 @@ class _AuthPageState extends State<AuthPage> {
                             phoneController.value = TextEditingValue(
                               text: _phonePrefix,
                               selection: TextSelection.collapsed(
-                                  offset: _phonePrefix.length),
+                                offset: _phonePrefix.length,
+                              ),
                             );
                           }
                         },
@@ -256,13 +257,11 @@ class _AuthPageState extends State<AuthPage> {
   Future<dynamic> getPhoneFromPrefs() async {
     var phone =
         await Prefs.getPrefs(key: Cache.phone, prefsType: PrefsType.string);
-    if (phone != null) {
-      if (phone != '') {
-        setState(() {
-          oldPhone = phone;
-          phoneController.text = maskFormatter.maskText(phone);
-        });
-      }
+    if (phone != null && phone != '') {
+      setState(() {
+        oldPhone = phone;
+        phoneController.text = maskFormatter.maskText(phone);
+      });
     }
   }
 

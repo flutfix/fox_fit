@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
@@ -10,6 +8,7 @@ import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
 import 'package:fox_fit/models/trainer.dart';
+import 'package:fox_fit/models/trainer_stats.dart';
 import 'package:get/get.dart';
 
 class GeneralController extends GetxController {
@@ -54,12 +53,16 @@ class GeneralController extends GetxController {
       final String isNewNotifications = data[0] ?? 'False';
       final List<ItemBottomBarModel> bottomBarItems = data[1];
       final List<CustomerModel> customers = data[2];
+      final bool? useSchedule = data[3];
+      final bool? useSalesCoach = data[4];
       appState.update((model) {
         if (isNewNotifications == 'True') {
           model?.isNewNotifications = true;
         } else {
           model?.isNewNotifications = false;
         }
+        model?.useSchedule = useSchedule ?? false;
+        model?.useSalesCoach = useSalesCoach ?? false;
       });
       _setStagesPipelinesID(bottomBarItems: bottomBarItems);
       _sortBottomBarItems(bottomBarItems: bottomBarItems);
@@ -128,8 +131,12 @@ class GeneralController extends GetxController {
     if (data is int || data == null) {
       return data;
     } else {
+      List<TrainerPerfomanceModel> perfomance = data[0];
+      List<String> trainerPerfomanceMonth = data[1];
+
       appState.update((model) {
-        model?.trainerPerfomance = data;
+        model?.trainerPerfomance = perfomance;
+        model?.trainerPerfomanceMonth = trainerPerfomanceMonth;
       });
       return 200;
     }
@@ -220,7 +227,7 @@ class GeneralController extends GetxController {
   /// Получение клиента по номеру телефона
   Future<dynamic> getCustomerByPhone({required String phone}) async {
     var data = await Requests.getCustomerByPhone(
-      uid: appState.value.auth!.users![0].uid,
+      userUid: appState.value.auth!.users![0].uid,
       phone: phone,
     );
     if (data is int || data == null) {

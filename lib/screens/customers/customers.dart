@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/generated/l10n.dart';
@@ -51,7 +49,9 @@ class _CustomersPageState extends State<CustomersPage> {
     });
 
     await ErrorHandler.request(
-        context: context, request: _controller.getRegularCustomers);
+      context: context,
+      request: _controller.getRegularCustomers,
+    );
 
     setState(() {
       _isLoading = false;
@@ -61,7 +61,7 @@ class _CustomersPageState extends State<CustomersPage> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return !_isLoading
+    return (!_isLoading)
         ? Obx(
             () {
               return SmartRefresher(

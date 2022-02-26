@@ -16,7 +16,6 @@ import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -38,7 +37,7 @@ class CustomerInformationPage extends StatefulWidget {
 }
 
 class _CustomerInformationPageState extends State<CustomerInformationPage> {
-  late bool _loading;
+  late bool _isLoading;
   late GeneralController _controller;
   late ScrollController _scrollController;
   late bool _isOpenedBootomSheet;
@@ -63,7 +62,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   Future<void> load() async {
     setState(() {
-      _loading = true;
+      _isLoading = true;
     });
 
     if (_isFromNotification) {
@@ -76,27 +75,25 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             return _controller.getCustomerByPhone(phone: formatPhone);
           },
           handler: (data) async {
-            log('$data');
             CustomSnackbar.getSnackbar(
               title: S.of(context).server_error,
               message: S.of(context).data_download_failed,
             );
-            log('///////////////////////////////');
+
             Get.back();
             return false;
           });
-    } else {
-      await ErrorHandler.request(
-        context: context,
-        request: () {
-          return _controller.getCustomerInfo(
-              customerId: _controller.appState.value.currentCustomer!.uid);
-        },
-      );
     }
+    await ErrorHandler.request(
+      context: context,
+      request: () {
+        return _controller.getCustomerInfo(
+            customerId: _controller.appState.value.currentCustomer!.uid);
+      },
+    );
 
     setState(() {
-      _loading = false;
+      _isLoading = false;
     });
   }
 
@@ -137,7 +134,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             Get.toNamed(Routes.notifications);
           },
         ),
-        body: !_loading
+        body: !_isLoading
             ? _controller.appState.value.currentCustomer != null
                 ? Column(
                     children: [
@@ -173,7 +170,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          _showBottomSheet();
+                                          if (!_isLoading) {
+                                            _showBottomSheet();
+                                          }
                                         },
                                         behavior: HitTestBehavior.translucent,
                                         child: const SizedBox(
@@ -301,8 +300,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                                 DefaultContainer(
                                   padding: const EdgeInsets.fromLTRB(
                                       28, 17.45, 19, 22.55),
-                                  child: _controller.appState.value.detailedInfo
-                                          .isNotEmpty
+                                  child: _checkInfoExistense()
                                       ? ListView.separated(
                                           physics:
                                               const NeverScrollableScrollPhysics(),
@@ -388,7 +386,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   /// Открывает нижлий лист с доступными вариантами
   /// передачи клиента дальше по воронке
-  Future _showBottomSheet() async {
+  Future<void> _showBottomSheet() async {
     setState(() {
       _isOpenedBootomSheet = true;
     });
@@ -506,6 +504,23 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     }
   }
 
+  /// Проверка на то, есть ли подробная информация о клиенте
+  bool _checkInfoExistense() {
+    if (_controller.appState.value.detailedInfo.isNotEmpty) {
+      int count = 0;
+      for (var element in _controller.appState.value.detailedInfo) {
+        if (element.value == 'Информация отсутствует') {
+          count++;
+        }
+      }
+      if (count == _controller.appState.value.detailedInfo.length) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
   String _formatPhone(String _phone) {
     dynamic formatPhone = _phone.split(' ');
     formatPhone = '${formatPhone[1]}${formatPhone[2]}';
@@ -521,7 +536,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
       if (widget.clientType != ClientType.conducted &&
           widget.clientType != ClientType.permanent &&
           widget.clientType != ClientType.sleeping) {
-        _showBottomSheet();
+        if (!_isLoading) {
+          _showBottomSheet();
+        }
       }
     }
   }

@@ -14,6 +14,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.isBackArrow = false,
     this.onBack,
     this.count,
+    this.action,
   }) : super(key: key);
 
   final double height;
@@ -23,6 +24,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool isBackArrow;
   final Function()? onBack;
   final int? count;
+  final Widget? action;
 
   @override
   _CustomAppBarState createState() => _CustomAppBarState();
@@ -93,7 +95,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
               ],
             ),
             widget.isNotification
-                ? Obx(() => GestureDetector(
+                ? Obx(
+                    () => GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: widget.onNotification,
                       child: Stack(
@@ -111,10 +114,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
                           )
                         ],
                       ),
-                    ))
-                : const SizedBox(
-                    width: 36,
+                    ),
                   )
+                : widget.action ??
+                    const SizedBox(
+                      width: 36,
+                    )
           ],
         ),
       ),

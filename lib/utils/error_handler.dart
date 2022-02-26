@@ -1,12 +1,8 @@
-import 'dart:developer';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
-import 'package:get/get.dart';
 
 class ErrorHandler {
   static Future<dynamic> request({
@@ -17,7 +13,6 @@ class ErrorHandler {
     /// Повторять ли данный запрос
     bool repeat = true,
     bool skipCheck = false,
-    bool canVibrate = false,
   }) async {
     do {
       dynamic data = await request();

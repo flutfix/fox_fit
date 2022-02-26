@@ -10,14 +10,14 @@ import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:swipe/swipe.dart';
 
-class InactiveCustomersPage extends StatefulWidget {
-  const InactiveCustomersPage({Key? key}) : super(key: key);
+class SleepingCustomersPage extends StatefulWidget {
+  const SleepingCustomersPage({Key? key}) : super(key: key);
 
   @override
-  _InactiveCustomersPageState createState() => _InactiveCustomersPageState();
+  _SleepingCustomersPageState createState() => _SleepingCustomersPageState();
 }
 
-class _InactiveCustomersPageState extends State<InactiveCustomersPage> {
+class _SleepingCustomersPageState extends State<SleepingCustomersPage> {
   late bool _isLoading;
   late GeneralController _controller;
 
@@ -86,7 +86,7 @@ class _InactiveCustomersPageState extends State<InactiveCustomersPage> {
 
   CustomAppBar _appBar() {
     return CustomAppBar(
-      title: S.of(context).inactiveCustomers,
+      title: S.of(context).sleeping_customers,
       isBackArrow: true,
       onBack: ()async {
         await _onBack();
