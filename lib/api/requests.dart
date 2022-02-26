@@ -308,10 +308,6 @@ class Requests {
   }) async {
     String url = '${Requests.url}get_customer_info';
     final dioClient = Dio(Requests.options);
-    log('${dioClient.options.baseUrl}');
-    log('${dioClient.options.headers}');
-    log('${uId}');
-    log('${customerId}');
     try {
       var response = await dioClient.get(url, queryParameters: {
         'ClientUid': customerId,
