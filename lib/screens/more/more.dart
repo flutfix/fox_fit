@@ -41,13 +41,14 @@ class _MorePageState extends State<MorePage> {
       setState(() {
         cards = [
           /// [Расписание]
-          MoreCardModel(
-            text: S.of(context).schedule,
-            icon: Images.schedule,
-            onTap: () {
-              Get.toNamed(Routes.schedule);
-            },
-          ),
+          if (_controller.appState.value.useSchedule)
+            MoreCardModel(
+              text: S.of(context).schedule,
+              icon: Images.schedule,
+              onTap: () {
+                Get.toNamed(Routes.schedule);
+              },
+            ),
 
           /// [Статистика тренера]
           MoreCardModel(

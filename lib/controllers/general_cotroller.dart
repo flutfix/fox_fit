@@ -53,12 +53,16 @@ class GeneralController extends GetxController {
       final String isNewNotifications = data[0] ?? 'False';
       final List<ItemBottomBarModel> bottomBarItems = data[1];
       final List<CustomerModel> customers = data[2];
+      final bool? useSchedule = data[3];
+      final bool? useSalesCoach = data[4];
       appState.update((model) {
         if (isNewNotifications == 'True') {
           model?.isNewNotifications = true;
         } else {
           model?.isNewNotifications = false;
         }
+        model?.useSchedule = useSchedule ?? false;
+        model?.useSalesCoach = useSalesCoach ?? false;
       });
       _setStagesPipelinesID(bottomBarItems: bottomBarItems);
       _sortBottomBarItems(bottomBarItems: bottomBarItems);

@@ -157,6 +157,8 @@ class Requests {
           response.data['NewNotifications'],
           bottomBarItems,
           customers,
+          response.data['UseSchedule'],
+          response.data['UseSalesCoach'],
         ];
       }
     } on DioError catch (e) {
