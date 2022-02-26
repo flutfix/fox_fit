@@ -8,6 +8,7 @@ import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
+import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
@@ -76,24 +77,22 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
             return _controller.getCustomerByPhone(phone: formatPhone);
           },
           handler: (data) async {
-            log('$data');
             CustomSnackbar.getSnackbar(
               title: S.of(context).server_error,
               message: S.of(context).data_download_failed,
             );
-            log('///////////////////////////////');
+
             Get.back();
             return false;
           });
-    } else {
-      await ErrorHandler.request(
-        context: context,
-        request: () {
-          return _controller.getCustomerInfo(
-              customerId: _controller.appState.value.currentCustomer!.uid);
-        },
-      );
     }
+    await ErrorHandler.request(
+      context: context,
+      request: () {
+        return _controller.getCustomerInfo(
+            customerId: _controller.appState.value.currentCustomer!.uid);
+      },
+    );
 
     setState(() {
       _loading = false;
@@ -301,8 +300,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                                 DefaultContainer(
                                   padding: const EdgeInsets.fromLTRB(
                                       28, 17.45, 19, 22.55),
-                                  child: _controller.appState.value.detailedInfo
-                                          .isNotEmpty
+                                  child: _checkInfoExistense()
                                       ? ListView.separated(
                                           physics:
                                               const NeverScrollableScrollPhysics(),
@@ -504,6 +502,23 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
         },
       );
     }
+  }
+
+  /// Проверка на то, есть ли подробная информация о клиенте
+  bool _checkInfoExistense() {
+    if (_controller.appState.value.detailedInfo.isNotEmpty) {
+      int count = 0;
+      for (var element in _controller.appState.value.detailedInfo) {
+        if (element.value == 'Информация отсутствует') {
+          count++;
+        }
+      }
+      if (count == _controller.appState.value.detailedInfo.length) {
+        return false;
+      }
+      return true;
+    }
+    return false;
   }
 
   String _formatPhone(String _phone) {
