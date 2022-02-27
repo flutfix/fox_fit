@@ -23,6 +23,9 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "activity_could_not_deleted": MessageLookupByLibrary.simpleMessage(""),
+        "add_least_one_client": MessageLookupByLibrary.simpleMessage(""),
+        "appointment_has_already_been_held":
+            MessageLookupByLibrary.simpleMessage(""),
         "authorization_failed": MessageLookupByLibrary.simpleMessage(""),
         "back": MessageLookupByLibrary.simpleMessage(""),
         "cancel": MessageLookupByLibrary.simpleMessage(""),
@@ -66,14 +69,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "new_password": MessageLookupByLibrary.simpleMessage(""),
         "new_password_again": MessageLookupByLibrary.simpleMessage(""),
         "no_internet_access": MessageLookupByLibrary.simpleMessage(""),
+        "no_services_found": MessageLookupByLibrary.simpleMessage(""),
         "not_find_client": MessageLookupByLibrary.simpleMessage(""),
         "notifications": MessageLookupByLibrary.simpleMessage(""),
+        "only_add_or_remove_clients": MessageLookupByLibrary.simpleMessage(""),
         "password_not_changed": MessageLookupByLibrary.simpleMessage(""),
         "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(""),
         "personal": MessageLookupByLibrary.simpleMessage(""),
         "record": MessageLookupByLibrary.simpleMessage(""),
         "repeat_input": MessageLookupByLibrary.simpleMessage(""),
         "revoke": MessageLookupByLibrary.simpleMessage(""),
+        "save": MessageLookupByLibrary.simpleMessage(""),
         "save_edits": MessageLookupByLibrary.simpleMessage(""),
         "schedule": MessageLookupByLibrary.simpleMessage(""),
         "select_client": MessageLookupByLibrary.simpleMessage(""),

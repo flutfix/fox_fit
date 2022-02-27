@@ -5,46 +5,50 @@ import 'package:fox_fit/utils/enums.dart';
 
 class ScheduleStateModel {
   ScheduleStateModel({
-    this.appointments = const [],
     this.appointment,
-    this.clients,
+    this.clients = const [],
     this.capacity = 1,
     this.duration,
-    this.type = TrainingType.personal,
+    this.split = false,
     this.service,
     this.date,
     this.time,
+    this.appointmentRecordType = AppointmentRecordType.create,
+    this.appointments = const [],
     this.appointmentsDurations = const [],
     this.services = const [],
     this.paidServicesBalance = const [],
   });
 
-  /// Список всех занятий
-  List<AppointmentModel> appointments;
-
-  /// Выбранное [занятие]
+  /// Выбранное занятие
   AppointmentModel? appointment;
 
-  /// Выбранные [клиенты]
-  List<CustomerModelState>? clients;
+  /// Выбранные клиенты
+  List<CustomerModelState> clients;
 
-  /// [Вместимость] тренировки
+  /// Вместимость тренировки
   int capacity;
 
-  /// Выбранная [длительность] тренировки
+  /// Выбранная длительность тренировки
   int? duration;
 
-  /// Выбранный [тип] тренировки
-  TrainingType type;
+  /// Выбранный тип тренировки (Персональная или Сплит)
+  bool split;
 
-  /// Выбранная [услуга]
+  /// Выбранная услуга
   Service? service;
 
-  /// Выбранная [дата] тренировки
+  /// Выбранная дата тренировки
   DateTime? date;
 
-  /// Выбранное [время] тренировки
+  /// Выбранное время тренировки
   DateTime? time;
+
+  /// Тип записи на тренировку
+  AppointmentRecordType appointmentRecordType;
+
+  /// Список всех занятий
+  List<AppointmentModel> appointments;
 
   /// Список длительностей занятий
   List<int> appointmentsDurations;

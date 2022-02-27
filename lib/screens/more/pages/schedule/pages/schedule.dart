@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/month.dart';
-import 'package:fox_fit/screens/more/pages/schedule/pages/sign_up_training_session.dart';
 import 'package:fox_fit/screens/more/pages/schedule/widgets/lessons.dart';
 import 'package:fox_fit/screens/more/pages/schedule/widgets/time_feed.dart';
 import 'package:fox_fit/utils/enums.dart';
@@ -11,6 +13,7 @@ import 'package:fox_fit/widgets/days.dart';
 import 'package:fox_fit/widgets/months.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -25,7 +28,7 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   late bool _isLoading;
-  late final GeneralController _generalController;
+  late final GeneralController _controller;
   late final ScheduleController _scheduleController;
   late DateTime _dateNow;
   late final List<MonthModel> _months;
@@ -37,8 +40,9 @@ class _SchedulePageState extends State<SchedulePage> {
   void initState() {
     super.initState();
     _isLoading = true;
-    _generalController = Get.find<GeneralController>();
+    _controller = Get.find<GeneralController>();
     _scheduleController = Get.find<ScheduleController>();
+
 
     _dateNow = DateTime.now();
 
@@ -61,7 +65,7 @@ class _SchedulePageState extends State<SchedulePage> {
       context: context,
       request: () {
         return _scheduleController.getAppointments(
-          userUid: _generalController.getUid(role: UserRole.trainer),
+          userUid: _controller.getUid(role: UserRole.trainer),
           dateNow: _dateNow,
         );
       },
@@ -93,7 +97,21 @@ class _SchedulePageState extends State<SchedulePage> {
     );
 
     return Swipe(
-      onSwipeRight: () => Get.back(),
+      onSwipeRight: () async {
+        await ErrorHandler.request(
+          context: context,
+          request: _controller.getCustomers,
+          repeat: false,
+          skipCheck: true,
+          handler: (_) async {
+            CustomSnackbar.getSnackbar(
+              title: S.of(context).no_internet_access,
+              message: S.of(context).failed_update_list,
+            );
+          },
+        );
+        Get.back();
+      },
       child: Scaffold(
         backgroundColor: theme.backgroundColor,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -101,7 +119,19 @@ class _SchedulePageState extends State<SchedulePage> {
           title: S.of(context).schedule,
           isBackArrow: true,
           isNotification: false,
-          onBack: () {
+          onBack: () async {
+            await ErrorHandler.request(
+              context: context,
+              request: _controller.getCustomers,
+              repeat: false,
+              skipCheck: true,
+              handler: (_) async {
+                CustomSnackbar.getSnackbar(
+                  title: S.of(context).no_internet_access,
+                  message: S.of(context).failed_update_list,
+                );
+              },
+            );
             Get.back();
           },
         ),
@@ -191,7 +221,7 @@ class _SchedulePageState extends State<SchedulePage> {
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Container(
-                            height: 150,
+                            height: 130,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topCenter,
@@ -228,12 +258,10 @@ class _SchedulePageState extends State<SchedulePage> {
           padding: const EdgeInsets.symmetric(horizontal: 64),
           child: CustomTextButton(
             onTap: () {
-              Get.to(
-                () => const SignUpTrainingSessionPage(
-                  trainingRecordType: TrainingRecordType.create,
-                ),
-                transition: Transition.fadeIn,
-              );
+              _scheduleController.state.update((model) {
+                model?.appointmentRecordType = AppointmentRecordType.create;
+              });
+              Get.toNamed(Routes.signUpTrainingSession);
             },
             height: 51,
             text: S.of(context).record,

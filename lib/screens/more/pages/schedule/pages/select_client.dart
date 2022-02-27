@@ -15,35 +15,31 @@ import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:swipe/swipe.dart';
 
 class SelectClientPage extends StatefulWidget {
-  const SelectClientPage({
-    Key? key,
-    required this.trainingRecordType,
-  }) : super(key: key);
-
-  final TrainingRecordType trainingRecordType;
+  const SelectClientPage({Key? key}) : super(key: key);
 
   @override
   _SelectClientPageState createState() => _SelectClientPageState();
 }
 
 class _SelectClientPageState extends State<SelectClientPage> {
-  late GeneralController _generalController;
+  late GeneralController _controller;
   late ScheduleController _scheduleController;
   late bool _isLoading;
   late TextEditingController _phoneController;
   late FocusNode _phoneFocus;
   late String _phonePrefix;
   late MaskTextInputFormatter _maskFormatter;
-  CustomerModel? _client;
-  String? _textErrorResultSearch;
+  CustomerModel? _foundClient;
+  late String _textErrorResultSearch;
   late String _search;
 
   @override
   void initState() {
     super.initState();
-    _generalController = Get.find<GeneralController>();
+    _controller = Get.find<GeneralController>();
     _scheduleController = Get.find<ScheduleController>();
 
     _isLoading = false;
@@ -57,6 +53,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
       },
     );
 
+    _textErrorResultSearch = '';
     _search = '';
 
     _phoneFocus.addListener(_onFocusChange);
@@ -72,7 +69,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
     await ErrorHandler.request(
       context: context,
       request: () {
-        return _generalController.getRegularCustomers();
+        return _controller.getRegularCustomers();
       },
       handler: (data) async {
         if (data != 200) {
@@ -99,19 +96,17 @@ class _SelectClientPageState extends State<SelectClientPage> {
       context: context,
       request: () {
         return _scheduleController.getCustomerByPhone(
-          userUid: _generalController.getUid(role: UserRole.trainer),
+          userUid: _controller.getUid(role: UserRole.trainer),
           phone: search,
         );
       },
       handler: (data) async {
         setState(() {
           /// Если клиент не найден
-          if (data == 404 || data == 500) {
+          if (data != 200 && data is! CustomerModel) {
             _textErrorResultSearch = S.of(context).client_not_found;
           } else if (data is CustomerModel) {
-            _client = data;
-          } else {
-            _textErrorResultSearch = null;
+            _foundClient = data;
           }
         });
         return false;
@@ -126,301 +121,258 @@ class _SelectClientPageState extends State<SelectClientPage> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: theme.backgroundColor,
-      appBar: CustomAppBar(
-        title: S.of(context).choice_client,
-        isBackArrow: true,
-        isNotification: false,
-        onBack: () {
-          Get.back();
-        },
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: Search(
-              controller: _phoneController,
-              textInputType: TextInputType.phone,
-              hintText: '+7 ___ ___ __ __',
-              maskFormatter: [_maskFormatter],
-              phoneFocus: _phoneFocus,
-              onSearch: (search) {
-                if (_maskFormatter.getUnmaskedText().isEmpty) {
-                  _phoneController.value = TextEditingValue(
-                    text: _phonePrefix,
-                    selection:
-                        TextSelection.collapsed(offset: _phonePrefix.length),
-                  );
-                }
-
-                setState(() {
-                  _search = search;
-                });
-
-                if (search != '') {
-                  /// Форматирование номера для запроса
-                  List<String> searchSplit = search.split(' ');
-                  searchSplit = [
-                    searchSplit[0][1],
-                    ...searchSplit[1].split('-')
-                  ];
-                  search = '';
-                  for (var i = 0; i < searchSplit.length; i++) {
-                    search += searchSplit[i];
+    return Swipe(
+      onSwipeRight: () {
+        Get.back();
+      },
+      child: Scaffold(
+        backgroundColor: theme.backgroundColor,
+        appBar: CustomAppBar(
+          title: S.of(context).choice_client,
+          isBackArrow: true,
+          isNotification: false,
+          onBack: () {
+            Get.back();
+          },
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Search(
+                controller: _phoneController,
+                textInputType: TextInputType.phone,
+                hintText: '+7 ___ ___ __ __',
+                maskFormatter: [_maskFormatter],
+                phoneFocus: _phoneFocus,
+                onSearch: (search) {
+                  if (_maskFormatter.getUnmaskedText().isEmpty) {
+                    _phoneController.value = TextEditingValue(
+                      text: _phonePrefix,
+                      selection:
+                          TextSelection.collapsed(offset: _phonePrefix.length),
+                    );
                   }
 
-                  /// Обработка полностью ли введён номер
-                  if (search.length != 11) {
-                    setState(() {
-                      _textErrorResultSearch = S.of(context).enter_full_number;
-                      _client = null;
-                    });
-                  } else {
-                    getCustomerByPhone(search: search);
+                  setState(() {
+                    _search = search;
+                  });
+
+                  if (search != '') {
+                    /// Форматирование номера для запроса
+                    List<String> searchSplit = search.split(' ');
+                    searchSplit = [
+                      searchSplit[0][1],
+                      ...searchSplit[1].split('-')
+                    ];
+                    search = '';
+                    for (var i = 0; i < searchSplit.length; i++) {
+                      search += searchSplit[i];
+                    }
+
+                    /// Обработка полностью ли введён номер
+                    if (search.length != 11) {
+                      setState(() {
+                        _textErrorResultSearch =
+                            S.of(context).enter_full_number;
+                        _foundClient = null;
+                      });
+                    } else {
+                      getCustomerByPhone(search: search);
+                    }
                   }
-                }
-              },
+                },
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          if (!_isLoading)
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: _client != null
+            const SizedBox(height: 16),
+            if (!_isLoading)
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: _foundClient != null
 
-                    /// Для найденного клиента
-                    ? CustomerContainer(
-                        customer: _client!,
-                        clientType: ClientType.assigned,
-                        onTap: () {
-                          List<CustomerModelState>? clientList =
-                              _scheduleController.state.value.clients;
-
-                          bool check = checkPresenceInList(
-                            clientList: clientList,
-                            currentCustomer: _client!,
-                          );
-
-                          if (check) {
-                            if (_client! !=
-                                _scheduleController
-                                    .state.value.clients?[0].model) {
-                              _scheduleController.clear();
-                            }
-
-                            _scheduleController.state.update((model) {
-                              model?.clients = [
-                                CustomerModelState(
-                                  model: _client!,
-                                  arrivalStatus: false,
-                                ),
-                              ];
-                              model?.duration = _client!.duration;
-                              model?.service?.split = _client!.split ?? false;
-                              if (_client!.serviceUid != null &&
-                                  _client!.serviceName != null) {
-                                model?.service = Service(
-                                  uid: _client!.serviceUid!,
-                                  name: _client!.serviceName!,
-                                );
-                              }
-                            });
-
-                            Get.back();
-                          } else {
-                            CustomSnackbar.getSnackbar(
-                              title: S.of(context).error,
-                              message: S.of(context).this_client_supplied,
+                      /// Для найденного клиента
+                      ? CustomerContainer(
+                          customer: _foundClient!,
+                          clientType: ClientType.assigned,
+                          onTap: () {
+                            /// Проверка, выбран ли уже клиент
+                            bool check =
+                                _scheduleController.state.value.clients.any(
+                              (client) => client.model.uid == _foundClient!.uid,
                             );
-                          }
-                        },
-                      )
-                    : _search.isEmpty
 
-                        /// Список постоянных клиентов
-                        ? !_isLoading
-                            ? ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 10, 0, 20),
-                                itemCount: _generalController.appState.value
-                                    .sortedCustomers[Client.permanent]!.length,
-                                itemBuilder: (context, index) {
-                                  List<String> phoneList = _generalController
-                                      .appState
-                                      .value
-                                      .sortedCustomers[Client.permanent]![index]
-                                      .phone
-                                      .split(' ');
+                            if (!check) {
+                              Get.back();
 
-                                  String phone = '';
-                                  if (phoneList.length == 3) {
-                                    phoneList = [
-                                      phoneList[0][1],
-                                      phoneList[1].substring(1, 4),
-                                      phoneList[2]
-                                    ];
-                                    for (var i = 0; i < phoneList.length; i++) {
-                                      phone += phoneList[i];
-                                    }
-                                  } else {
-                                    phone = phoneList[0];
-                                  }
+                              _scheduleController.clear(data: false);
 
-                                  CustomerModel currentCustomer =
-                                      _generalController
-                                              .appState.value.sortedCustomers[
-                                          Client.permanent]![index];
-                                  List<CustomerModelState>? clientList =
-                                      _scheduleController.state.value.clients;
-
-                                  bool check = checkPresenceInList(
-                                    clientList: clientList,
-                                    currentCustomer: currentCustomer,
-                                  );
-
-                                  if (check) {
-                                    return CustomerContainer(
-                                      customer: currentCustomer,
-                                      clientType: ClientType.permanent,
-                                      onTap: () async {
-                                        if (widget.trainingRecordType !=
-                                            TrainingRecordType.group) {
-                                          await getCustomerByPhone(
-                                            search: phone,
-                                          );
-                                          if (_scheduleController
-                                                  .state.value.clients !=
-                                              null) {
-                                            if (currentCustomer !=
-                                                _scheduleController.state.value
-                                                    .clients![0].model) {
-                                              _scheduleController.clear();
-                                            }
-                                          }
-
-                                          _scheduleController.state
-                                              .update((model) {
-                                            model?.clients = [
-                                              CustomerModelState(
-                                                model: currentCustomer,
-                                                arrivalStatus: false,
-                                              ),
-                                            ];
-                                            model?.duration = _client?.duration;
-                                            model?.service?.split =
-                                                _client?.split ?? false;
-                                            if (_client?.serviceUid != null &&
-                                                _client?.serviceName != null) {
-                                              model?.service = Service(
-                                                uid: _client!.serviceUid!,
-                                                name: _client!.serviceName!,
-                                              );
-                                            }
-                                          });
-                                        } else {
-                                          List<CustomerModelState>? clientList =
-                                              _scheduleController
-                                                  .state.value.clients;
-
-                                          if (clientList != null) {
-                                            clientList.add(
-                                              CustomerModelState(
-                                                model: currentCustomer,
-                                                arrivalStatus: false,
-                                              ),
-                                            );
-                                          } else {
-                                            clientList = [
-                                              CustomerModelState(
-                                                model: currentCustomer,
-                                                arrivalStatus: false,
-                                              ),
-                                            ];
-                                          }
-
-                                          _scheduleController.state
-                                              .update((model) {
-                                            model?.clients = clientList;
-                                          });
-                                        }
-
-                                        Get.back();
-                                      },
-                                    );
-                                  } else {
-                                    return const SizedBox();
-                                  }
-                                },
-                              )
-                            : Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: DefaultContainer(
-                                  child: Center(
-                                    child: Text(
-                                      _textErrorResultSearch ??
-                                          S.of(context).enter_full_number,
-                                      style: theme.textTheme.headline3,
-                                      textAlign: TextAlign.center,
-                                    ),
+                              _scheduleController.state.update((model) {
+                                model?.clients = [
+                                  CustomerModelState(
+                                    model: _foundClient!,
+                                    arrivalStatus: false,
                                   ),
-                                ),
-                              )
-                        : const Padding(
-                            padding: EdgeInsets.only(top: 18.0),
-                            child: Center(
-                              child: SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
+                                ];
+                                model?.duration = _foundClient!.duration;
+                                model?.split = _foundClient!.split ?? false;
+                                if (_foundClient!.serviceUid != null &&
+                                    _foundClient!.serviceName != null) {
+                                  model?.service = Service(
+                                    uid: _foundClient!.serviceUid!,
+                                    name: _foundClient!.serviceName!,
+                                  );
+                                }
+                              });
+                            } else {
+                              CustomSnackbar.getSnackbar(
+                                title: S.of(context).error,
+                                message: S.of(context).this_client_supplied,
+                              );
+                            }
+                          },
+                        )
+                      :
+
+                      /// Список постоянных клиентов
+                      _search.isEmpty
+                          ? ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+                              itemCount: _controller.appState.value
+                                  .sortedCustomers[Client.permanent]!.length,
+                              itemBuilder: (context, index) {
+                                /// Преобразование номера телефона в нужный формат
+                                List<String> phoneList = _controller
+                                    .appState
+                                    .value
+                                    .sortedCustomers[Client.permanent]![index]
+                                    .phone
+                                    .split(' ');
+                                String phone = '';
+                                if (phoneList.length == 3) {
+                                  phoneList = [
+                                    phoneList[0][1],
+                                    phoneList[1].substring(1, 4),
+                                    phoneList[2]
+                                  ];
+                                  for (var i = 0; i < phoneList.length; i++) {
+                                    phone += phoneList[i];
+                                  }
+                                } else {
+                                  phone = phoneList[0];
+                                }
+
+                                CustomerModel currentClient = _controller
+                                    .appState
+                                    .value
+                                    .sortedCustomers[Client.permanent]![index];
+
+                                /// Проверка, выбран ли уже клиент
+                                bool check =
+                                    _scheduleController.state.value.clients.any(
+                                  (client) =>
+                                      client.model.uid == currentClient.uid,
+                                );
+
+                                if (!check) {
+                                  return CustomerContainer(
+                                    customer: currentClient,
+                                    clientType: ClientType.permanent,
+                                    onTap: () async {
+                                      /// Для персональной тренировки
+                                      if (_scheduleController
+                                              .state.value.appointmentRecordType !=
+                                          AppointmentRecordType.group) {
+                                        await getCustomerByPhone(
+                                          search: phone,
+                                        );
+                                        Get.back();
+
+                                        _scheduleController.clear(data: false);
+
+                                        _scheduleController.state
+                                            .update((model) {
+                                          model?.clients = [
+                                            CustomerModelState(
+                                              model: _foundClient!,
+                                              arrivalStatus: false,
+                                            ),
+                                          ];
+                                          model?.duration =
+                                              _foundClient!.duration;
+                                          model?.split =
+                                              _foundClient!.split ?? false;
+                                          if (_foundClient!.serviceUid !=
+                                                  null &&
+                                              _foundClient!.serviceName !=
+                                                  null) {
+                                            model?.service = Service(
+                                              uid: _foundClient!.serviceUid!,
+                                              name: _foundClient!.serviceName!,
+                                            );
+                                          }
+                                        });
+
+                                        /// Для групповой тренировоки
+                                      } else {
+                                        Get.back();
+                                        List<CustomerModelState> clients =
+                                            _scheduleController
+                                                .state.value.clients;
+
+                                        clients.add(
+                                          CustomerModelState(
+                                            model: currentClient,
+                                            arrivalStatus: false,
+                                          ),
+                                        );
+
+                                        _scheduleController.state
+                                            .update((model) {
+                                          model?.clients = clients;
+                                        });
+                                      }
+                                    },
+                                  );
+                                } else {
+                                  return const SizedBox();
+                                }
+                              },
+                            )
+                          : Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: DefaultContainer(
+                                child: Center(
+                                  child: Text(
+                                    _textErrorResultSearch,
+                                    style: theme.textTheme.headline3,
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-              ),
-            )
-          else
-            const Padding(
-              padding: EdgeInsets.only(top: 18.0),
-              child: Center(
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
+                ),
+              )
+            else
+              const Padding(
+                padding: EdgeInsets.only(top: 18.0),
+                child: Center(
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
                   ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
-  }
-
-  /// Служит для проверки, добавлен ли уже клиент в список
-  bool checkPresenceInList({
-    required List<CustomerModelState>? clientList,
-    required CustomerModel currentCustomer,
-  }) {
-    bool check = true;
-
-    if (clientList != null) {
-      for (var client in clientList) {
-        if (client.model.uid == currentCustomer.uid) {
-          check = false;
-          break;
-        } else {
-          check = true;
-        }
-      }
-    }
-    return check;
   }
 
   /// Подставление [+7] в начало строки, если поле в фокусе
