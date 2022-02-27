@@ -89,6 +89,7 @@ class ScheduleController extends GetxController {
     required String userUid,
     required List<CustomerModelState> customers,
     required String appointmentType,
+    required bool split,
     required String dateTimeAppointment,
     required String serviceUid,
     required int capacity,
@@ -98,6 +99,7 @@ class ScheduleController extends GetxController {
       userUid: userUid,
       customers: customers,
       appointmentType: appointmentType,
+      split: split,
       dateTimeAppointment: dateTimeAppointment,
       serviceUid: serviceUid,
       capacity: capacity,
@@ -112,6 +114,7 @@ class ScheduleController extends GetxController {
     required List<CustomerModelState> customers,
     required String appointmentUid,
     required String appointmentType,
+    bool? split,
     required String dateTimeAppointment,
     required String serviceUid,
   }) async {
@@ -121,6 +124,7 @@ class ScheduleController extends GetxController {
       customers: customers,
       appointmentUid: appointmentUid,
       appointmentType: appointmentType,
+      split: split,
       dateTimeAppointment: dateTimeAppointment,
       serviceUid: serviceUid,
     );
@@ -139,18 +143,24 @@ class ScheduleController extends GetxController {
     return data;
   }
 
-  void clear({bool appointment = false}) {
+  void clear({
+    bool appointment = false,
+    bool data = true,
+  }) {
     state.update((model) {
       if (appointment) {
         model?.appointment = null;
       }
-      model?.clients = null;
+      model?.clients = [];
+      model?.capacity = 1;
       model?.duration = null;
-      model?.type = TrainingType.personal;
-      model?.service?.split = false;
+      model?.split = false;
       model?.service = null;
-      model?.date = null;
+      if (data) {
+        model?.date = null;
+      }
       model?.time = null;
+      model?.appointmentRecordType = AppointmentRecordType.create;
     });
   }
 }

@@ -74,5 +74,10 @@
     "valid_license_not_found": "",
     "not_find_client": "",
     "cancel_workout": "",
-    "revoke": ""
+    "revoke": "",
+    "only_add_or_remove_clients": "",
+    "no_services_found": "",
+    "save": "",
+    "add_least_one_client": "",
+    "appointment_has_already_been_held": ""
 }

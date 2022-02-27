@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/models/app_state.dart';
-import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/coordinator_workspace.dart';
 import 'package:fox_fit/models/customer.dart';

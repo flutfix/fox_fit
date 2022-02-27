@@ -809,6 +809,56 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get only_add_or_remove_clients {
+    return Intl.message(
+      '',
+      name: 'only_add_or_remove_clients',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get no_services_found {
+    return Intl.message(
+      '',
+      name: 'no_services_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get save {
+    return Intl.message(
+      '',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get add_least_one_client {
+    return Intl.message(
+      '',
+      name: 'add_least_one_client',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get appointment_has_already_been_held {
+    return Intl.message(
+      '',
+      name: 'appointment_has_already_been_held',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

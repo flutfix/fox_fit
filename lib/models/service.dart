@@ -1,14 +1,14 @@
 class Service {
-  late String name;
-  late String uid;
-  late String duration;
-  late bool trial;
-  late bool split;
+  late final String name;
+  late final String uid;
+  late final int duration;
+  late final bool trial;
+  late final bool split;
 
   Service({
     this.name = '',
     this.uid = '',
-    this.duration = '',
+    this.duration = 0,
     this.trial = false,
     this.split = false,
   });
@@ -16,25 +16,15 @@ class Service {
   Service.fromJson(Map<String, dynamic> json) {
     name = json['Name'] ?? '';
     uid = json['Uid'] ?? '';
-    duration = json['Duration'] ?? '';
+    duration = json['Duration'] != null ? int.parse(json['Duration']) : 0;
     trial = json['Trial'] ?? false;
     split = json['Split'] ?? false;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['Name'] = name;
-    data['Uid'] = uid;
-    data['Duration'] = duration;
-    data['Trial'] = trial;
-    data['Split'] = trial;
-    return data;
   }
 }
 
 class PaidServiceBalance {
-  late String uid;
-  late int balance;
+  late final String uid;
+  late final int balance;
 
   PaidServiceBalance({
     this.uid = '',
@@ -44,12 +34,5 @@ class PaidServiceBalance {
   PaidServiceBalance.fromJson(Map<String, dynamic> json) {
     uid = json['ServiceUid'] ?? '';
     balance = json['Balance'] ?? 0;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['ServiceUid'] = uid;
-    data['Balance'] = balance;
-    return data;
   }
 }

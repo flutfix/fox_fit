@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class CustomSnackbar {
   static void getSnackbar({
     required String title,
-    required String message,
+    String message = '',
     int duration = 2,
   }) {
     Get.snackbar(

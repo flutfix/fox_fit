@@ -615,12 +615,13 @@ class Requests {
     }
   }
 
-  /// Запрос на создание занятия в 1с
+  /// Создание тренировки
   static Future<dynamic> addAppointment({
     required String licenseKey,
     required String userUid,
     required List<CustomerModelState> customers,
     required String appointmentType,
+    required bool split,
     required String dateTimeAppointment,
     required String serviceUid,
     required int capacity,
@@ -646,6 +647,7 @@ class Requests {
           'LicenseKey': licenseKey,
           'UserUid': userUid,
           'AppointmentType': appointmentType,
+          'Split': split,
           'DateTimeAppointment': dateTimeAppointment,
           'ServiceUid': serviceUid,
           'Capacity': capacity,
@@ -664,13 +666,14 @@ class Requests {
     }
   }
 
-  /// Запрос на редактирование занятия в 1с
+  /// Редактирование тренировки
   static Future<dynamic> editAppointment({
     required String licenseKey,
     required String userUid,
     required List<CustomerModelState> customers,
     required String appointmentUid,
     required String appointmentType,
+    bool? split,
     required String dateTimeAppointment,
     required String serviceUid,
   }) async {
@@ -696,6 +699,7 @@ class Requests {
           'UserUid': userUid,
           'AppointmentUid': appointmentUid,
           'AppointmentType': appointmentType,
+          if (split != null) 'Split': split,
           'DateTimeAppointment': dateTimeAppointment,
           'ServiceUid': serviceUid,
         },
@@ -713,7 +717,7 @@ class Requests {
     }
   }
 
-  /// Запрос на удаление занятия в 1с
+  /// Удаление тренировки
   static Future<dynamic> deleteAppointment({
     required String licenseKey,
     required String appointmentUid,

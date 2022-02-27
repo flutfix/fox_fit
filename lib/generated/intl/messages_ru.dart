@@ -24,6 +24,10 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "activity_could_not_deleted":
             MessageLookupByLibrary.simpleMessage("Удалить занятие не удалось"),
+        "add_least_one_client": MessageLookupByLibrary.simpleMessage(
+            "Добавьте хотя бы одного клиента"),
+        "appointment_has_already_been_held":
+            MessageLookupByLibrary.simpleMessage("Занятие уже проведено"),
         "authorization_failed":
             MessageLookupByLibrary.simpleMessage("Авторизация не удалась"),
         "back": MessageLookupByLibrary.simpleMessage("Назад"),
@@ -92,9 +96,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Новый пароль (повторно)"),
         "no_internet_access":
             MessageLookupByLibrary.simpleMessage("Нет доступа к интернету"),
+        "no_services_found":
+            MessageLookupByLibrary.simpleMessage("Услуг не найдено"),
         "not_find_client":
             MessageLookupByLibrary.simpleMessage("Не удалось найти клиента"),
         "notifications": MessageLookupByLibrary.simpleMessage("Уведомления"),
+        "only_add_or_remove_clients": MessageLookupByLibrary.simpleMessage(
+            "В групповой тренировке можно только добавлять или удалять клиентов"),
         "password_not_changed":
             MessageLookupByLibrary.simpleMessage("Пароль не изменён"),
         "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
@@ -103,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "record": MessageLookupByLibrary.simpleMessage("Записать"),
         "repeat_input": MessageLookupByLibrary.simpleMessage("Повторите ввод"),
         "revoke": MessageLookupByLibrary.simpleMessage("Отменить"),
+        "save": MessageLookupByLibrary.simpleMessage("Сохранить"),
         "save_edits": MessageLookupByLibrary.simpleMessage("Изменить"),
         "schedule": MessageLookupByLibrary.simpleMessage("Расписание"),
         "select_client":

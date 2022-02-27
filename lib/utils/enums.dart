@@ -20,7 +20,7 @@ class Enums {
       case StagePipelineType.coordinator:
         return Images.coordinatorSvg;
 
-      case StagePipelineType.training:
+      case StagePipelineType.appointment:
         return Images.assigned;
 
       default:
@@ -46,7 +46,7 @@ class Enums {
       case StagePipelineType.coordinator:
         return false;
 
-      case StagePipelineType.training:
+      case StagePipelineType.appointment:
         return false;
 
       default:
@@ -104,12 +104,12 @@ class Enums {
     }
   }
 
-  static getTrainingTypeString({required TrainingType trainingType}) {
-    switch (trainingType) {
-      case TrainingType.personal:
+  static getAppointmentTypeString({required AppointmentType appointmentType}) {
+    switch (appointmentType) {
+      case AppointmentType.personal:
         return 'Personal';
 
-      case TrainingType.split:
+      case AppointmentType.group:
         return 'Group';
 
       default:
@@ -117,16 +117,16 @@ class Enums {
     }
   }
 
-  static getTrainingType({required String trainingType}) {
-    switch (trainingType) {
+  static getAppointmentType({required String appointmentTypeString}) {
+    switch (appointmentTypeString) {
       case 'Personal':
-        return TrainingType.personal;
+        return AppointmentType.personal;
 
       case 'Group':
-        return TrainingType.split;
+        return AppointmentType.group;
 
       default:
-        return TrainingType.personal;
+        return AppointmentType.personal;
     }
   }
 
@@ -153,7 +153,7 @@ enum StagePipelineType {
   nonCall,
   rejection,
   coordinator,
-  training,
+  appointment,
 }
 
 enum ClientType {
@@ -182,9 +182,9 @@ enum CustomersContainerType {
   services,
 }
 
-enum TrainingType {
+enum AppointmentType {
   personal,
-  split,
+  group,
 }
 
 enum PaymentStatusType {
@@ -194,11 +194,11 @@ enum PaymentStatusType {
   /// Запланировано и оплачено
   plannedAndPayed,
 
-  /// Запланирвоноо и нужна оплата
+  /// Запланирвоно и нужна оплата
   reservedNeedPayment,
 }
 
-enum TrainingRecordType {
+enum AppointmentRecordType {
   create,
   edit,
   group,

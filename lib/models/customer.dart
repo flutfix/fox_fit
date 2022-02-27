@@ -31,11 +31,11 @@ class CustomerModel {
   late String birthDay;
   late bool isBirthday;
   late int? paidServicesBalance;
-  late String? serviceUid;
-  late String? serviceName;
-  late int? balance;
-  late bool? split;
-  late int? duration;
+  String? serviceUid;
+  String? serviceName;
+  int? balance;
+  bool? split;
+  int? duration;
 
   CustomerModel.fromJson(Map<String, dynamic> json) {
     uid = json['Uid'] ?? '';
