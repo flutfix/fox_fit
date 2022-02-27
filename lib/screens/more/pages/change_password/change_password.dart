@@ -6,6 +6,7 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
@@ -31,13 +32,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   @override
   void initState() {
+    super.initState();
     _controller = Get.find<GeneralController>();
     _newPassController = TextEditingController();
     _newPassAgainController = TextEditingController();
     _isNewPassAnimation = false;
     _isNewPassAgainAnimation = false;
     _isCanVibrate = _controller.appState.value.isCanVibrate;
-    super.initState();
   }
 
   @override
@@ -180,7 +181,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         request: () {
           return _controller.changeUserPassword(
             key: _controller.appState.value.auth!.data!.licenseKey,
-            userUid: _controller.appState.value.auth!.users![0].uid,
+            userUid: _controller.getUid(role: UserRole.trainer),
             newPass: _newPassAgainController.text,
           );
         },

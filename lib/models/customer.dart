@@ -11,7 +11,12 @@ class CustomerModel {
     this.image = '',
     this.birthDay = '',
     this.isBirthday = false,
-    this.paidServicesBalance,
+    this.paidServicesBalance = 0,
+    this.serviceUid,
+    this.serviceName,
+    this.balance,
+    this.split,
+    this.duration,
   });
 
   late String uid;
@@ -26,6 +31,11 @@ class CustomerModel {
   late String birthDay;
   late bool isBirthday;
   late int? paidServicesBalance;
+  String? serviceUid;
+  String? serviceName;
+  int? balance;
+  bool? split;
+  int? duration;
 
   CustomerModel.fromJson(Map<String, dynamic> json) {
     uid = json['Uid'] ?? '';
@@ -39,7 +49,12 @@ class CustomerModel {
     image = json['PhotoBase64'] ?? '';
     birthDay = json['BirthDay'] ?? '';
     isBirthday = json['IsBirthDayToday'] ?? false;
-    paidServicesBalance = json['PaidServicesBalance'];
+    paidServicesBalance = json['PaidServicesBalance'] ?? 0;
+    serviceUid = json['ServiceUid'];
+    serviceName = json['NameService'];
+    balance = json['Balance'];
+    split = json['Split'];
+    duration = json['Durations'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,6 +71,11 @@ class CustomerModel {
     data['BirthDay'] = birthDay;
     data['IsBirthDayToday'] = isBirthday;
     data['PaidServicesBalance'] = paidServicesBalance;
+    data['ServiceUid'] = serviceUid;
+    data['NameService'] = serviceName;
+    data['Balance'] = balance;
+    data['Split'] = split;
+    data['Durations'] = duration;
     return data;
   }
 }

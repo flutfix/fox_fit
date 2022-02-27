@@ -491,10 +491,10 @@ class S {
   }
 
   /// ``
-  String get inactiveCustomers {
+  String get sleeping_customers {
     return Intl.message(
       '',
-      name: 'inactiveCustomers',
+      name: 'sleeping_customers',
       desc: '',
       args: [],
     );
@@ -505,6 +505,196 @@ class S {
     return Intl.message(
       '',
       name: 'error_transferring_record',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get schedule {
+    return Intl.message(
+      '',
+      name: 'schedule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get record {
+    return Intl.message(
+      '',
+      name: 'record',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get sign_up_training_session {
+    return Intl.message(
+      '',
+      name: 'sign_up_training_session',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get select_client {
+    return Intl.message(
+      '',
+      name: 'select_client',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get choice_client {
+    return Intl.message(
+      '',
+      name: 'choice_client',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get duration {
+    return Intl.message(
+      '',
+      name: 'duration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get personal {
+    return Intl.message(
+      '',
+      name: 'personal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get split {
+    return Intl.message(
+      '',
+      name: 'split',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get service {
+    return Intl.message(
+      '',
+      name: 'service',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get date_event {
+    return Intl.message(
+      '',
+      name: 'date_event',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get time_lesson {
+    return Intl.message(
+      '',
+      name: 'time_lesson',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get enter_full_number {
+    return Intl.message(
+      '',
+      name: 'enter_full_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get client_not_found {
+    return Intl.message(
+      '',
+      name: 'client_not_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get choice_service {
+    return Intl.message(
+      '',
+      name: 'choice_service',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get fill_previous_fields {
+    return Intl.message(
+      '',
+      name: 'fill_previous_fields',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get fill_all_fields {
+    return Intl.message(
+      '',
+      name: 'fill_all_fields',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get to_practice {
+    return Intl.message(
+      '',
+      name: 'to_practice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get back {
+    return Intl.message(
+      '',
+      name: 'back',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get inactiveCustomers {
+    return Intl.message(
+      '',
+      name: 'inactiveCustomers',
       desc: '',
       args: [],
     );
@@ -525,6 +715,146 @@ class S {
     return Intl.message(
       '',
       name: 'license_error_body',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get trining_could_not_recorded {
+    return Intl.message(
+      '',
+      name: 'trining_could_not_recorded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get trining_could_not_edit {
+    return Intl.message(
+      '',
+      name: 'trining_could_not_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get selected_clients {
+    return Intl.message(
+      '',
+      name: 'selected_clients',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get this_client_supplied {
+    return Intl.message(
+      '',
+      name: 'this_client_supplied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get activity_could_not_deleted {
+    return Intl.message(
+      '',
+      name: 'activity_could_not_deleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get valid_license_not_found {
+    return Intl.message(
+      '',
+      name: 'valid_license_not_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get not_find_client {
+    return Intl.message(
+      '',
+      name: 'not_find_client',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get cancel_workout {
+    return Intl.message(
+      '',
+      name: 'cancel_workout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get revoke {
+    return Intl.message(
+      '',
+      name: 'revoke',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get only_add_or_remove_clients {
+    return Intl.message(
+      '',
+      name: 'only_add_or_remove_clients',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get no_services_found {
+    return Intl.message(
+      '',
+      name: 'no_services_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get save {
+    return Intl.message(
+      '',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get add_least_one_client {
+    return Intl.message(
+      '',
+      name: 'add_least_one_client',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get appointment_has_already_been_held {
+    return Intl.message(
+      '',
+      name: 'appointment_has_already_been_held',
       desc: '',
       args: [],
     );

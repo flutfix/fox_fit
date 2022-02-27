@@ -16,6 +16,13 @@ class Enums {
 
       case StagePipelineType.rejection:
         return Images.cross;
+
+      case StagePipelineType.coordinator:
+        return Images.coordinatorSvg;
+
+      case StagePipelineType.appointment:
+        return Images.assigned;
+
       default:
         return Images.assigned;
     }
@@ -35,6 +42,12 @@ class Enums {
 
       case StagePipelineType.rejection:
         return true;
+
+      case StagePipelineType.coordinator:
+        return false;
+
+      case StagePipelineType.appointment:
+        return false;
 
       default:
         return false;
@@ -90,6 +103,48 @@ class Enums {
         return StagePipeline.assigned;
     }
   }
+
+  static getAppointmentTypeString({required AppointmentType appointmentType}) {
+    switch (appointmentType) {
+      case AppointmentType.personal:
+        return 'Personal';
+
+      case AppointmentType.group:
+        return 'Group';
+
+      default:
+        return 'Personal';
+    }
+  }
+
+  static getAppointmentType({required String appointmentTypeString}) {
+    switch (appointmentTypeString) {
+      case 'Personal':
+        return AppointmentType.personal;
+
+      case 'Group':
+        return AppointmentType.group;
+
+      default:
+        return AppointmentType.personal;
+    }
+  }
+
+  static getPaymentStatusType({required String paymentStatusString}) {
+    switch (paymentStatusString) {
+      case 'DoneAndPayed':
+        return PaymentStatusType.doneAndPayed;
+
+      case 'PlannedAndPayed':
+        return PaymentStatusType.plannedAndPayed;
+
+      case 'ReservedNeedPayment':
+        return PaymentStatusType.reservedNeedPayment;
+
+      default:
+        return StagePipeline.assigned;
+    }
+  }
 }
 
 enum StagePipelineType {
@@ -98,6 +153,7 @@ enum StagePipelineType {
   nonCall,
   rejection,
   coordinator,
+  appointment,
 }
 
 enum ClientType {
@@ -109,10 +165,42 @@ enum ClientType {
   coordinator,
 }
 
-enum CustomersPageType { general, coordinator, sleep }
+enum UserRole {
+  trainer,
+  coordinator,
+}
+
+enum CustomersPageType {
+  general,
+  coordinator,
+  sleep,
+}
 
 enum CustomersContainerType {
   justName,
   age,
   services,
+}
+
+enum AppointmentType {
+  personal,
+  group,
+}
+
+enum PaymentStatusType {
+  /// Проведено и оплачено
+  doneAndPayed,
+
+  /// Запланировано и оплачено
+  plannedAndPayed,
+
+  /// Запланирвоно и нужна оплата
+  reservedNeedPayment,
+}
+
+enum AppointmentRecordType {
+  create,
+  edit,
+  group,
+  revoke,
 }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
@@ -10,6 +8,8 @@ import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
 import 'package:fox_fit/models/item_bottom_bar.dart';
 import 'package:fox_fit/models/trainer.dart';
+import 'package:fox_fit/models/trainer_stats.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:get/get.dart';
 
 class GeneralController extends GetxController {
@@ -45,7 +45,7 @@ class GeneralController extends GetxController {
   /// Запрос на получение основных данных, необходимых для инициализации приложения
   Future<dynamic> getCustomers({String? fcmToken}) async {
     var data = await Requests.getCustomers(
-      id: appState.value.auth!.users![0].uid,
+      id: getUid(role: UserRole.trainer),
       fcmToken: fcmToken,
     );
     if (data is int || data == null) {
@@ -75,8 +75,8 @@ class GeneralController extends GetxController {
 
   /// Запрос на получение постоянных клиентов
   Future<dynamic> getRegularCustomers() async {
-    var data = await Requests.getRegularCustomers(
-        id: appState.value.auth!.users![0].uid);
+    var data =
+        await Requests.getRegularCustomers(id: getUid(role: UserRole.trainer));
     if (data is int || data == null) {
       return data;
     } else {
@@ -95,7 +95,7 @@ class GeneralController extends GetxController {
   /// Запрос на получение постоянных клиентов
   Future<dynamic> getInactiveCustomers() async {
     var data = await Requests.getOnlyInactiveCustomers(
-        id: appState.value.auth!.users![0].uid);
+        id: getUid(role: UserRole.trainer));
     if (data is int || data == null) {
       return data;
     } else {
@@ -110,7 +110,7 @@ class GeneralController extends GetxController {
   /// Запрос на получение рабочего стола координатора
   Future<dynamic> getCoordinaorWorkSpace() async {
     var data = await Requests.getCoordinaorWorkSpace(
-        id: appState.value.auth!.users![1].uid);
+        id: getUid(role: UserRole.coordinator));
 
     if (data is int || data == null) {
       return data;
@@ -127,13 +127,17 @@ class GeneralController extends GetxController {
   /// Запрос на получение статистики тренера
   Future<dynamic> getTrainerPerfomance() async {
     var data = await Requests.getTrainerPerfomance(
-      id: appState.value.auth!.users![0].uid,
+      id: getUid(role: UserRole.trainer),
     );
     if (data is int || data == null) {
       return data;
     } else {
+      List<TrainerPerfomanceModel> perfomance = data[0];
+      List<String> trainerPerfomanceMonth = data[1];
+
       appState.update((model) {
-        model?.trainerPerfomance = data;
+        model?.trainerPerfomance = perfomance;
+        model?.trainerPerfomanceMonth = trainerPerfomanceMonth;
       });
       return 200;
     }
@@ -145,7 +149,7 @@ class GeneralController extends GetxController {
   }) async {
     var data = await Requests.getCustomerInfo(
       customerId: customerId,
-      uId: appState.value.auth!.users![0].uid,
+      uId: getUid(role: UserRole.trainer),
     );
     if (data is int || data == null) {
       return data;
@@ -162,8 +166,7 @@ class GeneralController extends GetxController {
 
   /// Получение всех тренеров
   Future<dynamic> getTrainers() async {
-    var data =
-        await Requests.getTrainers(id: appState.value.auth!.users![0].uid);
+    var data = await Requests.getTrainers(id: getUid(role: UserRole.trainer));
     if (data is int || data == null) {
       return data;
     } else {
@@ -209,7 +212,7 @@ class GeneralController extends GetxController {
   /// Получение уведомлений
   Future<dynamic> getNotifications() async {
     var data = await Requests.getNotifications(
-      id: appState.value.auth!.users![0].uid,
+      id: getUid(role: UserRole.trainer),
     );
     if (data is int || data == null) {
       return data;
@@ -224,7 +227,7 @@ class GeneralController extends GetxController {
   /// Получение клиента по номеру телефона
   Future<dynamic> getCustomerByPhone({required String phone}) async {
     var data = await Requests.getCustomerByPhone(
-      uid: appState.value.auth!.users![0].uid,
+      userUid: getUid(role: UserRole.trainer),
       phone: phone,
     );
     if (data is int || data == null) {
@@ -314,6 +317,21 @@ class GeneralController extends GetxController {
       appState.update((model) {
         model?.sortedAvailableTrainers = null;
       });
+    }
+  }
+
+  /// Получить [Uid] по нужной роли
+  String getUid({required UserRole role}) {
+    switch (role) {
+      case UserRole.trainer:
+        var user = appState.value.auth!.users!
+            .where((element) => element.role == 'Тренер');
+        return user.isNotEmpty ? user.first.uid : 'no such user role';
+
+      case UserRole.coordinator:
+        var user = appState.value.auth!.users!
+            .where((element) => element.role == 'Координатор');
+        return user.isNotEmpty ? user.first.uid : 'no such user role';
     }
   }
 
