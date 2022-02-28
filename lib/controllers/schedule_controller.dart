@@ -146,6 +146,7 @@ class ScheduleController extends GetxController {
   void clear({
     bool appointment = false,
     bool data = true,
+    bool time = true,
   }) {
     state.update((model) {
       if (appointment) {
@@ -159,7 +160,9 @@ class ScheduleController extends GetxController {
       if (data) {
         model?.date = null;
       }
-      model?.time = null;
+      if (time) {
+        model?.time = null;
+      }
       model?.appointmentRecordType = AppointmentRecordType.create;
     });
   }
