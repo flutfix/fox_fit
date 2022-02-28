@@ -205,7 +205,10 @@ class _SelectClientPageState extends State<SelectClientPage> {
                             if (!check) {
                               Get.back();
 
-                              _scheduleController.clear(data: false);
+                              _scheduleController.clear(
+                                data: false,
+                                time: false,
+                              );
 
                               _scheduleController.state.update((model) {
                                 model?.clients = [
@@ -282,15 +285,18 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                     clientType: ClientType.permanent,
                                     onTap: () async {
                                       /// Для персональной тренировки
-                                      if (_scheduleController
-                                              .state.value.appointmentRecordType !=
+                                      if (_scheduleController.state.value
+                                              .appointmentRecordType !=
                                           AppointmentRecordType.group) {
                                         await getCustomerByPhone(
                                           search: phone,
                                         );
                                         Get.back();
 
-                                        _scheduleController.clear(data: false);
+                                        _scheduleController.clear(
+                                          data: false,
+                                          time: false,
+                                        );
 
                                         _scheduleController.state
                                             .update((model) {

@@ -90,6 +90,8 @@ class Lessons extends StatelessWidget {
               if (appointment == null) {
                 _scheduleController.state.update((model) {
                   model?.date = date;
+                  model?.time =
+                      DateTime(date.year, date.month, date.day, index);
                   model?.appointmentRecordType = AppointmentRecordType.create;
                 });
               }
