@@ -61,13 +61,14 @@ class _SchedulePageState extends State<SchedulePage> {
             _scheduleController.state.value.time!.hour,
           )
         : DateTime.now();
-    MonthModel? currentMonth;
-    currentMonth =
-        _months.firstWhere((element) => element.number == _dateNow.month);
 
     _currentYear = _dateNow.year;
 
     _months = _getMonth(dateNow: _dateNow);
+
+    MonthModel? currentMonth;
+    currentMonth =
+        _months.firstWhere((element) => element.number == _dateNow.month);
 
     _currentMonthIndex = _months.indexOf(currentMonth);
     _currentDayIndex = _dateNow.day - 1;

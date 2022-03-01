@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
@@ -11,7 +13,7 @@ import 'package:fox_fit/utils/date_time_picker/widgets/date_time_picker_theme.da
 import 'package:fox_fit/utils/date_time_picker/widgets/i18n_model.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
-import 'package:fox_fit/utils/picker.dart';
+import 'package:fox_fit/utils/picker/picker.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
@@ -76,7 +78,8 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
               ? GestureDetector(
                   onTap: () {
                     _scheduleController.state.update((model) {
-                      model?.appointmentRecordType = AppointmentRecordType.revoke;
+                      model?.appointmentRecordType =
+                          AppointmentRecordType.revoke;
                     });
                     Get.to(
                       () => ConfirmationPage(
@@ -184,7 +187,6 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                       .state.value.clients.isNotEmpty) {
                                     Picker.custom(
                                       context: context,
-                                      theme: theme,
                                       values: _scheduleController
                                           .state.value.appointmentsDurations,
                                       onConfirm: (value) {
@@ -448,27 +450,24 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                         _scheduleController
                                                 .state.value.service !=
                                             null) {
-                                      await DatePicker.showTimePicker(
-                                        context,
+                                      await Picker.time(
+                                        context: context,
+                                        currentHour: _scheduleController
+                                                .state.value.time?.hour ??
+                                            DateTime.now().hour,
+                                        minutesInterval: 5,
                                         onConfirm: (confirmTime) async {
                                           _scheduleController.state
                                               .update((model) {
                                             model?.time = confirmTime;
                                           });
                                         },
-                                        locale: LocaleType.ru,
-                                        currentTime: DateTime.now(),
-                                        showSecondsColumn: false,
-                                        theme: DatePickerTheme(
-                                          cancelStyle:
-                                              theme.textTheme.headline2!,
-                                          doneStyle:
-                                              theme.primaryTextTheme.headline2!,
-                                          itemStyle: theme.textTheme.headline2!,
-                                          backgroundColor:
-                                              theme.backgroundColor,
-                                          headerColor: theme.backgroundColor,
-                                        ),
+                                        buttonsStyle:
+                                            theme.textTheme.headline2!,
+                                        valueStyle: theme.textTheme.headline2!,
+                                        doneButtonColor:
+                                            theme.colorScheme.primary,
+                                        borderRadius: BorderRadius.zero,
                                       );
                                     } else {
                                       CustomSnackbar.getSnackbar(

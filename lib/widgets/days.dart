@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/models/month.dart';
-import 'package:fox_fit/utils/behavior.dart';
+import 'package:fox_fit/utils/picker/scroll_behavior.dart';
 
 class Days extends StatefulWidget {
   const Days({
