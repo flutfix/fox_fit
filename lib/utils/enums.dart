@@ -54,7 +54,7 @@ class Enums {
     }
   }
 
-  static getClientType({required String clientUid}) {
+  static ClientType getClientType({required String clientUid}) {
     if (clientUid == Client.fresh) {
       return ClientType.fresh;
     } else if (clientUid == Client.assigned) {
@@ -67,7 +67,7 @@ class Enums {
     return ClientType.fresh;
   }
 
-  static getStagePipelineType({required String stageUid}) {
+  static StagePipelineType getStagePipelineType({required String stageUid}) {
     if (stageUid == StagePipeline.assigned) {
       return StagePipelineType.assigned;
     } else if (stageUid == StagePipeline.transferringRecord) {
@@ -82,7 +82,7 @@ class Enums {
     return StagePipelineType.assigned;
   }
 
-  static getStagePipelineUid({required StagePipelineType stagePipelineType}) {
+  static String getStagePipelineUid({required StagePipelineType stagePipelineType}) {
     switch (stagePipelineType) {
       case StagePipelineType.assigned:
         return StagePipeline.assigned;
@@ -104,7 +104,7 @@ class Enums {
     }
   }
 
-  static getAppointmentTypeString({required AppointmentType appointmentType}) {
+  static String getAppointmentTypeString({required AppointmentType appointmentType}) {
     switch (appointmentType) {
       case AppointmentType.personal:
         return 'Personal';
@@ -117,7 +117,7 @@ class Enums {
     }
   }
 
-  static getAppointmentType({required String appointmentTypeString}) {
+  static AppointmentType getAppointmentType({required String appointmentTypeString}) {
     switch (appointmentTypeString) {
       case 'Personal':
         return AppointmentType.personal;
@@ -130,7 +130,7 @@ class Enums {
     }
   }
 
-  static getPaymentStatusType({required String paymentStatusString}) {
+  static PaymentStatusType getPaymentStatusType({required String paymentStatusString}) {
     switch (paymentStatusString) {
       case 'DoneAndPayed':
         return PaymentStatusType.doneAndPayed;
@@ -142,7 +142,7 @@ class Enums {
         return PaymentStatusType.reservedNeedPayment;
 
       default:
-        return StagePipeline.assigned;
+        return PaymentStatusType.reservedNeedPayment;
     }
   }
 }

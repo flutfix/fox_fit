@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fox_fit/api/requests.dart';
+import 'package:fox_fit/api/auth.dart';
+import 'package:fox_fit/api/general.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
@@ -42,7 +43,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
           key: Cache.pass,
           prefsType: PrefsType.string,
         );
-        var authData = await Requests.auth(
+        var authData = await AuthRequest.auth(
           phone: phone,
           pass: pass,
         );

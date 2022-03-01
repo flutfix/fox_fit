@@ -1,4 +1,5 @@
-import 'package:fox_fit/api/requests.dart';
+import 'package:fox_fit/api/general.dart';
+import 'package:fox_fit/api/shedule.dart';
 import 'package:fox_fit/models/customer_model_state.dart';
 import 'package:fox_fit/states/schedule_state.dart';
 import 'package:fox_fit/models/service.dart';
@@ -13,7 +14,7 @@ class ScheduleController extends GetxController {
     required String userUid,
     required DateTime dateNow,
   }) async {
-    var data = await Requests.getAppointments(
+    var data = await SheduleRequests.getAppointments(
       userUid: userUid,
       dateNow: dateNow,
     );
@@ -42,7 +43,7 @@ class ScheduleController extends GetxController {
 
   /// Получение длительностей занятий
   Future<dynamic> getAppointmentsDurations() async {
-    dynamic data = await Requests.getAppointmentsDurations();
+    dynamic data = await SheduleRequests.getAppointmentsDurations();
     if (data is int || data == null) {
       return data;
     } else {
@@ -60,7 +61,7 @@ class ScheduleController extends GetxController {
     required String duration,
     required String serviceType,
   }) async {
-    dynamic data = await Requests.getCustomerFitnessServices(
+    dynamic data = await SheduleRequests.getCustomerFitnessServices(
       userUid: userUid,
       customerUid: customerUid,
       duration: duration,
@@ -94,7 +95,7 @@ class ScheduleController extends GetxController {
     required String serviceUid,
     required int capacity,
   }) async {
-    dynamic data = await Requests.addAppointment(
+    dynamic data = await SheduleRequests.addAppointment(
       licenseKey: licenseKey,
       userUid: userUid,
       customers: customers,
@@ -118,7 +119,7 @@ class ScheduleController extends GetxController {
     required String dateTimeAppointment,
     required String serviceUid,
   }) async {
-    dynamic data = await Requests.editAppointment(
+    dynamic data = await SheduleRequests.editAppointment(
       licenseKey: licenseKey,
       userUid: userUid,
       customers: customers,
@@ -136,7 +137,7 @@ class ScheduleController extends GetxController {
     required String licenseKey,
     required String appointmentUid,
   }) async {
-    dynamic data = await Requests.deleteAppointment(
+    dynamic data = await SheduleRequests.deleteAppointment(
       licenseKey: licenseKey,
       appointmentUid: appointmentUid,
     );

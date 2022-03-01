@@ -1,5 +1,6 @@
 import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:fox_fit/api/requests.dart';
+import 'package:fox_fit/api/auth.dart';
+import 'package:fox_fit/api/general.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/states/app_state.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
@@ -34,7 +35,7 @@ class GeneralController extends GetxController {
     required String newPass,
     required String userUid,
   }) async {
-    dynamic data = await Requests.changeUserPassword(
+    dynamic data = await AuthRequest.changeUserPassword(
       key: key,
       newPass: newPass,
       userUid: userUid,

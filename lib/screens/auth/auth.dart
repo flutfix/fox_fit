@@ -5,7 +5,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:fox_fit/api/requests.dart';
+import 'package:fox_fit/api/auth.dart';
+import 'package:fox_fit/api/general.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
@@ -181,7 +182,7 @@ class _AuthPageState extends State<AuthPage> {
         context: context,
         repeat: false,
         request: () {
-          return Requests.auth(
+          return AuthRequest.auth(
             phone: maskFormatter.getUnmaskedText() == ''
                 ? oldPhone
                 : maskFormatter.getUnmaskedText(),

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
@@ -437,7 +435,8 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                       await Picker.time(
                                         context: context,
                                         currentHour: _scheduleController
-                                            .state.value.time!.hour,
+                                                .state.value.time?.hour ??
+                                            DateTime.now().hour,
                                         minutesInterval: 5,
                                         onConfirm: (confirmTime) async {
                                           _scheduleController.state
@@ -613,7 +612,11 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                       );
                     } else {
                       CustomSnackbar.getSnackbar(
-                        title: S.of(context).add_least_one_client,
+                        title: _scheduleController
+                                    .state.value.appointmentRecordType ==
+                                AppointmentRecordType.group
+                            ? S.of(context).add_least_one_client
+                            : S.of(context).fill_all_fields,
                       );
                     }
                   },
