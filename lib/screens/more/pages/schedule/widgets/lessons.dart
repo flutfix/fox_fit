@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
@@ -25,7 +27,6 @@ class Lessons extends StatelessWidget {
     return SizedBox(
       width: (width - 106),
       child: ListView.separated(
-        scrollDirection: Axis.vertical,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: 24,
@@ -36,121 +37,152 @@ class Lessons extends StatelessWidget {
             ],
           );
         },
-        itemBuilder: (context, index) {
-          AppointmentModel? appointment = searchLesson(index: index);
-          PaymentStatusType? paymentStatusType;
-
-          /// Статус оплаты для персональной тренировки
-          if (appointment != null) {
-            if (appointment.arrivalStatuses.isNotEmpty) {
-              paymentStatusType = Enums.getPaymentStatusType(
-                paymentStatusString:
-                    appointment.arrivalStatuses[0].paymentStatus,
-              );
-            }
-          }
-
-          return GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              if (appointment != null) {
-                /// Преобразование клиента и его статуса
-                /// с запроса к виду модели на фронте
-                List<CustomerModelState> clients = [];
-                for (var customer in appointment.customers) {
-                  clients.add(
-                    CustomerModelState(
-                      model: customer,
-                      arrivalStatus: appointment.arrivalStatuses
-                          .firstWhere(
-                              (element) => element.customerUid == customer.uid)
-                          .status,
-                    ),
-                  );
+        itemBuilder: (context, indexVer) {
+          List<AppointmentModel> appointments = _searchLesson(index: indexVer);
+          return SizedBox(
+            height: 89,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              itemCount: appointments.isNotEmpty ? appointments.length : 1,
+              separatorBuilder: (context, index) {
+                return Column(
+                  children: const [
+                    SizedBox(width: 7),
+                  ],
+                );
+              },
+              itemBuilder: (context, indexHor) {
+                /// Проверка, есть ли статус оплаты
+                PaymentStatusType? paymentStatusType;
+                if (appointments.isNotEmpty) {
+                  if (appointments[indexHor].arrivalStatuses.isNotEmpty) {
+                    paymentStatusType = Enums.getPaymentStatusType(
+                      paymentStatusString: appointments[indexHor]
+                          .arrivalStatuses[0]
+                          .paymentStatus,
+                    );
+                  }
                 }
 
-                /// Автозаполнение форм для существующей тренировки
-                _scheduleController.state.update((model) {
-                  model?.appointment = appointment;
-                  model?.clients = clients;
-                  model?.duration = appointment.service.duration;
-                  model?.split = appointment.service.split;
-                  model?.service = appointment.service;
-                  model?.capacity = appointment.capacity;
-                  model?.date = appointment.startDate;
-                  model?.time = appointment.startDate;
-                  model?.appointmentRecordType =
-                      appointment.appointmentType == AppointmentType.personal
-                          ? AppointmentRecordType.edit
-                          : AppointmentRecordType.group;
-                });
-              }
-
-              /// Автозаполнение форм для пустой тренировки
-              if (appointment == null) {
-                _scheduleController.state.update((model) {
-                  model?.date = date;
-                  model?.appointmentRecordType = AppointmentRecordType.create;
-                });
-              }
-
-              Get.toNamed(Routes.signUpTrainingSession);
-            },
-            child: DefaultContainer(
-              height: 89,
-              padding: const EdgeInsets.symmetric(horizontal: 18),
-              child: appointment != null
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /// Имя клиента или назвние групповой тренировки
-                        Text(
-                          appointment.appointmentType ==
-                                  AppointmentType.personal
-                              ? appointment.customers[0].fullName
-                              : appointment.service.name,
-                          style: theme.textTheme.headline3!.copyWith(
-                            fontSize: 16,
+                return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    _scheduleController.clear(appointment: true);
+                    if (appointments.isNotEmpty) {
+                      /// Преобразование клиента и его статуса
+                      /// с запроса к виду модели на фронте
+                      List<CustomerModelState> clients = [];
+                      for (var customer in appointments[indexHor].customers) {
+                        clients.add(
+                          CustomerModelState(
+                            model: customer,
+                            arrivalStatus: appointments[indexHor]
+                                .arrivalStatuses
+                                .firstWhere((element) =>
+                                    element.customerUid == customer.uid)
+                                .status,
                           ),
-                        ),
-                        Row(
-                          children: [
-                            /// Отображение статуса прихода и оплаты
-                            if (paymentStatusType != null &&
-                                appointment.appointmentType !=
-                                    AppointmentType.group)
-                              Container(
-                                width: 6,
-                                height: 6,
-                                decoration: BoxDecoration(
-                                  color: paymentStatusType ==
-                                          PaymentStatusType.doneAndPayed
-                                      ? Styles.green
-                                      : paymentStatusType ==
-                                              PaymentStatusType.plannedAndPayed
-                                          ? Styles.yellow
-                                          : Styles.red,
-                                  borderRadius: BorderRadius.circular(90),
+                        );
+                      }
+
+                      /// Автозаполнение форм для существующей тренировки
+                      _scheduleController.state.update((model) {
+                        model?.appointment = appointments[indexHor];
+                        model?.clients = clients;
+                        model?.duration =
+                            appointments[indexHor].service.duration;
+                        model?.split = appointments[indexHor].service.split;
+                        model?.service = appointments[indexHor].service;
+                        model?.capacity = appointments[indexHor].capacity;
+                        model?.date = appointments[indexHor].startDate;
+                        model?.time = appointments[indexHor].startDate;
+                        model?.appointmentRecordType =
+                            appointments[indexHor].appointmentType ==
+                                    AppointmentType.personal
+                                ? AppointmentRecordType.edit
+                                : AppointmentRecordType.group;
+                      });
+                    }
+
+                    /// Автозаполнение форм для пустой тренировки
+                    if (appointments.isEmpty) {
+                      _scheduleController.state.update((model) {
+                        model?.date = date;
+                        model?.time = DateTime(date.year, date.month, date.day, indexVer);
+                        model?.appointmentRecordType =
+                            AppointmentRecordType.create;
+                      });
+                    }
+
+                    Get.toNamed(Routes.signUpTrainingSession);
+                  },
+                  child: DefaultContainer(
+                    width: appointments.length > 1
+                        ? MediaQuery.of(context).size.width - 150
+                        : MediaQuery.of(context).size.width - 106,
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
+                    child: appointments.isNotEmpty
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              /// Имя клиента или назвние групповой тренировки
+                              Text(
+                                appointments[indexHor].appointmentType ==
+                                        AppointmentType.personal
+                                    ? appointments[indexHor]
+                                        .customers[0]
+                                        .fullName
+                                    : appointments[indexHor].service.name,
+                                style: theme.textTheme.headline3!.copyWith(
+                                  fontSize: 16,
                                 ),
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            if (paymentStatusType != null &&
-                                appointment.appointmentType !=
-                                    AppointmentType.group)
-                              const SizedBox(width: 6),
-                            Text(
-                              '${appointment.service.duration} мин '
-                              'с ${DateFormat('HH:mm').format(appointment.startDate)}'
-                              ' до ${DateFormat('HH:mm').format(appointment.endDate)}',
-                              style: theme.textTheme.headline3!.copyWith(
-                                fontWeight: FontWeight.w400,
+                              Row(
+                                children: [
+                                  /// Отображение статуса прихода и оплаты
+                                  if (paymentStatusType != null &&
+                                      appointments[indexHor].appointmentType !=
+                                          AppointmentType.group)
+                                    Container(
+                                      width: 6,
+                                      height: 6,
+                                      decoration: BoxDecoration(
+                                        color: paymentStatusType ==
+                                                PaymentStatusType.doneAndPayed
+                                            ? Styles.green
+                                            : paymentStatusType ==
+                                                    PaymentStatusType
+                                                        .plannedAndPayed
+                                                ? Styles.yellow
+                                                : Styles.red,
+                                        borderRadius: BorderRadius.circular(90),
+                                      ),
+                                    ),
+                                  if (paymentStatusType != null &&
+                                      appointments[indexHor].appointmentType !=
+                                          AppointmentType.group)
+                                    const SizedBox(width: 6),
+                                  Text(
+                                    '${appointments[indexHor].service.duration} мин '
+                                    'с ${DateFormat('HH:mm').format(appointments[indexHor].startDate)}'
+                                    ' до ${DateFormat('HH:mm').format(appointments[indexHor].endDate)}',
+                                    style: theme.textTheme.headline3!.copyWith(
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  )
+                                ],
                               ),
-                            )
-                          ],
-                        ),
-                      ],
-                    )
-                  : const SizedBox(height: 89),
+                            ],
+                          )
+                        : const SizedBox(height: 89),
+                  ),
+                );
+              },
             ),
           );
         },
@@ -159,13 +191,14 @@ class Lessons extends StatelessWidget {
   }
 
   /// Сравнивает час каждого занятия с часом ленты времени, являющимся [index]
-  AppointmentModel? searchLesson({required int index}) {
+  List<AppointmentModel> _searchLesson({required int index}) {
+    List<AppointmentModel> appointments = [];
     for (var appointment in _scheduleController.state.value.appointments) {
       int hour = int.parse(DateFormat('H').format(appointment.startDate));
       if (hour == index) {
-        return appointment;
+        appointments.add(appointment);
       }
     }
-    return null;
+    return appointments;
   }
 }

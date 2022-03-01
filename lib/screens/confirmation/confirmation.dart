@@ -338,7 +338,6 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
         });
 
         if (data == 200) {
-          _scheduleController.clear(appointment: true);
           Get.back();
           Get.back();
           Get.back();
@@ -371,7 +370,6 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
         });
 
         if (data == 200) {
-          _scheduleController.clear(appointment: true);
           Get.back();
           Get.back();
           Get.back();
@@ -380,7 +378,6 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
 
         /// Редактирование тренировки
       } else {
-        log('split ${_scheduleController.state.value.split}');
         dynamic data = await load(function: () {
           return ErrorHandler.request(
             context: context,
@@ -424,7 +421,6 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
         });
 
         if (data == 200) {
-          _scheduleController.clear(appointment: true);
           Get.back();
           Get.back();
           Get.back();

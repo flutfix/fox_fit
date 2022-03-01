@@ -413,7 +413,10 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                               String? timeEventStart;
                               String? timeEventEnd;
                               DateTime? selectedTime =
-                                  _scheduleController.state.value.time;
+                                  _scheduleController.state.value.duration !=
+                                          null
+                                      ? _scheduleController.state.value.time
+                                      : null;
                               if (selectedTime != null) {
                                 timeEventStart = DateFormat('HH:mm').format(
                                   _scheduleController.state.value.time!,
