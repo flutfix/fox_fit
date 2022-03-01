@@ -632,7 +632,11 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                       );
                     } else {
                       CustomSnackbar.getSnackbar(
-                        title: S.of(context).add_least_one_client,
+                        title: _scheduleController
+                                    .state.value.appointmentRecordType ==
+                                AppointmentRecordType.group
+                            ? S.of(context).add_least_one_client
+                            : S.of(context).fill_all_fields,
                       );
                     }
                   },
