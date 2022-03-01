@@ -49,6 +49,7 @@ class _SelectServicePageState extends State<SelectServicePage> {
           customerUid: _scheduleController.state.value.clients[0].model.uid,
           duration: _scheduleController.state.value.duration.toString(),
           serviceType: serviceType,
+          split: _scheduleController.state.value.split,
         );
       },
     );

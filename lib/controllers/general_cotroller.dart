@@ -93,7 +93,7 @@ class GeneralController extends GetxController {
     }
   }
 
-  /// Запрос на получение постоянных клиентов
+  /// Запрос на получение спящих клиентов
   Future<dynamic> getInactiveCustomers() async {
     var data = await Requests.getOnlyInactiveCustomers(
         id: getUid(role: UserRole.trainer));
@@ -108,7 +108,7 @@ class GeneralController extends GetxController {
     }
   }
 
-  /// Запрос на получение рабочего стола координатора
+  /// Запрос на получение клиентов для координатора
   Future<dynamic> getCoordinaorWorkSpace() async {
     var data = await Requests.getCoordinaorWorkSpace(
         id: getUid(role: UserRole.coordinator));

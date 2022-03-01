@@ -60,12 +60,14 @@ class ScheduleController extends GetxController {
     required String customerUid,
     required String duration,
     required String serviceType,
+    required bool split,
   }) async {
     dynamic data = await SheduleRequests.getCustomerFitnessServices(
       userUid: userUid,
       customerUid: customerUid,
       duration: duration,
       serviceType: serviceType,
+      split: split,
     );
     if (data is int || data == null) {
       return data;
