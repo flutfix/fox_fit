@@ -1,5 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+/// Канал уведомлений для уведомлений андройд
 class AppConfig {
   static const AndroidNotificationChannel pushChannel =
       AndroidNotificationChannel(
@@ -10,6 +11,7 @@ class AppConfig {
   );
 }
 
+/// Кэш ключи
 class Cache {
   static const String isAuthorized = 'isAuthorized';
   static const String phone = 'phone';
@@ -19,6 +21,7 @@ class Cache {
   static const String baseAuth = 'baseAuth';
 }
 
+/// К какому разделу воронки продаж относится  клиент
 class Client {
   /// [Новые]
   static String fresh = '';
@@ -39,6 +42,7 @@ class Client {
   static String coordinator = '';
 }
 
+/// Для перемещения клиента по воронке
 class StagePipeline {
   /// [Назначено]
   static String assigned = '';
