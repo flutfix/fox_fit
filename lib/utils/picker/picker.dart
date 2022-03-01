@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fox_fit/utils/picker/cupertino_picker.dart';
 import 'package:fox_fit/utils/picker/show_picker.dart';
@@ -88,7 +85,7 @@ class Picker {
                 int.parse(minutes[minutesIndex]),
               );
               onConfirm(
-               chosenTime,
+                chosenTime,
               );
             }
             Navigator.pop(context);
