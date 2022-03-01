@@ -1,6 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-/// Канал уведомлений для уведомлений андройд
+/// Канал уведомлений для андройд
 class AppConfig {
   static const AndroidNotificationChannel pushChannel =
       AndroidNotificationChannel(
