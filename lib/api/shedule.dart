@@ -35,6 +35,8 @@ class SheduleRequests {
         },
       );
 
+      log('${response}');
+
       if (response.statusCode == 200) {
         List<AppointmentModel> appointments = [];
         for (var element in response.data['Appointments']) {
@@ -74,6 +76,7 @@ class SheduleRequests {
     required String customerUid,
     required String duration,
     required String serviceType,
+    required bool split,
   }) async {
     String url = '${Requests.url}get_customer_fitness_services';
     final dioClient = Dio(Requests.options);
@@ -85,6 +88,7 @@ class SheduleRequests {
           'CustomerUid': customerUid,
           'Duration': duration,
           'ServiceType': serviceType,
+          // 'Split': split,
         },
       );
 
@@ -136,6 +140,15 @@ class SheduleRequests {
       );
     }
 
+    log('${licenseKey}');
+    log('${userUid}');
+    log('${appointmentType}');
+    log('${split}');
+    log('${dateTimeAppointment}');
+    log('${serviceUid}');
+    log('${capacity}');
+    log('${customersList}');
+
     try {
       var response = await dioClient.post(
         url,
@@ -186,6 +199,8 @@ class SheduleRequests {
         },
       );
     }
+
+    log('split ${split}');
 
     try {
       var response = await dioClient.post(
