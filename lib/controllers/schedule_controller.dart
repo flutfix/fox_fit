@@ -1,12 +1,12 @@
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/models/customer_model_state.dart';
-import 'package:fox_fit/models/schedule_state.dart';
+import 'package:fox_fit/states/schedule_state.dart';
 import 'package:fox_fit/models/service.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:get/get.dart';
 
 class ScheduleController extends GetxController {
-  final Rx<ScheduleStateModel> state = ScheduleStateModel().obs;
+  final Rx<ScheduleState> state = ScheduleState().obs;
 
   /// Получение списка всех занятий за период
   Future<dynamic> getAppointments({

@@ -1,7 +1,7 @@
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/requests.dart';
 import 'package:fox_fit/config/config.dart';
-import 'package:fox_fit/models/app_state.dart';
+import 'package:fox_fit/states/app_state.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/coordinator_workspace.dart';
 import 'package:fox_fit/models/customer.dart';
@@ -13,7 +13,7 @@ import 'package:fox_fit/utils/enums.dart';
 import 'package:get/get.dart';
 
 class GeneralController extends GetxController {
-  final Rx<AppStateModel> appState = AppStateModel().obs;
+  final Rx<AppState> appState = AppState().obs;
 
   Future<void> initVibration() async {
     appState.update((model) {

@@ -79,5 +79,15 @@
     "no_services_found": "",
     "save": "",
     "add_least_one_client": "",
-    "appointment_has_already_been_held": ""
+    "appointment_has_already_been_held": "",
+    "sales": "",
+    "group": "",
+    "expose": "",
+    "expose_sell": "",
+    "quantity": "",
+    "personalka": "",
+    "extension_sale": "",
+    "starting": "",
+    "amount": "",
+    "choose": ""
 }

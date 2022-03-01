@@ -3,8 +3,8 @@ import 'package:fox_fit/models/customer_model_state.dart';
 import 'package:fox_fit/models/service.dart';
 import 'package:fox_fit/utils/enums.dart';
 
-class ScheduleStateModel {
-  ScheduleStateModel({
+class ScheduleState {
+  ScheduleState({
     this.appointment,
     this.clients = const [],
     this.capacity = 1,

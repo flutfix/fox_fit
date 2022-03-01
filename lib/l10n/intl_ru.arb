@@ -31,7 +31,7 @@
     "save_edits": "Изменить",
     "description_changing_password": "Введите новый пароль дважды (не менее трёх символов) и нажмите кнопку Изменить пароль.\n\nПосле успешного завершения процедуры изменения пароля будет выполнен выход из аккаунта.",
     "new_password": "Новый пароль",
-    "new_password_again": "Новый пароль (повторно)",
+    "new_password_again": "Повторите пароль",
     "passwords_do_not_match": "Введённые пароли не совпадают",
     "repeat_input": "Повторите ввод",
     "password_not_changed": "Пароль не изменён",
@@ -79,5 +79,15 @@
     "no_services_found": "Услуг не найдено",
     "save": "Сохранить",
     "add_least_one_client": "Добавьте хотя бы одного клиента",
-    "appointment_has_already_been_held": "Занятие уже проведено"
+    "appointment_has_already_been_held": "Занятие уже проведено",
+    "sales": "Выставить продажу",
+    "group": "Группа",
+    "expose": "Выставить",
+    "expose_sell": "Выставить продажу",
+    "quantity": "Количество",
+    "personalka": "Персоналка",
+    "extension_sale": "Продление",
+    "starting": "Стартовый",
+    "amount": "Сумма",
+    "choose": "Выбрать"
 }

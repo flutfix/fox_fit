@@ -127,7 +127,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
         if (!_generalController.appState.value.isLoading) {
           return Scaffold(
             backgroundColor: theme.backgroundColor,
-            appBar: appBar(
+            appBar: _appBar(
               theme,
               _generalController,
               onNotification: () async {
@@ -201,7 +201,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     );
   }
 
-  CustomAppBar appBar(ThemeData theme, GeneralController controller,
+  CustomAppBar _appBar(ThemeData theme, GeneralController controller,
       {Function()? onNotification}) {
     var customers = controller.appState.value.sortedCustomers[controller
         .appState
