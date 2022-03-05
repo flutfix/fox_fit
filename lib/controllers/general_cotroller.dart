@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:fox_fit/api/requests.dart';
+import 'package:fox_fit/api/auth.dart';
+import 'package:fox_fit/api/general.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/models/app_state.dart';
-import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/coordinator_workspace.dart';
 import 'package:fox_fit/models/customer.dart';
@@ -37,7 +35,7 @@ class GeneralController extends GetxController {
     required String newPass,
     required String userUid,
   }) async {
-    dynamic data = await Requests.changeUserPassword(
+    dynamic data = await AuthRequest.changeUserPassword(
       key: key,
       newPass: newPass,
       userUid: userUid,
@@ -95,7 +93,7 @@ class GeneralController extends GetxController {
     }
   }
 
-  /// Запрос на получение постоянных клиентов
+  /// Запрос на получение спящих клиентов
   Future<dynamic> getInactiveCustomers() async {
     var data = await Requests.getOnlyInactiveCustomers(
         id: getUid(role: UserRole.trainer));
@@ -110,7 +108,7 @@ class GeneralController extends GetxController {
     }
   }
 
-  /// Запрос на получение рабочего стола координатора
+  /// Запрос на получение клиентов для координатора
   Future<dynamic> getCoordinaorWorkSpace() async {
     var data = await Requests.getCoordinaorWorkSpace(
         id: getUid(role: UserRole.coordinator));

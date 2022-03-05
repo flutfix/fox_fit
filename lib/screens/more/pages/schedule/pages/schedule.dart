@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:fox_fit/config/assets.dart';
+import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/month.dart';
-import 'package:fox_fit/screens/more/pages/schedule/pages/sign_up_training_session.dart';
 import 'package:fox_fit/screens/more/pages/schedule/widgets/lessons.dart';
 import 'package:fox_fit/screens/more/pages/schedule/widgets/time_feed.dart';
 import 'package:fox_fit/utils/enums.dart';
@@ -11,9 +14,11 @@ import 'package:fox_fit/widgets/days.dart';
 import 'package:fox_fit/widgets/months.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
+import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:swipe/swipe.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -25,8 +30,9 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   late bool _isLoading;
-  late final GeneralController _generalController;
+  late final GeneralController _controller;
   late final ScheduleController _scheduleController;
+  late bool _canVibrate;
   late DateTime _dateNow;
   late final List<MonthModel> _months;
   late int _currentYear;
@@ -37,16 +43,32 @@ class _SchedulePageState extends State<SchedulePage> {
   void initState() {
     super.initState();
     _isLoading = true;
-    _generalController = Get.find<GeneralController>();
+    _controller = Get.find<GeneralController>();
     _scheduleController = Get.find<ScheduleController>();
 
-    _dateNow = DateTime.now();
+    _canVibrate = _controller.appState.value.isCanVibrate;
+
+    /// Для открытия только что записанной,
+    /// отредактированной или удалённой тренировки
+    _dateNow = _scheduleController.state.value.date != null &&
+            _scheduleController.state.value.time != null
+        ? DateTime(
+            _scheduleController.state.value.date!.year,
+            _scheduleController.state.value.date!.month,
+            _scheduleController.state.value.date!.day,
+            _scheduleController.state.value.time!.hour,
+          )
+        : DateTime.now();
 
     _currentYear = _dateNow.year;
 
     _months = _getMonth(dateNow: _dateNow);
 
-    _currentMonthIndex = (_months.length / 2).floor();
+    MonthModel? currentMonth;
+    currentMonth =
+        _months.firstWhere((element) => element.number == _dateNow.month);
+
+    _currentMonthIndex = _months.indexOf(currentMonth);
     _currentDayIndex = _dateNow.day - 1;
 
     getAppointments();
@@ -61,7 +83,7 @@ class _SchedulePageState extends State<SchedulePage> {
       context: context,
       request: () {
         return _scheduleController.getAppointments(
-          userUid: _generalController.getUid(role: UserRole.trainer),
+          userUid: _controller.getUid(role: UserRole.trainer),
           dateNow: _dateNow,
         );
       },
@@ -77,23 +99,38 @@ class _SchedulePageState extends State<SchedulePage> {
     ThemeData theme = Theme.of(context);
     double width = MediaQuery.of(context).size.width;
 
-    /// [(width - 50) / 3)] - длина контейнера, [5] - отступы между контейнерами
+    /// [(width - 50) / 3)] - ширина контейнера, [5] - отступы между контейнерами
     ScrollController _scrollControllerMonth = ScrollController(
       initialScrollOffset: ((width - 50) / 3 + 5) * (_currentMonthIndex - 1),
     );
 
-    /// [(width - 96) / 5] - длина контейнера, [8] - отступы между контейнерами
+    /// [(width - 96) / 5] - ширина контейнера, [8] - отступы между контейнерами
     ScrollController _scrollControllerDays = ScrollController(
       initialScrollOffset: ((width - 96) / 5 + 8) * (_currentDayIndex - 2),
     );
 
-    /// [(width - 50) / 3)] - длина контейнера, [8] - отступы между контейнерами
+    /// [89] - высота контейнера, [7] - отступы между контейнерами
     ScrollController _scrollControllerLessons = ScrollController(
       initialScrollOffset: ((89 + 7) * _dateNow.hour) + 13,
     );
 
     return Swipe(
-      onSwipeRight: () => Get.back(),
+      onSwipeRight: () async {
+        _scheduleController.clear(appointment: true);
+        await ErrorHandler.request(
+          context: context,
+          request: _controller.getCustomers,
+          repeat: false,
+          skipCheck: true,
+          handler: (_) async {
+            CustomSnackbar.getSnackbar(
+              title: S.of(context).no_internet_access,
+              message: S.of(context).failed_update_list,
+            );
+          },
+        );
+        Get.back();
+      },
       child: Scaffold(
         backgroundColor: theme.backgroundColor,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -101,9 +138,42 @@ class _SchedulePageState extends State<SchedulePage> {
           title: S.of(context).schedule,
           isBackArrow: true,
           isNotification: false,
-          onBack: () {
+          onBack: () async {
+            _scheduleController.clear(appointment: true);
+            await ErrorHandler.request(
+              context: context,
+              request: _controller.getCustomers,
+              repeat: false,
+              skipCheck: true,
+              handler: (_) async {
+                CustomSnackbar.getSnackbar(
+                  title: S.of(context).no_internet_access,
+                  message: S.of(context).failed_update_list,
+                );
+              },
+            );
             Get.back();
           },
+          action: GestureDetector(
+            onTap: () {
+              if (_canVibrate) {
+                Vibrate.feedback(FeedbackType.light);
+              }
+              getAppointments();
+            },
+            behavior: HitTestBehavior.translucent,
+            child: Stack(
+              alignment: Alignment.centerRight,
+              children: [
+                SvgPicture.asset(
+                  Images.refresh,
+                  width: 20,
+                  color: theme.colorScheme.primary,
+                ),
+                const SizedBox(width: 36)
+              ],
+            ),
+          ),
         ),
         body: Column(
           children: [
@@ -191,7 +261,7 @@ class _SchedulePageState extends State<SchedulePage> {
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Container(
-                            height: 150,
+                            height: 130,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topCenter,
@@ -228,12 +298,11 @@ class _SchedulePageState extends State<SchedulePage> {
           padding: const EdgeInsets.symmetric(horizontal: 64),
           child: CustomTextButton(
             onTap: () {
-              Get.to(
-                () => const SignUpTrainingSessionPage(
-                  trainingRecordType: TrainingRecordType.create,
-                ),
-                transition: Transition.fadeIn,
-              );
+              _scheduleController.clear(appointment: true);
+              _scheduleController.state.update((model) {
+                model?.appointmentRecordType = AppointmentRecordType.create;
+              });
+              Get.toNamed(Routes.signUpTrainingSession);
             },
             height: 51,
             text: S.of(context).record,
@@ -306,9 +375,19 @@ class _SchedulePageState extends State<SchedulePage> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
-
     setState(() {
-      if (index - _currentMonthIndex < 0) {
+      /// Переход к текущему дню, есил выбран текущий месяц
+      if (index == 3) {
+        _currentMonthIndex = index;
+        _animateDays(
+          scrollControllerDays: scrollControllerDays,
+          width: width,
+          index: DateTime.now().day - 1,
+        );
+        _updateDay(index: DateTime.now().day - 1);
+
+        /// Выбран месяц по навравлению влево от текущего
+      } else if (index - _currentMonthIndex < 0) {
         _currentMonthIndex = index;
         _animateDays(
           scrollControllerDays: scrollControllerDays,
@@ -316,6 +395,8 @@ class _SchedulePageState extends State<SchedulePage> {
           index: _months[_currentMonthIndex].days.length - 1,
         );
         _updateDay(index: _months[_currentMonthIndex].days.length - 1);
+
+        /// Выбран месяц по навравлению вправо от текущего
       } else if (index - _currentMonthIndex > 0) {
         _currentMonthIndex = index;
         _animateDays(

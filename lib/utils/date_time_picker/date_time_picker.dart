@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fox_fit/utils/behavior.dart';
 import 'package:fox_fit/utils/date_time_picker/widgets/date_model.dart';
 import 'package:fox_fit/utils/date_time_picker/widgets/date_time_picker_theme.dart';
 import 'package:fox_fit/utils/date_time_picker/widgets/i18n_model.dart';
+import 'package:fox_fit/utils/picker/scroll_behavior.dart';
 
 typedef DateChangedCallback = Function(DateTime time);
 typedef DateCancelledCallback = Function();

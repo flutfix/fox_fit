@@ -1,4 +1,5 @@
-import 'package:fox_fit/api/requests.dart';
+import 'package:fox_fit/api/general.dart';
+import 'package:fox_fit/api/shedule.dart';
 import 'package:fox_fit/models/customer_model_state.dart';
 import 'package:fox_fit/models/schedule_state.dart';
 import 'package:fox_fit/models/service.dart';
@@ -13,7 +14,7 @@ class ScheduleController extends GetxController {
     required String userUid,
     required DateTime dateNow,
   }) async {
-    var data = await Requests.getAppointments(
+    var data = await SheduleRequests.getAppointments(
       userUid: userUid,
       dateNow: dateNow,
     );
@@ -42,7 +43,7 @@ class ScheduleController extends GetxController {
 
   /// Получение длительностей занятий
   Future<dynamic> getAppointmentsDurations() async {
-    dynamic data = await Requests.getAppointmentsDurations();
+    dynamic data = await SheduleRequests.getAppointmentsDurations();
     if (data is int || data == null) {
       return data;
     } else {
@@ -59,12 +60,14 @@ class ScheduleController extends GetxController {
     required String customerUid,
     required String duration,
     required String serviceType,
+    required bool split,
   }) async {
-    dynamic data = await Requests.getCustomerFitnessServices(
+    dynamic data = await SheduleRequests.getCustomerFitnessServices(
       userUid: userUid,
       customerUid: customerUid,
       duration: duration,
       serviceType: serviceType,
+      split: split,
     );
     if (data is int || data == null) {
       return data;
@@ -89,15 +92,17 @@ class ScheduleController extends GetxController {
     required String userUid,
     required List<CustomerModelState> customers,
     required String appointmentType,
+    required bool split,
     required String dateTimeAppointment,
     required String serviceUid,
     required int capacity,
   }) async {
-    dynamic data = await Requests.addAppointment(
+    dynamic data = await SheduleRequests.addAppointment(
       licenseKey: licenseKey,
       userUid: userUid,
       customers: customers,
       appointmentType: appointmentType,
+      split: split,
       dateTimeAppointment: dateTimeAppointment,
       serviceUid: serviceUid,
       capacity: capacity,
@@ -112,15 +117,17 @@ class ScheduleController extends GetxController {
     required List<CustomerModelState> customers,
     required String appointmentUid,
     required String appointmentType,
+    bool? split,
     required String dateTimeAppointment,
     required String serviceUid,
   }) async {
-    dynamic data = await Requests.editAppointment(
+    dynamic data = await SheduleRequests.editAppointment(
       licenseKey: licenseKey,
       userUid: userUid,
       customers: customers,
       appointmentUid: appointmentUid,
       appointmentType: appointmentType,
+      split: split,
       dateTimeAppointment: dateTimeAppointment,
       serviceUid: serviceUid,
     );
@@ -132,25 +139,34 @@ class ScheduleController extends GetxController {
     required String licenseKey,
     required String appointmentUid,
   }) async {
-    dynamic data = await Requests.deleteAppointment(
+    dynamic data = await SheduleRequests.deleteAppointment(
       licenseKey: licenseKey,
       appointmentUid: appointmentUid,
     );
     return data;
   }
 
-  void clear({bool appointment = false}) {
+  void clear({
+    bool appointment = false,
+    bool data = true,
+    bool time = true,
+  }) {
     state.update((model) {
       if (appointment) {
         model?.appointment = null;
       }
-      model?.clients = null;
+      model?.clients = [];
+      model?.capacity = 1;
       model?.duration = null;
-      model?.type = TrainingType.personal;
-      model?.service?.split = false;
+      model?.split = false;
       model?.service = null;
-      model?.date = null;
-      model?.time = null;
+      if (data) {
+        model?.date = null;
+      }
+      if (time) {
+        model?.time = null;
+      }
+      model?.appointmentRecordType = AppointmentRecordType.create;
     });
   }
 }

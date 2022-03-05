@@ -74,5 +74,10 @@
     "valid_license_not_found": "Не найдена действующая лицензия",
     "not_find_client": "Не удалось найти клиента",
     "cancel_workout": "Отменить тренировку у",
-    "revoke": "Отменить"
+    "revoke": "Отменить",
+    "only_add_or_remove_clients": "В групповой тренировке можно только добавлять или удалять клиентов",
+    "no_services_found": "Услуг не найдено",
+    "save": "Сохранить",
+    "add_least_one_client": "Добавьте хотя бы одного клиента",
+    "appointment_has_already_been_held": "Занятие уже проведено"
 }
