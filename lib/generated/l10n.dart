@@ -959,6 +959,36 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get choose_service {
+    return Intl.message(
+      '',
+      name: 'choose_service',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get services {
+    return Intl.message(
+      '',
+      name: 'services',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get packages {
+    return Intl.message(
+      '',
+      name: 'packages',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

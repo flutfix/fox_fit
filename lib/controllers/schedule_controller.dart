@@ -72,7 +72,7 @@ class ScheduleController extends GetxController {
     if (data is int || data == null) {
       return data;
     } else {
-      List<Service> services = data[0];
+      List<ServicesModel> services = data[0];
       List<PaidServiceBalance>? paidServicesBalance = data[1];
 
       state.update((model) {

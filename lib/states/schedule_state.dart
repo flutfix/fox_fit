@@ -36,7 +36,7 @@ class ScheduleState {
   bool split;
 
   /// Выбранная услуга
-  Service? service;
+  ServicesModel? service;
 
   /// Выбранная дата тренировки
   DateTime? date;
@@ -54,7 +54,7 @@ class ScheduleState {
   List<int> appointmentsDurations;
 
   /// Список всех услуг
-  List<Service> services;
+  List<ServicesModel> services;
 
   /// Список оставшихся занятий
   List<PaidServiceBalance> paidServicesBalance;

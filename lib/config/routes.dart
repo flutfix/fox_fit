@@ -3,7 +3,8 @@ import 'package:fox_fit/screens/auth/auth.dart';
 import 'package:fox_fit/screens/home/general.dart';
 import 'package:fox_fit/screens/more/pages/change_password/change_password.dart';
 import 'package:fox_fit/screens/more/pages/coordinator/coordinator.dart';
-import 'package:fox_fit/screens/more/pages/sale/sale.dart';
+import 'package:fox_fit/screens/more/pages/sale/sales.dart';
+import 'package:fox_fit/screens/more/pages/sale/services.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/schedule.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/select_service.dart';
@@ -31,6 +32,7 @@ class Routes {
   static const String signUpTrainingSession = '/sign_up_training_session';
   static const String selectClient = '/select_client';
   static const String selectService = '/select_service';
+  static const String sale_services = '/sale_services';
   static const String sale = '/sale';
 
   static List<GetPage<dynamic>> get getRoutes {
@@ -48,6 +50,7 @@ class Routes {
       _getPage(Routes.selectClient, () => const SelectClientPage()),
       _getPage(Routes.selectService, () => const SelectServicePage()),
       _getPage(Routes.sale, () => const CreateSalePage()),
+      _getPage(Routes.sale_services, () => const ServicesPage()),
       _getPage(Routes.signUpTrainingSession,
           () => const SignUpTrainingSessionPage()),
     ];

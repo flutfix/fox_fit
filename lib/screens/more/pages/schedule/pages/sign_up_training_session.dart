@@ -7,6 +7,7 @@ import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/animation.dart';
 import 'package:fox_fit/screens/confirmation/confirmation.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
 import 'package:fox_fit/utils/date_time_picker/date_time_picker.dart';
 import 'package:fox_fit/utils/date_time_picker/widgets/date_time_picker_theme.dart';
 import 'package:fox_fit/utils/date_time_picker/widgets/i18n_model.dart';
@@ -153,7 +154,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                         .state.value.clients[0].model.fullName
                                     : S.of(context).select_client,
                                 onTap: () {
-                                  Get.toNamed(Routes.selectClient);
+                                  Get.to(() => const SelectClientPage());
                                 },
                                 onCheckBox: (activeCheckbox) {
                                   _scheduleController.state.update((model) {

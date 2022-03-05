@@ -89,5 +89,8 @@
     "extension_sale": "",
     "starting": "",
     "amount": "",
-    "choose": ""
+    "choose": "",
+    "choose_service": "",
+    "services": "",
+    "packages": ""
 }

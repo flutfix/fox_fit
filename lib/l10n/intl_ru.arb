@@ -89,5 +89,7 @@
     "extension_sale": "Продление",
     "starting": "Стартовый",
     "amount": "Сумма",
-    "choose": "Выбрать"
+    "choose_service": "Выберите услугу",
+    "services": "Услуги:",
+    "packages": "Пакеты:"
 }

@@ -42,7 +42,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "chat": MessageLookupByLibrary.simpleMessage("Чат в WhatsApp"),
         "choice_client": MessageLookupByLibrary.simpleMessage("Выбор клиента"),
         "choice_service": MessageLookupByLibrary.simpleMessage("Выбор услуги"),
-        "choose": MessageLookupByLibrary.simpleMessage("Выбрать"),
+        "choose_service":
+            MessageLookupByLibrary.simpleMessage("Выберите услугу"),
         "client_not_found": MessageLookupByLibrary.simpleMessage(
             "Лиса очень старалась, но не нашла этот номер телефона 😟"),
         "comment_for_recipient":
@@ -110,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notifications": MessageLookupByLibrary.simpleMessage("Уведомления"),
         "only_add_or_remove_clients": MessageLookupByLibrary.simpleMessage(
             "В групповой тренировке можно только добавлять или удалять клиентов"),
+        "packages": MessageLookupByLibrary.simpleMessage("Пакеты:"),
         "password_not_changed":
             MessageLookupByLibrary.simpleMessage("Пароль не изменён"),
         "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
@@ -134,6 +136,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "server_navailable":
             MessageLookupByLibrary.simpleMessage("Сервер недоступен"),
         "service": MessageLookupByLibrary.simpleMessage("Услуга"),
+        "services": MessageLookupByLibrary.simpleMessage("Услуги:"),
         "sign_up_training_session":
             MessageLookupByLibrary.simpleMessage("Записать на тренировку"),
         "sleeping_customers":
