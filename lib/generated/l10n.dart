@@ -859,6 +859,156 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get sales {
+    return Intl.message(
+      '',
+      name: 'sales',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get group {
+    return Intl.message(
+      '',
+      name: 'group',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get expose {
+    return Intl.message(
+      '',
+      name: 'expose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get expose_sell {
+    return Intl.message(
+      '',
+      name: 'expose_sell',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get quantity {
+    return Intl.message(
+      '',
+      name: 'quantity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get personalka {
+    return Intl.message(
+      '',
+      name: 'personalka',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get extension_sale {
+    return Intl.message(
+      '',
+      name: 'extension_sale',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get starting {
+    return Intl.message(
+      '',
+      name: 'starting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get amount {
+    return Intl.message(
+      '',
+      name: 'amount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get choose {
+    return Intl.message(
+      '',
+      name: 'choose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get choose_service {
+    return Intl.message(
+      '',
+      name: 'choose_service',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get services {
+    return Intl.message(
+      '',
+      name: 'services',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get packages {
+    return Intl.message(
+      '',
+      name: 'packages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get currency_symbol {
+    return Intl.message(
+      '',
+      name: 'currency_symbol',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get set_duration {
+    return Intl.message(
+      '',
+      name: 'set_duration',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

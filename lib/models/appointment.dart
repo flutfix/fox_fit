@@ -9,7 +9,7 @@ class AppointmentModel {
   late final AppointmentType appointmentType;
   late final DateTime startDate;
   late final DateTime endDate;
-  late final Service service;
+  late final ServicesModel service;
   late final List<CustomerModel> customers;
   late final List<ArrivalStatuses> arrivalStatuses;
 
@@ -40,7 +40,7 @@ class AppointmentModel {
     );
 
     service =
-        json['Service'] != null ? Service.fromJson(json['Service']) : Service();
+        json['Service'] != null ? ServicesModel.fromJson(json['Service']) : ServicesModel();
 
     customers = [];
     if (json['Customers'] != null) {

@@ -8,8 +8,8 @@ import 'package:fox_fit/models/notification.dart';
 import 'package:fox_fit/models/trainer.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
 
-class AppStateModel {
-  AppStateModel({
+class AppState {
+  AppState({
     this.isLoading = false,
     this.currentIndex = 0,
     this.isNewNotifications = false,

@@ -59,6 +59,16 @@ class _MorePageState extends State<MorePage> {
             },
           ),
 
+          /// [Выставить продажу]
+          if (_controller.appState.value.useSchedule)
+            MoreCardModel(
+              text: S.of(context).sales,
+              icon: Images.sales,
+              onTap: () {
+                Get.toNamed(Routes.sale);
+              },
+            ),
+
           /// ["Спящие" клиенты]
           MoreCardModel(
             text: S.of(context).sleeping_customers,

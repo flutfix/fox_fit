@@ -1,24 +1,27 @@
-class Service {
+class ServicesModel {
   late final String name;
   late final String uid;
   late final int duration;
   late final bool trial;
   late final bool split;
+  late final int price;
 
-  Service({
+  ServicesModel({
     this.name = '',
     this.uid = '',
     this.duration = 0,
     this.trial = false,
     this.split = false,
+    this.price = 0,
   });
 
-  Service.fromJson(Map<String, dynamic> json) {
+  ServicesModel.fromJson(Map<String, dynamic> json) {
     name = json['Name'] ?? '';
     uid = json['Uid'] ?? '';
     duration = json['Duration'] != null ? int.parse(json['Duration']) : 0;
     trial = json['Trial'] ?? false;
     split = json['Split'] ?? false;
+    price = json['Price'] ?? 0;
   }
 }
 

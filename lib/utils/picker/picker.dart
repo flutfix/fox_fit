@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/utils/picker/cupertino_picker.dart';
 import 'package:fox_fit/utils/picker/show_picker.dart';
@@ -205,6 +207,7 @@ class Picker {
       current: currentValue,
       values: values,
     );
+    // log('$currentIndex');
 
     /// Custom Picker Sheet
     return await showModalBottomSheet(

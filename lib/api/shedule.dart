@@ -35,8 +35,6 @@ class SheduleRequests {
         },
       );
 
-      log('${response}');
-
       if (response.statusCode == 200) {
         List<AppointmentModel> appointments = [];
         for (var element in response.data['Appointments']) {
@@ -93,11 +91,11 @@ class SheduleRequests {
       );
 
       if (response.statusCode == 200) {
-        List<service_model.Service> services = [];
+        List<service_model.ServicesModel> services = [];
         List<service_model.PaidServiceBalance> paidServicesBalance = [];
 
         for (var service in response.data['Services']) {
-          services.add(service_model.Service.fromJson(service));
+          services.add(service_model.ServicesModel.fromJson(service));
         }
         if (response.data['PaidServicesBalance'] != null) {
           for (var paidServiceBalance in response.data['PaidServicesBalance']) {

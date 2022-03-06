@@ -5,13 +5,16 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
+import 'package:fox_fit/models/animation.dart';
 import 'package:fox_fit/screens/confirmation/confirmation.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
 import 'package:fox_fit/utils/date_time_picker/date_time_picker.dart';
 import 'package:fox_fit/utils/date_time_picker/widgets/date_time_picker_theme.dart';
 import 'package:fox_fit/utils/date_time_picker/widgets/i18n_model.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/utils/picker/picker.dart';
+import 'package:fox_fit/widgets/animated_container.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
@@ -144,16 +147,14 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                   .state.value.appointmentRecordType !=
                               AppointmentRecordType.group)
                             Obx(
-                              () => _buildContainer(
-                                context: context,
-                                theme: theme,
+                              () => CustomAnimatedContainer(
                                 text: _scheduleController
                                         .state.value.clients.isNotEmpty
                                     ? _scheduleController
                                         .state.value.clients[0].model.fullName
                                     : S.of(context).select_client,
                                 onTap: () {
-                                  Get.toNamed(Routes.selectClient);
+                                  Get.to(() => const SelectClientPage());
                                 },
                                 onCheckBox: (activeCheckbox) {
                                   _scheduleController.state.update((model) {
@@ -170,9 +171,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
 
                           /// Длительность
                           Obx(
-                            () => _buildContainer(
-                              context: context,
-                              theme: theme,
+                            () => CustomAnimatedContainer(
                               text: _scheduleController.state.value.duration !=
                                       null
                                   ? '${_scheduleController.state.value.duration} мин'
@@ -226,70 +225,63 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                               child: Row(
                                 children: [
                                   /// Персональная
-                                  Obx(
-                                    () => _buildContainer(
-                                      context: context,
-                                      theme: theme,
-                                      text: S.of(context).personal,
-                                      isActive:
-                                          _scheduleController.state.value.split
-                                              ? false
-                                              : true,
-                                      animation: _Animation(activeWidth: 144),
-                                      wrapText: false,
-                                      onTap: () {
-                                        if (_scheduleController
-                                                .state.value.duration !=
-                                            null) {
-                                          _scheduleController.state
-                                              .update((model) {
-                                            model?.split = false;
-                                          });
-                                        } else {
-                                          CustomSnackbar.getSnackbar(
-                                            title: S
-                                                .of(context)
-                                                .fill_previous_fields,
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ),
+                                  Obx(() => CustomAnimatedContainer(
+                                        text: S.of(context).personal,
+                                        isActive: _scheduleController
+                                                .state.value.split
+                                            ? false
+                                            : true,
+                                        animation:
+                                            AnimationModel(activeWidth: 144),
+                                        wrapText: false,
+                                        onTap: () {
+                                          if (_scheduleController
+                                                  .state.value.duration !=
+                                              null) {
+                                            _scheduleController.state
+                                                .update((model) {
+                                              model?.split = false;
+                                            });
+                                          } else {
+                                            CustomSnackbar.getSnackbar(
+                                              title: S
+                                                  .of(context)
+                                                  .fill_previous_fields,
+                                            );
+                                          }
+                                        },
+                                      )),
                                   const SizedBox(width: 7),
 
                                   /// Сплит
-                                  Obx(
-                                    () => _buildContainer(
-                                      context: context,
-                                      theme: theme,
-                                      text: S.of(context).split,
-                                      animation: _Animation(
-                                        activeWidth: 77,
-                                        inactiveWidth: 60,
-                                      ),
-                                      isActive:
-                                          _scheduleController.state.value.split
-                                              ? true
-                                              : false,
-                                      wrapText: false,
-                                      onTap: () {
-                                        if (_scheduleController
-                                                .state.value.duration !=
-                                            null) {
-                                          _scheduleController.state
-                                              .update((model) {
-                                            model?.split = true;
-                                          });
-                                        } else {
-                                          CustomSnackbar.getSnackbar(
-                                            title: S
-                                                .of(context)
-                                                .fill_previous_fields,
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ),
+                                  Obx(() => CustomAnimatedContainer(
+                                        text: S.of(context).split,
+                                        animation: AnimationModel(
+                                          activeWidth: 77,
+                                          inactiveWidth: 60,
+                                        ),
+                                        isActive: _scheduleController
+                                                .state.value.split
+                                            ? true
+                                            : false,
+                                        wrapText: false,
+                                        onTap: () {
+                                          if (_scheduleController
+                                                  .state.value.duration !=
+                                              null) {
+                                            _scheduleController.state
+                                                .update((model) {
+                                              model?.split = true;
+                                            });
+                                          } else {
+                                            CustomSnackbar.getSnackbar(
+                                              title: S
+                                                  .of(context)
+                                                  .fill_previous_fields,
+                                            );
+                                          }
+                                        },
+                                      )),
                                 ],
                               ),
                             ),
@@ -299,37 +291,34 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                             const SizedBox(height: 17),
 
                           /// Услуга
-                          Obx(
-                            () => _buildContainer(
-                              context: context,
-                              theme: theme,
-                              text: _scheduleController
-                                      .state.value.service?.name ??
-                                  S.of(context).service,
-                              onTap: () {
-                                if (_scheduleController
-                                        .state.value.appointmentRecordType !=
-                                    AppointmentRecordType.group) {
+                          Obx(() => CustomAnimatedContainer(
+                                text: _scheduleController
+                                        .state.value.service?.name ??
+                                    S.of(context).service,
+                                onTap: () {
                                   if (_scheduleController
-                                          .state.value.duration !=
-                                      null) {
-                                    Get.toNamed(Routes.selectService);
+                                          .state.value.appointmentRecordType !=
+                                      AppointmentRecordType.group) {
+                                    if (_scheduleController
+                                            .state.value.duration !=
+                                        null) {
+                                      Get.toNamed(Routes.selectService);
+                                    } else {
+                                      CustomSnackbar.getSnackbar(
+                                        title:
+                                            S.of(context).fill_previous_fields,
+                                      );
+                                    }
                                   } else {
                                     CustomSnackbar.getSnackbar(
-                                      title: S.of(context).fill_previous_fields,
+                                      title: S
+                                          .of(context)
+                                          .only_add_or_remove_clients,
+                                      duration: 3,
                                     );
                                   }
-                                } else {
-                                  CustomSnackbar.getSnackbar(
-                                    title: S
-                                        .of(context)
-                                        .only_add_or_remove_clients,
-                                    duration: 3,
-                                  );
-                                }
-                              },
-                            ),
-                          ),
+                                },
+                              )),
                           const SizedBox(height: 17),
 
                           /// Дата проведения
@@ -349,9 +338,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                         .substring(1);
                               }
 
-                              return _buildContainer(
-                                context: context,
-                                theme: theme,
+                              return CustomAnimatedContainer(
                                 text: dateEvent ?? S.of(context).date_event,
                                 onTap: () async {
                                   if (_scheduleController
@@ -433,9 +420,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                   ),
                                 );
                               }
-                              return _buildContainer(
-                                context: context,
-                                theme: theme,
+                              return CustomAnimatedContainer(
                                 text: selectedTime != null
                                     ? 'c $timeEventStart до $timeEventEnd'
                                     : S.of(context).time_lesson,
@@ -515,9 +500,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                               .state.value.clients.length
                                       ? true
                                       : false;
-                                  return _buildContainer(
-                                    context: context,
-                                    theme: theme,
+                                  return CustomAnimatedContainer(
                                     isCheckbox: clientIsSelected,
                                     isButtonDelete: clientIsSelected,
                                     arrivalStatus: clientIsSelected
@@ -645,91 +628,6 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
     );
   }
 
-  Widget _buildContainer({
-    required BuildContext context,
-    required ThemeData theme,
-    required String text,
-    required Function() onTap,
-    bool isCheckbox = false,
-    bool isButtonDelete = false,
-    Function(bool activeCheckbox)? onCheckBox,
-    Function()? onDelete,
-    _Animation? animation,
-    bool isActive = true,
-    bool arrivalStatus = false,
-    bool wrapText = true,
-  }) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        onTap();
-      },
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: animation?.duration ?? 0),
-        curve: Curves.easeOut,
-        width: isActive ? animation?.activeWidth : animation?.inactiveWidth,
-        height: isActive ? animation?.activeHeight : animation?.inactiveHeight,
-        padding: animation != null
-            ? const EdgeInsets.symmetric(vertical: 14, horizontal: 11)
-            : const EdgeInsets.symmetric(vertical: 18, horizontal: 15),
-        decoration: BoxDecoration(
-          color: theme.canvasColor,
-          border: animation != null
-              ? isActive
-                  ? Border.all(color: theme.colorScheme.secondary)
-                  : null
-              : null,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: wrapText ? MediaQuery.of(context).size.width - 140 : null,
-              child: AnimatedDefaultTextStyle(
-                child: Text(text),
-                style: isActive
-                    ? theme.textTheme.bodyText1!
-                    : theme.textTheme.bodyText1!.copyWith(fontSize: 12),
-                duration: Duration(milliseconds: animation?.duration ?? 0),
-                curve: Curves.easeOut,
-              ),
-            ),
-            Row(
-              children: [
-                if (isCheckbox)
-                  Checkbox(
-                    value: arrivalStatus,
-                    activeColor: theme.colorScheme.primary,
-                    side: const BorderSide(color: Styles.greyLight5, width: 1),
-                    onChanged: (value) {
-                      if (onCheckBox != null) {
-                        onCheckBox(value ?? false);
-                      }
-                    },
-                  ),
-                if (isButtonDelete)
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      if (onDelete != null) {
-                        onDelete();
-                      }
-                    },
-                    child: SvgPicture.asset(
-                      Images.cross,
-                      width: 20,
-                      color: theme.colorScheme.primary,
-                    ),
-                  ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
   bool validateFields() {
     if (_scheduleController.state.value.clients.isNotEmpty &&
         _scheduleController.state.value.duration != null &&
@@ -741,21 +639,4 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
       return false;
     }
   }
-}
-
-/// Конфигурация анимации для выбора типа (Персональной или Сплит)
-class _Animation {
-  _Animation({
-    this.activeWidth = 145,
-    this.activeHeight = 60,
-    this.inactiveWidth = 111,
-    this.inactiveHeight = 46,
-    this.duration = 150,
-  });
-
-  double activeWidth;
-  double activeHeight;
-  double inactiveWidth;
-  double inactiveHeight;
-  int duration;
 }
