@@ -150,7 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "whatsapp_exeption":
             MessageLookupByLibrary.simpleMessage("Не удалось открыть WhatsApp"),
         "whatsapp_exeption_description": MessageLookupByLibrary.simpleMessage(
-            "Попробуйте скачать приложение"),
+            "Попробуйте скачать приложение или проверьте соединение с интернетом"),
         "wrong_login_or_pass":
             MessageLookupByLibrary.simpleMessage("Неверный логин или пароль")
       };

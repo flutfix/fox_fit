@@ -429,18 +429,10 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
         Client.fresh;
 
     /// Открытие whatsapp для IOS
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isAndroid) {
       tryLaunchWhatsapp(
         whatsappLink: 'https://wa.me/$number',
         text: '?text=$greeting',
-        isFromNewCustomers: _isFromNewCustomers,
-      );
-
-      /// Открытие whatsapp для Android
-    } else {
-      tryLaunchWhatsapp(
-        whatsappLink: 'whatsapp://send?phone=$number',
-        text: '&text=$greeting',
         isFromNewCustomers: _isFromNewCustomers,
       );
     }
@@ -453,19 +445,19 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     required String? text,
   }) async {
     String url = '$whatsappLink$text';
-
+    url = Uri.encodeFull(url);
     if (await canLaunch(whatsappLink)) {
       try {
         /// Если из новых, то с приветствием
         if (isFromNewCustomers) {
-          /// Если Ios закодировать ссылку
-          if (Platform.isIOS) {
-            url = Uri.encodeFull(url);
-          }
-          // log(url);
-          await launch(url);
+          await launch(
+            url,
+            forceWebView: false,
+          );
         } else {
-          await launch(whatsappLink);
+          await launch(
+            whatsappLink,
+          );
         }
       } catch (e) {
         log(e.toString());
