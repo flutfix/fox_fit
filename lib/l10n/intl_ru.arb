@@ -91,5 +91,7 @@
     "amount": "Сумма",
     "choose_service": "Выберите услугу",
     "services": "Услуги:",
-    "packages": "Пакеты:"
+    "packages": "Пакеты:",
+    "currency_symbol": "₽",
+    "set_duration": "Заполните длительность тренировки"
 }

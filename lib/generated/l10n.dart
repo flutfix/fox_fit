@@ -989,6 +989,26 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get currency_symbol {
+    return Intl.message(
+      '',
+      name: 'currency_symbol',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get set_duration {
+    return Intl.message(
+      '',
+      name: 'set_duration',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

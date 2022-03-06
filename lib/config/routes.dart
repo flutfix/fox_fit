@@ -32,7 +32,7 @@ class Routes {
   static const String signUpTrainingSession = '/sign_up_training_session';
   static const String selectClient = '/select_client';
   static const String selectService = '/select_service';
-  static const String sale_services = '/sale_services';
+  static const String saleServices = '/sale_services';
   static const String sale = '/sale';
 
   static List<GetPage<dynamic>> get getRoutes {
@@ -50,7 +50,7 @@ class Routes {
       _getPage(Routes.selectClient, () => const SelectClientPage()),
       _getPage(Routes.selectService, () => const SelectServicePage()),
       _getPage(Routes.sale, () => const CreateSalePage()),
-      _getPage(Routes.sale_services, () => const ServicesPage()),
+      _getPage(Routes.saleServices, () => const ServicesPage()),
       _getPage(Routes.signUpTrainingSession,
           () => const SignUpTrainingSessionPage()),
     ];

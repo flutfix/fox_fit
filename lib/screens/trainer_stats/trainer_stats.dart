@@ -26,7 +26,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
   @override
   void initState() {
     controller = Get.put(GeneralController());
-    _currentMonth = 0;
+    _currentMonth = 2;
     getPerfomance();
 
     super.initState();

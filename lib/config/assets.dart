@@ -56,8 +56,3 @@ class Images {
   static const String trashcan = 'lib/assets/icons/trashcan.png';
 }
 
-class Animations {
-  /// Auth
-  static const String testAnimation =
-      'lib/assets/animations/test_animations.riv';
-}

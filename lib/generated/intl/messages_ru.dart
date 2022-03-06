@@ -52,6 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirmation_failed":
             MessageLookupByLibrary.simpleMessage("Подтверждение не выполнено"),
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
+        "currency_symbol": MessageLookupByLibrary.simpleMessage("₽"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
         "data_download_failed":
@@ -137,6 +138,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Сервер недоступен"),
         "service": MessageLookupByLibrary.simpleMessage("Услуга"),
         "services": MessageLookupByLibrary.simpleMessage("Услуги:"),
+        "set_duration": MessageLookupByLibrary.simpleMessage(
+            "Заполните длительность тренировки"),
         "sign_up_training_session":
             MessageLookupByLibrary.simpleMessage("Записать на тренировку"),
         "sleeping_customers":

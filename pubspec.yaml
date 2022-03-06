@@ -52,6 +52,7 @@ dependencies:
   firebase_messaging: ^11.2.6
   firebase_analytics: ^9.1.0
   simple_gesture_detector: ^0.2.0
+  characters: ^1.2.0
   
 dev_dependencies:
   flutter_test:
@@ -94,5 +95,13 @@ flutter:
         - asset: lib/assets/font/OpenSans-MediumItalic.ttf
         - asset: lib/assets/font/OpenSans-SemiBold.ttf
         - asset: lib/assets/font/OpenSans-SemiBoldItalic.ttf
+    - family: Roboto
+      fonts:
+        - asset: lib/assets/font/Roboto-Black.ttf
+        - asset: lib/assets/font/Roboto-Bold.ttf
+        - asset: lib/assets/font/Roboto-Medium.ttf
+        - asset: lib/assets/font/Roboto-Regular.ttf
+        - asset: lib/assets/font/Roboto-Thin.ttf
+       
 flutter_intl:
   enabled: true

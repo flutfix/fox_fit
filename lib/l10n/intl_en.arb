@@ -92,5 +92,7 @@
     "choose": "",
     "choose_service": "",
     "services": "",
-    "packages": ""
+    "packages": "",
+    "currency_symbol": "",
+    "set_duration": ""
 }

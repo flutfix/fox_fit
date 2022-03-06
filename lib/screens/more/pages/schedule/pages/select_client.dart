@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
@@ -217,14 +219,24 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                 data: false,
                                 time: false,
                               );
+
                               if (widget.isFromSale) {
-                                _salesController.state.update((model) {
-                                  if (_salesController.state.value.isPersonal) {
+                                if (_salesController.state.value.isPersonal) {
+                                  _salesController.state.update((model) {
                                     model?.clients = [_foundClient!];
+                                  });
+                                } else {
+                                  List<CustomerModel> clients =
+                                      _salesController.state.value.clients;
+                                  if (clients.isEmpty) {
+                                    clients = [_foundClient!];
                                   } else {
-                                    model?.clients.add(_foundClient!);
+                                    clients.add(_foundClient!);
                                   }
-                                });
+                                  _salesController.state.update((model) {
+                                    model?.clients = clients;
+                                  });
+                                }
                               } else {
                                 _scheduleController.state.update((model) {
                                   model?.clients = [
@@ -301,14 +313,26 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                       Get.back();
 
                                       if (widget.isFromSale) {
-                                        _salesController.state.update((model) {
-                                          if (_salesController
-                                              .state.value.isPersonal) {
+                                        if (_salesController
+                                            .state.value.isPersonal) {
+                                          _salesController.state
+                                              .update((model) {
                                             model?.clients = [currentClient];
+                                          });
+                                        } else {
+                                          List<CustomerModel> clients =
+                                              _salesController
+                                                  .state.value.clients;
+                                          if (clients.isEmpty) {
+                                            clients = [currentClient];
                                           } else {
-                                            model?.clients.add(currentClient);
+                                            clients.add(currentClient);
                                           }
-                                        });
+                                          _salesController.state
+                                              .update((model) {
+                                            model?.clients = clients;
+                                          });
+                                        }
                                       } else {
                                         /// Для персональной тренировки
                                         if (_scheduleController.state.value

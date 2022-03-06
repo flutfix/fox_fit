@@ -196,11 +196,11 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
                                       .split(' ');
                                   number =
                                       '${number[0]}${number[1]}${number[2]}';
-                                  number = number.isPersonal('(');
+                                  number = number.split('(');
                                   number = '${number[0]}${number[1]}';
-                                  number = number.isPersonal(')');
+                                  number = number.split(')');
                                   number = '${number[0]}${number[1]}';
-                                  number = number.isPersonal('+7');
+                                  number = number.split('+7');
                                   number = '8${number[1]}';
 
                                   /// Try to make a phone call
@@ -409,9 +409,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     dynamic number;
     number = _controller.appState.value.currentCustomer!.phone.split(' ');
     number = '${number[0]}${number[1]}${number[2]}';
-    number = number.isPersonal('(');
+    number = number.split('(');
     number = '${number[0]}${number[1]}';
-    number = number.isPersonal(')');
+    number = number.split(')');
     number = '${number[0]}${number[1]}';
     String? greeting =
         _controller.appState.value.auth?.data?.whatsAppDefaultGreeting;
@@ -524,9 +524,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
   String _formatPhone(String _phone) {
     dynamic formatPhone = _phone.split(' ');
     formatPhone = '${formatPhone[1]}${formatPhone[2]}';
-    formatPhone = formatPhone.isPersonal(')');
+    formatPhone = formatPhone.split(')');
     formatPhone = '${formatPhone[0]}${formatPhone[1]}';
-    formatPhone = formatPhone.isPersonal('(');
+    formatPhone = formatPhone.split('(');
     formatPhone = '${formatPhone[0]}${formatPhone[1]}';
     return '8$formatPhone';
   }
