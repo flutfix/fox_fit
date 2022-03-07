@@ -114,7 +114,6 @@ class _InputState extends State<Input> {
               textCapitalization: widget.textCapitalization,
               minLines: widget.lines,
               maxLines: widget.lines,
-              obscuringCharacter: '*',
               inputFormatters: widget.textFormatters,
               obscureText: widget.obscureText,
               scrollPadding:

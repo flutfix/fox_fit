@@ -36,6 +36,7 @@ class SalesRequests {
     required int duration,
     required String appointmentType,
     required bool split,
+    required bool isStarting,
   }) async {
     String url = '${Requests.url}get_services';
     final dioClient = Dio(Requests.options);
@@ -47,6 +48,7 @@ class SalesRequests {
           "Duration": duration,
           "AppointmentType": appointmentType,
           "Split": split,
+          "StartingServices": isStarting,
         },
       );
 

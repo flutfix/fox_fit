@@ -113,6 +113,62 @@ class _CreateSalePageState extends State<CreateSalePage> {
                           ),
                         ),
 
+                        ///[Продление или стартовая]
+                        Obx(() => AnimatedContainer(
+                            duration: const Duration(milliseconds: 150),
+                            height: _salesController.state.value.isPersonal
+                                ? 12
+                                : 0)),
+                        _animatedVisible(
+                          context,
+                          child: Row(
+                            children: [
+                              /// Продление
+                              Obx(
+                                () => CustomAnimatedContainer(
+                                  text: S.of(context).extension_sale,
+                                  isActive:
+                                      _salesController.state.value.isStarting
+                                          ? false
+                                          : true,
+                                  animation: AnimationModel(
+                                    activeWidth: 114,
+                                    inactiveWidth: 90,
+                                  ),
+                                  wrapText: false,
+                                  onTap: () {
+                                    _salesController.state.update((model) {
+                                      model?.isStarting = false;
+                                    });
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 7),
+
+                              /// Стартовая
+                              Obx(
+                                () => CustomAnimatedContainer(
+                                  text: S.of(context).starting,
+                                  animation: AnimationModel(
+                                    activeWidth: 111,
+                                    inactiveWidth: 90,
+                                  ),
+                                  isActive:
+                                      _salesController.state.value.isStarting
+                                          ? true
+                                          : false,
+                                  wrapText: false,
+                                  onTap: () {
+                                    _salesController.state.update((model) {
+                                      model?.isStarting = true;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
                         /// [Длительность]
                         const SizedBox(height: 12),
                         Obx(
@@ -210,62 +266,6 @@ class _CreateSalePageState extends State<CreateSalePage> {
                                 );
                               }
                             },
-                          ),
-                        ),
-
-                        ///[Продление или стартовая]
-                        Obx(() => AnimatedContainer(
-                            duration: const Duration(milliseconds: 150),
-                            height: _salesController.state.value.isPersonal
-                                ? 12
-                                : 0)),
-                        _animatedVisible(
-                          context,
-                          child: Row(
-                            children: [
-                              /// Продление
-                              Obx(
-                                () => CustomAnimatedContainer(
-                                  text: S.of(context).extension_sale,
-                                  isActive:
-                                      _salesController.state.value.isStarting
-                                          ? false
-                                          : true,
-                                  animation: AnimationModel(
-                                    activeWidth: 114,
-                                    inactiveWidth: 90,
-                                  ),
-                                  wrapText: false,
-                                  onTap: () {
-                                    _salesController.state.update((model) {
-                                      model?.isStarting = false;
-                                    });
-                                  },
-                                ),
-                              ),
-                              const SizedBox(width: 7),
-
-                              /// Стартовая
-                              Obx(
-                                () => CustomAnimatedContainer(
-                                  text: S.of(context).starting,
-                                  animation: AnimationModel(
-                                    activeWidth: 111,
-                                    inactiveWidth: 90,
-                                  ),
-                                  isActive:
-                                      _salesController.state.value.isStarting
-                                          ? true
-                                          : false,
-                                  wrapText: false,
-                                  onTap: () {
-                                    _salesController.state.update((model) {
-                                      model?.isStarting = true;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
                           ),
                         ),
 
