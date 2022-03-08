@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
@@ -63,7 +65,7 @@ class _MorePageState extends State<MorePage> {
           if (_controller.appState.value.useSchedule)
             MoreCardModel(
               text: S.of(context).sales,
-              icon: Images.sales,
+              icon: Images.sale,
               onTap: () {
                 Get.toNamed(Routes.sale);
               },
@@ -84,13 +86,23 @@ class _MorePageState extends State<MorePage> {
             icon: Images.support,
             onTap: () async {
               String whatsapp =
-                  'whatsapp://send?phone=${_controller.appState.value.auth!.data!.supportPhone}';
-              await canLaunch(whatsapp)
-                  ? launch(whatsapp)
-                  : CustomSnackbar.getSnackbar(
-                      title: S.of(context).whatsapp_exeption,
-                      message: S.of(context).whatsapp_exeption_description,
-                    );
+                  'https://wa.me/${_controller.appState.value.auth!.data!.supportPhone}';
+              whatsapp = Uri.encodeFull(whatsapp);
+              log(whatsapp);
+              if (await canLaunch(whatsapp)) {
+                try {
+                  launch(
+                    whatsapp,
+                    forceWebView: false,
+                  );
+                } catch (e) {
+                  log(e.toString());
+                }
+              } else {
+                CustomSnackbar.getSnackbar(
+                  title: S.of(context).whatsapp_exeption,
+                );
+              }
             },
           ),
 

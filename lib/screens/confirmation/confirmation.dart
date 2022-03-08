@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/controllers/sales_controller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
@@ -287,6 +288,37 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
             );
           },
         );
+      }
+    } else if (widget.stagePipelineType == StagePipelineType.sale) {
+      SalesController _salesController = Get.find<SalesController>();
+      dynamic data = await load(function: () {
+        return ErrorHandler.request(
+          context: context,
+          repeat: false,
+          request: () async {
+            return _salesController.addSale(
+              userUid: _controller.getUid(role: UserRole.trainer),
+            );
+          },
+          handler: (data) async {
+            if (data == 403) {
+              CustomSnackbar.getSnackbar(
+                title: S.of(context).error,
+                message: S.of(context).valid_license_not_found,
+              );
+            } else {
+              CustomSnackbar.getSnackbar(
+                title: S.of(context).server_error,
+                message: S.of(context).add_sale_failed,
+              );
+            }
+          },
+        );
+      });
+
+      if (data == 200) {
+        Get.back();
+        Get.back();
       }
 
       /// Если относится к стадии [Тренировка]

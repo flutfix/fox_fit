@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 class SalesController extends GetxController {
   final Rx<SalesState> state = SalesState().obs;
 
+  /// Получить длительности тренировок
   Future<dynamic> getAppointmentsDurations({
     required String userUid,
   }) async {
@@ -23,6 +24,7 @@ class SalesController extends GetxController {
     }
   }
 
+  /// Получить услуги под выбранные параметры
   Future<dynamic> getServices({
     required String userUid,
   }) async {
@@ -39,6 +41,24 @@ class SalesController extends GetxController {
         model?.services = data[0];
         model?.packageOfServices = data[1];
       });
+      return 200;
+    }
+  }
+
+  /// Выставить продажу
+  Future<dynamic> addSale({
+    required String userUid,
+  }) async {
+    var data = await SalesRequests.addSale(
+      userUid: userUid,
+      serviceUid: state.value.chosenService!.uid,
+      customerUid: state.value.chosenCustomer!.uid,
+      amount: state.value.quantity!,
+      price: state.value.chosenService!.price,
+    );
+    if (data is int || data == null) {
+      return data;
+    } else {
       return 200;
     }
   }

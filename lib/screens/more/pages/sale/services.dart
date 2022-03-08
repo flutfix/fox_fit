@@ -130,7 +130,7 @@ class _ServicesPageState extends State<ServicesPage> {
                       onTap: () {
                         _onBack();
                         _salesController.state.update((model) {
-                          model?.currentService = items[index];
+                          model?.chosenService = items[index];
                         });
                       },
                     ),

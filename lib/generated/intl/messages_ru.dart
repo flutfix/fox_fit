@@ -26,6 +26,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Удалить занятие не удалось"),
         "add_least_one_client": MessageLookupByLibrary.simpleMessage(
             "Добавьте хотя бы одного клиента"),
+        "add_sale":
+            MessageLookupByLibrary.simpleMessage("Выставить продажу на сумму"),
+        "add_sale_failed": MessageLookupByLibrary.simpleMessage(
+            "Не удалось выставить продажу"),
         "amount": MessageLookupByLibrary.simpleMessage("Сумма"),
         "appointment_has_already_been_held":
             MessageLookupByLibrary.simpleMessage("Занятие уже проведено"),
@@ -84,6 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Заполните все поля"),
         "fill_previous_fields":
             MessageLookupByLibrary.simpleMessage("Заполните предыдущие поля"),
+        "for_customer": MessageLookupByLibrary.simpleMessage("для клиента"),
         "group": MessageLookupByLibrary.simpleMessage("Группа"),
         "inactiveCustomers":
             MessageLookupByLibrary.simpleMessage("\"Спящие\" клиенты"),
@@ -166,8 +171,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Не найдена действующая лицензия"),
         "whatsapp_exeption":
             MessageLookupByLibrary.simpleMessage("Не удалось открыть WhatsApp"),
-        "whatsapp_exeption_description": MessageLookupByLibrary.simpleMessage(
-            "Попробуйте скачать приложение или проверьте соединение с интернетом"),
         "wrong_login_or_pass":
             MessageLookupByLibrary.simpleMessage("Неверный логин или пароль")
       };

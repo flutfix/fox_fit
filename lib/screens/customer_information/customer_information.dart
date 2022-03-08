@@ -471,7 +471,6 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
   get getErrorWhatsappLaunch {
     CustomSnackbar.getSnackbar(
       title: S.of(context).whatsapp_exeption,
-      message: S.of(context).whatsapp_exeption_description,
     );
   }
 
