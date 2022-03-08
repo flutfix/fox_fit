@@ -221,22 +221,9 @@ class _SelectClientPageState extends State<SelectClientPage> {
                               );
 
                               if (widget.isFromSale) {
-                                if (_salesController.state.value.isPersonal) {
-                                  _salesController.state.update((model) {
-                                    model?.clients = [_foundClient!];
-                                  });
-                                } else {
-                                  List<CustomerModel> clients =
-                                      _salesController.state.value.clients;
-                                  if (clients.isEmpty) {
-                                    clients = [_foundClient!];
-                                  } else {
-                                    clients.add(_foundClient!);
-                                  }
-                                  _salesController.state.update((model) {
-                                    model?.clients = clients;
-                                  });
-                                }
+                                _salesController.state.update((model) {
+                                  model?.chosenCustomer = _foundClient;
+                                });
                               } else {
                                 _scheduleController.state.update((model) {
                                   model?.clients = [
@@ -313,26 +300,9 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                       Get.back();
 
                                       if (widget.isFromSale) {
-                                        if (_salesController
-                                            .state.value.isPersonal) {
-                                          _salesController.state
-                                              .update((model) {
-                                            model?.clients = [currentClient];
-                                          });
-                                        } else {
-                                          List<CustomerModel> clients =
-                                              _salesController
-                                                  .state.value.clients;
-                                          if (clients.isEmpty) {
-                                            clients = [currentClient];
-                                          } else {
-                                            clients.add(currentClient);
-                                          }
-                                          _salesController.state
-                                              .update((model) {
-                                            model?.clients = clients;
-                                          });
-                                        }
+                                        _salesController.state.update((model) {
+                                          model?.chosenCustomer = currentClient;
+                                        });
                                       } else {
                                         /// Для персональной тренировки
                                         if (_scheduleController.state.value
@@ -435,15 +405,9 @@ class _SelectClientPageState extends State<SelectClientPage> {
 
   /// Проверка есть ли клиент в списке
   bool _checkExisttenceOfClient(String customer) {
-    if (widget.isFromSale) {
-      return _salesController.state.value.clients.any(
-        (client) => client.uid == customer,
-      );
-    } else {
-      return _scheduleController.state.value.clients.any(
-        (client) => client.model.uid == customer,
-      );
-    }
+    return _scheduleController.state.value.clients.any(
+      (client) => client.model.uid == customer,
+    );
   }
 
   /// Подставление [+7] в начало строки, если поле в фокусе

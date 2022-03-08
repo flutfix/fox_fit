@@ -23,7 +23,6 @@
     "transmit": "Передать",
     "to_coach": "Тренеру",
     "whatsapp_exeption": "Не удалось открыть WhatsApp",
-    "whatsapp_exeption_description": "Попробуйте скачать приложение или проверьте соединение с интернетом",
     "empty_customers": "На данном этапе клиенты отсутствуют",
     "empty_customers_short": "Клиенты отсутствуют",
     "change_password": "Изменить пароль",
@@ -93,5 +92,8 @@
     "services": "Услуги:",
     "packages": "Пакеты:",
     "currency_symbol": "₽",
-    "set_duration": "Заполните длительность тренировки"
+    "set_duration": "Заполните длительность тренировки",
+    "add_sale": "Выставить продажу на сумму",
+    "for_customer": "для клиента",
+    "add_sale_failed": "Не удалось выставить продажу"
 }

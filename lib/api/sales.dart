@@ -70,4 +70,36 @@ class SalesRequests {
       return e.response?.statusCode;
     }
   }
+
+  /// Выставить продажу
+  static Future<dynamic> addSale({
+    required String userUid,
+    required String serviceUid,
+    required String customerUid,
+    required int amount,
+    required int price,
+  }) async {
+    String url = '${Requests.url}add_sale';
+
+    final dioClient = Dio(Requests.options);
+    try {
+      var response = await dioClient.post(
+        url,
+        queryParameters: {
+          "UserUid": userUid,
+          "ServiceUid": serviceUid,
+          "CustomerUid": customerUid,
+          "Amount": amount,
+          "Price": price,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return 200;
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
 }

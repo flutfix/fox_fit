@@ -8,6 +8,7 @@ import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/sales_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/animation.dart';
+import 'package:fox_fit/screens/confirmation/confirmation.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
@@ -250,11 +251,10 @@ class _CreateSalePageState extends State<CreateSalePage> {
                         const SizedBox(height: 12),
                         Obx(
                           () => CustomAnimatedContainer(
-                            text: (_salesController
-                                        .state.value.currentService !=
+                            text: (_salesController.state.value.chosenService !=
                                     null)
                                 ? _salesController
-                                    .state.value.currentService!.name
+                                    .state.value.chosenService!.name
                                 : S.of(context).service,
                             onTap: () {
                               if (_salesController.state.value.chosenDuration !=
@@ -292,38 +292,6 @@ class _CreateSalePageState extends State<CreateSalePage> {
                             },
                           ),
                         ),
-
-                        /// Список клиентов для групповой
-                        Obx(
-                          () {
-                            if (!_salesController.state.value.isPersonal) {
-                              return Column(
-                                  children: List.generate(
-                                      _salesController
-                                          .state.value.clients.length, (index) {
-                                String customerName = _salesController
-                                    .state.value.clients[index].fullName;
-                                return Padding(
-                                  padding: const EdgeInsets.only(top: 12.0),
-                                  child: CustomAnimatedContainer(
-                                    text: customerName,
-                                    isButtonDelete: true,
-                                    onTap: () {},
-                                    onDelete: () {
-                                      _salesController.state.update(
-                                        (model) {
-                                          model?.clients.removeAt(index);
-                                        },
-                                      );
-                                    },
-                                  ),
-                                );
-                              }));
-                            } else {
-                              return const SizedBox();
-                            }
-                          },
-                        ),
                       ],
                     ),
                   ),
@@ -340,25 +308,28 @@ class _CreateSalePageState extends State<CreateSalePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Obx(() {
-                if (_salesController.state.value.currentService != null) {
+                if (_salesController.state.value.chosenService != null) {
                   if (_salesController.state.value.quantity != null) {
                     return Padding(
                       padding: const EdgeInsets.only(top: 30.0, bottom: 12),
 
                       /// Сумма продажи
                       child: RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-                            text: _sumarryAmountFormat(),
-                            style: theme.textTheme.headline1,
-                          ),
-                          TextSpan(
-                            text: ' ${S.of(context).currency_symbol}',
-                            style: theme.textTheme.headline1!.copyWith(
-                              fontFamily: Styles.robotoFamily,
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text:
+                                  '${S.of(context).amount}: ${_sumarryAmountFormat()}',
+                              style: theme.textTheme.headline1,
                             ),
-                          )
-                        ]),
+                            TextSpan(
+                              text: ' ${S.of(context).currency_symbol}',
+                              style: theme.textTheme.headline1!.copyWith(
+                                fontFamily: Styles.robotoFamily,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     );
                   }
@@ -373,9 +344,44 @@ class _CreateSalePageState extends State<CreateSalePage> {
                 backgroundColor: theme.colorScheme.secondary,
                 textStyle: theme.textTheme.button!,
                 onTap: () {
-                  if (_salesController.state.value.clients.isNotEmpty) {
-                    if (_salesController.state.value.currentService != null) {
+                  if (_salesController.state.value.chosenCustomer != null) {
+                    if (_salesController.state.value.chosenService != null) {
                       if (_salesController.state.value.quantity != null) {
+                        String amount = _sumarryAmountFormat();
+                        Get.to(() => ConfirmationPage(
+                              stagePipelineType: StagePipelineType.sale,
+                              richText: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  style: theme.textTheme.headline1!
+                                      .copyWith(fontWeight: FontWeight.w600),
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          '${S.of(context).add_sale} \n $amount',
+                                    ),
+                                    TextSpan(
+                                      text: ' ${S.of(context).currency_symbol}',
+                                      style:
+                                          theme.textTheme.headline1!.copyWith(
+                                        fontFamily: Styles.robotoFamily,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: ' ${S.of(context).for_customer}',
+                                    ),
+                                    TextSpan(
+                                        text:
+                                            '\n${_salesController.state.value.chosenCustomer!.fullName}',
+                                        style: theme.textTheme.headline1!
+                                            .copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                color: theme
+                                                    .colorScheme.secondary)),
+                                  ],
+                                ),
+                              ),
+                            ));
                       } else {
                         _getSnackbar;
                       }
@@ -463,12 +469,8 @@ class _CreateSalePageState extends State<CreateSalePage> {
   }
 
   String chooseClientButtonText() {
-    if (_salesController.state.value.isPersonal) {
-      if (_salesController.state.value.clients.isNotEmpty) {
-        return _salesController.state.value.clients[0].fullName;
-      } else {
-        return S.of(context).select_client;
-      }
+    if (_salesController.state.value.chosenCustomer != null) {
+      return _salesController.state.value.chosenCustomer!.fullName;
     } else {
       return S.of(context).select_client;
     }
@@ -476,7 +478,7 @@ class _CreateSalePageState extends State<CreateSalePage> {
 
   /// Приведение к формату итоговой суммы, где тысячные отдельно
   String _sumarryAmountFormat() {
-    dynamic amount = _salesController.state.value.currentService!.price *
+    dynamic amount = _salesController.state.value.chosenService!.price *
         _salesController.state.value.quantity!;
 
     if (amount >= 1000) {
@@ -488,8 +490,8 @@ class _CreateSalePageState extends State<CreateSalePage> {
         }
         hundreds = '0$hundreds';
       }
-      return '${S.of(context).amount}: $thousands $hundreds';
+      return '$thousands $hundreds';
     }
-    return '${S.of(context).amount}: $amount';
+    return '$amount';
   }
 }

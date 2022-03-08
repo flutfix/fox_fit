@@ -23,7 +23,6 @@
     "transmit": "",
     "to_coach": "",
     "whatsapp_exeption": "",
-    "whatsapp_exeption_description": "",
     "empty_customers": "",
     "empty_customers_short": "",
     "change_password": "",
@@ -94,5 +93,8 @@
     "services": "",
     "packages": "",
     "currency_symbol": "",
-    "set_duration": ""
+    "set_duration": "",
+    "add_sale": "",
+    "for_customer": "",
+    "add_sale_failed": ""
 }

@@ -24,6 +24,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "activity_could_not_deleted": MessageLookupByLibrary.simpleMessage(""),
         "add_least_one_client": MessageLookupByLibrary.simpleMessage(""),
+        "add_sale": MessageLookupByLibrary.simpleMessage(""),
+        "add_sale_failed": MessageLookupByLibrary.simpleMessage(""),
         "amount": MessageLookupByLibrary.simpleMessage(""),
         "appointment_has_already_been_held":
             MessageLookupByLibrary.simpleMessage(""),
@@ -64,6 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fast_search": MessageLookupByLibrary.simpleMessage(""),
         "fill_all_fields": MessageLookupByLibrary.simpleMessage(""),
         "fill_previous_fields": MessageLookupByLibrary.simpleMessage(""),
+        "for_customer": MessageLookupByLibrary.simpleMessage(""),
         "group": MessageLookupByLibrary.simpleMessage(""),
         "inactiveCustomers": MessageLookupByLibrary.simpleMessage(""),
         "kickoff_training": MessageLookupByLibrary.simpleMessage(""),
@@ -118,8 +121,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "trining_could_not_recorded": MessageLookupByLibrary.simpleMessage(""),
         "valid_license_not_found": MessageLookupByLibrary.simpleMessage(""),
         "whatsapp_exeption": MessageLookupByLibrary.simpleMessage(""),
-        "whatsapp_exeption_description":
-            MessageLookupByLibrary.simpleMessage(""),
         "wrong_login_or_pass": MessageLookupByLibrary.simpleMessage("")
       };
 }

@@ -291,16 +291,6 @@ class S {
   }
 
   /// ``
-  String get whatsapp_exeption_description {
-    return Intl.message(
-      '',
-      name: 'whatsapp_exeption_description',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
   String get empty_customers {
     return Intl.message(
       '',
@@ -1005,6 +995,36 @@ class S {
     return Intl.message(
       '',
       name: 'set_duration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get add_sale {
+    return Intl.message(
+      '',
+      name: 'add_sale',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get for_customer {
+    return Intl.message(
+      '',
+      name: 'for_customer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get add_sale_failed {
+    return Intl.message(
+      '',
+      name: 'add_sale_failed',
       desc: '',
       args: [],
     );

@@ -6,27 +6,27 @@ class SalesState {
     this.isPersonal = true,
     this.isSplit = false,
     this.isStarting = false,
-    this.clients = const [],
+    this.chosenCustomer,
     this.durations = const [],
     this.chosenDuration,
     this.services = const [],
     this.packageOfServices = const [],
     this.quantity,
-    this.currentService,
+    this.chosenService,
   });
 
   /// Выбранный тип тренировки (Персональная или групповая)
   bool isPersonal;
 
   /// Выбранные клиенты
-  List<CustomerModel> clients;
+  CustomerModel? chosenCustomer;
 
   /// Длительность
   List<dynamic> durations;
   int? chosenDuration;
 
   /// Услуги и пакеты
-  ServicesModel? currentService;
+  ServicesModel? chosenService;
   List<ServicesModel> services;
   List<ServicesModel> packageOfServices;
 
