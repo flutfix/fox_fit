@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
@@ -41,7 +43,6 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
       context: context,
       request: controller.getTrainerPerfomance,
     );
-
     setState(() {
       isLoading = false;
     });
