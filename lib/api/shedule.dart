@@ -50,17 +50,21 @@ class SheduleRequests {
   }
 
   /// Получение длительностей занятий
-  static Future<dynamic> getAppointmentsDurations() async {
+  static Future<dynamic> getAppointmentsDurations({
+    required String userUid,
+  }) async {
     String url = '${Requests.url}get_appointments_durations';
     final dioClient = Dio(Requests.options);
     try {
-      var response = await dioClient.get(url);
+      var response = await dioClient.get(url, queryParameters: {
+        "UserUid": userUid,
+      });
       if (response.statusCode == 200) {
-        List<int> appointmentsDurations = [];
+        List<int> durations = [];
         for (int duration in response.data) {
-          appointmentsDurations.add(duration);
+          durations.add(duration);
         }
-        return appointmentsDurations;
+        return durations;
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -138,15 +142,6 @@ class SheduleRequests {
       );
     }
 
-    log('${licenseKey}');
-    log('${userUid}');
-    log('${appointmentType}');
-    log('${split}');
-    log('${dateTimeAppointment}');
-    log('${serviceUid}');
-    log('${capacity}');
-    log('${customersList}');
-
     try {
       var response = await dioClient.post(
         url,
@@ -197,8 +192,6 @@ class SheduleRequests {
         },
       );
     }
-
-    log('split ${split}');
 
     try {
       var response = await dioClient.post(

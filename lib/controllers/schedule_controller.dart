@@ -42,8 +42,12 @@ class ScheduleController extends GetxController {
   }
 
   /// Получение длительностей занятий
-  Future<dynamic> getAppointmentsDurations() async {
-    dynamic data = await SheduleRequests.getAppointmentsDurations();
+  Future<dynamic> getAppointmentsDurations({
+    required String userUid,
+  }) async {
+    dynamic data = await SheduleRequests.getAppointmentsDurations(
+      userUid: userUid,
+    );
     if (data is int || data == null) {
       return data;
     } else {

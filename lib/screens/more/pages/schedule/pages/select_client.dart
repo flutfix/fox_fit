@@ -297,8 +297,6 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                     customer: currentClient,
                                     clientType: ClientType.permanent,
                                     onTap: () async {
-                                      Get.back();
-
                                       if (widget.isFromSale) {
                                         _salesController.state.update((model) {
                                           model?.chosenCustomer = currentClient;
