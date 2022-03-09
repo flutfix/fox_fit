@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
@@ -283,7 +281,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
           skipCheck: true,
           handler: (_) async {
             CustomSnackbar.getSnackbar(
-              title: S.of(context).no_internet_access,
+              title: S.of(context).error,
               message: S.of(context).failed_update_list,
             );
           },
@@ -524,7 +522,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
         skipCheck: true,
         handler: (_) async {
           CustomSnackbar.getSnackbar(
-            title: S.of(context).no_internet_access,
+            title: S.of(context).error,
             message: S.of(context).failed_update_list,
           );
         },

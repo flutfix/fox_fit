@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
@@ -298,6 +296,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                     clientType: ClientType.permanent,
                                     onTap: () async {
                                       if (widget.isFromSale) {
+                                        Get.back();
                                         _salesController.state.update((model) {
                                           model?.chosenCustomer = currentClient;
                                         });

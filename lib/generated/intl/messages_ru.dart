@@ -73,7 +73,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Клиенты отсутствуют"),
         "enter_full_number":
             MessageLookupByLibrary.simpleMessage("Введите номер полностью"),
-        "error": MessageLookupByLibrary.simpleMessage("Ошибка"),
+        "error": MessageLookupByLibrary.simpleMessage(
+            "Хьюстон, у нас проблемы...😕"),
         "error_transferring_record": MessageLookupByLibrary.simpleMessage(
             "Этот клиент уже у администратора, чтобы там все не запутались, передай его позже, пожалуйста 🙏"),
         "exit": MessageLookupByLibrary.simpleMessage("Выйти"),
@@ -138,7 +139,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Выбранных клиентов"),
         "send_to_trainer":
             MessageLookupByLibrary.simpleMessage("Передать тренеру"),
-        "server_error": MessageLookupByLibrary.simpleMessage("Ошибка сервера"),
+        "server_error": MessageLookupByLibrary.simpleMessage(
+            "Хьюстон, у нас проблемы...😕"),
         "server_navailable":
             MessageLookupByLibrary.simpleMessage("Сервер недоступен"),
         "service": MessageLookupByLibrary.simpleMessage("Услуга"),

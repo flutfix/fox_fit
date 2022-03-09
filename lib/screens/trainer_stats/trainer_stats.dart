@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
@@ -76,7 +74,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                 skipCheck: true,
                 handler: (_) async {
                   CustomSnackbar.getSnackbar(
-                    title: S.of(context).no_internet_access,
+                    title: S.of(context).error,
                     message: S.of(context).failed_update_list,
                   );
                 },

@@ -124,7 +124,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
               skipCheck: true,
               handler: (_) async {
                 CustomSnackbar.getSnackbar(
-                  title: S.of(context).no_internet_access,
+                  title: S.of(context).error,
                   message: S.of(context).failed_update_list,
                 );
               },
@@ -487,9 +487,10 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
         skipCheck: true,
         handler: (_) async {
           CustomSnackbar.getSnackbar(
-            title: S.of(context).no_internet_access,
+            title: S.of(context).error,
             message: S.of(context).failed_update_list,
           );
+          return null;
         },
       );
     }

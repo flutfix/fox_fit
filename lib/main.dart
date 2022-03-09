@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
@@ -40,13 +41,7 @@ Future<void> main() async {
 
 Future _init() async {
   if (Platform.isIOS) {
-    await Firebase.initializeApp(
-        options: const FirebaseOptions(
-      apiKey: "AIzaSyDlDrc6NbcGVR4rr8DTfV82dAk_vD3Jpi0",
-      appId: "1:150088765423:ios:23edb87f9ecb47a756301a",
-      messagingSenderId: "150088765423",
-      projectId: "android-foxfit-push",
-    ));
+    await Firebase.initializeApp(options: AppConfig.firebaseOptions);
   } else {
     await Firebase.initializeApp();
   }
