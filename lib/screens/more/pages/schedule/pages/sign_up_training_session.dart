@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
+import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/animation.dart';
@@ -33,11 +34,13 @@ class SignUpTrainingSessionPage extends StatefulWidget {
 class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
   late bool _isLoading;
   late ScheduleController _scheduleController;
+  late GeneralController _controller;
 
   @override
   void initState() {
     super.initState();
     _scheduleController = Get.find<ScheduleController>();
+    _controller = Get.find<GeneralController>();
 
     getAppointmentsDurations();
   }
@@ -49,7 +52,13 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
 
     await ErrorHandler.request(
       context: context,
-      request: _scheduleController.getAppointmentsDurations,
+      request: () {
+        return _scheduleController.getAppointmentsDurations(
+          userUid: _controller.getUid(
+            role: UserRole.trainer,
+          ),
+        );
+      },
     );
 
     setState(() {

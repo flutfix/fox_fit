@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:fox_fit/api/sales.dart';
 import 'package:fox_fit/states/sales_state.dart';
 import 'package:get/get.dart';
