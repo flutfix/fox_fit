@@ -63,6 +63,10 @@ class SalesRequests {
           packageOfServices.add(ServicesModel.fromJson(element));
         }
 
+        /// Сортировка списков по возрастанию цены
+        services.sort(((a, b) => a.price.compareTo(b.price)));
+        packageOfServices.sort(((a, b) => a.price.compareTo(b.price)));
+
         return [services, packageOfServices];
       }
     } on DioError catch (e) {
