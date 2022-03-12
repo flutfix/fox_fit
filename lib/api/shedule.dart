@@ -90,7 +90,7 @@ class SheduleRequests {
           'CustomerUid': customerUid,
           'Duration': duration,
           'ServiceType': serviceType,
-          // 'Split': split,
+          'Split': split,
         },
       );
 
