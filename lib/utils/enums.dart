@@ -23,6 +23,9 @@ class Enums {
       case StagePipelineType.appointment:
         return Images.assigned;
 
+      case StagePipelineType.sale:
+        return Images.saleConfirmation;
+
       default:
         return Images.assigned;
     }
@@ -82,7 +85,8 @@ class Enums {
     return StagePipelineType.assigned;
   }
 
-  static String getStagePipelineUid({required StagePipelineType stagePipelineType}) {
+  static String getStagePipelineUid(
+      {required StagePipelineType stagePipelineType}) {
     switch (stagePipelineType) {
       case StagePipelineType.assigned:
         return StagePipeline.assigned;
@@ -104,7 +108,8 @@ class Enums {
     }
   }
 
-  static String getAppointmentTypeString({required AppointmentType appointmentType}) {
+  static String getAppointmentTypeString(
+      {required AppointmentType appointmentType}) {
     switch (appointmentType) {
       case AppointmentType.personal:
         return 'Personal';
@@ -117,7 +122,8 @@ class Enums {
     }
   }
 
-  static AppointmentType getAppointmentType({required String appointmentTypeString}) {
+  static AppointmentType getAppointmentType(
+      {required String appointmentTypeString}) {
     switch (appointmentTypeString) {
       case 'Personal':
         return AppointmentType.personal;
@@ -130,7 +136,8 @@ class Enums {
     }
   }
 
-  static PaymentStatusType getPaymentStatusType({required String paymentStatusString}) {
+  static PaymentStatusType getPaymentStatusType(
+      {required String paymentStatusString}) {
     switch (paymentStatusString) {
       case 'DoneAndPayed':
         return PaymentStatusType.doneAndPayed;
@@ -154,6 +161,7 @@ enum StagePipelineType {
   rejection,
   coordinator,
   appointment,
+  sale,
 }
 
 enum ClientType {

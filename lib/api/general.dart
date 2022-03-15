@@ -297,7 +297,6 @@ class Requests {
           "UserUid": id,
         },
       );
-
       if (response.statusCode == 200) {
         List<TrainerPerfomanceModel> trainerPerfomance = [];
         List<String> trainerPerfomanceMonth = [];

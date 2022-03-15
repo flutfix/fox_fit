@@ -26,6 +26,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Удалить занятие не удалось"),
         "add_least_one_client": MessageLookupByLibrary.simpleMessage(
             "Добавьте хотя бы одного клиента"),
+        "add_sale":
+            MessageLookupByLibrary.simpleMessage("Выставить продажу на сумму"),
+        "add_sale_failed": MessageLookupByLibrary.simpleMessage(
+            "Не удалось выставить продажу"),
+        "amount": MessageLookupByLibrary.simpleMessage("Сумма"),
         "appointment_has_already_been_held":
             MessageLookupByLibrary.simpleMessage("Занятие уже проведено"),
         "authorization_failed":
@@ -41,6 +46,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "chat": MessageLookupByLibrary.simpleMessage("Чат в WhatsApp"),
         "choice_client": MessageLookupByLibrary.simpleMessage("Выбор клиента"),
         "choice_service": MessageLookupByLibrary.simpleMessage("Выбор услуги"),
+        "choose_service":
+            MessageLookupByLibrary.simpleMessage("Выберите услугу"),
         "client_not_found": MessageLookupByLibrary.simpleMessage(
             "Лиса очень старалась, но не нашла этот номер телефона 😟"),
         "comment_for_recipient":
@@ -49,6 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirmation_failed":
             MessageLookupByLibrary.simpleMessage("Подтверждение не выполнено"),
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
+        "currency_symbol": MessageLookupByLibrary.simpleMessage("₽"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
         "data_download_failed":
@@ -65,10 +73,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Клиенты отсутствуют"),
         "enter_full_number":
             MessageLookupByLibrary.simpleMessage("Введите номер полностью"),
-        "error": MessageLookupByLibrary.simpleMessage("Ошибка"),
+        "error": MessageLookupByLibrary.simpleMessage(
+            "Хьюстон, у нас проблемы...😕"),
         "error_transferring_record": MessageLookupByLibrary.simpleMessage(
             "Этот клиент уже у администратора, чтобы там все не запутались, передай его позже, пожалуйста 🙏"),
         "exit": MessageLookupByLibrary.simpleMessage("Выйти"),
+        "expose": MessageLookupByLibrary.simpleMessage("Выставить"),
+        "expose_sell":
+            MessageLookupByLibrary.simpleMessage("Выставить продажу"),
+        "extension_sale": MessageLookupByLibrary.simpleMessage("Продление"),
         "failed_update_list":
             MessageLookupByLibrary.simpleMessage("Не удалось обновить список"),
         "fast_search": MessageLookupByLibrary.simpleMessage("Быстрый поиск"),
@@ -76,6 +89,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Заполните все поля"),
         "fill_previous_fields":
             MessageLookupByLibrary.simpleMessage("Заполните предыдущие поля"),
+        "for_customer": MessageLookupByLibrary.simpleMessage("для клиента"),
+        "group": MessageLookupByLibrary.simpleMessage("Группа"),
         "inactiveCustomers":
             MessageLookupByLibrary.simpleMessage("\"Спящие\" клиенты"),
         "kickoff_training":
@@ -93,7 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login_exeption": MessageLookupByLibrary.simpleMessage("Ошибка входа"),
         "new_password": MessageLookupByLibrary.simpleMessage("Новый пароль"),
         "new_password_again":
-            MessageLookupByLibrary.simpleMessage("Новый пароль (повторно)"),
+            MessageLookupByLibrary.simpleMessage("Повторите пароль"),
         "no_internet_access":
             MessageLookupByLibrary.simpleMessage("Нет доступа к интернету"),
         "no_services_found":
@@ -103,14 +118,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "notifications": MessageLookupByLibrary.simpleMessage("Уведомления"),
         "only_add_or_remove_clients": MessageLookupByLibrary.simpleMessage(
             "В групповой тренировке можно только добавлять или удалять клиентов"),
+        "packages": MessageLookupByLibrary.simpleMessage("Пакеты:"),
         "password_not_changed":
             MessageLookupByLibrary.simpleMessage("Пароль не изменён"),
         "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
             "Введённые пароли не совпадают"),
         "personal": MessageLookupByLibrary.simpleMessage("Персональная"),
+        "personalka": MessageLookupByLibrary.simpleMessage("Персоналка"),
+        "quantity": MessageLookupByLibrary.simpleMessage("Количество"),
         "record": MessageLookupByLibrary.simpleMessage("Записать"),
         "repeat_input": MessageLookupByLibrary.simpleMessage("Повторите ввод"),
         "revoke": MessageLookupByLibrary.simpleMessage("Отменить"),
+        "sales": MessageLookupByLibrary.simpleMessage("Выставить продажу"),
         "save": MessageLookupByLibrary.simpleMessage("Сохранить"),
         "save_edits": MessageLookupByLibrary.simpleMessage("Изменить"),
         "schedule": MessageLookupByLibrary.simpleMessage("Расписание"),
@@ -120,15 +139,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Выбранных клиентов"),
         "send_to_trainer":
             MessageLookupByLibrary.simpleMessage("Передать тренеру"),
-        "server_error": MessageLookupByLibrary.simpleMessage("Ошибка сервера"),
+        "server_error": MessageLookupByLibrary.simpleMessage(
+            "Хьюстон, у нас проблемы...😕"),
         "server_navailable":
             MessageLookupByLibrary.simpleMessage("Сервер недоступен"),
         "service": MessageLookupByLibrary.simpleMessage("Услуга"),
+        "services": MessageLookupByLibrary.simpleMessage("Услуги:"),
+        "set_duration": MessageLookupByLibrary.simpleMessage(
+            "Заполните длительность тренировки"),
         "sign_up_training_session":
             MessageLookupByLibrary.simpleMessage("Записать на тренировку"),
         "sleeping_customers":
             MessageLookupByLibrary.simpleMessage("\"Спящие\" клиенты"),
         "split": MessageLookupByLibrary.simpleMessage("Сплит"),
+        "starting": MessageLookupByLibrary.simpleMessage("Стартовый"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
         "this_client_supplied":
             MessageLookupByLibrary.simpleMessage("Этот клиент уже добавлен"),
@@ -149,8 +173,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Не найдена действующая лицензия"),
         "whatsapp_exeption":
             MessageLookupByLibrary.simpleMessage("Не удалось открыть WhatsApp"),
-        "whatsapp_exeption_description": MessageLookupByLibrary.simpleMessage(
-            "Попробуйте скачать приложение или проверьте соединение с интернетом"),
         "wrong_login_or_pass":
             MessageLookupByLibrary.simpleMessage("Неверный логин или пароль")
       };

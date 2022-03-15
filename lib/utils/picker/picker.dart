@@ -205,6 +205,7 @@ class Picker {
       current: currentValue,
       values: values,
     );
+    // log('$currentIndex');
 
     /// Custom Picker Sheet
     return await showModalBottomSheet(

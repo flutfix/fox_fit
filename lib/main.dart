@@ -5,26 +5,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
-import 'package:fox_fit/screens/auth/auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:fox_fit/screens/home/general.dart';
-import 'package:fox_fit/screens/more/pages/change_password/change_password.dart';
-import 'package:fox_fit/screens/more/pages/schedule/pages/schedule.dart';
-import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
-import 'package:fox_fit/screens/more/pages/schedule/pages/select_service.dart';
-import 'package:fox_fit/screens/more/pages/schedule/pages/sign_up_training_session.dart';
-import 'package:fox_fit/screens/more/pages/sleeping_customers/sleeping_customers.dart';
-import 'package:fox_fit/screens/notifications/notifications.dart';
-import 'package:fox_fit/screens/splash/splash_screen.dart';
-import 'package:fox_fit/screens/trainer_choosing/trainer_choosing.dart';
-import 'package:fox_fit/screens/trainer_stats/trainer_stats.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import 'screens/more/pages/coordinator/coordinator.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   if (Platform.isIOS) {
@@ -54,13 +41,7 @@ Future<void> main() async {
 
 Future _init() async {
   if (Platform.isIOS) {
-    await Firebase.initializeApp(
-        options: const FirebaseOptions(
-      apiKey: "AIzaSyDlDrc6NbcGVR4rr8DTfV82dAk_vD3Jpi0",
-      appId: "1:150088765423:ios:23edb87f9ecb47a756301a",
-      messagingSenderId: "150088765423",
-      projectId: "android-foxfit-push",
-    ));
+    await Firebase.initializeApp(options: AppConfig.firebaseOptions);
   } else {
     await Firebase.initializeApp();
   }
@@ -117,35 +98,8 @@ class MyApp extends StatelessWidget {
         locale: const Locale('ru', 'RU'),
         supportedLocales: S.delegate.supportedLocales,
         initialRoute: Routes.splash,
-        getPages: [
-          getPage(Routes.splash, () => const SpalshScreen()),
-          getPage(Routes.auth, () => const AuthPage()),
-          getPage(Routes.general, () => const General()),
-          getPage(Routes.trainerStats, () => const TrainerStatsPage()),
-          getPage(Routes.trainerChoosing, () => const TrainerChoosingPage()),
-          getPage(Routes.coordinator, () => const CoordinatorPage()),
-          getPage(Routes.changePassword, () => const ChangePasswordPage()),
-          getPage(Routes.notifications, () => const NotificationsPage()),
-          getPage(
-            Routes.sleepingCustomers,
-            () => const SleepingCustomersPage(),
-          ),
-          getPage(Routes.schedule, () => const SchedulePage()),
-          getPage(Routes.selectClient, () => const SelectClientPage()),
-          getPage(Routes.selectService, () => const SelectServicePage()),
-          getPage(Routes.signUpTrainingSession,
-              () => const SignUpTrainingSessionPage()),
-        ],
+        getPages: Routes.getRoutes,
       ),
-    );
-  }
-
-  GetPage<dynamic> getPage(String routeName, Widget Function() page) {
-    return GetPage(
-      name: routeName,
-      transition: Transition.fadeIn,
-      curve: Curves.easeOut,
-      page: page,
     );
   }
 }

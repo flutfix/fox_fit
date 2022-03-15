@@ -124,7 +124,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
               skipCheck: true,
               handler: (_) async {
                 CustomSnackbar.getSnackbar(
-                  title: S.of(context).no_internet_access,
+                  title: S.of(context).error,
                   message: S.of(context).failed_update_list,
                 );
               },
@@ -413,6 +413,9 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     number = '${number[0]}${number[1]}';
     number = number.split(')');
     number = '${number[0]}${number[1]}';
+    number = number.split('+');
+    number = number[1];
+
     String? greeting =
         _controller.appState.value.auth?.data?.whatsAppDefaultGreeting;
     if (greeting != null) {
@@ -431,8 +434,8 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     /// Открытие whatsapp для IOS
     if (Platform.isIOS || Platform.isAndroid) {
       tryLaunchWhatsapp(
-        whatsappLink: 'https://wa.me/$number',
-        text: '?text=$greeting',
+        whatsappLink: 'https://api.whatsapp.com/send/?phone=$number',
+        text: '&text=$greeting',
         isFromNewCustomers: _isFromNewCustomers,
       );
     }
@@ -471,7 +474,6 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
   get getErrorWhatsappLaunch {
     CustomSnackbar.getSnackbar(
       title: S.of(context).whatsapp_exeption,
-      message: S.of(context).whatsapp_exeption_description,
     );
   }
 
@@ -488,9 +490,10 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
         skipCheck: true,
         handler: (_) async {
           CustomSnackbar.getSnackbar(
-            title: S.of(context).no_internet_access,
+            title: S.of(context).error,
             message: S.of(context).failed_update_list,
           );
+          return null;
         },
       );
     }

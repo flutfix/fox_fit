@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 /// Канал уведомлений для андройд
@@ -9,6 +10,13 @@ class AppConfig {
     description: 'This channel is used for notifications.',
     importance: Importance.max,
   );
+
+  static const FirebaseOptions? firebaseOptions = FirebaseOptions(
+      apiKey: "AIzaSyDlDrc6NbcGVR4rr8DTfV82dAk_vD3Jpi0",
+      appId: "1:150088765423:ios:23edb87f9ecb47a756301a",
+      messagingSenderId: "150088765423",
+      projectId: "android-foxfit-push",
+    );
 }
 
 /// Кэш ключи

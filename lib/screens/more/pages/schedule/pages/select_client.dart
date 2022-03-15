@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/controllers/sales_controller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/customer.dart';
@@ -18,7 +19,12 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:swipe/swipe.dart';
 
 class SelectClientPage extends StatefulWidget {
-  const SelectClientPage({Key? key}) : super(key: key);
+  const SelectClientPage({
+    Key? key,
+    this.isFromSale = false,
+  }) : super(key: key);
+
+  final bool isFromSale;
 
   @override
   _SelectClientPageState createState() => _SelectClientPageState();
@@ -27,6 +33,7 @@ class SelectClientPage extends StatefulWidget {
 class _SelectClientPageState extends State<SelectClientPage> {
   late GeneralController _controller;
   late ScheduleController _scheduleController;
+  late SalesController _salesController;
   late bool _isLoading;
   late TextEditingController _phoneController;
   late FocusNode _phoneFocus;
@@ -41,6 +48,9 @@ class _SelectClientPageState extends State<SelectClientPage> {
     super.initState();
     _controller = Get.find<GeneralController>();
     _scheduleController = Get.find<ScheduleController>();
+    if (widget.isFromSale) {
+      _salesController = Get.find<SalesController>();
+    }
 
     _isLoading = false;
     _phoneFocus = FocusNode();
@@ -198,9 +208,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
                           onTap: () {
                             /// Проверка, выбран ли уже клиент
                             bool check =
-                                _scheduleController.state.value.clients.any(
-                              (client) => client.model.uid == _foundClient!.uid,
-                            );
+                                _checkExisttenceOfClient(_foundClient!.uid);
 
                             if (!check) {
                               Get.back();
@@ -210,23 +218,29 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                 time: false,
                               );
 
-                              _scheduleController.state.update((model) {
-                                model?.clients = [
-                                  CustomerModelState(
-                                    model: _foundClient!,
-                                    arrivalStatus: false,
-                                  ),
-                                ];
-                                model?.duration = _foundClient!.duration;
-                                model?.split = _foundClient!.split ?? false;
-                                if (_foundClient!.serviceUid != null &&
-                                    _foundClient!.serviceName != null) {
-                                  model?.service = Service(
-                                    uid: _foundClient!.serviceUid!,
-                                    name: _foundClient!.serviceName!,
-                                  );
-                                }
-                              });
+                              if (widget.isFromSale) {
+                                _salesController.state.update((model) {
+                                  model?.chosenCustomer = _foundClient;
+                                });
+                              } else {
+                                _scheduleController.state.update((model) {
+                                  model?.clients = [
+                                    CustomerModelState(
+                                      model: _foundClient!,
+                                      arrivalStatus: false,
+                                    ),
+                                  ];
+                                  model?.duration = _foundClient!.duration;
+                                  model?.split = _foundClient!.split ?? false;
+                                  if (_foundClient!.serviceUid != null &&
+                                      _foundClient!.serviceName != null) {
+                                    model?.service = ServicesModel(
+                                      uid: _foundClient!.serviceUid!,
+                                      name: _foundClient!.serviceName!,
+                                    );
+                                  }
+                                });
+                              }
                             } else {
                               CustomSnackbar.getSnackbar(
                                 title: S.of(context).error,
@@ -274,71 +288,76 @@ class _SelectClientPageState extends State<SelectClientPage> {
 
                                 /// Проверка, выбран ли уже клиент
                                 bool check =
-                                    _scheduleController.state.value.clients.any(
-                                  (client) =>
-                                      client.model.uid == currentClient.uid,
-                                );
+                                    _checkExisttenceOfClient(currentClient.uid);
 
                                 if (!check) {
                                   return CustomerContainer(
                                     customer: currentClient,
                                     clientType: ClientType.permanent,
                                     onTap: () async {
-                                      /// Для персональной тренировки
-                                      if (_scheduleController.state.value
-                                              .appointmentRecordType !=
-                                          AppointmentRecordType.group) {
-                                        await getCustomerByPhone(
-                                          search: phone,
-                                        );
+                                      if (widget.isFromSale) {
                                         Get.back();
+                                        _salesController.state.update((model) {
+                                          model?.chosenCustomer = currentClient;
+                                        });
+                                      } else {
+                                        /// Для персональной тренировки
+                                        if (_scheduleController.state.value
+                                                .appointmentRecordType !=
+                                            AppointmentRecordType.group) {
+                                          await getCustomerByPhone(
+                                            search: phone,
+                                          );
+                                          Get.back();
 
-                                        _scheduleController.clear(
-                                          data: false,
-                                          time: false,
-                                        );
+                                          _scheduleController.clear(
+                                            data: false,
+                                            time: false,
+                                          );
 
-                                        _scheduleController.state
-                                            .update((model) {
-                                          model?.clients = [
+                                          _scheduleController.state
+                                              .update((model) {
+                                            model?.clients = [
+                                              CustomerModelState(
+                                                model: _foundClient!,
+                                                arrivalStatus: false,
+                                              ),
+                                            ];
+                                            model?.duration =
+                                                _foundClient!.duration;
+                                            model?.split =
+                                                _foundClient!.split ?? false;
+                                            if (_foundClient!.serviceUid !=
+                                                    null &&
+                                                _foundClient!.serviceName !=
+                                                    null) {
+                                              model?.service = ServicesModel(
+                                                uid: _foundClient!.serviceUid!,
+                                                name:
+                                                    _foundClient!.serviceName!,
+                                              );
+                                            }
+                                          });
+
+                                          /// Для групповой тренировоки
+                                        } else {
+                                          Get.back();
+                                          List<CustomerModelState> clients =
+                                              _scheduleController
+                                                  .state.value.clients;
+
+                                          clients.add(
                                             CustomerModelState(
-                                              model: _foundClient!,
+                                              model: currentClient,
                                               arrivalStatus: false,
                                             ),
-                                          ];
-                                          model?.duration =
-                                              _foundClient!.duration;
-                                          model?.split =
-                                              _foundClient!.split ?? false;
-                                          if (_foundClient!.serviceUid !=
-                                                  null &&
-                                              _foundClient!.serviceName !=
-                                                  null) {
-                                            model?.service = Service(
-                                              uid: _foundClient!.serviceUid!,
-                                              name: _foundClient!.serviceName!,
-                                            );
-                                          }
-                                        });
+                                          );
 
-                                        /// Для групповой тренировоки
-                                      } else {
-                                        Get.back();
-                                        List<CustomerModelState> clients =
-                                            _scheduleController
-                                                .state.value.clients;
-
-                                        clients.add(
-                                          CustomerModelState(
-                                            model: currentClient,
-                                            arrivalStatus: false,
-                                          ),
-                                        );
-
-                                        _scheduleController.state
-                                            .update((model) {
-                                          model?.clients = clients;
-                                        });
+                                          _scheduleController.state
+                                              .update((model) {
+                                            model?.clients = clients;
+                                          });
+                                        }
                                       }
                                     },
                                   );
@@ -378,6 +397,13 @@ class _SelectClientPageState extends State<SelectClientPage> {
           ],
         ),
       ),
+    );
+  }
+
+  /// Проверка есть ли клиент в списке
+  bool _checkExisttenceOfClient(String customer) {
+    return _scheduleController.state.value.clients.any(
+      (client) => client.model.uid == customer,
     );
   }
 

@@ -1,13 +1,13 @@
 import 'package:fox_fit/api/general.dart';
 import 'package:fox_fit/api/shedule.dart';
 import 'package:fox_fit/models/customer_model_state.dart';
-import 'package:fox_fit/models/schedule_state.dart';
+import 'package:fox_fit/states/schedule_state.dart';
 import 'package:fox_fit/models/service.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:get/get.dart';
 
 class ScheduleController extends GetxController {
-  final Rx<ScheduleStateModel> state = ScheduleStateModel().obs;
+  final Rx<ScheduleState> state = ScheduleState().obs;
 
   /// Получение списка всех занятий за период
   Future<dynamic> getAppointments({
@@ -42,8 +42,12 @@ class ScheduleController extends GetxController {
   }
 
   /// Получение длительностей занятий
-  Future<dynamic> getAppointmentsDurations() async {
-    dynamic data = await SheduleRequests.getAppointmentsDurations();
+  Future<dynamic> getAppointmentsDurations({
+    required String userUid,
+  }) async {
+    dynamic data = await SheduleRequests.getAppointmentsDurations(
+      userUid: userUid,
+    );
     if (data is int || data == null) {
       return data;
     } else {
@@ -72,7 +76,7 @@ class ScheduleController extends GetxController {
     if (data is int || data == null) {
       return data;
     } else {
-      List<Service> services = data[0];
+      List<ServicesModel> services = data[0];
       List<PaidServiceBalance>? paidServicesBalance = data[1];
 
       state.update((model) {

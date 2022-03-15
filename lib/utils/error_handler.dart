@@ -8,7 +8,7 @@ class ErrorHandler {
   static Future<dynamic> request({
     required BuildContext context,
     required Future<dynamic> Function() request,
-    Future<bool?> Function(dynamic data)? handler,
+    Future<dynamic> Function(dynamic data)? handler,
 
     /// Повторять ли данный запрос
     bool repeat = true,

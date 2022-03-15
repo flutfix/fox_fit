@@ -30,6 +30,9 @@ abstract class Styles {
   /// Стандартный шрифт
   static const String mainFontFamily = 'Open Sans';
 
+  /// For ₽ symbol
+  static const String robotoFamily = 'Roboto';
+
   /// Светлая тема
   static ThemeData get getLightTheme {
     return ThemeData(

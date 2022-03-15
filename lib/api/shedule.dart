@@ -35,8 +35,6 @@ class SheduleRequests {
         },
       );
 
-      log('${response}');
-
       if (response.statusCode == 200) {
         List<AppointmentModel> appointments = [];
         for (var element in response.data['Appointments']) {
@@ -52,17 +50,21 @@ class SheduleRequests {
   }
 
   /// Получение длительностей занятий
-  static Future<dynamic> getAppointmentsDurations() async {
+  static Future<dynamic> getAppointmentsDurations({
+    required String userUid,
+  }) async {
     String url = '${Requests.url}get_appointments_durations';
     final dioClient = Dio(Requests.options);
     try {
-      var response = await dioClient.get(url);
+      var response = await dioClient.get(url, queryParameters: {
+        "UserUid": userUid,
+      });
       if (response.statusCode == 200) {
-        List<int> appointmentsDurations = [];
+        List<int> durations = [];
         for (int duration in response.data) {
-          appointmentsDurations.add(duration);
+          durations.add(duration);
         }
-        return appointmentsDurations;
+        return durations;
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -88,16 +90,16 @@ class SheduleRequests {
           'CustomerUid': customerUid,
           'Duration': duration,
           'ServiceType': serviceType,
-          // 'Split': split,
+          'Split': split,
         },
       );
 
       if (response.statusCode == 200) {
-        List<service_model.Service> services = [];
+        List<service_model.ServicesModel> services = [];
         List<service_model.PaidServiceBalance> paidServicesBalance = [];
 
         for (var service in response.data['Services']) {
-          services.add(service_model.Service.fromJson(service));
+          services.add(service_model.ServicesModel.fromJson(service));
         }
         if (response.data['PaidServicesBalance'] != null) {
           for (var paidServiceBalance in response.data['PaidServicesBalance']) {
@@ -139,15 +141,6 @@ class SheduleRequests {
         },
       );
     }
-
-    log('${licenseKey}');
-    log('${userUid}');
-    log('${appointmentType}');
-    log('${split}');
-    log('${dateTimeAppointment}');
-    log('${serviceUid}');
-    log('${capacity}');
-    log('${customersList}');
 
     try {
       var response = await dioClient.post(
@@ -199,8 +192,6 @@ class SheduleRequests {
         },
       );
     }
-
-    log('split ${split}');
 
     try {
       var response = await dioClient.post(

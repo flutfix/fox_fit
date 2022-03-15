@@ -46,80 +46,85 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     ThemeData theme = Theme.of(context);
     return Swipe(
       onSwipeRight: () => Get.back(),
-      child: Scaffold(
-        backgroundColor: theme.backgroundColor,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        appBar: CustomAppBar(
-          title: S.of(context).changing_password,
-          isBackArrow: true,
-          isNotification: false,
-          onBack: () async {
-            Get.back();
-            await ErrorHandler.request(
-              context: context,
-              request: _controller.getCustomers,
-              repeat: false,
-              skipCheck: true,
-              handler: (_) async {
-                CustomSnackbar.getSnackbar(
-                  title: S.of(context).no_internet_access,
-                  message: S.of(context).failed_update_list,
-                );
-              },
-            );
-          },
-        ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Text(
-                S.of(context).description_changing_password,
-                style: theme.textTheme.bodyText1,
-              ),
-              const SizedBox(height: 16),
-              Divider(color: theme.dividerColor),
-
-              /// Ввод нового пароля
-              Input(
-                isBorder: false,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 22.0, vertical: 10),
-                hintText: S.of(context).new_password,
-                iconSvg: Images.passSvg,
-                isIconAnimation: _isNewPassAnimation,
-                textController: _newPassController,
-                textInputAction: TextInputAction.next,
-                scrollPaddingBottom: 120,
-              ),
-              Divider(color: theme.dividerColor),
-
-              /// Ввод нового пароля (повторно)
-              Input(
-                isBorder: false,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 22.0, vertical: 10),
-                hintText: S.of(context).new_password_again,
-                iconSvg: Images.passSvg,
-                isIconAnimation: _isNewPassAgainAnimation,
-                textController: _newPassAgainController,
-                scrollPaddingBottom: 120,
-              ),
-              Divider(color: theme.dividerColor),
-            ],
-          ),
-        ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 120),
-          child: CustomTextButton(
-            onTap: () {
-              _validateFields(theme);
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: theme.backgroundColor,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          appBar: CustomAppBar(
+            title: S.of(context).changing_password,
+            isBackArrow: true,
+            isNotification: false,
+            onBack: () async {
+              Get.back();
+              await ErrorHandler.request(
+                context: context,
+                request: _controller.getCustomers,
+                repeat: false,
+                skipCheck: true,
+                handler: (_) async {
+                  CustomSnackbar.getSnackbar(
+                    title: S.of(context).error,
+                    message: S.of(context).failed_update_list,
+                  );
+                },
+              );
             },
-            height: 51,
-            text: S.of(context).save_edits,
-            backgroundColor: theme.colorScheme.secondary,
-            textStyle: theme.textTheme.button!,
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                Text(
+                  S.of(context).description_changing_password,
+                  style: theme.textTheme.bodyText1,
+                ),
+                const SizedBox(height: 16),
+                Divider(color: theme.dividerColor),
+
+                /// Ввод нового пароля
+                Input(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 22.0, vertical: 14),
+                  hintText: S.of(context).new_password,
+                  iconSvg: Images.passSvg,
+                  obscureText: true,
+                  isIconAnimation: _isNewPassAnimation,
+                  textController: _newPassController,
+                  textInputAction: TextInputAction.next,
+                  scrollPaddingBottom: 120,
+                ),
+                const SizedBox(height: 16),
+
+                /// Ввод нового пароля (повторно)
+                Input(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 22.0, vertical: 14),
+                  hintText: S.of(context).new_password_again,
+                  iconSvg: Images.passSvg,
+                  obscureText: true,
+                  isIconAnimation: _isNewPassAgainAnimation,
+                  textController: _newPassAgainController,
+                  scrollPaddingBottom: 120,
+                ),
+              ],
+            ),
+          ),
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 120),
+            child: CustomTextButton(
+              onTap: () {
+                _validateFields(theme);
+              },
+              height: 51,
+              text: S.of(context).save_edits,
+              backgroundColor: theme.colorScheme.secondary,
+              textStyle: theme.textTheme.button!,
+            ),
           ),
         ),
       ),

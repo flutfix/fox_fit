@@ -3,8 +3,8 @@ import 'package:fox_fit/models/customer_model_state.dart';
 import 'package:fox_fit/models/service.dart';
 import 'package:fox_fit/utils/enums.dart';
 
-class ScheduleStateModel {
-  ScheduleStateModel({
+class ScheduleState {
+  ScheduleState({
     this.appointment,
     this.clients = const [],
     this.capacity = 1,
@@ -36,7 +36,7 @@ class ScheduleStateModel {
   bool split;
 
   /// Выбранная услуга
-  Service? service;
+  ServicesModel? service;
 
   /// Выбранная дата тренировки
   DateTime? date;
@@ -54,7 +54,7 @@ class ScheduleStateModel {
   List<int> appointmentsDurations;
 
   /// Список всех услуг
-  List<Service> services;
+  List<ServicesModel> services;
 
   /// Список оставшихся занятий
   List<PaidServiceBalance> paidServicesBalance;

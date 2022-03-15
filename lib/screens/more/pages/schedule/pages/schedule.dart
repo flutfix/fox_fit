@@ -18,7 +18,6 @@ import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:swipe/swipe.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -124,7 +123,7 @@ class _SchedulePageState extends State<SchedulePage> {
           skipCheck: true,
           handler: (_) async {
             CustomSnackbar.getSnackbar(
-              title: S.of(context).no_internet_access,
+              title: S.of(context).error,
               message: S.of(context).failed_update_list,
             );
           },
@@ -147,7 +146,7 @@ class _SchedulePageState extends State<SchedulePage> {
               skipCheck: true,
               handler: (_) async {
                 CustomSnackbar.getSnackbar(
-                  title: S.of(context).no_internet_access,
+                  title: S.of(context).error,
                   message: S.of(context).failed_update_list,
                 );
               },

@@ -37,6 +37,7 @@ class Images {
   static const String passPng = 'lib/assets/icons/pass.png';
   static const String inactiveCustomers = 'lib/assets/icons/sleep.png';
   static const String schedule = 'lib/assets/icons/schedule.png';
+  static const String sale = 'lib/assets/icons/sales.png';
 
   /// Trainer Stats
   static const String funnelNew = 'lib/assets/icons/funnel_new.png';
@@ -53,10 +54,7 @@ class Images {
 
   /// Schedule
   static const String trashcan = 'lib/assets/icons/trashcan.png';
-}
 
-class Animations {
-  /// Auth
-  static const String testAnimation =
-      'lib/assets/animations/test_animations.riv';
+  /// Sale
+  static const String saleConfirmation = 'lib/assets/icons/rub.svg';
 }

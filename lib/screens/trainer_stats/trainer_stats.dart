@@ -26,7 +26,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
   @override
   void initState() {
     controller = Get.put(GeneralController());
-    _currentMonth = 0;
+    _currentMonth = 2;
     getPerfomance();
 
     super.initState();
@@ -41,7 +41,6 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
       context: context,
       request: controller.getTrainerPerfomance,
     );
-
     setState(() {
       isLoading = false;
     });
@@ -75,7 +74,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                 skipCheck: true,
                 handler: (_) async {
                   CustomSnackbar.getSnackbar(
-                    title: S.of(context).no_internet_access,
+                    title: S.of(context).error,
                     message: S.of(context).failed_update_list,
                   );
                 },

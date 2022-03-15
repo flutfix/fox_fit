@@ -127,7 +127,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
         if (!_generalController.appState.value.isLoading) {
           return Scaffold(
             backgroundColor: theme.backgroundColor,
-            appBar: appBar(
+            appBar: _appBar(
               theme,
               _generalController,
               onNotification: () async {
@@ -144,7 +144,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
                       skipCheck: true,
                       handler: (_) async {
                         CustomSnackbar.getSnackbar(
-                          title: S.of(context).no_internet_access,
+                          title: S.of(context).error,
                           message: S.of(context).failed_update_list,
                         );
                       },
@@ -201,7 +201,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     );
   }
 
-  CustomAppBar appBar(ThemeData theme, GeneralController controller,
+  CustomAppBar _appBar(ThemeData theme, GeneralController controller,
       {Function()? onNotification}) {
     var customers = controller.appState.value.sortedCustomers[controller
         .appState
