@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/auth.dart';
 import 'package:fox_fit/api/general.dart';
@@ -89,6 +91,7 @@ class GeneralController extends GetxController {
       appState.update((model) {
         model?.sortedCustomers = sortedCustomers;
       });
+
       return 200;
     }
   }
@@ -270,6 +273,12 @@ class GeneralController extends GetxController {
   }) {
     List<CustomerModel> customers = [];
     Map<String, List<CustomerModel>> sortedClients = {};
+    if (appState.value.sortedCustomers[Client.permanent] != null) {
+      if (appState.value.sortedCustomers[Client.permanent]!.isNotEmpty) {
+        sortedClients[Client.permanent] =
+            appState.value.sortedCustomers[Client.permanent]!;
+      }
+    }
     for (var stage in bottomBarItems) {
       for (var customer in allCutsomers) {
         if (stage.uid == customer.trainerStageUid) {
