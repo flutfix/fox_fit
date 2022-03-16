@@ -39,7 +39,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
   late FocusNode _phoneFocus;
   late String _phonePrefix;
   late MaskTextInputFormatter _maskFormatter;
-  CustomerModel? _foundClient;
+  List<CustomerModel>? _foundClients;
   late String _textErrorResultSearch;
   late String _search;
 
@@ -113,10 +113,10 @@ class _SelectClientPageState extends State<SelectClientPage> {
       handler: (data) async {
         setState(() {
           /// Если клиент не найден
-          if (data != 200 && data is! CustomerModel) {
+          if (data != 200 && data is! List<CustomerModel>) {
             _textErrorResultSearch = S.of(context).client_not_found;
-          } else if (data is CustomerModel) {
-            _foundClient = data;
+          } else if (data is List<CustomerModel>) {
+            _foundClients = data;
           }
         });
         return false;
@@ -185,7 +185,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
                       setState(() {
                         _textErrorResultSearch =
                             S.of(context).enter_full_number;
-                        _foundClient = null;
+                        _foundClients = null;
                       });
                     } else {
                       getCustomerByPhone(search: search);
@@ -199,54 +199,63 @@ class _SelectClientPageState extends State<SelectClientPage> {
               Expanded(
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
-                  child: _foundClient != null
+                  child: _foundClients != null
 
                       /// Для найденного клиента
-                      ? CustomerContainer(
-                          customer: _foundClient!,
-                          clientType: ClientType.assigned,
-                          onTap: () {
-                            /// Проверка, выбран ли уже клиент
-                            bool check =
-                                _checkExisttenceOfClient(_foundClient!.uid);
+                      ? ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+                          itemCount: _foundClients!.length,
+                          itemBuilder: (context, index) {
+                            CustomerModel foundClient = _foundClients![index];
+                            return CustomerContainer(
+                              customer: foundClient,
+                              clientType: ClientType.assigned,
+                              onTap: () {
+                                /// Проверка, выбран ли уже клиент
+                                bool check =
+                                    _checkExisttenceOfClient(foundClient.uid);
 
-                            if (!check) {
-                              Get.back();
+                                if (!check) {
+                                  Get.back();
 
-                              _scheduleController.clear(
-                                data: false,
-                                time: false,
-                              );
+                                  _scheduleController.clear(
+                                    data: false,
+                                    time: false,
+                                  );
 
-                              if (widget.isFromSale) {
-                                _salesController.state.update((model) {
-                                  model?.chosenCustomer = _foundClient;
-                                });
-                              } else {
-                                _scheduleController.state.update((model) {
-                                  model?.clients = [
-                                    CustomerModelState(
-                                      model: _foundClient!,
-                                      arrivalStatus: false,
-                                    ),
-                                  ];
-                                  model?.duration = _foundClient!.duration;
-                                  model?.split = _foundClient!.split ?? false;
-                                  if (_foundClient!.serviceUid != null &&
-                                      _foundClient!.serviceName != null) {
-                                    model?.service = ServicesModel(
-                                      uid: _foundClient!.serviceUid!,
-                                      name: _foundClient!.serviceName!,
-                                    );
+                                  if (widget.isFromSale) {
+                                    _salesController.state.update((model) {
+                                      model?.chosenCustomer = foundClient;
+                                    });
+                                  } else {
+                                    _scheduleController.state.update((model) {
+                                      model?.clients = [
+                                        CustomerModelState(
+                                          model: foundClient,
+                                          arrivalStatus: false,
+                                        ),
+                                      ];
+                                      model?.duration = foundClient.duration;
+                                      model?.split = foundClient.split ?? false;
+                                      if (foundClient.serviceUid != null &&
+                                          foundClient.serviceName != null) {
+                                        model?.service = ServicesModel(
+                                          uid: foundClient.serviceUid!,
+                                          name: foundClient.serviceName!,
+                                        );
+                                      }
+                                    });
                                   }
-                                });
-                              }
-                            } else {
-                              CustomSnackbar.getSnackbar(
-                                title: S.of(context).error,
-                                message: S.of(context).this_client_supplied,
-                              );
-                            }
+                                } else {
+                                  CustomSnackbar.getSnackbar(
+                                    title: S.of(context).error,
+                                    message: S.of(context).this_client_supplied,
+                                  );
+                                }
+                              },
+                            );
                           },
                         )
                       :
@@ -319,22 +328,24 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                               .update((model) {
                                             model?.clients = [
                                               CustomerModelState(
-                                                model: _foundClient!,
+                                                model: _foundClients![0],
                                                 arrivalStatus: false,
                                               ),
                                             ];
                                             model?.duration =
-                                                _foundClient!.duration;
+                                                _foundClients![0].duration;
                                             model?.split =
-                                                _foundClient!.split ?? false;
-                                            if (_foundClient!.serviceUid !=
+                                                _foundClients![0].split ??
+                                                    false;
+                                            if (_foundClients![0].serviceUid !=
                                                     null &&
-                                                _foundClient!.serviceName !=
+                                                _foundClients![0].serviceName !=
                                                     null) {
                                               model?.service = ServicesModel(
-                                                uid: _foundClient!.serviceUid!,
-                                                name:
-                                                    _foundClient!.serviceName!,
+                                                uid: _foundClients![0]
+                                                    .serviceUid!,
+                                                name: _foundClients![0]
+                                                    .serviceName!,
                                               );
                                             }
                                           });

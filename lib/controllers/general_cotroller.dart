@@ -238,7 +238,7 @@ class GeneralController extends GetxController {
       return data;
     } else {
       appState.update((model) {
-        model?.currentCustomer = data;
+        model?.currentCustomer = data[0];
       });
       return 200;
     }

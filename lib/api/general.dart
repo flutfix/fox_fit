@@ -418,10 +418,12 @@ class Requests {
       );
 
       if (response.statusCode == 200) {
-        CustomerModel customer =
-            CustomerModel.fromJson(response.data['Customers'][0]);
+        List<CustomerModel> customers = [];
+        response.data['Customers'].forEach((element) {
+          customers.add(CustomerModel.fromJson(element));
+        });
 
-        return customer;
+        return customers;
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
