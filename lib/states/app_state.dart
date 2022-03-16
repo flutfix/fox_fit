@@ -26,8 +26,9 @@ class AppState {
     this.sortedCustomers = const {},
     this.detailedInfo = const [],
     this.availablePipelineStages = const [],
-    this.trainerPerfomance = const [],
+    this.trainerPerfomance,
     this.trainerPerfomanceMonth = const [],
+    this.trainerPerfomanceTimeStamp = const [],
     this.availableTrainers = const [],
     this.sortedAvailableTrainers,
     this.currentCustomer,
@@ -80,10 +81,11 @@ class AppState {
   List<AvailablePipelineStages> availablePipelineStages;
 
   /// Статистика тренера
-  List<TrainerPerfomanceModel> trainerPerfomance;
+  TrainerPerfomanceModel? trainerPerfomance;
 
   /// Месяцы статистики тренера
   List<String> trainerPerfomanceMonth;
+  List<int> trainerPerfomanceTimeStamp;
 
   /// Доступные тренера
   List<Trainer> availableTrainers;

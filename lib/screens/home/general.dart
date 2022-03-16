@@ -19,6 +19,7 @@ import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/keep_alive_page.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class General extends StatefulWidget {
@@ -33,6 +34,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
   late ScheduleController _scheduleController;
   late PageController pageController;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  late DateTime _now;
   late String? _fcmToken;
 
   @override
@@ -44,6 +46,27 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     _generalController.appState.update((model) {
       model?.auth = authData;
     });
+
+    /// Для статистики тренера
+    _now = DateTime.now();
+    _now = DateTime(_now.year, _now.month, 1);
+    _generalController.appState.update((model) {
+      model?.trainerPerfomanceMonth = [
+        DateFormat.MMMM().format(DateTime(_now.year, _now.month - 2, 1)),
+        DateFormat.MMMM().format(DateTime(_now.year, _now.month - 1, 1)),
+        DateFormat.MMMM().format(_now)
+      ];
+      model?.trainerPerfomanceTimeStamp = [
+        (DateTime(_now.year, _now.month - 2, _now.day).millisecondsSinceEpoch /
+                1000)
+            .round(),
+        (DateTime(_now.year, _now.month - 1, _now.day).millisecondsSinceEpoch /
+                1000)
+            .round(),
+        (_now.millisecondsSinceEpoch / 1000).round(),
+      ];
+    });
+
     if (authData.users!.length > 1) {
       _generalController.appState.update((model) {
         model?.isCoordinator = true;

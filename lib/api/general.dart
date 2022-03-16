@@ -287,7 +287,10 @@ class Requests {
   }
 
   /// Получение статистики тренера
-  static Future<dynamic> getTrainerPerfomance({required String id}) async {
+  static Future<dynamic> getTrainerPerfomance({
+    required String id,
+    required int settlementDate,
+  }) async {
     String url = '${Requests.url}get_trainer_performance';
     final dioClient = Dio(Requests.options);
     try {
@@ -295,20 +298,15 @@ class Requests {
         url,
         queryParameters: {
           "UserUid": id,
+          "SettlementDate": settlementDate,
         },
       );
       if (response.statusCode == 200) {
-        List<TrainerPerfomanceModel> trainerPerfomance = [];
-        List<String> trainerPerfomanceMonth = [];
+        TrainerPerfomanceModel trainerPerfomance =
+            TrainerPerfomanceModel.fromJson(
+                response.data['TrainerPerformance'][0]);
 
-        for (var element in response.data['TrainerPerformance']) {
-          trainerPerfomance.add(
-            TrainerPerfomanceModel.fromJson(element),
-          );
-          trainerPerfomanceMonth.add(element["Month"]);
-        }
-
-        return [trainerPerfomance, trainerPerfomanceMonth];
+        return trainerPerfomance;
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');

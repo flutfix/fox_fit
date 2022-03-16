@@ -129,19 +129,20 @@ class GeneralController extends GetxController {
   }
 
   /// Запрос на получение статистики тренера
-  Future<dynamic> getTrainerPerfomance() async {
+  Future<dynamic> getTrainerPerfomance({
+    required int perfomanceDate,
+  }) async {
     var data = await Requests.getTrainerPerfomance(
       id: getUid(role: UserRole.trainer),
+      settlementDate: perfomanceDate,
     );
     if (data is int || data == null) {
       return data;
     } else {
-      List<TrainerPerfomanceModel> perfomance = data[0];
-      List<String> trainerPerfomanceMonth = data[1];
+      TrainerPerfomanceModel perfomance = data;
 
       appState.update((model) {
         model?.trainerPerfomance = perfomance;
-        model?.trainerPerfomanceMonth = trainerPerfomanceMonth;
       });
       return 200;
     }
