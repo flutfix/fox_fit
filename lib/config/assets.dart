@@ -1,60 +1,62 @@
 class Images {
+  static const String imagePath = 'lib/assets/icons';
+
   /// Splash screen
-  static const String splashLogo = 'lib/assets/icons/splash_logo.png';
-  static const String splashText = 'lib/assets/icons/splash_text.png';
+  static const String splashLogo = '$imagePath/splash_logo.png';
+  static const String splashText = '$imagePath/splash_text.png';
 
   /// Auth Screen
-  static const String authTop = 'lib/assets/icons/auth_top.png';
-  static const String phone = 'lib/assets/icons/phone.svg';
-  static const String passSvg = 'lib/assets/icons/pass.svg';
+  static const String authTop = '$imagePath/auth_top.png';
+  static const String phone = '$imagePath/phone.svg';
+  static const String passSvg = '$imagePath/pass.svg';
 
   /// AppBar
-  static const String backArrow = 'lib/assets/icons/back_arrow.svg';
-  static const String notifications = 'lib/assets/icons/notifications.svg';
+  static const String backArrow = '$imagePath/back_arrow.svg';
+  static const String notifications = '$imagePath/notifications.svg';
 
   /// BottomBar
-  static const String fresh = 'lib/assets/icons/fresh.svg';
-  static const String assigned = 'lib/assets/icons/assigned.svg';
-  static const String perfomed = 'lib/assets/icons/perfomed.svg';
-  static const String stable = 'lib/assets/icons/stable.svg';
-  static const String still = 'lib/assets/icons/still.svg';
+  static const String fresh = '$imagePath/fresh.svg';
+  static const String assigned = '$imagePath/assigned.svg';
+  static const String perfomed = '$imagePath/perfomed.svg';
+  static const String stable = '$imagePath/stable.svg';
+  static const String still = '$imagePath/still.svg';
 
   /// CustomerInformation Screen
-  static const String more = 'lib/assets/icons/more.svg';
-  static const String checkMark = 'lib/assets/icons/check_mark.svg';
-  static const String phoneFill = 'lib/assets/icons/phone_fill.svg';
-  static const String refresh = 'lib/assets/icons/refresh.svg';
-  static const String phoneMinus = 'lib/assets/icons/phone_minus.svg';
-  static const String cross = 'lib/assets/icons/cross.svg';
-  static const String chat = 'lib/assets/icons/whatsapp.png';
+  static const String more = '$imagePath/more.svg';
+  static const String checkMark = '$imagePath/check_mark.svg';
+  static const String phoneFill = '$imagePath/phone_fill.svg';
+  static const String refresh = '$imagePath/refresh.svg';
+  static const String phoneMinus = '$imagePath/phone_minus.svg';
+  static const String cross = '$imagePath/cross.svg';
+  static const String chat = '$imagePath/whatsapp.png';
 
   /// More Screen
-  static const String trainerStats = 'lib/assets/icons/trainer_stats.png';
-  static const String support = 'lib/assets/icons/support.png';
-  static const String coordinatorPng = 'lib/assets/icons/coordinator.png';
-  static const String logOut = 'lib/assets/icons/log_out.png';
-  static const String exit = 'lib/assets/icons/exit.svg';
-  static const String passPng = 'lib/assets/icons/pass.png';
-  static const String inactiveCustomers = 'lib/assets/icons/sleep.png';
-  static const String schedule = 'lib/assets/icons/schedule.png';
-  static const String sale = 'lib/assets/icons/sales.png';
+  static const String trainerStats = '$imagePath/trainer_stats.png';
+  static const String support = '$imagePath/support.png';
+  static const String coordinatorPng = '$imagePath/coordinator.png';
+  static const String logOut = '$imagePath/log_out.png';
+  static const String exit = '$imagePath/exit.svg';
+  static const String passPng = '$imagePath/pass.png';
+  static const String inactiveCustomers = '$imagePath/sleep.png';
+  static const String schedule = '$imagePath/schedule.png';
+  static const String sale = '$imagePath/sales.png';
 
   /// Trainer Stats
-  static const String funnelNew = 'lib/assets/icons/funnel_new.png';
-  static const String funnelAssigned = 'lib/assets/icons/funnel_assigned.png';
-  static const String funnelPerfomed = 'lib/assets/icons/funnel_perfomed.png';
-  static const String funnelStable = 'lib/assets/icons/funnel_stable.png';
+  static const String funnelNew = '$imagePath/funnel_new.png';
+  static const String funnelAssigned = '$imagePath/funnel_assigned.png';
+  static const String funnelPerfomed = '$imagePath/funnel_perfomed.png';
+  static const String funnelStable = '$imagePath/funnel_stable.png';
 
   /// Trainer Choosing
-  static const String search = 'lib/assets/icons/search.png';
-  static const String coordinatorSvg = 'lib/assets/icons/coordinator.svg';
+  static const String search = '$imagePath/search.png';
+  static const String coordinatorSvg = '$imagePath/coordinator.svg';
 
   /// Notification logo
-  static const String pushNotification = 'lib/assets/icons/push_logo.png';
+  static const String pushNotification = '$imagePath/push_logo.png';
 
   /// Schedule
-  static const String trashcan = 'lib/assets/icons/trashcan.png';
+  static const String trashcan = '$imagePath/trashcan.png';
 
   /// Sale
-  static const String saleConfirmation = 'lib/assets/icons/rub.svg';
+  static const String saleConfirmation = '$imagePath/rub.svg';
 }
