@@ -111,6 +111,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
                 width: 220,
                 fit: BoxFit.fill,
               ),
+              const SizedBox(height: 4),
               Image.asset(
                 Images.splashText,
                 width: 220,
