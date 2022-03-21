@@ -48,13 +48,15 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     });
 
     /// Для статистики тренера
-    _now = DateTime.now();
-    _now = DateTime(_now.year, _now.month, 1);
+    _now = DateTime.now().toUtc();
+    _now = DateTime(_now.year, _now.month, 3).toUtc();
     _generalController.appState.update((model) {
       model?.trainerPerfomanceMonth = [
-        DateFormat.MMMM().format(DateTime(_now.year, _now.month - 2, 1)),
-        DateFormat.MMMM().format(DateTime(_now.year, _now.month - 1, 1)),
-        DateFormat.MMMM().format(_now)
+        DateFormat.MMMM().format(
+          DateTime(_now.year, _now.month - 2, 3),
+        ),
+        DateFormat.MMMM().format(DateTime(_now.year, _now.month - 1, 3)),
+        DateFormat.MMMM().format(DateTime(_now.year, _now.month, 3))
       ];
       model?.trainerPerfomanceTimeStamp = [
         (DateTime(_now.year, _now.month - 2, _now.day).millisecondsSinceEpoch /

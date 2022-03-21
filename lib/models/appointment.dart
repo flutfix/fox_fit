@@ -30,17 +30,21 @@ class AppointmentModel {
     capacity = json['Capacity'] != null ? int.parse(json['Capacity']) : 1;
     room = json['Room'] ?? '';
     appointmentType = json['AppointmentType'] != null
-        ? Enums.getAppointmentType(appointmentTypeString: json['AppointmentType'])
+        ? Enums.getAppointmentType(
+            appointmentTypeString: json['AppointmentType'])
         : AppointmentType.personal;
     startDate = DateTime.fromMillisecondsSinceEpoch(
       int.parse(json['StartDate']) * 1000,
+      isUtc: true,
     );
     endDate = DateTime.fromMillisecondsSinceEpoch(
       int.parse(json['EndDate']) * 1000,
+      isUtc: true,
     );
 
-    service =
-        json['Service'] != null ? ServicesModel.fromJson(json['Service']) : ServicesModel();
+    service = json['Service'] != null
+        ? ServicesModel.fromJson(json['Service'])
+        : ServicesModel();
 
     customers = [];
     if (json['Customers'] != null) {

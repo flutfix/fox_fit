@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:fox_fit/api/general.dart';
 import 'package:fox_fit/models/service.dart';
 
-///[Запросы для выставления продажи]
+///[Запросы выставления продажи]
 class SalesRequests {
   /// Получение длительности
   static Future<dynamic> getAppointmentsDuration({
