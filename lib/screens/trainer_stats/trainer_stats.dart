@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
@@ -11,7 +9,6 @@ import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:swipe/swipe.dart';
 
 class TrainerStatsPage extends StatefulWidget {

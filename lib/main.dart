@@ -11,7 +11,6 @@ import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -27,7 +26,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await _init();
-  Intl.defaultLocale = "ru_RU";
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
@@ -91,6 +89,7 @@ class MyApp extends StatelessWidget {
         title: 'FoxFit',
         debugShowCheckedModeBanner: false,
         theme: Styles.getLightTheme,
+        locale: const Locale('ru', 'RU'),
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,

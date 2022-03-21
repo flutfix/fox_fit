@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -8,7 +8,7 @@ import 'package:fox_fit/models/customer_model_state.dart';
 
 import 'package:fox_fit/models/service.dart' as service_model;
 
-/// [Запросы для расписания]
+/// [Запросы расписания]
 class SheduleRequests {
   /// Получение списка всех занятий за период
   static Future<dynamic> getAppointments({
