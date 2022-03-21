@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
@@ -338,6 +340,8 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
             context: context,
             repeat: false,
             request: () async {
+              log('${_scheduleController.state.value.time!.hour}');
+              log('$dateTimeAppointment');
               return _scheduleController.addAppointment(
                 licenseKey: _controller.appState.value.auth!.data!.licenseKey,
                 userUid: _controller.getUid(role: UserRole.trainer),

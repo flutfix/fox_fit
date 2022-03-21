@@ -62,7 +62,7 @@ class _MorePageState extends State<MorePage> {
           ),
 
           /// [Выставить продажу]
-          if (_controller.appState.value.useSchedule)
+          if (_controller.appState.value.useSalesCoach)
             MoreCardModel(
               text: S.of(context).sales,
               icon: Images.sale,

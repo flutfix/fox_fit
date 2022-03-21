@@ -11,17 +11,12 @@ import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   if (Platform.isIOS) {
-    await Firebase.initializeApp(
-        options: const FirebaseOptions(
-      apiKey: "AIzaSyDlDrc6NbcGVR4rr8DTfV82dAk_vD3Jpi0",
-      appId: "1:150088765423:ios:23edb87f9ecb47a756301a",
-      messagingSenderId: "150088765423",
-      projectId: "android-foxfit-push",
-    ));
+    await Firebase.initializeApp(options: AppConfig.firebaseOptions);
   } else {
     await Firebase.initializeApp();
   }
@@ -32,10 +27,17 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await _init();
+  Intl.defaultLocale = "ru_RU";
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
   ));
+  SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ],
+  );
   runApp(const MyApp());
 }
 
@@ -95,10 +97,15 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        locale: const Locale('ru', 'RU'),
         supportedLocales: S.delegate.supportedLocales,
         initialRoute: Routes.splash,
         getPages: Routes.getRoutes,
+        builder: (context, child) {
+          return MediaQuery(
+            child: child!,
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          );
+        },
       ),
     );
   }

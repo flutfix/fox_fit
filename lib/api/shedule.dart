@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -34,9 +35,13 @@ class SheduleRequests {
           "end_date": timestampDateEnd,
         },
       );
+      log('[UserUid] $userUid');
+      log('[start_date] $timestampDateStart');
+      log('[end_date] $timestampDateEnd');
 
       if (response.statusCode == 200) {
         List<AppointmentModel> appointments = [];
+
         for (var element in response.data['Appointments']) {
           appointments.add(AppointmentModel.fromJson(element));
         }
