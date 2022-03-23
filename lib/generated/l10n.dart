@@ -1029,6 +1029,16 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get train {
+    return Intl.message(
+      '',
+      name: 'train',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

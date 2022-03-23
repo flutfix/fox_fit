@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -17,10 +16,38 @@ class SheduleRequests {
   }) async {
     String url = '${Requests.url}get_appointments';
     final dioClient = Dio(Requests.options);
+    dateNow = DateTime(
+      dateNow.year,
+      dateNow.month,
+      dateNow.day,
+      00,
+      dateNow.minute,
+    );
 
     /// Конвертация даты в формат Timestamp
-    DateTime dateStart = DateTime(dateNow.year, dateNow.month, dateNow.day);
-    DateTime dateEnd = DateTime(dateNow.year, dateNow.month, dateNow.day + 1);
+    dynamic timeOffset = DateTime(
+      dateNow.year,
+      dateNow.month,
+      dateNow.day,
+      dateNow.hour,
+      dateNow.minute,
+    ).timeZoneOffset.toString();
+    timeOffset = timeOffset.split(':');
+    int timeDiff = int.parse(timeOffset[0]);
+
+    DateTime dateStart = DateTime(
+      dateNow.year,
+      dateNow.month,
+      dateNow.day,
+      dateNow.hour + timeDiff,
+    ).toUtc();
+    DateTime dateEnd = DateTime(
+      dateNow.year,
+      dateNow.month,
+      dateNow.day + 1,
+      dateNow.hour + timeDiff,
+    ).toUtc();
+
     String timestampDateStart =
         dateStart.millisecondsSinceEpoch.toString().substring(0, 10);
     String timestampDateEnd =
@@ -35,9 +62,14 @@ class SheduleRequests {
           "end_date": timestampDateEnd,
         },
       );
-      log('[UserUid] $userUid');
-      log('[start_date] $timestampDateStart');
-      log('[end_date] $timestampDateEnd');
+
+      // log('------[getAppointments]-----');
+      // log('[dateNow] ${dateNow}');
+      // log('[dateStart] ${dateStart}');
+      // log('[dateEnd] ${dateEnd}');
+      // log('[timestampDateStart] ${timestampDateStart}');
+      // log('[timestampDateEnd] ${timestampDateEnd}');
+      // log('----------------------------');
 
       if (response.statusCode == 200) {
         List<AppointmentModel> appointments = [];

@@ -160,6 +160,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Время проведения занятия"),
         "to_coach": MessageLookupByLibrary.simpleMessage("Тренеру"),
         "to_practice": MessageLookupByLibrary.simpleMessage("На тренировку"),
+        "train": MessageLookupByLibrary.simpleMessage("Тренировка"),
         "trainer_stats":
             MessageLookupByLibrary.simpleMessage("Статистика тренера"),
         "transmit": MessageLookupByLibrary.simpleMessage("Передать"),

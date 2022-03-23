@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
@@ -322,13 +324,23 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
       /// Если относится к стадии [Тренировка]
     } else if (widget.stagePipelineType == StagePipelineType.appointment) {
       /// Преобразование даты и времени в единый timestamp
-      String dateTimeAppointment = DateTime(
+      dynamic timeOffset = DateTime(
         _scheduleController.state.value.date!.year,
         _scheduleController.state.value.date!.month,
         _scheduleController.state.value.date!.day,
         _scheduleController.state.value.time!.hour,
         _scheduleController.state.value.time!.minute,
-      ).millisecondsSinceEpoch.toString().substring(0, 10);
+      ).timeZoneOffset.toString();
+      timeOffset = timeOffset.split(':');
+      int timeDiff = int.parse(timeOffset[0]);
+
+      String dateTimeAppointment = DateTime(
+        _scheduleController.state.value.date!.year,
+        _scheduleController.state.value.date!.month,
+        _scheduleController.state.value.date!.day,
+        _scheduleController.state.value.time!.hour + timeDiff,
+        _scheduleController.state.value.time!.minute,
+      ).toUtc().millisecondsSinceEpoch.toString().substring(0, 10);
 
       /// Создание тренировки
       if (_scheduleController.state.value.appointmentRecordType ==

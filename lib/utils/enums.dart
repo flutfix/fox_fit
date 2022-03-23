@@ -211,4 +211,5 @@ enum AppointmentRecordType {
   edit,
   group,
   revoke,
+  view,
 }
