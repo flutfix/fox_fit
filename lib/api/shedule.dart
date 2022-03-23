@@ -16,6 +16,13 @@ class SheduleRequests {
   }) async {
     String url = '${Requests.url}get_appointments';
     final dioClient = Dio(Requests.options);
+    dateNow = DateTime(
+      dateNow.year,
+      dateNow.month,
+      dateNow.day,
+      dateNow.minute,
+      00,
+    );
 
     /// Конвертация даты в формат Timestamp
     dynamic timeOffset = DateTime(
@@ -55,6 +62,7 @@ class SheduleRequests {
           "end_date": timestampDateEnd,
         },
       );
+
 
       if (response.statusCode == 200) {
         List<AppointmentModel> appointments = [];

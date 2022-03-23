@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
@@ -86,6 +88,28 @@ class Lessons extends StatelessWidget {
                       }
 
                       /// Автозаполнение форм для существующей тренировки
+                      /// *Проверка на то, прошло ли занятие*
+                      var appointmentEndDate =
+                          appointments[indexHor].endDate.millisecondsSinceEpoch;
+                      dynamic timeOffset =
+                          DateTime.now().timeZoneOffset.toString();
+                      timeOffset = timeOffset.split(':');
+                      int timeDiff = int.parse(timeOffset[0]);
+
+                      DateTime now = DateTime.now();
+                      var nowTimeStamp = DateTime(
+                        now.year,
+                        now.month,
+                        now.day,
+                        now.hour + timeDiff,
+                        now.minute,
+                      ).toUtc().millisecondsSinceEpoch;
+
+                      log('[end date] $appointmentEndDate');
+                      log('[now] $nowTimeStamp');
+                      bool isView = nowTimeStamp > appointmentEndDate;
+                      log(isView.toString());
+                      //**
                       _scheduleController.state.update((model) {
                         model?.appointment = appointments[indexHor];
                         model?.clients = clients;
@@ -108,7 +132,8 @@ class Lessons extends StatelessWidget {
                     if (appointments.isEmpty) {
                       _scheduleController.state.update((model) {
                         model?.date = date;
-                        model?.time = DateTime(date.year, date.month, date.day, indexVer);
+                        model?.time =
+                            DateTime(date.year, date.month, date.day, indexVer);
                         model?.appointmentRecordType =
                             AppointmentRecordType.create;
                       });
