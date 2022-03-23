@@ -96,5 +96,6 @@
     "set_duration": "",
     "add_sale": "",
     "for_customer": "",
-    "add_sale_failed": ""
+    "add_sale_failed": "",
+    "train": ""
 }

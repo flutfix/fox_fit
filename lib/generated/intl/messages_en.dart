@@ -114,6 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "time_lesson": MessageLookupByLibrary.simpleMessage(""),
         "to_coach": MessageLookupByLibrary.simpleMessage(""),
         "to_practice": MessageLookupByLibrary.simpleMessage(""),
+        "train": MessageLookupByLibrary.simpleMessage(""),
         "trainer_stats": MessageLookupByLibrary.simpleMessage(""),
         "transmit": MessageLookupByLibrary.simpleMessage(""),
         "triner_choosing": MessageLookupByLibrary.simpleMessage(""),

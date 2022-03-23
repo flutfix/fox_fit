@@ -20,8 +20,8 @@ class SheduleRequests {
       dateNow.year,
       dateNow.month,
       dateNow.day,
-      dateNow.minute,
       00,
+      dateNow.minute,
     );
 
     /// Конвертация даты в формат Timestamp
@@ -63,6 +63,13 @@ class SheduleRequests {
         },
       );
 
+      // log('------[getAppointments]-----');
+      // log('[dateNow] ${dateNow}');
+      // log('[dateStart] ${dateStart}');
+      // log('[dateEnd] ${dateEnd}');
+      // log('[timestampDateStart] ${timestampDateStart}');
+      // log('[timestampDateEnd] ${timestampDateEnd}');
+      // log('----------------------------');
 
       if (response.statusCode == 200) {
         List<AppointmentModel> appointments = [];

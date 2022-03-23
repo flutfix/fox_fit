@@ -105,10 +105,13 @@ class Lessons extends StatelessWidget {
                         now.minute,
                       ).toUtc().millisecondsSinceEpoch;
 
-                      log('[end date] $appointmentEndDate');
-                      log('[now] $nowTimeStamp');
                       bool isView = nowTimeStamp > appointmentEndDate;
-                      log(isView.toString());
+                      String status = appointments[indexHor]
+                          .arrivalStatuses[0]
+                          .paymentStatus;
+                      isView = status == 'DoneAndPayed' ? isView : false;
+                      log('[Status] $status');
+                      log('[Is View] $isView');
                       //**
                       _scheduleController.state.update((model) {
                         model?.appointment = appointments[indexHor];
@@ -120,11 +123,16 @@ class Lessons extends StatelessWidget {
                         model?.capacity = appointments[indexHor].capacity;
                         model?.date = appointments[indexHor].startDate;
                         model?.time = appointments[indexHor].startDate;
-                        model?.appointmentRecordType =
-                            appointments[indexHor].appointmentType ==
-                                    AppointmentType.personal
-                                ? AppointmentRecordType.edit
-                                : AppointmentRecordType.group;
+                        if (isView) {
+                          model?.appointmentRecordType =
+                              AppointmentRecordType.view;
+                        } else {
+                          model?.appointmentRecordType =
+                              appointments[indexHor].appointmentType ==
+                                      AppointmentType.personal
+                                  ? AppointmentRecordType.edit
+                                  : AppointmentRecordType.group;
+                        }
                       });
                     }
 

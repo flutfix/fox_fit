@@ -76,7 +76,10 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
         backgroundColor: theme.backgroundColor,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         appBar: CustomAppBar(
-          title: S.of(context).sign_up_training_session,
+          title: _scheduleController.state.value.appointmentRecordType ==
+                  AppointmentRecordType.view
+              ? S.of(context).train
+              : S.of(context).sign_up_training_session,
           isNotification: false,
           isBackArrow: true,
 
@@ -161,7 +164,11 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                         .state.value.clients[0].model.fullName
                                     : S.of(context).select_client,
                                 onTap: () {
-                                  Get.to(() => const SelectClientPage());
+                                  if (_scheduleController
+                                          .state.value.appointmentRecordType !=
+                                      AppointmentRecordType.view) {
+                                    Get.to(() => const SelectClientPage());
+                                  }
                                 },
                                 onCheckBox: (activeCheckbox) {
                                   _scheduleController.state.update((model) {
@@ -186,37 +193,42 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                               onTap: () async {
                                 if (_scheduleController
                                         .state.value.appointmentRecordType !=
-                                    AppointmentRecordType.group) {
+                                    AppointmentRecordType.view) {
                                   if (_scheduleController
-                                      .state.value.clients.isNotEmpty) {
-                                    Picker.custom(
-                                      context: context,
-                                      values: _scheduleController
-                                          .state.value.appointmentsDurations,
-                                      onConfirm: (value) {
-                                        if (value !=
-                                            _scheduleController
-                                                .state.value.duration) {
-                                          _scheduleController.state
-                                              .update((model) {
-                                            model?.service = null;
-                                            model?.duration = value;
-                                          });
-                                        }
-                                      },
-                                    );
+                                          .state.value.appointmentRecordType !=
+                                      AppointmentRecordType.group) {
+                                    if (_scheduleController
+                                        .state.value.clients.isNotEmpty) {
+                                      Picker.custom(
+                                        context: context,
+                                        values: _scheduleController
+                                            .state.value.appointmentsDurations,
+                                        onConfirm: (value) {
+                                          if (value !=
+                                              _scheduleController
+                                                  .state.value.duration) {
+                                            _scheduleController.state
+                                                .update((model) {
+                                              model?.service = null;
+                                              model?.duration = value;
+                                            });
+                                          }
+                                        },
+                                      );
+                                    } else {
+                                      CustomSnackbar.getSnackbar(
+                                        title:
+                                            S.of(context).fill_previous_fields,
+                                      );
+                                    }
                                   } else {
                                     CustomSnackbar.getSnackbar(
-                                      title: S.of(context).fill_previous_fields,
+                                      title: S
+                                          .of(context)
+                                          .only_add_or_remove_clients,
+                                      duration: 3,
                                     );
                                   }
-                                } else {
-                                  CustomSnackbar.getSnackbar(
-                                    title: S
-                                        .of(context)
-                                        .only_add_or_remove_clients,
-                                    duration: 3,
-                                  );
                                 }
                               },
                             ),
@@ -242,19 +254,23 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                             AnimationModel(activeWidth: 144),
                                         wrapText: false,
                                         onTap: () {
-                                          if (_scheduleController
-                                                  .state.value.duration !=
-                                              null) {
-                                            _scheduleController.state
-                                                .update((model) {
-                                              model?.split = false;
-                                            });
-                                          } else {
-                                            CustomSnackbar.getSnackbar(
-                                              title: S
-                                                  .of(context)
-                                                  .fill_previous_fields,
-                                            );
+                                          if (_scheduleController.state.value
+                                                  .appointmentRecordType !=
+                                              AppointmentRecordType.view) {
+                                            if (_scheduleController
+                                                    .state.value.duration !=
+                                                null) {
+                                              _scheduleController.state
+                                                  .update((model) {
+                                                model?.split = false;
+                                              });
+                                            } else {
+                                              CustomSnackbar.getSnackbar(
+                                                title: S
+                                                    .of(context)
+                                                    .fill_previous_fields,
+                                              );
+                                            }
                                           }
                                         },
                                       )),
@@ -273,19 +289,23 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                             : false,
                                         wrapText: false,
                                         onTap: () {
-                                          if (_scheduleController
-                                                  .state.value.duration !=
-                                              null) {
-                                            _scheduleController.state
-                                                .update((model) {
-                                              model?.split = true;
-                                            });
-                                          } else {
-                                            CustomSnackbar.getSnackbar(
-                                              title: S
-                                                  .of(context)
-                                                  .fill_previous_fields,
-                                            );
+                                          if (_scheduleController.state.value
+                                                  .appointmentRecordType !=
+                                              AppointmentRecordType.view) {
+                                            if (_scheduleController
+                                                    .state.value.duration !=
+                                                null) {
+                                              _scheduleController.state
+                                                  .update((model) {
+                                                model?.split = true;
+                                              });
+                                            } else {
+                                              CustomSnackbar.getSnackbar(
+                                                title: S
+                                                    .of(context)
+                                                    .fill_previous_fields,
+                                              );
+                                            }
                                           }
                                         },
                                       )),
@@ -305,24 +325,29 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                 onTap: () {
                                   if (_scheduleController
                                           .state.value.appointmentRecordType !=
-                                      AppointmentRecordType.group) {
-                                    if (_scheduleController
-                                            .state.value.duration !=
-                                        null) {
-                                      Get.toNamed(Routes.selectService);
+                                      AppointmentRecordType.view) {
+                                    if (_scheduleController.state.value
+                                            .appointmentRecordType !=
+                                        AppointmentRecordType.group) {
+                                      if (_scheduleController
+                                              .state.value.duration !=
+                                          null) {
+                                        Get.toNamed(Routes.selectService);
+                                      } else {
+                                        CustomSnackbar.getSnackbar(
+                                          title: S
+                                              .of(context)
+                                              .fill_previous_fields,
+                                        );
+                                      }
                                     } else {
                                       CustomSnackbar.getSnackbar(
-                                        title:
-                                            S.of(context).fill_previous_fields,
+                                        title: S
+                                            .of(context)
+                                            .only_add_or_remove_clients,
+                                        duration: 3,
                                       );
                                     }
-                                  } else {
-                                    CustomSnackbar.getSnackbar(
-                                      title: S
-                                          .of(context)
-                                          .only_add_or_remove_clients,
-                                      duration: 3,
-                                    );
                                   }
                                 },
                               )),
@@ -350,49 +375,55 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                 onTap: () async {
                                   if (_scheduleController
                                           .state.value.appointmentRecordType !=
-                                      AppointmentRecordType.group) {
-                                    if (_scheduleController
-                                            .state.value.service !=
-                                        null) {
-                                      await DatePicker.showDatePicker(
-                                        context,
-                                        onConfirm: (confirmTime) async {
-                                          _scheduleController.state
-                                              .update((model) {
-                                            model?.date = confirmTime;
-                                          });
-                                        },
-                                        minTime: DateTime(
-                                          DateTime.now().year,
-                                          DateTime.now().month,
-                                          DateTime.now().day,
-                                        ),
-                                        locale: LocaleType.ru,
-                                        currentTime: DateTime.now(),
-                                        theme: DatePickerTheme(
-                                          cancelStyle:
-                                              theme.textTheme.headline2!,
-                                          doneStyle:
-                                              theme.primaryTextTheme.headline2!,
-                                          itemStyle: theme.textTheme.headline2!,
-                                          backgroundColor:
-                                              theme.backgroundColor,
-                                          headerColor: theme.backgroundColor,
-                                        ),
-                                      );
+                                      AppointmentRecordType.view) {
+                                    if (_scheduleController.state.value
+                                            .appointmentRecordType !=
+                                        AppointmentRecordType.group) {
+                                      if (_scheduleController
+                                              .state.value.service !=
+                                          null) {
+                                        await DatePicker.showDatePicker(
+                                          context,
+                                          onConfirm: (confirmTime) async {
+                                            _scheduleController.state
+                                                .update((model) {
+                                              model?.date = confirmTime;
+                                            });
+                                          },
+                                          minTime: DateTime(
+                                            DateTime.now().year,
+                                            DateTime.now().month,
+                                            DateTime.now().day,
+                                          ),
+                                          locale: LocaleType.ru,
+                                          currentTime: DateTime.now(),
+                                          theme: DatePickerTheme(
+                                            cancelStyle:
+                                                theme.textTheme.headline2!,
+                                            doneStyle: theme
+                                                .primaryTextTheme.headline2!,
+                                            itemStyle:
+                                                theme.textTheme.headline2!,
+                                            backgroundColor:
+                                                theme.backgroundColor,
+                                            headerColor: theme.backgroundColor,
+                                          ),
+                                        );
+                                      } else {
+                                        CustomSnackbar.getSnackbar(
+                                          title: S
+                                              .of(context)
+                                              .fill_previous_fields,
+                                        );
+                                      }
                                     } else {
                                       CustomSnackbar.getSnackbar(
-                                        title:
-                                            S.of(context).fill_previous_fields,
+                                        title: S
+                                            .of(context)
+                                            .only_add_or_remove_clients,
+                                        duration: 3,
                                       );
                                     }
-                                  } else {
-                                    CustomSnackbar.getSnackbar(
-                                      title: S
-                                          .of(context)
-                                          .only_add_or_remove_clients,
-                                      duration: 3,
-                                    );
                                   }
                                 },
                               );
@@ -434,44 +465,51 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                 onTap: () async {
                                   if (_scheduleController
                                           .state.value.appointmentRecordType !=
-                                      AppointmentRecordType.group) {
-                                    if (_scheduleController.state.value.date !=
-                                            null &&
-                                        _scheduleController
-                                                .state.value.service !=
-                                            null) {
-                                      await Picker.time(
-                                        context: context,
-                                        currentHour: _scheduleController
-                                                .state.value.time?.hour ??
-                                            DateTime.now().hour,
-                                        minutesInterval: 5,
-                                        onConfirm: (confirmTime) async {
-                                          _scheduleController.state
-                                              .update((model) {
-                                            model?.time = confirmTime;
-                                          });
-                                        },
-                                        buttonsStyle:
-                                            theme.textTheme.headline2!,
-                                        valueStyle: theme.textTheme.headline2!,
-                                        doneButtonColor:
-                                            theme.colorScheme.primary,
-                                        borderRadius: BorderRadius.zero,
-                                      );
+                                      AppointmentRecordType.view) {
+                                    if (_scheduleController.state.value
+                                            .appointmentRecordType !=
+                                        AppointmentRecordType.group) {
+                                      if (_scheduleController
+                                                  .state.value.date !=
+                                              null &&
+                                          _scheduleController
+                                                  .state.value.service !=
+                                              null) {
+                                        await Picker.time(
+                                          context: context,
+                                          currentHour: _scheduleController
+                                                  .state.value.time?.hour ??
+                                              DateTime.now().hour,
+                                          minutesInterval: 5,
+                                          onConfirm: (confirmTime) async {
+                                            _scheduleController.state
+                                                .update((model) {
+                                              model?.time = confirmTime;
+                                            });
+                                          },
+                                          buttonsStyle:
+                                              theme.textTheme.headline2!,
+                                          valueStyle:
+                                              theme.textTheme.headline2!,
+                                          doneButtonColor:
+                                              theme.colorScheme.primary,
+                                          borderRadius: BorderRadius.zero,
+                                        );
+                                      } else {
+                                        CustomSnackbar.getSnackbar(
+                                          title: S
+                                              .of(context)
+                                              .fill_previous_fields,
+                                        );
+                                      }
                                     } else {
                                       CustomSnackbar.getSnackbar(
-                                        title:
-                                            S.of(context).fill_previous_fields,
+                                        title: S
+                                            .of(context)
+                                            .only_add_or_remove_clients,
+                                        duration: 3,
                                       );
                                     }
-                                  } else {
-                                    CustomSnackbar.getSnackbar(
-                                      title: S
-                                          .of(context)
-                                          .only_add_or_remove_clients,
-                                      duration: 3,
-                                    );
                                   }
                                 },
                               );
@@ -553,83 +591,88 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                 ),
               ),
         floatingActionButton: !_isLoading
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 64),
-                child: CustomTextButton(
-                  height: 51,
-                  text: _scheduleController.state.value.appointmentRecordType ==
-                          AppointmentRecordType.edit
-                      ? S.of(context).save
-                      : S.of(context).record,
-                  backgroundColor: theme.colorScheme.secondary,
-                  textStyle: theme.textTheme.button!,
-                  onTap: () {
-                    if (validateFields()) {
-                      String dataTimeString =
-                          '${DateFormat('d.MM.yy').format(_scheduleController.state.value.date!)} в '
-                          '${DateFormat('HH:mm').format(_scheduleController.state.value.time!)}';
-                      Get.to(
-                        () => ConfirmationPage(
-                          textButtonDone: _scheduleController
-                                      .state.value.appointmentRecordType ==
-                                  AppointmentRecordType.edit
-                              ? S.of(context).save
-                              : S.of(context).record,
-                          textButtonCancel: S.of(context).back,
-                          richText: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: '${S.of(context).record}\n',
-                                  style: theme.textTheme.headline5,
-                                ),
-                                if (_scheduleController
-                                        .state.value.appointmentRecordType !=
-                                    AppointmentRecordType.group)
-                                  TextSpan(
-                                    text:
-                                        '${_scheduleController.state.value.clients[0].model.fullName}\n',
-                                    style: theme.textTheme.headline6!.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
+            ? (_scheduleController.state.value.appointmentRecordType !=
+                    AppointmentRecordType.view)
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 64),
+                    child: CustomTextButton(
+                      height: 51,
+                      text: _scheduleController
+                                  .state.value.appointmentRecordType ==
+                              AppointmentRecordType.edit
+                          ? S.of(context).save
+                          : S.of(context).record,
+                      backgroundColor: theme.colorScheme.secondary,
+                      textStyle: theme.textTheme.button!,
+                      onTap: () {
+                        if (validateFields()) {
+                          String dataTimeString =
+                              '${DateFormat('d.MM.yy').format(_scheduleController.state.value.date!)} в '
+                              '${DateFormat('HH:mm').format(_scheduleController.state.value.time!)}';
+                          Get.to(
+                            () => ConfirmationPage(
+                              textButtonDone: _scheduleController
+                                          .state.value.appointmentRecordType ==
+                                      AppointmentRecordType.edit
+                                  ? S.of(context).save
+                                  : S.of(context).record,
+                              textButtonCancel: S.of(context).back,
+                              richText: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: '${S.of(context).record}\n',
+                                      style: theme.textTheme.headline5,
                                     ),
-                                  ),
-                                if (_scheduleController
-                                        .state.value.appointmentRecordType ==
-                                    AppointmentRecordType.group)
-                                  TextSpan(
-                                    text:
-                                        '${S.of(context).selected_clients.toLowerCase()}\n',
-                                    style: theme.textTheme.headline5,
-                                  ),
-                                TextSpan(
-                                  text:
-                                      '${S.of(context).to_practice.toLowerCase()} ',
-                                  style: theme.textTheme.headline5,
+                                    if (_scheduleController.state.value
+                                            .appointmentRecordType !=
+                                        AppointmentRecordType.group)
+                                      TextSpan(
+                                        text:
+                                            '${_scheduleController.state.value.clients[0].model.fullName}\n',
+                                        style:
+                                            theme.textTheme.headline6!.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    if (_scheduleController.state.value
+                                            .appointmentRecordType ==
+                                        AppointmentRecordType.group)
+                                      TextSpan(
+                                        text:
+                                            '${S.of(context).selected_clients.toLowerCase()}\n',
+                                        style: theme.textTheme.headline5,
+                                      ),
+                                    TextSpan(
+                                      text:
+                                          '${S.of(context).to_practice.toLowerCase()} ',
+                                      style: theme.textTheme.headline5,
+                                    ),
+                                    TextSpan(
+                                      text: '$dataTimeString?',
+                                      style: theme.textTheme.headline5,
+                                    ),
+                                  ],
                                 ),
-                                TextSpan(
-                                  text: '$dataTimeString?',
-                                  style: theme.textTheme.headline5,
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                        transition: Transition.fadeIn,
-                      );
-                    } else {
-                      CustomSnackbar.getSnackbar(
-                        title: _scheduleController
-                                    .state.value.appointmentRecordType ==
-                                AppointmentRecordType.group
-                            ? S.of(context).add_least_one_client
-                            : S.of(context).fill_all_fields,
-                      );
-                    }
-                  },
-                ),
-              )
+                            transition: Transition.fadeIn,
+                          );
+                        } else {
+                          CustomSnackbar.getSnackbar(
+                            title: _scheduleController
+                                        .state.value.appointmentRecordType ==
+                                    AppointmentRecordType.group
+                                ? S.of(context).add_least_one_client
+                                : S.of(context).fill_all_fields,
+                          );
+                        }
+                      },
+                    ),
+                  )
+                : null
             : null,
       ),
     );
