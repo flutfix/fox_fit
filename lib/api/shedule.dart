@@ -45,7 +45,9 @@ class SheduleRequests {
       dateNow.year,
       dateNow.month,
       dateNow.day + 1,
-      dateNow.hour + timeDiff,
+      dateNow.hour + timeDiff - 1,
+      59,
+      59,
     ).toUtc();
 
     String timestampDateStart =
