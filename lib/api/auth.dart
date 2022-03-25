@@ -30,7 +30,6 @@ class AuthRequest {
     final String formattedDate = format.format(now);
     String key = _getBase64String(text: '$phone$formattedDate');
     key = _getBase64String(text: key);
-
     const String url = '${AuthRequest.authurl}check_credentials';
 
     final dioClient = Dio(AuthRequest.authOptions);

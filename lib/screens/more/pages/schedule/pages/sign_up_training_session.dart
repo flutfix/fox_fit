@@ -84,8 +84,10 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
           isBackArrow: true,
 
           /// Кнопка удаления тернировки
-          action: _scheduleController.state.value.appointmentRecordType ==
-                  AppointmentRecordType.edit
+          action: (_scheduleController.state.value.appointmentRecordType ==
+                      AppointmentRecordType.edit ||
+                  _scheduleController.state.value.appointmentRecordType ==
+                      AppointmentRecordType.view) 
               ? GestureDetector(
                   onTap: () {
                     _scheduleController.state.update((model) {

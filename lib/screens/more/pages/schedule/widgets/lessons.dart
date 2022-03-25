@@ -106,10 +106,17 @@ class Lessons extends StatelessWidget {
                       ).toUtc().millisecondsSinceEpoch;
 
                       bool isView = nowTimeStamp > appointmentEndDate;
-                      String status = appointments[indexHor]
-                          .arrivalStatuses[0]
-                          .paymentStatus;
-                      isView = status == 'DoneAndPayed' ? isView : false;
+                      String status = '';
+                      if (appointments[indexHor].arrivalStatuses.isNotEmpty) {
+                        status = appointments[indexHor]
+                            .arrivalStatuses[0]
+                            .paymentStatus;
+                      }
+                      isView = status != ''
+                          ? status == 'DoneAndPayed'
+                              ? isView
+                              : false
+                          : false;
                       log('[Status] $status');
                       log('[Is View] $isView');
                       //**
