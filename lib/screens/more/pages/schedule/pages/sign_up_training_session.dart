@@ -7,6 +7,7 @@ import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/animation.dart';
+import 'package:fox_fit/models/customer_model_state.dart';
 import 'package:fox_fit/screens/confirmation/confirmation.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
 import 'package:fox_fit/utils/date_time_picker/date_time_picker.dart';
@@ -78,8 +79,10 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
         backgroundColor: theme.backgroundColor,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         appBar: CustomAppBar(
-          title: _scheduleController.state.value.appointmentRecordType ==
-                  AppointmentRecordType.view
+          title: (_scheduleController.state.value.appointmentRecordType ==
+                      AppointmentRecordType.view ||
+                  _scheduleController.state.value.appointmentRecordType ==
+                      AppointmentRecordType.groupView)
               ? S.of(context).train
               : S.of(context).sign_up_training_session,
           isNotification: false,
@@ -157,9 +160,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                       child: Column(
                         children: [
                           /// Выбор клиента для персональной тренировки
-                          if (_scheduleController
-                                  .state.value.appointmentRecordType !=
-                              AppointmentRecordType.group)
+                          if (_isPersonal)
                             Obx(
                               () => CustomAnimatedContainer(
                                 text: _scheduleController
@@ -176,10 +177,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                 },
                               ),
                             ),
-                          if (_scheduleController
-                                  .state.value.appointmentRecordType !=
-                              AppointmentRecordType.group)
-                            const SizedBox(height: 17),
+                          if (_isPersonal) const SizedBox(height: 17),
 
                           /// Длительность
                           Obx(
@@ -189,9 +187,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                   ? '${_scheduleController.state.value.duration} мин'
                                   : S.of(context).duration,
                               onTap: () async {
-                                if (_scheduleController
-                                        .state.value.appointmentRecordType !=
-                                    AppointmentRecordType.view) {
+                                if (_isNotView) {
                                   if (_scheduleController
                                           .state.value.appointmentRecordType !=
                                       AppointmentRecordType.group) {
@@ -234,9 +230,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                           const SizedBox(height: 17),
 
                           /// Вид тренировки
-                          if (_scheduleController
-                                  .state.value.appointmentRecordType !=
-                              AppointmentRecordType.group)
+                          if (_isPersonal)
                             SizedBox(
                               height: 60,
                               child: Row(
@@ -248,8 +242,9 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                                 .state.value.split
                                             ? false
                                             : true,
-                                        animation:
-                                            AnimationModel(activeWidth: 144),
+                                        animation: AnimationModel(
+                                            activeWidth: 148,
+                                            inactiveWidth: 120),
                                         wrapText: false,
                                         onTap: () {
                                           if (_scheduleController.state.value
@@ -278,8 +273,8 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                   Obx(() => CustomAnimatedContainer(
                                         text: S.of(context).split,
                                         animation: AnimationModel(
-                                          activeWidth: 77,
-                                          inactiveWidth: 60,
+                                          activeWidth: 80,
+                                          inactiveWidth: 75,
                                         ),
                                         isActive: _scheduleController
                                                 .state.value.split
@@ -310,10 +305,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                 ],
                               ),
                             ),
-                          if (_scheduleController
-                                  .state.value.appointmentRecordType !=
-                              AppointmentRecordType.group)
-                            const SizedBox(height: 17),
+                          if (_isPersonal) const SizedBox(height: 17),
 
                           /// Услуга
                           Obx(() => CustomAnimatedContainer(
@@ -321,9 +313,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                         .state.value.service?.name ??
                                     S.of(context).service,
                                 onTap: () {
-                                  if (_scheduleController
-                                          .state.value.appointmentRecordType !=
-                                      AppointmentRecordType.view) {
+                                  if (_isNotView) {
                                     if (_scheduleController.state.value
                                             .appointmentRecordType !=
                                         AppointmentRecordType.group) {
@@ -371,9 +361,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                               return CustomAnimatedContainer(
                                 text: dateEvent ?? S.of(context).date_event,
                                 onTap: () async {
-                                  if (_scheduleController
-                                          .state.value.appointmentRecordType !=
-                                      AppointmentRecordType.view) {
+                                  if (_isNotView) {
                                     if (_scheduleController.state.value
                                             .appointmentRecordType !=
                                         AppointmentRecordType.group) {
@@ -461,9 +449,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                     ? 'c $timeEventStart до $timeEventEnd'
                                     : S.of(context).time_lesson,
                                 onTap: () async {
-                                  if (_scheduleController
-                                          .state.value.appointmentRecordType !=
-                                      AppointmentRecordType.view) {
+                                  if (_isNotView) {
                                     if (_scheduleController.state.value
                                             .appointmentRecordType !=
                                         AppointmentRecordType.group) {
@@ -513,17 +499,12 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                               );
                             },
                           ),
-                          if (_scheduleController
-                                  .state.value.appointmentRecordType ==
-                              AppointmentRecordType.group)
-                            const SizedBox(height: 17),
+                          if (_isGroup) const SizedBox(height: 17),
 
                           /// Выбор клиента для групповой тренировки
-                          if (_scheduleController
-                                  .state.value.appointmentRecordType ==
-                              AppointmentRecordType.group)
+                          if (_isGroup)
                             Obx(
-                              () => ListView.separated(
+                              () => ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: _scheduleController
@@ -533,9 +514,6 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                     : _scheduleController
                                             .state.value.clients.length +
                                         1,
-                                separatorBuilder: (context, index) {
-                                  return const SizedBox(height: 17);
-                                },
                                 itemBuilder: (context, index) {
                                   /// Для статуса оплаты
                                   PaymentStatusType? paymentStatus;
@@ -561,34 +539,54 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                     }
                                   }
 
-                                  /// Для отображения чекбокса
+                                  /// Для отображения клиента
                                   bool clientIsSelected = index !=
                                           _scheduleController
                                               .state.value.clients.length
                                       ? true
                                       : false;
-                                  return CustomAnimatedContainer(
-                                    isButtonDelete: clientIsSelected,
-                                    paymentStatusType: paymentStatus,
-                                    arrivalStatus: clientIsSelected
-                                        ? _scheduleController.state.value
-                                            .clients[index].arrivalStatus
-                                        : false,
-                                    text: clientIsSelected
-                                        ? _scheduleController.state.value
-                                            .clients[index].model.fullName
-                                        : S.of(context).select_client,
-                                    onTap: () async {
-                                      if (!clientIsSelected) {
+                                  if (clientIsSelected &&
+                                      !_scheduleController.state.value
+                                          .clients[index].isCanceled) {
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 17.0),
+                                      child: CustomAnimatedContainer(
+                                        isButtonDelete: _scheduleController
+                                                    .state
+                                                    .value
+                                                    .appointmentRecordType !=
+                                                AppointmentRecordType.groupView
+                                            ? true
+                                            : false,
+                                        paymentStatusType: paymentStatus,
+                                        arrivalStatus: _scheduleController.state
+                                            .value.clients[index].arrivalStatus,
+                                        text: _scheduleController.state.value
+                                            .clients[index].model.fullName,
+                                        onTap: () {},
+                                        onDelete: () {
+                                          _scheduleController.state
+                                              .update((model) {
+                                            model?.clients[index].isCanceled =
+                                                true;
+                                          });
+                                        },
+                                      ),
+                                    );
+                                  } else if (!clientIsSelected &&
+                                      _scheduleController.state.value
+                                              .appointmentRecordType !=
+                                          AppointmentRecordType.groupView) {
+                                    return CustomAnimatedContainer(
+                                      text: S.of(context).select_client,
+                                      onTap: () async {
                                         Get.toNamed(Routes.selectClient);
-                                      }
-                                    },
-                                    onDelete: () {
-                                      _scheduleController.state.update((model) {
-                                        model?.clients.removeAt(index);
-                                      });
-                                    },
-                                  );
+                                      },
+                                    );
+                                  } else {
+                                    return const SizedBox();
+                                  }
                                 },
                               ),
                             ),
@@ -609,8 +607,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                 ),
               ),
         floatingActionButton: !_isLoading
-            ? (_scheduleController.state.value.appointmentRecordType !=
-                    AppointmentRecordType.view)
+            ? (_isNotView)
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 64),
                     child: CustomTextButton(
@@ -619,7 +616,6 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                       backgroundColor: theme.colorScheme.secondary,
                       textStyle: theme.textTheme.button!,
                       onTap: () {
-                        log('${_scheduleController.state.value.currentAppointment?.arrivalStatuses.length}');
                         if (validateFields()) {
                           String dataTimeString =
                               '${DateFormat('d.MM.yy').format(_scheduleController.state.value.date!)} в '
@@ -701,6 +697,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
     }
   }
 
+  /// Текст синей кнопки
   String get buttonText {
     if (_scheduleController.state.value.appointmentRecordType ==
             AppointmentRecordType.edit ||
@@ -710,5 +707,29 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
     } else {
       return S.of(context).record;
     }
+  }
+
+  /// Если персональная
+  bool get _isPersonal {
+    return _scheduleController.state.value.appointmentRecordType !=
+            AppointmentRecordType.group &&
+        _scheduleController.state.value.appointmentRecordType !=
+            AppointmentRecordType.groupView;
+  }
+
+  /// Если групповая
+  bool get _isGroup {
+    return _scheduleController.state.value.appointmentRecordType ==
+            AppointmentRecordType.group ||
+        _scheduleController.state.value.appointmentRecordType ==
+            AppointmentRecordType.groupView;
+  }
+
+  /// Если не просмотр
+  bool get _isNotView {
+    return _scheduleController.state.value.appointmentRecordType !=
+            AppointmentRecordType.view &&
+        _scheduleController.state.value.appointmentRecordType !=
+            AppointmentRecordType.groupView;
   }
 }

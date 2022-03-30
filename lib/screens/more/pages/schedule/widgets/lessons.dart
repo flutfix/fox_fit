@@ -136,7 +136,8 @@ class Lessons extends StatelessWidget {
                               appointments[indexHor].appointmentType ==
                                       AppointmentType.personal
                                   ? AppointmentRecordType.edit
-                                  : AppointmentRecordType.group;
+                                  : _getAppointmentRecordTypeForGroup(
+                                      appointment: appointments[indexHor]);
                         }
                       });
                     }
@@ -200,8 +201,9 @@ class Lessons extends StatelessWidget {
                                                 ? Styles.yellow
                                                 : Styles.red),
 
-                                  if (appointments[indexHor].appointmentType ==
-                                      AppointmentType.group)
+                                  if (paymentStatusType != null &&
+                                      appointments[indexHor].appointmentType ==
+                                          AppointmentType.group)
                                     // Индикация групповой
                                     _groupPaymentStatus(appointments[indexHor]),
 
@@ -252,7 +254,6 @@ class Lessons extends StatelessWidget {
     var yellow = groupAppointment.arrivalStatuses
         .where((element) => element.paymentStatus == 'PlannedAndPayed');
 
-
     if (red.isNotEmpty) {
       return _getIndicatorContainer(color: Styles.red);
     } else if (yellow.isNotEmpty) {
@@ -271,5 +272,14 @@ class Lessons extends StatelessWidget {
         borderRadius: BorderRadius.circular(90),
       ),
     );
+  }
+
+  /// Функция определяет возможны ли изменения в групповой тренировке
+  AppointmentRecordType _getAppointmentRecordTypeForGroup(
+      {required AppointmentModel appointment}) {
+    if (appointment.endDate.month < DateTime.now().month) {
+      return AppointmentRecordType.groupView;
+    }
+    return AppointmentRecordType.group;
   }
 }

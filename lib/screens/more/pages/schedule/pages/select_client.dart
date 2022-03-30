@@ -235,6 +235,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                         CustomerModelState(
                                           model: foundClient,
                                           arrivalStatus: false,
+                                          isCanceled: false,
                                         ),
                                       ];
                                       model?.duration = foundClient.duration;
@@ -330,6 +331,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                               CustomerModelState(
                                                 model: _foundClients![0],
                                                 arrivalStatus: false,
+                                                isCanceled: false,
                                               ),
                                             ];
                                             model?.duration =
@@ -361,6 +363,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                             CustomerModelState(
                                               model: currentClient,
                                               arrivalStatus: false,
+                                              isCanceled: false,
                                             ),
                                           );
 

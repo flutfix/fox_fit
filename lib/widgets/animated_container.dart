@@ -69,21 +69,19 @@ class _CustomAnimatedContainerState extends State<CustomAnimatedContainer> {
           children: [
             Row(
               children: [
-                if (widget.paymentStatusType != null)
-                  Container(
-                    width: 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: widget.paymentStatusType ==
-                              PaymentStatusType.doneAndPayed
-                          ? Styles.green
-                          : widget.paymentStatusType ==
-                                  PaymentStatusType.plannedAndPayed
-                              ? Styles.yellow
-                              : Styles.red,
-                      borderRadius: BorderRadius.circular(90),
-                    ),
+                if(widget.paymentStatusType != null)
+                Container(
+                  width: 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: widget.paymentStatusType == PaymentStatusType.doneAndPayed
+                        ? Styles.green
+                        : widget.paymentStatusType == PaymentStatusType.plannedAndPayed
+                            ? Styles.yellow
+                            : Styles.red,
+                    borderRadius: BorderRadius.circular(90),
                   ),
+                ),
                 const SizedBox(width: 8),
                 SizedBox(
                   width: (widget.wrapText)

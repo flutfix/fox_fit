@@ -130,8 +130,8 @@ class _CreateSalePageState extends State<CreateSalePage> {
                                           ? false
                                           : true,
                                   animation: AnimationModel(
-                                    activeWidth: 114,
-                                    inactiveWidth: 90,
+                                    activeWidth: 124,
+                                    inactiveWidth: 100,
                                   ),
                                   wrapText: false,
                                   onTap: () {
@@ -148,8 +148,8 @@ class _CreateSalePageState extends State<CreateSalePage> {
                                 () => CustomAnimatedContainer(
                                   text: S.of(context).starting,
                                   animation: AnimationModel(
-                                    activeWidth: 111,
-                                    inactiveWidth: 90,
+                                    activeWidth: 124,
+                                    inactiveWidth: 100,
                                   ),
                                   isActive:
                                       _salesController.state.value.isStarting
@@ -210,7 +210,8 @@ class _CreateSalePageState extends State<CreateSalePage> {
                                   isActive: _salesController.state.value.isSplit
                                       ? false
                                       : true,
-                                  animation: AnimationModel(activeWidth: 144),
+                                  animation: AnimationModel(
+                                      activeWidth: 150, inactiveWidth: 120),
                                   wrapText: false,
                                   onTap: () {
                                     _salesController.state.update((model) {
@@ -226,8 +227,8 @@ class _CreateSalePageState extends State<CreateSalePage> {
                                 () => CustomAnimatedContainer(
                                   text: S.of(context).split,
                                   animation: AnimationModel(
-                                    activeWidth: 77,
-                                    inactiveWidth: 60,
+                                    activeWidth: 84,
+                                    inactiveWidth: 70,
                                   ),
                                   isActive: _salesController.state.value.isSplit
                                       ? true
@@ -413,7 +414,7 @@ class _CreateSalePageState extends State<CreateSalePage> {
                 text: S.of(context).personalka,
                 isActive:
                     _salesController.state.value.isPersonal ? true : false,
-                animation: AnimationModel(activeWidth: 120, inactiveWidth: 96),
+                animation: AnimationModel(activeWidth: 128, inactiveWidth: 102),
                 wrapText: false,
                 onTap: onPersonal),
           ),
@@ -423,10 +424,7 @@ class _CreateSalePageState extends State<CreateSalePage> {
           Obx(
             () => CustomAnimatedContainer(
               text: S.of(context).group,
-              animation: AnimationModel(
-                activeWidth: 80,
-                inactiveWidth: 70,
-              ),
+              animation: AnimationModel(activeWidth: 90, inactiveWidth: 78),
               isActive: _salesController.state.value.isPersonal ? false : true,
               wrapText: false,
               onTap: onGroup,
