@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
@@ -87,7 +89,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
           action: (_scheduleController.state.value.appointmentRecordType ==
                       AppointmentRecordType.edit ||
                   _scheduleController.state.value.appointmentRecordType ==
-                      AppointmentRecordType.view) 
+                      AppointmentRecordType.view)
               ? GestureDetector(
                   onTap: () {
                     _scheduleController.state.update((model) {
@@ -171,12 +173,6 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                       AppointmentRecordType.view) {
                                     Get.to(() => const SelectClientPage());
                                   }
-                                },
-                                onCheckBox: (activeCheckbox) {
-                                  _scheduleController.state.update((model) {
-                                    model?.clients[0].arrivalStatus =
-                                        activeCheckbox;
-                                  });
                                 },
                               ),
                             ),
@@ -541,6 +537,30 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                   return const SizedBox(height: 17);
                                 },
                                 itemBuilder: (context, index) {
+                                  /// Для статуса оплаты
+                                  PaymentStatusType? paymentStatus;
+                                  if (index !=
+                                      _scheduleController
+                                          .state.value.clients.length) {
+                                    var strStatus = _scheduleController
+                                        .state
+                                        .value
+                                        .currentAppointment
+                                        ?.arrivalStatuses
+                                        .where((element) =>
+                                            element.customerUid ==
+                                            _scheduleController.state.value
+                                                .clients[index].model.uid);
+                                    if (strStatus != null) {
+                                      if (strStatus.isNotEmpty) {
+                                        paymentStatus =
+                                            Enums.getPaymentStatusType(
+                                                paymentStatusString: strStatus
+                                                    .first.paymentStatus);
+                                      }
+                                    }
+                                  }
+
                                   /// Для отображения чекбокса
                                   bool clientIsSelected = index !=
                                           _scheduleController
@@ -548,8 +568,8 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                       ? true
                                       : false;
                                   return CustomAnimatedContainer(
-                                    isCheckbox: clientIsSelected,
                                     isButtonDelete: clientIsSelected,
+                                    paymentStatusType: paymentStatus,
                                     arrivalStatus: clientIsSelected
                                         ? _scheduleController.state.value
                                             .clients[index].arrivalStatus
@@ -559,13 +579,9 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                             .clients[index].model.fullName
                                         : S.of(context).select_client,
                                     onTap: () async {
-                                      Get.toNamed(Routes.selectClient);
-                                    },
-                                    onCheckBox: (activeCheckbox) {
-                                      _scheduleController.state.update((model) {
-                                        model?.clients[index].arrivalStatus =
-                                            activeCheckbox;
-                                      });
+                                      if (!clientIsSelected) {
+                                        Get.toNamed(Routes.selectClient);
+                                      }
                                     },
                                     onDelete: () {
                                       _scheduleController.state.update((model) {
@@ -599,25 +615,18 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 64),
                     child: CustomTextButton(
                       height: 51,
-                      text: _scheduleController
-                                  .state.value.appointmentRecordType ==
-                              AppointmentRecordType.edit
-                          ? S.of(context).save
-                          : S.of(context).record,
+                      text: buttonText,
                       backgroundColor: theme.colorScheme.secondary,
                       textStyle: theme.textTheme.button!,
                       onTap: () {
+                        log('${_scheduleController.state.value.currentAppointment?.arrivalStatuses.length}');
                         if (validateFields()) {
                           String dataTimeString =
                               '${DateFormat('d.MM.yy').format(_scheduleController.state.value.date!)} в '
                               '${DateFormat('HH:mm').format(_scheduleController.state.value.time!)}';
                           Get.to(
                             () => ConfirmationPage(
-                              textButtonDone: _scheduleController
-                                          .state.value.appointmentRecordType ==
-                                      AppointmentRecordType.edit
-                                  ? S.of(context).save
-                                  : S.of(context).record,
+                              textButtonDone: buttonText,
                               textButtonCancel: S.of(context).back,
                               richText: RichText(
                                 textAlign: TextAlign.center,
@@ -689,6 +698,17 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
       return true;
     } else {
       return false;
+    }
+  }
+
+  String get buttonText {
+    if (_scheduleController.state.value.appointmentRecordType ==
+            AppointmentRecordType.edit ||
+        _scheduleController.state.value.appointmentRecordType ==
+            AppointmentRecordType.group) {
+      return S.of(context).save;
+    } else {
+      return S.of(context).record;
     }
   }
 }

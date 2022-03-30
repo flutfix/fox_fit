@@ -134,7 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "save_edits": MessageLookupByLibrary.simpleMessage("Изменить"),
         "schedule": MessageLookupByLibrary.simpleMessage("Расписание"),
         "select_client":
-            MessageLookupByLibrary.simpleMessage("Выбрать клиента"),
+            MessageLookupByLibrary.simpleMessage("Добавить клиента"),
         "selected_clients":
             MessageLookupByLibrary.simpleMessage("Выбранных клиентов"),
         "send_to_trainer":

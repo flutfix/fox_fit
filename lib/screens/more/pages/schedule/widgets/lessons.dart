@@ -117,8 +117,6 @@ class Lessons extends StatelessWidget {
                               ? isView
                               : false
                           : false;
-                      log('[Status] $status');
-                      log('[Is View] $isView');
                       //**
                       _scheduleController.state.update((model) {
                         model?.appointment = appointments[indexHor];
@@ -154,6 +152,12 @@ class Lessons extends StatelessWidget {
                       });
                     }
 
+                    if (appointments.isNotEmpty) {
+                      _scheduleController.state.update((state) {
+                        state?.currentAppointment = appointments[indexHor];
+                      });
+                    }
+
                     Get.toNamed(Routes.signUpTrainingSession);
                   },
                   child: DefaultContainer(
@@ -186,10 +190,7 @@ class Lessons extends StatelessWidget {
                                   if (paymentStatusType != null &&
                                       appointments[indexHor].appointmentType !=
                                           AppointmentType.group)
-                                    Container(
-                                      width: 6,
-                                      height: 6,
-                                      decoration: BoxDecoration(
+                                    _getIndicatorContainer(
                                         color: paymentStatusType ==
                                                 PaymentStatusType.doneAndPayed
                                             ? Styles.green
@@ -197,13 +198,14 @@ class Lessons extends StatelessWidget {
                                                     PaymentStatusType
                                                         .plannedAndPayed
                                                 ? Styles.yellow
-                                                : Styles.red,
-                                        borderRadius: BorderRadius.circular(90),
-                                      ),
-                                    ),
-                                  if (paymentStatusType != null &&
-                                      appointments[indexHor].appointmentType !=
-                                          AppointmentType.group)
+                                                : Styles.red),
+
+                                  if (appointments[indexHor].appointmentType ==
+                                      AppointmentType.group)
+                                    // Индикация групповой
+                                    _groupPaymentStatus(appointments[indexHor]),
+
+                                  if (paymentStatusType != null)
                                     const SizedBox(width: 6),
                                   Text(
                                     '${appointments[indexHor].service.duration} мин '
@@ -238,5 +240,36 @@ class Lessons extends StatelessWidget {
       }
     }
     return appointments;
+  }
+
+  /// Возвращает индикатор статуса оплаты для групповых тренировках
+  Widget _groupPaymentStatus(AppointmentModel groupAppointment) {
+    /// Запланирвоано и нет оснований
+    var red = groupAppointment.arrivalStatuses
+        .where((element) => element.paymentStatus == 'ReservedNeedPayment');
+
+    /// Запланировано и оплачено
+    var yellow = groupAppointment.arrivalStatuses
+        .where((element) => element.paymentStatus == 'PlannedAndPayed');
+
+
+    if (red.isNotEmpty) {
+      return _getIndicatorContainer(color: Styles.red);
+    } else if (yellow.isNotEmpty) {
+      return _getIndicatorContainer(color: Styles.yellow);
+    } else {
+      return _getIndicatorContainer(color: Styles.green);
+    }
+  }
+
+  Widget _getIndicatorContainer({required Color color}) {
+    return Container(
+      width: 6,
+      height: 6,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(90),
+      ),
+    );
   }
 }

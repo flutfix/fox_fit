@@ -6,6 +6,7 @@ import 'package:fox_fit/utils/enums.dart';
 class ScheduleState {
   ScheduleState({
     this.appointment,
+    this.currentAppointment,
     this.clients = const [],
     this.capacity = 1,
     this.duration,
@@ -22,6 +23,9 @@ class ScheduleState {
 
   /// Выбранное занятие
   AppointmentModel? appointment;
+
+  /// Текущее выбранное занятие
+  AppointmentModel? currentAppointment;
 
   /// Выбранные клиенты
   List<CustomerModelState> clients;

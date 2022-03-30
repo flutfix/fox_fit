@@ -47,7 +47,7 @@
     "schedule": "Расписание",
     "record": "Записать",
     "sign_up_training_session": "Записать на тренировку",
-    "select_client": "Выбрать клиента",
+    "select_client": "Добавить клиента",
     "choice_client": "Выбор клиента",
     "duration": "Длительность",
     "personal": "Персональная",
