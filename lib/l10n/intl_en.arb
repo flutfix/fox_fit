@@ -49,6 +49,7 @@
     "sign_up_training_session": "",
     "select_client": "",
     "choice_client": "",
+    "search_client": "",
     "duration": "",
     "personal": "",
     "split": "",
@@ -97,5 +98,6 @@
     "add_sale": "",
     "for_customer": "",
     "add_sale_failed": "",
-    "train": ""
+    "train": "",
+    "start_typing": ""
 }

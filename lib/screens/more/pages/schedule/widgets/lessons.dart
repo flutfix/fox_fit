@@ -117,8 +117,6 @@ class Lessons extends StatelessWidget {
                               ? isView
                               : false
                           : false;
-                      log('[Status] $status');
-                      log('[Is View] $isView');
                       //**
                       _scheduleController.state.update((model) {
                         model?.appointment = appointments[indexHor];
@@ -138,7 +136,8 @@ class Lessons extends StatelessWidget {
                               appointments[indexHor].appointmentType ==
                                       AppointmentType.personal
                                   ? AppointmentRecordType.edit
-                                  : AppointmentRecordType.group;
+                                  : _getAppointmentRecordTypeForGroup(
+                                      appointment: appointments[indexHor]);
                         }
                       });
                     }
@@ -151,6 +150,12 @@ class Lessons extends StatelessWidget {
                             DateTime(date.year, date.month, date.day, indexVer);
                         model?.appointmentRecordType =
                             AppointmentRecordType.create;
+                      });
+                    }
+
+                    if (appointments.isNotEmpty) {
+                      _scheduleController.state.update((state) {
+                        state?.currentAppointment = appointments[indexHor];
                       });
                     }
 
@@ -186,10 +191,7 @@ class Lessons extends StatelessWidget {
                                   if (paymentStatusType != null &&
                                       appointments[indexHor].appointmentType !=
                                           AppointmentType.group)
-                                    Container(
-                                      width: 6,
-                                      height: 6,
-                                      decoration: BoxDecoration(
+                                    _getIndicatorContainer(
                                         color: paymentStatusType ==
                                                 PaymentStatusType.doneAndPayed
                                             ? Styles.green
@@ -197,13 +199,15 @@ class Lessons extends StatelessWidget {
                                                     PaymentStatusType
                                                         .plannedAndPayed
                                                 ? Styles.yellow
-                                                : Styles.red,
-                                        borderRadius: BorderRadius.circular(90),
-                                      ),
-                                    ),
+                                                : Styles.red),
+
                                   if (paymentStatusType != null &&
-                                      appointments[indexHor].appointmentType !=
+                                      appointments[indexHor].appointmentType ==
                                           AppointmentType.group)
+                                    // Индикация групповой
+                                    _groupPaymentStatus(appointments[indexHor]),
+
+                                  if (paymentStatusType != null)
                                     const SizedBox(width: 6),
                                   Text(
                                     '${appointments[indexHor].service.duration} мин '
@@ -238,5 +242,44 @@ class Lessons extends StatelessWidget {
       }
     }
     return appointments;
+  }
+
+  /// Возвращает индикатор статуса оплаты для групповых тренировках
+  Widget _groupPaymentStatus(AppointmentModel groupAppointment) {
+    /// Запланирвоано и нет оснований
+    var red = groupAppointment.arrivalStatuses
+        .where((element) => element.paymentStatus == 'ReservedNeedPayment');
+
+    /// Запланировано и оплачено
+    var yellow = groupAppointment.arrivalStatuses
+        .where((element) => element.paymentStatus == 'PlannedAndPayed');
+
+    if (red.isNotEmpty) {
+      return _getIndicatorContainer(color: Styles.red);
+    } else if (yellow.isNotEmpty) {
+      return _getIndicatorContainer(color: Styles.yellow);
+    } else {
+      return _getIndicatorContainer(color: Styles.green);
+    }
+  }
+
+  Widget _getIndicatorContainer({required Color color}) {
+    return Container(
+      width: 6,
+      height: 6,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(90),
+      ),
+    );
+  }
+
+  /// Функция определяет возможны ли изменения в групповой тренировке
+  AppointmentRecordType _getAppointmentRecordTypeForGroup(
+      {required AppointmentModel appointment}) {
+    if (appointment.endDate.month < DateTime.now().month) {
+      return AppointmentRecordType.groupView;
+    }
+    return AppointmentRecordType.group;
   }
 }

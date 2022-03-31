@@ -59,4 +59,7 @@ class Images {
 
   /// Sale
   static const String saleConfirmation = '$imagePath/rub.svg';
+
+  /// For searching customers
+  static const String add = '$imagePath/add.svg';
 }

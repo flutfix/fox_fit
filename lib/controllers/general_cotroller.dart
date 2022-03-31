@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/api/auth.dart';
 import 'package:fox_fit/api/general.dart';
@@ -326,6 +328,48 @@ class GeneralController extends GetxController {
       appState.update((model) {
         model?.sortedAvailableTrainers = null;
       });
+    }
+  }
+
+  /// Поиск постоянных из всего списка
+  void sortPermanentCustomers({required String search}) {
+    List<CustomerModel> customers = [];
+    if (search != '') {
+      for (var customer in appState.value.sortedCustomers[Client.permanent]!) {
+        List<String> customerDividers = customer.fullName.split(' ');
+        List<String> searchDividers = search.split(' ');
+
+        List<bool> check = [];
+        for (var searchDivider in searchDividers) {
+          bool passed = false;
+          for (var customerDivider in customerDividers) {
+            if (customerDivider
+                .toLowerCase()
+                .contains(searchDivider.toLowerCase())) {
+              passed = true;
+            }
+          }
+          check.add(passed);
+        }
+        if (!check.contains(false)) {
+          customers.add(customer);
+        }
+      }
+
+      appState.update((model) {
+        model?.sortedPermanentCustomers = customers;
+      });
+    } else {
+      appState.update((model) {
+        model?.sortedPermanentCustomers = null;
+      });
+    }
+    log('----[Start]-----');
+    if (appState.value.sortedPermanentCustomers != null) {
+      for (var x in appState.value.sortedPermanentCustomers!) {
+        log('${x.fullName}');
+      }
+      log('----[End]-----');
     }
   }
 

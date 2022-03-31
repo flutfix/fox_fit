@@ -551,6 +551,16 @@ class S {
   }
 
   /// ``
+  String get search_client {
+    return Intl.message(
+      '',
+      name: 'search_client',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
   String get duration {
     return Intl.message(
       '',
@@ -1035,6 +1045,16 @@ class S {
     return Intl.message(
       '',
       name: 'train',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get start_typing {
+    return Intl.message(
+      '',
+      name: 'start_typing',
       desc: '',
       args: [],
     );

@@ -93,6 +93,9 @@ class AppState {
   /// Отсортированные тренера по поиску
   List<Trainer>? sortedAvailableTrainers;
 
+  /// Отсортированные постоянные по поиску
+  List<CustomerModel>? sortedPermanentCustomers;
+
   /// Выбранный клиент
   CustomerModel? currentCustomer;
 

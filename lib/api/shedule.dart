@@ -228,6 +228,7 @@ class SheduleRequests {
         {
           'CustomerUid': customer.model.uid,
           'ArrivalStatus': customer.arrivalStatus,
+          'Canceled': customer.isCanceled,
         },
       );
     }

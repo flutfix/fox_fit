@@ -128,6 +128,10 @@ class _CustomersPageState extends State<CustomersPage> {
                   .length,
               itemBuilder: (context, index) {
                 return CustomerContainer(
+                  widgetType: _controller.appState.value.currentIndex ==
+                          stableStageIndex
+                      ? CustomerContainerType.balance
+                      : CustomerContainerType.birthDate,
                   customer: _controller.appState.value.sortedCustomers[
                       _controller
                           .appState

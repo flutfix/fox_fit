@@ -6,7 +6,8 @@ import 'package:fox_fit/screens/more/pages/coordinator/coordinator.dart';
 import 'package:fox_fit/screens/more/pages/sale/sales.dart';
 import 'package:fox_fit/screens/more/pages/sale/services.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/schedule.dart';
-import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/select_client/search_client.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/select_client/select_client.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/select_service.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/sign_up_training_session.dart';
 import 'package:fox_fit/screens/more/pages/sleeping_customers/sleeping_customers.dart';
@@ -31,6 +32,7 @@ class Routes {
   static const String schedule = '/schedule';
   static const String signUpTrainingSession = '/sign_up_training_session';
   static const String selectClient = '/select_client';
+  static const String searchClient = '/search_client';
   static const String selectService = '/select_service';
   static const String saleServices = '/sale_services';
   static const String sale = '/sale';
@@ -48,6 +50,7 @@ class Routes {
       _getPage(Routes.sleepingCustomers, () => const SleepingCustomersPage()),
       _getPage(Routes.schedule, () => const SchedulePage()),
       _getPage(Routes.selectClient, () => const SelectClientPage()),
+      _getPage(Routes.searchClient, () => const SearchClient()),
       _getPage(Routes.selectService, () => const SelectServicePage()),
       _getPage(Routes.sale, () => const CreateSalePage()),
       _getPage(Routes.saleServices, () => const ServicesPage()),

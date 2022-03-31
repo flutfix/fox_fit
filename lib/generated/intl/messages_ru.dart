@@ -133,8 +133,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("Сохранить"),
         "save_edits": MessageLookupByLibrary.simpleMessage("Изменить"),
         "schedule": MessageLookupByLibrary.simpleMessage("Расписание"),
+        "search_client":
+            MessageLookupByLibrary.simpleMessage("Выбор нового клиента"),
         "select_client":
-            MessageLookupByLibrary.simpleMessage("Выбрать клиента"),
+            MessageLookupByLibrary.simpleMessage("Добавить клиента"),
         "selected_clients":
             MessageLookupByLibrary.simpleMessage("Выбранных клиентов"),
         "send_to_trainer":
@@ -152,6 +154,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sleeping_customers":
             MessageLookupByLibrary.simpleMessage("\"Спящие\" клиенты"),
         "split": MessageLookupByLibrary.simpleMessage("Сплит"),
+        "start_typing": MessageLookupByLibrary.simpleMessage(
+            "Начните вводить номер телефона"),
         "starting": MessageLookupByLibrary.simpleMessage("Стартовый"),
         "support": MessageLookupByLibrary.simpleMessage("Поддержка"),
         "this_client_supplied":

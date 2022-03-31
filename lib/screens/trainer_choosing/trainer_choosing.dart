@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
@@ -21,10 +23,12 @@ class TrainerChoosingPage extends StatefulWidget {
 class _TrainerChoosingPageState extends State<TrainerChoosingPage> {
   late bool loading;
   late GeneralController controller;
+  late TextEditingController _searchController;
 
   @override
   void initState() {
     controller = Get.find<GeneralController>();
+    _searchController = TextEditingController();
     getTrainers();
     super.initState();
   }
@@ -61,7 +65,7 @@ class _TrainerChoosingPageState extends State<TrainerChoosingPage> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Search(
-              controller: TextEditingController(),
+              controller: _searchController,
               onSearch: (search) {
                 setState(() {
                   controller.sortTrainers(search: search.trim());
