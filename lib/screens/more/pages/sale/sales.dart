@@ -6,7 +6,7 @@ import 'package:fox_fit/controllers/sales_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/animation.dart';
 import 'package:fox_fit/screens/confirmation/confirmation.dart';
-import 'package:fox_fit/screens/more/pages/schedule/pages/select_client.dart';
+import 'package:fox_fit/screens/more/pages/schedule/pages/select_client/select_client.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/utils/picker/picker.dart';

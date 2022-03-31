@@ -11,11 +11,13 @@ class CustomerContainer extends StatefulWidget {
     Key? key,
     required this.customer,
     required this.clientType,
+    this.widgetType,
     this.onTap,
   }) : super(key: key);
 
   final CustomerModel customer;
   final ClientType clientType;
+  final CustomerContainerType? widgetType;
   final Function()? onTap;
 
   @override
@@ -25,8 +27,10 @@ class CustomerContainer extends StatefulWidget {
 class _CustomerContainerState extends State<CustomerContainer> {
   late GeneralController _controller;
   late int stableStageIndex;
+  late CustomerContainerType widgetType;
   @override
   void initState() {
+    widgetType = widget.widgetType ?? CustomerContainerType.birthDate;
     _controller = Get.find<GeneralController>();
     stableStageIndex = _controller.appState.value.bottomBarItems
         .indexWhere((element) => element.shortName == 'Постоянные');
@@ -71,9 +75,8 @@ class _CustomerContainerState extends State<CustomerContainer> {
   }
 
   bool isContainerBordered({required int? balance}) {
-    /// Индекс раздела Постоянные
-
-    if (_controller.appState.value.currentIndex == stableStageIndex) {
+    /// Подсвечиваться может только контейнер отображающий баланс
+    if (widgetType == CustomerContainerType.balance) {
       if (balance != null) {
         if (balance <= 3) {
           return true;
@@ -89,8 +92,8 @@ class _CustomerContainerState extends State<CustomerContainer> {
   }
 
   Widget getContainerContent(CustomerModel customer, ThemeData theme) {
-    /// Индекс раздела Постоянные
-    if (_controller.appState.value.currentIndex == stableStageIndex) {
+    /// Отрисовка контента по типу виджета с клиентом
+    if (widgetType == CustomerContainerType.balance) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

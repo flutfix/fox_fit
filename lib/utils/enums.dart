@@ -172,7 +172,10 @@ enum ClientType {
   sleeping,
   coordinator,
 }
-
+enum CustomerContainerType {
+  birthDate,
+  balance,
+}
 enum UserRole {
   trainer,
   coordinator,
