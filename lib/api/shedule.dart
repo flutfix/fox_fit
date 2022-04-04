@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -64,6 +65,7 @@ class SheduleRequests {
           "end_date": timestampDateEnd,
         },
       );
+      log('${json.encode(response.data)}');
 
       // log('------[getAppointments]-----');
       // log('[dateNow] ${dateNow}');

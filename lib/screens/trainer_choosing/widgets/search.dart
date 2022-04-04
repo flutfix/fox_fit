@@ -38,8 +38,8 @@ class _SearchState extends State<Search> {
     return Input(
       textController: widget.controller,
       hintText: widget.hintText ?? S.of(context).fast_search,
-      hintStyle: theme.textTheme.overline,
-      textStyle: theme.textTheme.overline,
+      hintStyle: theme.textTheme.overline!.copyWith(fontSize: 14),
+      textStyle: theme.textTheme.overline!.copyWith(fontSize: 14),
       cursorColor: theme.colorScheme.secondary,
       textInputAction: TextInputAction.search,
       textInputType: widget.textInputType ?? TextInputType.text,

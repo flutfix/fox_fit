@@ -42,7 +42,6 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
     super.initState();
     _scheduleController = Get.find<ScheduleController>();
     _controller = Get.find<GeneralController>();
-
     getAppointmentsDurations();
   }
 
@@ -172,7 +171,7 @@ class _SignUpTrainingSessionPageState extends State<SignUpTrainingSessionPage> {
                                   if (_scheduleController
                                           .state.value.appointmentRecordType !=
                                       AppointmentRecordType.view) {
-                                    Get.to(() => const SelectClientPage());
+                                    Get.toNamed(Routes.selectClient);
                                   }
                                 },
                               ),

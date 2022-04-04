@@ -364,13 +364,6 @@ class GeneralController extends GetxController {
         model?.sortedPermanentCustomers = null;
       });
     }
-    log('----[Start]-----');
-    if (appState.value.sortedPermanentCustomers != null) {
-      for (var x in appState.value.sortedPermanentCustomers!) {
-        log('${x.fullName}');
-      }
-      log('----[End]-----');
-    }
   }
 
   /// Получить [Uid] по нужной роли

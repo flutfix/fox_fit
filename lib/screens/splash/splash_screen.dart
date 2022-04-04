@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -24,7 +25,6 @@ class _SpalshScreenState extends State<SpalshScreen> {
   @override
   void initState() {
     _isCalled = false;
-
     super.initState();
   }
 
@@ -96,7 +96,10 @@ class _SpalshScreenState extends State<SpalshScreen> {
   @override
   Widget build(BuildContext context) {
     if (!_isCalled) {
-      ErrorHandler.request(context: context, request: _load);
+      ErrorHandler.request(
+        context: context,
+        request: _load,
+      );
     }
     ThemeData theme = Theme.of(context);
     return Scaffold(
