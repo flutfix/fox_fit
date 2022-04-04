@@ -195,7 +195,7 @@ enum CustomersContainerType {
 
 enum AppointmentType {
   personal,
-  group,
+  group,  
 }
 
 enum PaymentStatusType {

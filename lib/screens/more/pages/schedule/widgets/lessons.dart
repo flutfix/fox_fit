@@ -88,7 +88,7 @@ class Lessons extends StatelessWidget {
                       }
 
                       /// Автозаполнение форм для существующей тренировки
-                      /// *Проверка на то, прошло ли занятие*
+                      /// *Проверка на то, прошло ли занятие [для персональных]*
                       var appointmentEndDate =
                           appointments[indexHor].endDate.millisecondsSinceEpoch;
                       dynamic timeOffset =
@@ -117,6 +117,12 @@ class Lessons extends StatelessWidget {
                               ? isView
                               : false
                           : false;
+                      if (isView) {
+                        if (appointments[indexHor].appointmentType ==
+                            AppointmentType.group) {
+                          isView = false;
+                        }
+                      }
                       //**
                       _scheduleController.state.update((model) {
                         model?.appointment = appointments[indexHor];
