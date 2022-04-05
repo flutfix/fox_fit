@@ -66,7 +66,6 @@
     "inactiveCustomers": "\"Спящие\" клиенты",
     "license_error_title": "Невозможно загрузить данные",
     "license_error_body": "У Вас закончилась лицензия",
-    "trining_could_not_recorded": "Записать тренировку не удалось",
     "trining_could_not_edit": "Редактировать тренировку не удалось",
     "selected_clients": "Выбранных клиентов",
     "this_client_supplied": "Этот клиент уже добавлен",
@@ -98,5 +97,6 @@
     "for_customer": "для клиента",
     "add_sale_failed": "Не удалось выставить продажу",
     "train": "Тренировка",
-    "start_typing": "Начните вводить номер телефона"
+    "start_typing": "Начните вводить номер телефона",
+    "training_could_not_recorded": "Нельзя записать на прошедший месяц"
 }

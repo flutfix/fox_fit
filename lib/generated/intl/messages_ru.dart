@@ -167,13 +167,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "train": MessageLookupByLibrary.simpleMessage("Тренировка"),
         "trainer_stats":
             MessageLookupByLibrary.simpleMessage("Статистика тренера"),
+        "training_could_not_recorded": MessageLookupByLibrary.simpleMessage(
+            "Нельзя записать на прошедший месяц"),
         "transmit": MessageLookupByLibrary.simpleMessage("Передать"),
         "triner_choosing":
             MessageLookupByLibrary.simpleMessage("Выбор тренера"),
         "trining_could_not_edit": MessageLookupByLibrary.simpleMessage(
             "Редактировать тренировку не удалось"),
-        "trining_could_not_recorded": MessageLookupByLibrary.simpleMessage(
-            "Записать тренировку не удалось"),
         "valid_license_not_found": MessageLookupByLibrary.simpleMessage(
             "Не найдена действующая лицензия"),
         "whatsapp_exeption":

@@ -17,6 +17,7 @@ class Input extends StatefulWidget {
     this.scrollPaddingBottom = 0,
     this.textInputType = TextInputType.text,
     this.obscureText = false,
+    this.autocorrect = false,
     this.textFormatters,
     this.borderRadius,
     this.padding,
@@ -43,6 +44,7 @@ class Input extends StatefulWidget {
   final double scrollPaddingBottom;
   final TextInputType textInputType;
   final bool obscureText;
+  final bool autocorrect;
   final List<TextInputFormatter>? textFormatters;
   final BorderRadiusGeometry? borderRadius;
   final EdgeInsetsGeometry? padding;
@@ -108,6 +110,7 @@ class _InputState extends State<Input> {
           Expanded(
             child: TextField(
               focusNode: widget.focusNode,
+              autocorrect: widget.autocorrect,
               onChanged: widget.onChanged,
               onEditingComplete: widget.onEditingComplete,
               cursorColor: widget.cursorColor,

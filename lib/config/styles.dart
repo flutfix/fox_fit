@@ -39,6 +39,7 @@ abstract class Styles {
       fontFamily: Styles.mainFontFamily,
       brightness: Brightness.light,
       backgroundColor: Styles.white,
+
       colorScheme: const ColorScheme.light(
         /// [Оранжевый] Цвет
         primary: Styles.orange,
@@ -91,6 +92,11 @@ abstract class Styles {
 
       /// Цвет неактивного колокольчика уведомлений
       iconTheme: const IconThemeData(color: Styles.greyLight3),
+
+      /// Цвет выделения [Input Widget]
+      textSelectionTheme: TextSelectionThemeData(
+        selectionColor: Styles.orange.withOpacity(0.15),
+      ),
 
       buttonTheme: const ButtonThemeData(
         colorScheme: ColorScheme.light(

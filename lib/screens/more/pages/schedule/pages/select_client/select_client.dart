@@ -130,6 +130,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
                 child: Search(
                   controller: _searchController,
                   textInputType: TextInputType.name,
+                  
                   onSearch: (search) {
                     setState(() {
                       _controller.sortPermanentCustomers(search: search.trim());
