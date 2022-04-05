@@ -721,16 +721,6 @@ class S {
   }
 
   /// ``
-  String get trining_could_not_recorded {
-    return Intl.message(
-      '',
-      name: 'trining_could_not_recorded',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
   String get trining_could_not_edit {
     return Intl.message(
       '',
@@ -1055,6 +1045,16 @@ class S {
     return Intl.message(
       '',
       name: 'start_typing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get training_could_not_recorded {
+    return Intl.message(
+      '',
+      name: 'training_could_not_recorded',
       desc: '',
       args: [],
     );

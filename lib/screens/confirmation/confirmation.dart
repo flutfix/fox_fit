@@ -372,7 +372,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
               } else {
                 CustomSnackbar.getSnackbar(
                   title: S.of(context).server_error,
-                  message: S.of(context).trining_could_not_recorded,
+                  message: S.of(context).training_could_not_recorded,
                 );
               }
             },

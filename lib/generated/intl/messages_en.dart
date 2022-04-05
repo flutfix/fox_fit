@@ -118,10 +118,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "to_practice": MessageLookupByLibrary.simpleMessage(""),
         "train": MessageLookupByLibrary.simpleMessage(""),
         "trainer_stats": MessageLookupByLibrary.simpleMessage(""),
+        "training_could_not_recorded": MessageLookupByLibrary.simpleMessage(""),
         "transmit": MessageLookupByLibrary.simpleMessage(""),
         "triner_choosing": MessageLookupByLibrary.simpleMessage(""),
         "trining_could_not_edit": MessageLookupByLibrary.simpleMessage(""),
-        "trining_could_not_recorded": MessageLookupByLibrary.simpleMessage(""),
         "valid_license_not_found": MessageLookupByLibrary.simpleMessage(""),
         "whatsapp_exeption": MessageLookupByLibrary.simpleMessage(""),
         "wrong_login_or_pass": MessageLookupByLibrary.simpleMessage("")
