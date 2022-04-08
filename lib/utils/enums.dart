@@ -183,6 +183,7 @@ enum UserRole {
 
 enum CustomersPageType {
   general,
+  stable,
   coordinator,
   sleep,
 }
@@ -195,7 +196,7 @@ enum CustomersContainerType {
 
 enum AppointmentType {
   personal,
-  group,  
+  group,
 }
 
 enum PaymentStatusType {

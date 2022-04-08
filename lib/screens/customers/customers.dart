@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/customers/widgets/customer_coontainer.dart';
 import 'package:fox_fit/utils/enums.dart';
@@ -27,15 +30,17 @@ class _CustomersPageState extends State<CustomersPage> {
   late int stableStageIndex;
   late bool isStableCustomersPage;
   late bool _canVibrate;
-
+  late CustomersPageType pageType;
   @override
   void initState() {
     _isLoading = false;
     _controller = Get.find<GeneralController>();
     _refreshController = RefreshController(initialRefresh: false);
+    pageType = widget.pageType;
     stableStageIndex = _controller.appState.value.bottomBarItems
         .indexWhere((element) => element.shortName == 'Постоянные');
     if (_controller.appState.value.currentIndex == stableStageIndex) {
+      pageType = CustomersPageType.stable;
       loadStableCustomers();
     }
     _canVibrate = _controller.appState.value.isCanVibrate;
@@ -82,11 +87,15 @@ class _CustomersPageState extends State<CustomersPage> {
 
   /// Отрисовка списка клиентов под тип страницы
   Widget _pageType(ThemeData theme) {
-    switch (widget.pageType) {
+    switch (pageType) {
 
       /// Клиенты из воронки тренера BottomBar
       case CustomersPageType.general:
         return _trainerCustomers(theme);
+
+      /// Постоянные клиенты
+      case CustomersPageType.stable:
+        return _stableCustomers(theme);
 
       /// Координатор
       case CustomersPageType.coordinator:
@@ -127,11 +136,8 @@ class _CustomersPageState extends State<CustomersPage> {
                       .uid]!
                   .length,
               itemBuilder: (context, index) {
+                // log('${_controller.appState.value.currentIndex == stableStageIndex}');
                 return CustomerContainer(
-                  widgetType: _controller.appState.value.currentIndex ==
-                          stableStageIndex
-                      ? CustomerContainerType.balance
-                      : CustomerContainerType.birthDate,
                   customer: _controller.appState.value.sortedCustomers[
                       _controller
                           .appState
@@ -139,6 +145,44 @@ class _CustomersPageState extends State<CustomersPage> {
                           .bottomBarItems[
                               _controller.appState.value.currentIndex]
                           .uid]![index],
+                  clientType: Enums.getClientType(
+                    clientUid: _controller
+                        .appState
+                        .value
+                        .bottomBarItems[_controller.appState.value.currentIndex]
+                        .uid,
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 19),
+          ],
+        );
+      } else {
+        return _getEmptyCustomersText(theme);
+      }
+    } else {
+      return _getEmptyCustomersText(theme);
+    }
+  }
+
+  Widget _stableCustomers(ThemeData theme) {
+    if (_controller.appState.value.sortedCustomers[Client.permanent] != null) {
+      if (_controller
+          .appState.value.sortedCustomers[Client.permanent]!.isNotEmpty) {
+        return Column(
+          children: [
+            const SizedBox(height: 25),
+            ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: _controller
+                  .appState.value.sortedCustomers[Client.permanent]!.length,
+              itemBuilder: (context, index) {
+                return CustomerContainer(
+                  widgetType: CustomerContainerType.balance,
+                  customer: _controller
+                      .appState.value.sortedCustomers[Client.permanent]![index],
                   clientType: Enums.getClientType(
                     clientUid: _controller
                         .appState
@@ -229,7 +273,8 @@ class _CustomersPageState extends State<CustomersPage> {
   }
 
   String _isShortText() {
-    if (widget.pageType == CustomersPageType.general) {
+    if (pageType == CustomersPageType.general ||
+        pageType == CustomersPageType.stable) {
       return S.of(context).empty_customers;
     }
     return S.of(context).empty_customers_short;
@@ -241,13 +286,13 @@ class _CustomersPageState extends State<CustomersPage> {
       Vibrate.feedback(FeedbackType.light);
     }
     await Future.delayed(const Duration(milliseconds: 300));
-    if (widget.pageType == CustomersPageType.coordinator) {
+    if (pageType == CustomersPageType.coordinator) {
       await ErrorHandler.request(
         context: context,
         request: _controller.getCoordinaorWorkSpace,
         repeat: false,
       );
-    } else if (widget.pageType == CustomersPageType.sleep) {
+    } else if (pageType == CustomersPageType.sleep) {
       await ErrorHandler.request(
         context: context,
         request: _controller.getInactiveCustomers,

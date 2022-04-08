@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/screens/customer_information/customer_information.dart';
@@ -26,14 +30,12 @@ class CustomerContainer extends StatefulWidget {
 
 class _CustomerContainerState extends State<CustomerContainer> {
   late GeneralController _controller;
-  late int stableStageIndex;
   late CustomerContainerType widgetType;
   @override
   void initState() {
     widgetType = widget.widgetType ?? CustomerContainerType.birthDate;
+
     _controller = Get.find<GeneralController>();
-    stableStageIndex = _controller.appState.value.bottomBarItems
-        .indexWhere((element) => element.shortName == 'Постоянные');
     super.initState();
   }
 
@@ -94,35 +96,59 @@ class _CustomerContainerState extends State<CustomerContainer> {
   Widget getContainerContent(CustomerModel customer, ThemeData theme) {
     /// Отрисовка контента по типу виджета с клиентом
     if (widgetType == CustomerContainerType.balance) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            customer.fullName,
-            style: theme.textTheme.bodyText1,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * 0.7),
+                child: Text(
+                  customer.fullName,
+                  style: theme.textTheme.bodyText1,
+                ),
+              ),
+              Text(
+                customer.paidServicesBalance != null
+                    ? 'Осталось платных услуг: ${customer.paidServicesBalance}'
+                    : 'Осталось платных услуг: 0',
+                style: theme.textTheme.headline4,
+              ),
+            ],
           ),
-          Text(
-            customer.paidServicesBalance != null
-                ? 'Осталось платных услуг: ${customer.paidServicesBalance}'
-                : 'Осталось платных услуг: 0',
-            style: theme.textTheme.headline4,
-          ),
+          customer.isBirthday
+              ? SvgPicture.asset(Images.cake)
+              : const SizedBox(),
         ],
       );
     } else {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            customer.fullName,
-            style: theme.textTheme.bodyText1,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * 0.7),
+                child: Text(
+                  customer.fullName,
+                  style: theme.textTheme.bodyText1,
+                ),
+              ),
+              Text(
+                customer.birthDay,
+                style: theme.textTheme.headline4,
+              ),
+            ],
           ),
-          Text(
-            customer.birthDay,
-            style: theme.textTheme.headline4,
-          ),
+          customer.isBirthday
+              ? SvgPicture.asset(Images.cake)
+              : const SizedBox(),
         ],
       );
     }
