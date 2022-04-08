@@ -62,4 +62,7 @@ class Images {
 
   /// For searching customers
   static const String add = '$imagePath/add.svg';
+
+  /// Birthday cake
+  static const String cake = '$imagePath/cake.svg';
 }
