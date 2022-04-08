@@ -95,8 +95,6 @@ class _CustomerContainerState extends State<CustomerContainer> {
 
   Widget getContainerContent(CustomerModel customer, ThemeData theme) {
     /// Отрисовка контента по типу виджета с клиентом
-    log(widgetType.toString());
-
     if (widgetType == CustomerContainerType.balance) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

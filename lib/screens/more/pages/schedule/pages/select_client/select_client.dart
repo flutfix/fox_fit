@@ -130,7 +130,6 @@ class _SelectClientPageState extends State<SelectClientPage> {
                 child: Search(
                   controller: _searchController,
                   textInputType: TextInputType.name,
-                  
                   onSearch: (search) {
                     setState(() {
                       _controller.sortPermanentCustomers(search: search.trim());
@@ -218,29 +217,74 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                       data: false,
                                       time: false,
                                     );
-
-                                    _scheduleController.state.update((model) {
-                                      model?.clients = [
-                                        CustomerModelState(
-                                          model: _foundClients![0],
-                                          arrivalStatus: false,
-                                          isCanceled: false,
-                                        ),
-                                      ];
-                                      model?.duration =
-                                          _foundClients![0].duration;
-                                      model?.split =
-                                          _foundClients![0].split ?? false;
-                                      if (_foundClients![0].serviceUid !=
-                                              null &&
-                                          _foundClients![0].serviceName !=
-                                              null) {
-                                        model?.service = ServicesModel(
-                                          uid: _foundClients![0].serviceUid!,
-                                          name: _foundClients![0].serviceName!,
+                                    log('${_foundClients!}');
+                                    if (_foundClients!.length == 1) {
+                                      _scheduleController.state.update((model) {
+                                        model?.clients = [
+                                          CustomerModelState(
+                                            model: _foundClients![0],
+                                            arrivalStatus: false,
+                                            isCanceled: false,
+                                          ),
+                                        ];
+                                        model?.duration =
+                                            _foundClients![0].duration;
+                                        model?.split =
+                                            _foundClients![0].split ?? false;
+                                        if (_foundClients![0].serviceUid !=
+                                                null &&
+                                            _foundClients![0].serviceName !=
+                                                null) {
+                                          model?.service = ServicesModel(
+                                            uid: _foundClients![0].serviceUid!,
+                                            name:
+                                                _foundClients![0].serviceName!,
+                                          );
+                                        }
+                                      });
+                                    } else {
+                                      /// Поиск выбранного среди списка клиентов из запроса
+                                      CustomerModel? chosenClient;
+                                      try {
+                                        chosenClient = _foundClients!
+                                            .firstWhere((element) =>
+                                                element.uid ==
+                                                currentClient.uid);
+                                      } catch (e) {
+                                        ///Если не удалось найти в списке такого клиента
+                                        CustomSnackbar.getSnackbar(
+                                          title: 'Хьюстон, у нас проблемы...😕',
+                                          message:
+                                              'Не удалось найти клиента в базе',
                                         );
                                       }
-                                    });
+
+                                      if (chosenClient != null) {
+                                        _scheduleController.state
+                                            .update((model) {
+                                          model?.clients = [
+                                            CustomerModelState(
+                                              model: chosenClient!,
+                                              arrivalStatus: false,
+                                              isCanceled: false,
+                                            ),
+                                          ];
+                                          model?.duration =
+                                              chosenClient!.duration;
+                                          model?.split =
+                                              chosenClient!.split ?? false;
+                                          if (chosenClient!.serviceUid !=
+                                                  null &&
+                                              chosenClient.serviceName !=
+                                                  null) {
+                                            model?.service = ServicesModel(
+                                              uid: chosenClient.serviceUid!,
+                                              name: chosenClient.serviceName!,
+                                            );
+                                          }
+                                        });
+                                      }
+                                    }
 
                                     /// Для групповой тренировоки
                                   } else {
@@ -293,7 +337,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
     setState(() {
       _isLoading = true;
     });
-
+    log('${search}');
     await ErrorHandler.request(
       context: context,
       request: () {
