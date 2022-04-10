@@ -105,7 +105,7 @@ class _CustomerContainerState extends State<CustomerContainer> {
             children: [
               Container(
                 constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * 0.7),
+                    maxWidth: _constaintsWidth(customer.isBirthday)),
                 child: Text(
                   customer.fullName,
                   style: theme.textTheme.bodyText1,
@@ -134,7 +134,7 @@ class _CustomerContainerState extends State<CustomerContainer> {
             children: [
               Container(
                 constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * 0.7),
+                    maxWidth: _constaintsWidth(customer.isBirthday)),
                 child: Text(
                   customer.fullName,
                   style: theme.textTheme.bodyText1,
@@ -151,6 +151,15 @@ class _CustomerContainerState extends State<CustomerContainer> {
               : const SizedBox(),
         ],
       );
+    }
+  }
+
+  /// Если у человека др, то места под текст меньше
+  double _constaintsWidth(bool isBirthday) {
+    if (isBirthday) {
+      return MediaQuery.of(context).size.width * 0.7;
+    } else {
+      return MediaQuery.of(context).size.width - 70;
     }
   }
 

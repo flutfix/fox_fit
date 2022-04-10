@@ -209,6 +209,7 @@ class _AuthPageState extends State<AuthPage> {
         log('[PATH] $pathToBase');
         final String login = _getStringFromBase(text: data.data!.hashL);
         final String pass = _getStringFromBase(text: data.data!.hashP);
+        log('[Base Auth] ${_getBase64String(text: '$login:$pass')}');
         _setPrefs(
           pathToBase: pathToBase,
           baseAuth: _getBase64String(text: '$login:$pass'),
