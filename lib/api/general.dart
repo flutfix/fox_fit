@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -58,6 +59,7 @@ class Requests {
         queryParameters: _queryParams,
       );
       if (response.statusCode == 200) {
+        // log('${json.encode(response.data)}');
         List<CustomerModel> customers = [];
         List<ItemBottomBarModel> bottomBarItems = [];
         for (var element in response.data['Customers']) {

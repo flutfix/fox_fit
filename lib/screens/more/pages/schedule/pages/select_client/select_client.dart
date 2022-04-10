@@ -88,11 +88,20 @@ class _SelectClientPageState extends State<SelectClientPage> {
     });
   }
 
+  _goBack() {
+    Get.back();
+    _controller.appState.update((state) {
+      state?.sortedPermanentCustomers = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Swipe(
-      onSwipeRight: () => Get.back(),
+      onSwipeRight: () {
+        _goBack();
+      },
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -103,7 +112,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
             isBackArrow: true,
             isNotification: false,
             onBack: () {
-              Get.back();
+              _goBack();
             },
             action: GestureDetector(
               onTap: () {
@@ -171,9 +180,8 @@ class _SelectClientPageState extends State<SelectClientPage> {
                           }
 
                           /// Преобразование номера телефона в нужный формат
-                          List<String> phoneList = _controller.appState.value
-                              .sortedCustomers[Client.permanent]![index].phone
-                              .split(' ');
+                          List<String> phoneList =
+                              currentClient.phone.split(' ');
                           String phone = '';
                           if (phoneList.length == 3) {
                             phoneList = [
@@ -212,12 +220,20 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                       search: phone,
                                     );
                                     Get.back();
-
+                                    _controller.appState.update((state) {
+                                      state?.sortedPermanentCustomers = null;
+                                    });
                                     _scheduleController.clear(
                                       data: false,
                                       time: false,
                                     );
-                                    log('${_foundClients!}');
+                                    // log('---[Select Client]---');
+                                    // log('[${currentClient.fullName}] ${currentClient.uid}');
+                                    // log('[cur phone] ${currentClient.phone}');
+                                    // log('[phone] ${phone}');
+                                    // log('${_foundClients!}');
+                                    // log('---------------------');
+
                                     if (_foundClients!.length == 1) {
                                       _scheduleController.state.update((model) {
                                         model?.clients = [
@@ -337,7 +353,6 @@ class _SelectClientPageState extends State<SelectClientPage> {
     setState(() {
       _isLoading = true;
     });
-    log('${search}');
     await ErrorHandler.request(
       context: context,
       request: () {
