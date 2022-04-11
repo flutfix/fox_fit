@@ -130,6 +130,15 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
           prefs.setString(Cache.pass, '');
 
           return false;
+        } else if (data == 406 || data == null) {
+          CustomSnackbar.getSnackbar(
+            title: S.of(context).server_error,
+            message: S.of(context).server_navailable,
+          );
+          Get.delete<GeneralController>();
+          prefs.setBool(Cache.isAuthorized, false);
+          prefs.setString(Cache.pass, '');
+          return false;
         }
       },
     );

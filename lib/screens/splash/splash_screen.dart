@@ -48,6 +48,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
           pass: pass,
         );
         if (authData is int || authData == null) {
+          log('[Splash screen] Auth Failed');
           return authData;
         } else {
           await Future.delayed(const Duration(milliseconds: 400));
