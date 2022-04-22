@@ -1059,6 +1059,56 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get even_everything_is_broken {
+    return Intl.message(
+      '',
+      name: 'even_everything_is_broken',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get working_on_a_fix {
+    return Intl.message(
+      '',
+      name: 'working_on_a_fix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get i_did_it {
+    return Intl.message(
+      '',
+      name: 'i_did_it',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get update_soon {
+    return Intl.message(
+      '',
+      name: 'update_soon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get update {
+    return Intl.message(
+      '',
+      name: 'update',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -77,6 +77,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Хьюстон, у нас проблемы...😕"),
         "error_transferring_record": MessageLookupByLibrary.simpleMessage(
             "Этот клиент уже у администратора, чтобы там все не запутались, передай его позже, пожалуйста 🙏"),
+        "even_everything_is_broken":
+            MessageLookupByLibrary.simpleMessage("Чёт сломалось всё"),
         "exit": MessageLookupByLibrary.simpleMessage("Выйти"),
         "expose": MessageLookupByLibrary.simpleMessage("Выставить"),
         "expose_sell":
@@ -91,6 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Заполните предыдущие поля"),
         "for_customer": MessageLookupByLibrary.simpleMessage("для клиента"),
         "group": MessageLookupByLibrary.simpleMessage("Группа"),
+        "i_did_it": MessageLookupByLibrary.simpleMessage("Я сделяль!"),
         "inactiveCustomers":
             MessageLookupByLibrary.simpleMessage("\"Спящие\" клиенты"),
         "kickoff_training":
@@ -174,10 +177,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Выбор тренера"),
         "trining_could_not_edit": MessageLookupByLibrary.simpleMessage(
             "Редактировать тренировку не удалось"),
+        "update": MessageLookupByLibrary.simpleMessage("Обновить"),
+        "update_soon": MessageLookupByLibrary.simpleMessage(
+            "Новая версия приложения\nпросто космос 🚀\nОбновляйся скорее."),
         "valid_license_not_found": MessageLookupByLibrary.simpleMessage(
             "Не найдена действующая лицензия"),
         "whatsapp_exeption":
             MessageLookupByLibrary.simpleMessage("Не удалось открыть WhatsApp"),
+        "working_on_a_fix": MessageLookupByLibrary.simpleMessage(
+            "Мы уже знаем и работаем\nнад исправлением.\nПопробуйте отрыть приложение немного позже, пожалуйста."),
         "wrong_login_or_pass":
             MessageLookupByLibrary.simpleMessage("Неверный логин или пароль")
       };

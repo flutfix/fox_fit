@@ -13,6 +13,7 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
+import 'package:fox_fit/utils/check_version.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/utils/prefs.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
@@ -199,6 +200,11 @@ class _AuthPageState extends State<AuthPage> {
         },
       );
       if (data is AuthDataModel) {
+        bool actualVersion =
+            await CheckVersion.checkingApplicationVersion(authData: data);
+
+        ///TODO: Расскоментить после прописания констант на сервере
+        // if (actualVersion) {
         /// Вибрация при успешной авторизации
         if (_canVibrate) {
           Vibrate.feedback(FeedbackType.light);
@@ -232,6 +238,9 @@ class _AuthPageState extends State<AuthPage> {
           Routes.general,
           arguments: data,
         );
+        // } else {
+        //   await Get.offAllNamed(Routes.update);
+        // }
       }
     } else {
       /// Вибрация на незаполненные поля

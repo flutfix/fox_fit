@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
@@ -17,10 +15,8 @@ import 'package:fox_fit/screens/trainer_choosing/widgets/search.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
-import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:get/get.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:swipe/swipe.dart';
 
 class SelectClientPage extends StatefulWidget {

@@ -112,15 +112,15 @@ class UserModel {
 
 class BuggedAppVersions {
   BuggedAppVersions({
-    this.planform = '',
+    this.platform = '',
     this.version = '',
   });
 
-  late String planform;
+  late String platform;
   late String version;
 
   BuggedAppVersions.fromJson(Map<String, dynamic> json) {
-    planform = json['PlatformString'];
+    platform = json['PlatformString'];
     version = json['AppVersion'];
   }
 }

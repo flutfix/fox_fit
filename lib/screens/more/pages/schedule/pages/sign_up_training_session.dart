@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
@@ -7,9 +5,7 @@ import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/animation.dart';
-import 'package:fox_fit/models/customer_model_state.dart';
 import 'package:fox_fit/screens/confirmation/confirmation.dart';
-import 'package:fox_fit/screens/more/pages/schedule/pages/select_client/select_client.dart';
 import 'package:fox_fit/utils/date_time_picker/date_time_picker.dart';
 import 'package:fox_fit/utils/date_time_picker/widgets/date_time_picker_theme.dart';
 import 'package:fox_fit/utils/date_time_picker/widgets/i18n_model.dart';

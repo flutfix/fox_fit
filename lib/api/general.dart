@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
-import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
@@ -14,7 +12,6 @@ import 'package:fox_fit/models/notification.dart';
 import 'package:fox_fit/models/trainer.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
 import 'package:fox_fit/utils/prefs.dart';
-import 'package:get/get.dart';
 
 ///[Запросы основного функционала]
 class Requests {
