@@ -38,8 +38,6 @@ class _SelectClientPageState extends State<SelectClientPage> {
   late bool _isLoading;
   late TextEditingController _searchController;
   List<CustomerModel>? _foundClients;
-  late String _textErrorResultSearch;
-  late String _search;
 
   @override
   void initState() {
@@ -51,9 +49,6 @@ class _SelectClientPageState extends State<SelectClientPage> {
     }
     _searchController = TextEditingController();
     _isLoading = false;
-
-    _textErrorResultSearch = '';
-    _search = '';
 
     _load();
   }
@@ -147,10 +142,9 @@ class _SelectClientPageState extends State<SelectClientPage> {
                 Expanded(
                   child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
-                      child:
 
-                          /// Список постоянных клиентов
-                          ListView.builder(
+                      /// Список постоянных клиентов
+                      child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
@@ -163,7 +157,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                 : _controller.appState.value
                                     .sortedCustomers[Client.permanent]!.length,
                         itemBuilder: (context, index) {
-                          ///Текущий клиент
+                          /// Текущий клиент
                           late CustomerModel currentClient;
                           if (_controller
                                   .appState.value.sortedPermanentCustomers !=
@@ -223,12 +217,6 @@ class _SelectClientPageState extends State<SelectClientPage> {
                                       data: false,
                                       time: false,
                                     );
-                                    // log('---[Select Client]---');
-                                    // log('[${currentClient.fullName}] ${currentClient.uid}');
-                                    // log('[cur phone] ${currentClient.phone}');
-                                    // log('[phone] ${phone}');
-                                    // log('${_foundClients!}');
-                                    // log('---------------------');
 
                                     if (_foundClients!.length == 1) {
                                       _scheduleController.state.update((model) {
@@ -360,9 +348,7 @@ class _SelectClientPageState extends State<SelectClientPage> {
       handler: (data) async {
         setState(() {
           /// Если клиент не найден
-          if (data != 200 && data is! List<CustomerModel>) {
-            _textErrorResultSearch = S.of(context).client_not_found;
-          } else if (data is List<CustomerModel>) {
+          if (data is List<CustomerModel>) {
             _foundClients = data;
           }
         });

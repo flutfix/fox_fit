@@ -19,7 +19,7 @@ class ErrorHandler {
     do {
       dynamic data = await request();
       var connectivityResult = await Connectivity().checkConnectivity();
-
+      
       if (data != 200 && data is! AuthDataModel) {
         /// Проверка подключения к интернету
         if (connectivityResult == ConnectivityResult.none && !skipCheck) {
@@ -30,8 +30,7 @@ class ErrorHandler {
           await Future.delayed(const Duration(seconds: 5));
 
           /// Проверка на доступность сервера
-        } else
-        if (data == 503 || data == 406 || data == null) {
+        } else if (data == 503 || data == 406 || data == null) {
           await Get.offAllNamed(Routes.error);
 
           /// Другие ошибки сервера

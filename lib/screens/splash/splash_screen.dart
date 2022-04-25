@@ -13,7 +13,6 @@ import 'package:fox_fit/utils/check_version.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/utils/prefs.dart';
 import 'package:get/get.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class SpalshScreen extends StatefulWidget {
   const SpalshScreen({Key? key}) : super(key: key);
@@ -55,8 +54,7 @@ class _SpalshScreenState extends State<SpalshScreen> {
           bool actualVersion =
               await CheckVersion.checkingApplicationVersion(authData: authData);
 
-          ///TODO: Расскоментить после прописания констант на сервере
-          // if (actualVersion) {
+          if (actualVersion) {
             await Future.delayed(const Duration(milliseconds: 400));
             final String pathToBase = await Prefs.getPrefs(
               key: Cache.pathToBase,
@@ -85,9 +83,9 @@ class _SpalshScreenState extends State<SpalshScreen> {
               Routes.general,
               arguments: authData,
             );
-          // } else {
-          //   await Get.offAllNamed(Routes.update);
-          // }
+          } else {
+            await Get.offAllNamed(Routes.update);
+          }
 
           return 200;
         } else {

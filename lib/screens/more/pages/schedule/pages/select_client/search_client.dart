@@ -36,7 +36,6 @@ class _SearchClientState extends State<SearchClient> {
   late bool _isLoading;
 
   late TextEditingController _phoneController;
-  late String _search;
   late FocusNode _phoneFocus;
   late String _phonePrefix;
   late MaskTextInputFormatter _maskFormatter;
@@ -53,7 +52,6 @@ class _SearchClientState extends State<SearchClient> {
     _isLoading = false;
 
     _phoneController = TextEditingController();
-    _search = '';
 
     _phoneFocus = FocusNode();
     _phonePrefix = '+7 ';
@@ -111,10 +109,6 @@ class _SearchClientState extends State<SearchClient> {
                             offset: _phonePrefix.length),
                       );
                     }
-
-                    setState(() {
-                      _search = search;
-                    });
 
                     if (search != '') {
                       /// Форматирование номера для запроса

@@ -23,6 +23,12 @@ class SalesRequests {
 
       if (response.statusCode == 200) {
         return response.data;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_appointments_durations',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -68,6 +74,12 @@ class SalesRequests {
         packageOfServices.sort(((a, b) => a.price.compareTo(b.price)));
 
         return [services, packageOfServices];
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_services',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -100,6 +112,12 @@ class SalesRequests {
 
       if (response.statusCode == 200) {
         return 200;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'add_sale',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
