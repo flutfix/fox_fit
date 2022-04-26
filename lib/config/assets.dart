@@ -65,4 +65,8 @@ class Images {
 
   /// Birthday cake
   static const String cake = '$imagePath/cake.svg';
+
+  /// Additional
+  static const String foxError = '$imagePath/fox_error.svg';
+  static const String foxUpdate = '$imagePath/fox_update.svg';
 }

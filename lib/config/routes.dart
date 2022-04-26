@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fox_fit/screens/additional/error.dart';
+import 'package:fox_fit/screens/additional/update.dart';
 import 'package:fox_fit/screens/auth/auth.dart';
 import 'package:fox_fit/screens/home/general.dart';
 import 'package:fox_fit/screens/more/pages/change_password/change_password.dart';
@@ -36,6 +38,8 @@ class Routes {
   static const String selectService = '/select_service';
   static const String saleServices = '/sale_services';
   static const String sale = '/sale';
+  static const String error = '/error';
+  static const String update = '/update';
 
   static List<GetPage<dynamic>> get getRoutes {
     return [
@@ -52,8 +56,10 @@ class Routes {
       _getPage(Routes.selectClient, () => const SelectClientPage()),
       _getPage(Routes.searchClient, () => const SearchClient()),
       _getPage(Routes.selectService, () => const SelectServicePage()),
-      _getPage(Routes.sale, () => const CreateSalePage()),
       _getPage(Routes.saleServices, () => const ServicesPage()),
+      _getPage(Routes.sale, () => const CreateSalePage()),
+      _getPage(Routes.error, () => const ErrorPage()),
+      _getPage(Routes.update, () => const UpdatePage()),
       _getPage(Routes.signUpTrainingSession,
           () => const SignUpTrainingSessionPage()),
     ];

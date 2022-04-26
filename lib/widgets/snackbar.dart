@@ -8,20 +8,22 @@ class CustomSnackbar {
     String message = '',
     int duration = 2,
   }) {
-    Get.snackbar(
-      title,
-      message,
-      duration: Duration(seconds: duration),
-      backgroundColor: Styles.grey,
-      colorText: Styles.greyLight,
-      boxShadows: [
-        BoxShadow(
-          color: Styles.black.withOpacity(0.10),
-          offset: const Offset(0, 4),
-          blurRadius: 15,
-        )
-      ],
-      snackPosition: SnackPosition.BOTTOM,
-    );
+    if (!Get.isSnackbarOpen) {
+      Get.snackbar(
+        title,
+        message,
+        duration: Duration(seconds: duration),
+        backgroundColor: Styles.grey,
+        colorText: Styles.greyLight,
+        boxShadows: [
+          BoxShadow(
+            color: Styles.black.withOpacity(0.10),
+            offset: const Offset(0, 4),
+            blurRadius: 15,
+          )
+        ],
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }

@@ -1,10 +1,11 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:fox_fit/api/auth.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
+import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/models/available_pipeline_stages.dart';
 import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/models/detail_info.dart';
@@ -12,7 +13,9 @@ import 'package:fox_fit/models/item_bottom_bar.dart';
 import 'package:fox_fit/models/notification.dart';
 import 'package:fox_fit/models/trainer.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
+import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/prefs.dart';
+import 'package:get/get.dart';
 
 ///[Запросы основного функционала]
 class Requests {
@@ -26,6 +29,8 @@ class Requests {
     connectTimeout: 10000,
     receiveTimeout: 10000,
   );
+
+  static final GeneralController _controller = Get.find<GeneralController>();
 
   /// Получение разделов BottomBar и клиентов под них
   static Future<dynamic> getCustomers(
@@ -59,7 +64,6 @@ class Requests {
         queryParameters: _queryParams,
       );
       if (response.statusCode == 200) {
-        // log('${json.encode(response.data)}');
         List<CustomerModel> customers = [];
         List<ItemBottomBarModel> bottomBarItems = [];
         for (var element in response.data['Customers']) {
@@ -79,6 +83,12 @@ class Requests {
           response.data['UseSchedule'],
           response.data['UseSalesCoach'],
         ];
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_customers',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -126,6 +136,12 @@ class Requests {
         }
 
         return customers;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_customers',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -172,6 +188,12 @@ class Requests {
           customers.add(CustomerModel.fromJson(element));
         }
         return customers;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_customers',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -210,6 +232,12 @@ class Requests {
           isNewNotification = true;
         }
         return [isNewNotification, customers];
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_customers',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -240,6 +268,12 @@ class Requests {
               .add(AvailablePipelineStages.fromJson(element));
         }
         return [detailedInfo, availablePipelineStages];
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_customer_info',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -281,6 +315,12 @@ class Requests {
       );
       if (response.statusCode == 200) {
         return response.statusCode;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'transfer_client_by_trainer_pipeline',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -309,6 +349,12 @@ class Requests {
                 response.data['TrainerPerformance'][0]);
 
         return trainerPerfomance;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_trainer_performance',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -332,6 +378,11 @@ class Requests {
         }
         return availableTrainers;
       } else {
+        Requests.putSupportMessage(
+          queryType: 'get_trainers',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
         return response.statusCode;
       }
     } on DioError catch (e) {
@@ -356,6 +407,12 @@ class Requests {
       });
       if (response.statusCode == 200) {
         return response.statusCode;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'transfer_client_to_trainer',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -393,6 +450,12 @@ class Requests {
           notifications.add(NotificationModel.fromJson(element));
         }
         return notifications;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_notifications',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -424,6 +487,61 @@ class Requests {
         });
 
         return customers;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_customer_by_phone_number',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
+      }
+    } on DioError catch (e) {
+      log('${e.response?.statusCode} - ${e.response?.statusMessage}');
+      return e.response?.statusCode;
+    }
+  }
+
+  /// Отправка ошибок на сервер
+  static Future<dynamic> putSupportMessage({
+    required String queryType,
+    required String httpCode,
+    required String? messageText,
+  }) async {
+    String url = '${AuthRequest.authurl}put_support_message';
+    final dioClient = Dio(Requests.options);
+
+    String date = DateTime.now()
+        .toUtc()
+        .millisecondsSinceEpoch
+        .toString()
+        .substring(0, 10);
+
+    // log('-----');
+    // log(url);
+    // log(_controller.appState.value.auth!.data!.licenseKey);
+    // log(_controller.getUid(role: UserRole.trainer));
+    // log(queryType);
+    // log(httpCode);
+    // log('${messageText}');
+    // log(date);
+    // log('-----');
+
+    try {
+      var response = await dioClient.put(
+        url,
+        queryParameters: {
+          'LicenseKey': _controller.appState.value.auth!.data!.licenseKey,
+        },
+        data: {
+          'UserUid': _controller.getUid(role: UserRole.trainer),
+          'QueryType': queryType,
+          'HttpCode': httpCode,
+          'MessageText': messageText,
+          'Date': date,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        log('Сервер успешно уведомлён об ошибке');
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');

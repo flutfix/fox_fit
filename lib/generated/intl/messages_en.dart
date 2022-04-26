@@ -58,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "enter_full_number": MessageLookupByLibrary.simpleMessage(""),
         "error": MessageLookupByLibrary.simpleMessage(""),
         "error_transferring_record": MessageLookupByLibrary.simpleMessage(""),
+        "even_everything_is_broken": MessageLookupByLibrary.simpleMessage(""),
         "exit": MessageLookupByLibrary.simpleMessage(""),
         "expose": MessageLookupByLibrary.simpleMessage(""),
         "expose_sell": MessageLookupByLibrary.simpleMessage(""),
@@ -68,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fill_previous_fields": MessageLookupByLibrary.simpleMessage(""),
         "for_customer": MessageLookupByLibrary.simpleMessage(""),
         "group": MessageLookupByLibrary.simpleMessage(""),
+        "i_did_it": MessageLookupByLibrary.simpleMessage(""),
         "inactiveCustomers": MessageLookupByLibrary.simpleMessage(""),
         "kickoff_training": MessageLookupByLibrary.simpleMessage(""),
         "least_three_characters": MessageLookupByLibrary.simpleMessage(""),
@@ -122,8 +124,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "transmit": MessageLookupByLibrary.simpleMessage(""),
         "triner_choosing": MessageLookupByLibrary.simpleMessage(""),
         "trining_could_not_edit": MessageLookupByLibrary.simpleMessage(""),
+        "update": MessageLookupByLibrary.simpleMessage(""),
+        "update_soon": MessageLookupByLibrary.simpleMessage(""),
         "valid_license_not_found": MessageLookupByLibrary.simpleMessage(""),
         "whatsapp_exeption": MessageLookupByLibrary.simpleMessage(""),
+        "working_on_a_fix": MessageLookupByLibrary.simpleMessage(""),
         "wrong_login_or_pass": MessageLookupByLibrary.simpleMessage("")
       };
 }

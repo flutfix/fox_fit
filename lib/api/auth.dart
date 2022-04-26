@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:fox_fit/api/general.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,6 +48,12 @@ class AuthRequest {
         AuthDataModel authData = AuthDataModel();
         authData = AuthDataModel.fromJson(response.data);
         return authData;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'check_credentials',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -74,6 +81,12 @@ class AuthRequest {
       );
       if (response.statusCode == 200) {
         return response.statusCode;
+      }else {
+        Requests.putSupportMessage(
+          queryType: 'change_user_password',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');

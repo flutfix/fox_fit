@@ -13,6 +13,7 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/auth/widgets/input.dart';
+import 'package:fox_fit/utils/check_version.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/utils/prefs.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
@@ -199,39 +200,46 @@ class _AuthPageState extends State<AuthPage> {
         },
       );
       if (data is AuthDataModel) {
-        /// Вибрация при успешной авторизации
-        if (_canVibrate) {
-          Vibrate.feedback(FeedbackType.light);
+        bool actualVersion =
+            await CheckVersion.checkingApplicationVersion(authData: data);
+
+        if (actualVersion) {
+          /// Вибрация при успешной авторизации
+          if (_canVibrate) {
+            Vibrate.feedback(FeedbackType.light);
+          }
+
+          /// Для идентификации API зазпросов
+          final String pathToBase = '${data.data!.pathToBase}hs/api_v1/';
+          log('[PATH] $pathToBase');
+          final String login = _getStringFromBase(text: data.data!.hashL);
+          final String pass = _getStringFromBase(text: data.data!.hashP);
+          log('[Base Auth] ${_getBase64String(text: '$login:$pass')}');
+          _setPrefs(
+            pathToBase: pathToBase,
+            baseAuth: _getBase64String(text: '$login:$pass'),
+          );
+          Requests.url = pathToBase;
+          Requests.options = BaseOptions(
+            baseUrl: pathToBase,
+            contentType: Headers.jsonContentType,
+            headers: {
+              HttpHeaders.authorizationHeader:
+                  'Basic ${_getBase64String(text: '$login:$pass')}',
+            },
+            connectTimeout: 10000,
+            receiveTimeout: 10000,
+          );
+
+          ///--
+
+          Get.offAllNamed(
+            Routes.general,
+            arguments: data,
+          );
+        } else {
+          await Get.offAllNamed(Routes.update);
         }
-
-        /// Для идентификации API зазпросов
-        final String pathToBase = '${data.data!.pathToBase}hs/api_v1/';
-        log('[PATH] $pathToBase');
-        final String login = _getStringFromBase(text: data.data!.hashL);
-        final String pass = _getStringFromBase(text: data.data!.hashP);
-        log('[Base Auth] ${_getBase64String(text: '$login:$pass')}');
-        _setPrefs(
-          pathToBase: pathToBase,
-          baseAuth: _getBase64String(text: '$login:$pass'),
-        );
-        Requests.url = pathToBase;
-        Requests.options = BaseOptions(
-          baseUrl: pathToBase,
-          contentType: Headers.jsonContentType,
-          headers: {
-            HttpHeaders.authorizationHeader:
-                'Basic ${_getBase64String(text: '$login:$pass')}',
-          },
-          connectTimeout: 10000,
-          receiveTimeout: 10000,
-        );
-
-        ///--
-
-        Get.offAllNamed(
-          Routes.general,
-          arguments: data,
-        );
       }
     } else {
       /// Вибрация на незаполненные поля

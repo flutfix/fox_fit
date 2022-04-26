@@ -8,6 +8,8 @@ import 'package:fox_fit/api/general.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/config/routes.dart';
+import 'package:fox_fit/models/auth_data.dart';
+import 'package:fox_fit/utils/check_version.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/utils/prefs.dart';
 import 'package:get/get.dart';
@@ -20,11 +22,12 @@ class SpalshScreen extends StatefulWidget {
 }
 
 class _SpalshScreenState extends State<SpalshScreen> {
-  late bool _isCalled;
-
   @override
   void initState() {
-    _isCalled = false;
+    ErrorHandler.request(
+      context: context,
+      request: _load,
+    );
     super.initState();
   }
 
@@ -47,39 +50,47 @@ class _SpalshScreenState extends State<SpalshScreen> {
           phone: phone,
           pass: pass,
         );
-        if (authData is int || authData == null) {
-          return authData;
-        } else {
-          await Future.delayed(const Duration(milliseconds: 400));
-          final String pathToBase = await Prefs.getPrefs(
-            key: Cache.pathToBase,
-            prefsType: PrefsType.string,
-          );
-          final String baseAuth = await Prefs.getPrefs(
-            key: Cache.baseAuth,
-            prefsType: PrefsType.string,
-          );
+        if (authData is AuthDataModel) {
+          bool actualVersion =
+              await CheckVersion.checkingApplicationVersion(authData: authData);
 
-          /// Для идентификации API запросов
-          Requests.url = pathToBase;
-          Requests.options = BaseOptions(
-            baseUrl: pathToBase,
-            contentType: Headers.jsonContentType,
-            headers: {
-              HttpHeaders.authorizationHeader: 'Basic $baseAuth',
-            },
-            connectTimeout: 10000,
-            receiveTimeout: 10000,
-          );
+          if (actualVersion) {
+            await Future.delayed(const Duration(milliseconds: 400));
+            final String pathToBase = await Prefs.getPrefs(
+              key: Cache.pathToBase,
+              prefsType: PrefsType.string,
+            );
+            final String baseAuth = await Prefs.getPrefs(
+              key: Cache.baseAuth,
+              prefsType: PrefsType.string,
+            );
 
-          ///--
+            /// Для идентификации API запросов
+            Requests.url = pathToBase;
+            Requests.options = BaseOptions(
+              baseUrl: pathToBase,
+              contentType: Headers.jsonContentType,
+              headers: {
+                HttpHeaders.authorizationHeader: 'Basic $baseAuth',
+              },
+              connectTimeout: 10000,
+              receiveTimeout: 10000,
+            );
 
-          Get.offNamed(
-            Routes.general,
-            arguments: authData,
-          );
+            ///--
+
+            Get.offNamed(
+              Routes.general,
+              arguments: authData,
+            );
+          } else {
+            await Get.offAllNamed(Routes.update);
+          }
 
           return 200;
+        } else {
+          log('[Splash screen] Auth Failed');
+          return authData;
         }
       } else {
         await Future.delayed(const Duration(milliseconds: 400));
@@ -95,12 +106,6 @@ class _SpalshScreenState extends State<SpalshScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_isCalled) {
-      ErrorHandler.request(
-        context: context,
-        request: _load,
-      );
-    }
     ThemeData theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.backgroundColor,

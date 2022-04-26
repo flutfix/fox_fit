@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -66,14 +65,6 @@ class SheduleRequests {
         },
       );
 
-      // log('------[getAppointments]-----');
-      // log('[dateNow] ${dateNow}');
-      // log('[dateStart] ${dateStart}');
-      // log('[dateEnd] ${dateEnd}');
-      // log('[timestampDateStart] ${timestampDateStart}');
-      // log('[timestampDateEnd] ${timestampDateEnd}');
-      // log('----------------------------');
-
       if (response.statusCode == 200) {
         List<AppointmentModel> appointments = [];
 
@@ -82,6 +73,12 @@ class SheduleRequests {
         }
 
         return appointments;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_appointments',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -105,6 +102,12 @@ class SheduleRequests {
           durations.add(duration);
         }
         return durations;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_appointments_durations',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -150,6 +153,12 @@ class SheduleRequests {
         }
 
         return [services, paidServicesBalance];
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'get_customer_fitness_services',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -201,6 +210,12 @@ class SheduleRequests {
 
       if (response.statusCode == 200) {
         return response.statusCode;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'add_appointment',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -253,6 +268,12 @@ class SheduleRequests {
 
       if (response.statusCode == 200) {
         return response.statusCode;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'update_appointment',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
@@ -278,6 +299,12 @@ class SheduleRequests {
       );
       if (response.statusCode == 200) {
         return response.statusCode;
+      } else {
+        Requests.putSupportMessage(
+          queryType: 'cancel_appointment',
+          httpCode: response.statusCode.toString(),
+          messageText: response.statusMessage!,
+        );
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
