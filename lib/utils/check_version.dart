@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:fox_fit/models/auth_data.dart';
@@ -9,34 +10,18 @@ class CheckVersion {
     required AuthDataModel authData,
   }) async {
     bool actualVersion = true;
-    if (authData.buggedAppVersions != null) {
-      if (Platform.isAndroid) {
-        int indexAndroid = authData.buggedAppVersions!
-            .indexWhere((element) => element.platform == 'Android');
-        PackageInfo packageInfo = await PackageInfo.fromPlatform();
-        List<String> currentVersion = packageInfo.version.split('.');
-        List<String> buggedAppVersions =
-            authData.buggedAppVersions![indexAndroid].version.split('.');
-        for (int i = 0; i < currentVersion.length; i++) {
-          if (int.parse(currentVersion[i]) < int.parse(buggedAppVersions[i])) {
-            actualVersion = false;
-          }
-        }
-      }
-      if (Platform.isIOS) {
-        int indexiOS = authData.buggedAppVersions!
-            .indexWhere((element) => element.platform == 'iOS');
-        PackageInfo packageInfo = await PackageInfo.fromPlatform();
-        List<String> currentVersion = packageInfo.version.split('.');
-        List<String> buggedAppVersions =
-            authData.buggedAppVersions![indexiOS].version.split('.');
-        for (int i = 0; i < currentVersion.length; i++) {
-          if (int.parse(currentVersion[i]) < int.parse(buggedAppVersions[i])) {
-            actualVersion = false;
-          }
-        }
-      }
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    dynamic currentVersion = packageInfo.version.split('.');
+    currentVersion = currentVersion[0] + currentVersion[1] + currentVersion[2];
+    dynamic actualAppVersions = Platform.isAndroid
+        ? authData.data!.vAndroid.split('.')
+        : authData.data!.vApple.split('.');
+    actualAppVersions =
+        actualAppVersions[0] + actualAppVersions[1] + actualAppVersions[2];
+    if (int.parse(currentVersion) < int.parse(actualAppVersions)) {
+      actualVersion = false;
     }
+
     return actualVersion;
   }
 }

@@ -81,7 +81,7 @@ class AuthRequest {
       );
       if (response.statusCode == 200) {
         return response.statusCode;
-      }else {
+      } else {
         Requests.putSupportMessage(
           queryType: 'change_user_password',
           httpCode: response.statusCode.toString(),
