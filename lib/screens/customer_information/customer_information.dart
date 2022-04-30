@@ -406,6 +406,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
 
   /// Переход в WhatsApp чат с клиентом
   Future<void> _switchingToChat(ThemeData theme) async {
+    /// Преобразование номера в нужный формат
     dynamic number;
     number = _controller.appState.value.currentCustomer!.phone.split(' ');
     number = '${number[0]}${number[1]}${number[2]}';
@@ -434,7 +435,7 @@ class _CustomerInformationPageState extends State<CustomerInformationPage> {
     /// Открытие whatsapp для IOS
     if (Platform.isIOS || Platform.isAndroid) {
       tryLaunchWhatsapp(
-        whatsappLink: 'https://api.whatsapp.com/send/?phone=$number',
+        whatsappLink: 'whatsapp://send?phone=$number',
         text: '&text=$greeting',
         isFromNewCustomers: _isFromNewCustomers,
       );

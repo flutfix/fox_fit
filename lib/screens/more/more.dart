@@ -86,7 +86,7 @@ class _MorePageState extends State<MorePage> {
             icon: Images.support,
             onTap: () async {
               String whatsapp =
-                  'https://api.whatsapp.com/send/?phone=${_controller.appState.value.auth!.data!.supportPhone}';
+                  'whatsapp://send?phone=${_controller.appState.value.auth!.data!.supportPhone}';
               whatsapp = Uri.encodeFull(whatsapp);
               if (await canLaunch(whatsapp)) {
                 try {

@@ -287,6 +287,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
           },
         );
       }
+      /// Если относится к разделу [Продажа]
     } else if (widget.stagePipelineType == StagePipelineType.sale) {
       SalesController _salesController = Get.find<SalesController>();
       dynamic data = await load(function: () {
