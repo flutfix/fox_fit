@@ -39,7 +39,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _generalController = Get.put(GeneralController());
     _scheduleController = Get.put(ScheduleController());
     AuthDataModel authData = Get.arguments;
@@ -102,6 +102,9 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     if (isResumed) {
       log('[State] Was resumed from background');
       if (_generalController.appState.value.currentIndex != 4) {
+        setState(() {
+          setPage(0);
+        });
         await _load();
       }
     }
@@ -112,6 +115,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     _generalController.appState.update((model) {
       model?.isLoading = true;
     });
+
     var prefs = await SharedPreferences.getInstance();
     await _fcm();
     await ErrorHandler.request(
@@ -243,10 +247,11 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
         .bottomBarItems[controller.appState.value.currentIndex]
         .uid];
     return CustomAppBar(
-        title: controller.appState.value
-            .bottomBarItems[controller.appState.value.currentIndex].shortName,
-        count: (customers != null) ? customers.length : null,
-        onNotification: onNotification);
+      title: controller.appState.value
+          .bottomBarItems[controller.appState.value.currentIndex].shortName,
+      count: (customers != null) ? customers.length : null,
+      onNotification: onNotification,
+    );
   }
 
   void setPage(int index) {
@@ -316,7 +321,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 }

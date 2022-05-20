@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/config/config.dart';
@@ -29,6 +31,7 @@ class _CustomersPageState extends State<CustomersPage> {
   late bool isStableCustomersPage;
   late bool _canVibrate;
   late CustomersPageType pageType;
+
   @override
   void initState() {
     _isLoading = false;
@@ -134,7 +137,6 @@ class _CustomersPageState extends State<CustomersPage> {
                       .uid]!
                   .length,
               itemBuilder: (context, index) {
-                // log('${_controller.appState.value.currentIndex == stableStageIndex}');
                 return CustomerContainer(
                   customer: _controller.appState.value.sortedCustomers[
                       _controller
