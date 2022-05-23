@@ -91,6 +91,7 @@ class SheduleRequests {
     required String userUid,
   }) async {
     String url = '${Requests.url}get_appointments_durations';
+    log(userUid);
     final dioClient = Dio(Requests.options);
     try {
       var response = await dioClient.get(url, queryParameters: {
@@ -111,6 +112,11 @@ class SheduleRequests {
       }
     } on DioError catch (e) {
       log('${e.response?.statusCode} - ${e.response?.statusMessage}');
+      // Requests.putSupportMessage(
+      //     queryType: 'get_appointments_durations',
+      //     httpCode: e.response?.statusCode.toString() ?? 'null',
+      //     messageText: e.response?.statusMessage! ?? 'null',
+      //   );
       return e.response?.statusCode;
     }
   }
@@ -207,7 +213,6 @@ class SheduleRequests {
           'Customers': customersList,
         },
       );
-
       if (response.statusCode == 200) {
         return response.statusCode;
       } else {

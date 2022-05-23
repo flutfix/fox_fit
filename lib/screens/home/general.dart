@@ -42,6 +42,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     _generalController = Get.put(GeneralController());
     _scheduleController = Get.put(ScheduleController());
+    pageController = PageController(initialPage: 0);
     AuthDataModel authData = Get.arguments;
     _generalController.appState.update((model) {
       model?.auth = authData;
@@ -86,7 +87,6 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
     _load();
 
-    pageController = PageController(initialPage: 0);
     super.initState();
   }
 
@@ -102,9 +102,11 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     if (isResumed) {
       log('[State] Was resumed from background');
       if (_generalController.appState.value.currentIndex != 4) {
-        setState(() {
-          setPage(0);
-        });
+        // Решение бага с обновлением первой страницы
+        pageController = PageController(
+          initialPage: _generalController.appState.value.currentIndex,
+        );
+
         await _load();
       }
     }
@@ -217,9 +219,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
                 inActiveColor: theme.dividerColor.withOpacity(0.5),
                 textColor: theme.hintColor,
                 onChange: (index) {
-                  setState(() {
-                    setPage(index);
-                  });
+                  setPage(index);
                 },
               ),
             ),
@@ -255,12 +255,14 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
   }
 
   void setPage(int index) {
-    Get.find<GeneralController>().appState.update((model) {
-      model?.currentIndex = index;
+    setState(() {
+      Get.find<GeneralController>().appState.update((model) {
+        model?.currentIndex = index;
+      });
+      pageController.jumpToPage(
+        index,
+      );
     });
-    pageController.jumpToPage(
-      index,
-    );
   }
 
   ///---- Firebase Notifications

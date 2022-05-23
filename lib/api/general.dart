@@ -26,8 +26,8 @@ class Requests {
   static BaseOptions options = BaseOptions(
     baseUrl: Requests.url,
     contentType: Headers.jsonContentType,
-    connectTimeout: 10000,
-    receiveTimeout: 10000,
+    connectTimeout: 17500,
+    receiveTimeout: 17500,
   );
 
   static final GeneralController _controller = Get.find<GeneralController>();
@@ -508,7 +508,7 @@ class Requests {
   }) async {
     String url = '${AuthRequest.authurl}put_support_message';
     final dioClient = Dio(Requests.options);
-
+    log('3');
     String date = DateTime.now()
         .toUtc()
         .millisecondsSinceEpoch
