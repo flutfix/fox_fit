@@ -1,8 +1,7 @@
-// ignore_for_file: unused_field
 
 import 'dart:developer';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fox_fit/config/config.dart';
@@ -39,6 +38,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    _fcmToken = '';
     WidgetsBinding.instance.addObserver(this);
     _generalController = Get.put(GeneralController());
     _scheduleController = Get.put(ScheduleController());
@@ -79,11 +79,11 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     log('[Uid] ${_generalController.appState.value.auth?.users?[0].uid}');
 
     /// Если приложение закрыто и пользователь нажимает на уведомление - его перекидывает на страницу [Уведомления]
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      if (message != null) {
-        Get.toNamed(Routes.notifications);
-      }
-    });
+    // FirebaseMessaging.instance.getInitialMessage().then((message) {
+    //   if (message != null) {
+    //     Get.toNamed(Routes.notifications);
+    //   }
+    // });
 
     _load();
 
@@ -119,11 +119,11 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     });
 
     var prefs = await SharedPreferences.getInstance();
-    await _fcm();
+    // await _fcm();
     await ErrorHandler.request(
       context: context,
       request: () {
-        return _generalController.getCustomers(fcmToken: _fcmToken);
+        return _generalController.getCustomers(fcmToken: _fcmToken );
       },
       handler: (data) async {
         if (data == 401) {
@@ -266,60 +266,60 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
   }
 
   ///---- Firebase Notifications
-  Future<void> _fcm() async {
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    _fcmToken = '';
+  // Future<void> _fcm() async {
+  //   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  //   _fcmToken = '';
 
-    /// Получение [FCM] токена устройства
-    await FirebaseMessaging.instance.getToken().then((token) {
-      log('[FCM Token] $token');
-      _fcmToken = token;
-    });
+  //   /// Получение [FCM] токена устройства
+  //   await FirebaseMessaging.instance.getToken().then((token) {
+  //     log('[FCM Token] $token');
+  //     _fcmToken = token;
+  //   });
 
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(AppConfig.pushChannel);
+  //   await flutterLocalNotificationsPlugin
+  //       .resolvePlatformSpecificImplementation<
+  //           AndroidFlutterLocalNotificationsPlugin>()
+  //       ?.createNotificationChannel(AppConfig.pushChannel);
 
-    await flutterLocalNotificationsPlugin.initialize(
-        const InitializationSettings(
-          android:
-              AndroidInitializationSettings('@drawable/res_notification_logo'),
-          iOS: IOSInitializationSettings(),
-        ), onSelectNotification: (payload) {
-      Get.toNamed(Routes.notifications);
-    });
+  //   await flutterLocalNotificationsPlugin.initialize(
+  //       const InitializationSettings(
+  //         android:
+  //             AndroidInitializationSettings('@drawable/res_notification_logo'),
+  //         iOS: IOSInitializationSettings(),
+  //       ), onSelectNotification: (payload) {
+  //     Get.toNamed(Routes.notifications);
+  //   });
 
-    ///Стрим на прослушку оповещений
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      // AndroidNotification? android = message.notification?.android;
+  //   ///Стрим на прослушку оповещений
+  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //     RemoteNotification? notification = message.notification;
+  //     // AndroidNotification? android = message.notification?.android;
 
-      if (notification != null) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            iOS: const IOSNotificationDetails(),
-            android: AndroidNotificationDetails(
-              AppConfig.pushChannel.id,
-              AppConfig.pushChannel.name,
-              channelDescription: AppConfig.pushChannel.description,
-              icon: '@drawable/res_notification_logo',
-              color: Colors.orange,
-            ),
-          ),
-        );
-      }
-    });
+  //     if (notification != null) {
+  //       flutterLocalNotificationsPlugin.show(
+  //         notification.hashCode,
+  //         notification.title,
+  //         notification.body,
+  //         NotificationDetails(
+  //           iOS: const IOSNotificationDetails(),
+  //           android: AndroidNotificationDetails(
+  //             AppConfig.pushChannel.id,
+  //             AppConfig.pushChannel.name,
+  //             channelDescription: AppConfig.pushChannel.description,
+  //             icon: '@drawable/res_notification_logo',
+  //             color: Colors.orange,
+  //           ),
+  //         ),
+  //       );
+  //     }
+  //   });
 
-    /// Когда приложение в фоновом состоянии и юзер нажал на уведомление
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      Get.toNamed(Routes.notifications);
-    });
-    //----
-  }
+  //   /// Когда приложение в фоновом состоянии и юзер нажал на уведомление
+  //   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+  //     Get.toNamed(Routes.notifications);
+  //   });
+  //   //----
+  // }
 
   @override
   void dispose() {

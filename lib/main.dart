@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fox_fit/config/config.dart';
@@ -13,19 +13,19 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  if (Platform.isIOS) {
-    await Firebase.initializeApp(options: AppConfig.firebaseOptions);
-  } else {
-    await Firebase.initializeApp();
-  }
-  log("[Firebase] Handling a background message: ${message.messageId}");
-}
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   if (Platform.isIOS) {
+//     await Firebase.initializeApp(options: AppConfig.firebaseOptions);
+//   } else {
+//     await Firebase.initializeApp();
+//   }
+//   log("[Firebase] Handling a background message: ${message.messageId}");
+// }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await _init();
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // await _init();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
@@ -39,25 +39,25 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-Future _init() async {
-  if (Platform.isIOS) {
-    await Firebase.initializeApp(options: AppConfig.firebaseOptions);
-  } else {
-    await Firebase.initializeApp();
-  }
-  FirebaseMessaging _fcm = FirebaseMessaging.instance;
+// Future _init() async {
+//   if (Platform.isIOS) {
+//     await Firebase.initializeApp(options: AppConfig.firebaseOptions);
+//   } else {
+//     await Firebase.initializeApp();
+//   }
+//   FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
-  ///Request permissions for Ios
-  await _fcm.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
-}
+//   ///Request permissions for Ios
+//   await _fcm.requestPermission(
+//     alert: true,
+//     announcement: false,
+//     badge: true,
+//     carPlay: false,
+//     criticalAlert: false,
+//     provisional: false,
+//     sound: true,
+//   );
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
