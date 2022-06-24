@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hms_gms_availability/flutter_hms_gms_availability.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
@@ -59,8 +60,41 @@ Future _init() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late bool gms;
+  late bool hms;
+
+  @override
+  void initState() {
+    super.initState();
+    gms = false;
+    hms = false;
+
+    // Проверка доступа GMS & HMS сервисов
+    FlutterHmsGmsAvailability.isGmsAvailable.then((t) {
+      setState(() {
+        gms = t;
+      });
+    });
+    FlutterHmsGmsAvailability.isHmsAvailable.then((t) {
+      setState(() {
+        hms = t;
+      });
+    });
+
+  log('---[Services availability]----\n');
+    log('GMS availability = $gms');
+    log('HMS availability = $hms\n');
+  log('------------------------------');
+    
+  }
 
   @override
   Widget build(BuildContext context) {
