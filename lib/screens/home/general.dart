@@ -10,6 +10,7 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
+import 'package:fox_fit/main.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
 import 'package:fox_fit/screens/more/more.dart';
@@ -35,11 +36,11 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
   late PageController pageController;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   late DateTime _now;
-  late String? _fcmToken;
+  String? _fcmToken = "";
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
     _generalController = Get.put(GeneralController());
     _scheduleController = Get.put(ScheduleController());
     pageController = PageController(initialPage: 0);
@@ -78,12 +79,14 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     }
     log('[Uid] ${_generalController.appState.value.auth?.users?[0].uid}');
 
-    /// Если приложение закрыто и пользователь нажимает на уведомление - его перекидывает на страницу [Уведомления]
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      if (message != null) {
-        Get.toNamed(Routes.notifications);
-      }
-    });
+    if (!isHMS) {
+      /// Если приложение закрыто и пользователь нажимает на уведомление - его перекидывает на страницу [Уведомления]
+      FirebaseMessaging.instance.getInitialMessage().then((message) {
+        if (message != null) {
+          Get.toNamed(Routes.notifications);
+        }
+      });
+    }
 
     _load();
 
@@ -119,7 +122,9 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     });
 
     var prefs = await SharedPreferences.getInstance();
-    await _fcm();
+    if (!isHMS) {
+      await _fcm();
+    }
     await ErrorHandler.request(
       context: context,
       request: () {
@@ -323,7 +328,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
 }

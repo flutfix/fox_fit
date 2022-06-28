@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_hms_gms_availability/flutter_hms_gms_availability.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/routes.dart';
@@ -23,10 +24,17 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   log("[Firebase] Handling a background message: ${message.messageId}");
 }
 
+bool isHMS = false;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await _init();
+  await FlutterConfig.loadEnvVariables();
+  isHMS = const String.fromEnvironment("flavor") == 'hms';
+
+  if (!isHMS) {
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    await _init();
+  }
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
