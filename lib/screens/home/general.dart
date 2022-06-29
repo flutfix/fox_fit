@@ -21,6 +21,7 @@ import 'package:fox_fit/widgets/keep_alive_page.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:huawei_push/huawei_push.dart' as hms;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class General extends StatefulWidget {
@@ -40,7 +41,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _generalController = Get.put(GeneralController());
     _scheduleController = Get.put(ScheduleController());
     pageController = PageController(initialPage: 0);
@@ -328,7 +329,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 }

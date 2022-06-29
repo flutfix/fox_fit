@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:fox_fit/api/general.dart';
 import 'package:fox_fit/api/shedule.dart';
 import 'package:fox_fit/models/customer_model_state.dart';

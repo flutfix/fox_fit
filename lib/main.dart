@@ -13,6 +13,7 @@ import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:huawei_push/huawei_push.dart' as hms;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -34,6 +35,9 @@ Future<void> main() async {
   if (!isHMS) {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     await _init();
+  } else {
+    await _initHms();
+    // _getTokenHms();
   }
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -68,6 +72,27 @@ Future _init() async {
   );
 }
 
+Future<void> _initHms() async {
+  // if (!mounted) return;
+  hms.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
+}
+
+void _onTokenEvent(String event) {
+  // This function gets called when we receive the token successfully
+  String _token = event;
+  log('Push Token: ' + _token);
+  hms.Push.showToast(event.toString());
+}
+
+void _onTokenError(Object error) {
+  PlatformException e = error as PlatformException;
+  log("TokenErrorEvent: ${e.message}");
+}
+
+// void _getTokenHms() {
+//   hms.Push.getToken('');
+// }
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -97,11 +122,10 @@ class _MyAppState extends State<MyApp> {
       });
     });
 
-  log('---[Services availability]----\n');
+    log('---[Services availability]----\n');
     log('GMS availability = $gms');
     log('HMS availability = $hms\n');
-  log('------------------------------');
-    
+    log('------------------------------');
   }
 
   @override

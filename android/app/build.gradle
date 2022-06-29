@@ -95,6 +95,7 @@ flutter {
 }
 
 dependencies {
+    implementation 'com.huawei.hms:push:6.5.0.300'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     gmsImplementation platform('com.google.firebase:firebase-bom:29.0.4')
     gmsImplementation 'com.google.firebase:firebase-analytics:17.2.2'

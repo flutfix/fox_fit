@@ -1,56 +1,91 @@
 {
-	"agcgw_all":{
-		"CN":"connect-drcn.dbankcloud.cn",
-		"CN_back":"connect-drcn.hispace.hicloud.com",
-		"DE":"connect-dre.dbankcloud.cn",
-		"DE_back":"connect-dre.hispace.hicloud.com",
-		"RU":"connect-drru.hispace.dbankcloud.ru",
-		"RU_back":"connect-drru.hispace.dbankcloud.cn",
-		"SG":"connect-dra.dbankcloud.cn",
-		"SG_back":"connect-dra.hispace.hicloud.com"
+	"agcgw": {
+		"backurl": "connect-drru.hispace.dbankcloud.cn",
+		"url": "connect-drru.hispace.dbankcloud.ru",
+		"websocketbackurl": "connect-ws-drru.hispace.dbankcloud.cn",
+		"websocketurl": "connect-ws-drru.hispace.dbankcloud.ru"
 	},
-	"websocketgw_all":{
-		"CN":"connect-ws-drcn.hispace.dbankcloud.cn",
-		"CN_back":"connect-ws-drcn.hispace.dbankcloud.com",
-		"DE":"connect-ws-dre.hispace.dbankcloud.cn",
-		"DE_back":"connect-ws-dre.hispace.dbankcloud.com",
-		"RU":"connect-ws-drru.hispace.dbankcloud.ru",
-		"RU_back":"connect-ws-drru.hispace.dbankcloud.cn",
-		"SG":"connect-ws-dra.hispace.dbankcloud.cn",
-		"SG_back":"connect-ws-dra.hispace.dbankcloud.com"
+	"agcgw_all": {
+		"CN": "connect-drcn.dbankcloud.cn",
+		"CN_back": "connect-drcn.hispace.hicloud.com",
+		"DE": "connect-dre.dbankcloud.cn",
+		"DE_back": "connect-dre.hispace.hicloud.com",
+		"RU": "connect-drru.hispace.dbankcloud.ru",
+		"RU_back": "connect-drru.hispace.dbankcloud.cn",
+		"SG": "connect-dra.dbankcloud.cn",
+		"SG_back": "connect-dra.hispace.hicloud.com"
 	},
-	"client":{
-		"cp_id":"20007000023265475",
-		"product_id":"99536292102406647",
-		"client_id":"919003271824171264",
-		"client_secret":"6DF02CD558CA6ABADFE47BABBBA4A9113A139D97782688358B6A7B57DE93A925",
-		"project_id":"99536292102406647",
-		"app_id":"106413133",
-		"api_key":"DAEDAEWg+VxG/m7lHPNe0Unt7N4IfvbQJcOBkp+EBJl6p86Llf0UjZbNcOrhzAjuAce3XFiCu7Qbp/WivMZasK4eGUdBraeWMZYUAg==",
-		"package_name":"com.foxfit.app.FoxFit"
+	"websocketgw_all": {
+		"CN": "connect-ws-drcn.hispace.dbankcloud.cn",
+		"CN_back": "connect-ws-drcn.hispace.dbankcloud.com",
+		"DE": "connect-ws-dre.hispace.dbankcloud.cn",
+		"DE_back": "connect-ws-dre.hispace.dbankcloud.com",
+		"RU": "connect-ws-drru.hispace.dbankcloud.ru",
+		"RU_back": "connect-ws-drru.hispace.dbankcloud.cn",
+		"SG": "connect-ws-dra.hispace.dbankcloud.cn",
+		"SG_back": "connect-ws-dra.hispace.dbankcloud.com"
 	},
-	"oauth_client":{
-		"client_id":"106413133",
-		"client_type":1
+	"client": {
+		"cp_id": "20007000023265475",
+		"product_id": "99536292102406647",
+		"client_id": "919003271824171264",
+		"client_secret": "6DF02CD558CA6ABADFE47BABBBA4A9113A139D97782688358B6A7B57DE93A925",
+		"project_id": "99536292102406647",
+		"app_id": "106413133",
+		"api_key": "DAEDAEWg+VxG/m7lHPNe0Unt7N4IfvbQJcOBkp+EBJl6p86Llf0UjZbNcOrhzAjuAce3XFiCu7Qbp/WivMZasK4eGUdBraeWMZYUAg==",
+		"package_name": "com.foxfit.app.FoxFit"
 	},
-	"app_info":{
-		"app_id":"106413133",
-		"package_name":"com.foxfit.app.FoxFit"
+	"oauth_client": {
+		"client_id": "106413133",
+		"client_type": 1
 	},
-	"configuration_version":"3.0",
-	"appInfos":[
+	"app_info": {
+		"app_id": "106413133",
+		"package_name": "com.foxfit.app.FoxFit"
+	},
+	"service": {
+		"analytics": {
+			"collector_url": "datacollector-drru.dt.dbankcloud.ru,datacollector-drru.dt.hicloud.com",
+			"collector_url_ru": "datacollector-drru.dt.dbankcloud.ru,datacollector-drru.dt.hicloud.com",
+			"collector_url_sg": "datacollector-dra.dt.hicloud.com,datacollector-dra.dt.dbankcloud.cn",
+			"collector_url_de": "datacollector-dre.dt.hicloud.com,datacollector-dre.dt.dbankcloud.cn",
+			"collector_url_cn": "datacollector-drcn.dt.hicloud.com,datacollector-drcn.dt.dbankcloud.cn",
+			"resource_id": "p1",
+			"channel_id": ""
+		},
+		"search": {
+			"url": "https://search-drru.cloud.huawei.ru"
+		},
+		"cloudstorage": {
+			"storage_url_sg_back": "https://agc-storage-dra.cloud.huawei.asia",
+			"storage_url_ru_back": "https://agc-storage-drru.cloud.huawei.ru",
+			"storage_url_ru": "https://agc-storage-drru.cloud.huawei.ru",
+			"storage_url_de_back": "https://agc-storage-dre.cloud.huawei.eu",
+			"storage_url_de": "https://ops-dre.agcstorage.link",
+			"storage_url": "https://agc-storage-drcn.platform.dbankcloud.cn",
+			"storage_url_sg": "https://ops-dra.agcstorage.link",
+			"storage_url_cn_back": "https://agc-storage-drcn.cloud.huawei.com.cn",
+			"storage_url_cn": "https://agc-storage-drcn.platform.dbankcloud.cn"
+		},
+		"ml": {
+			"mlservice_url": "ml-api-drru.ai.dbankcloud.ru,ml-api-drru.ai.dbankcloud.cn"
+		}
+	},
+	"region": "RU",
+	"configuration_version": "3.0",
+	"appInfos": [
 		{
-			"package_name":"com.foxfit.app.FoxFit",
-			"client":{
-				"app_id":"106413133"
+			"package_name": "com.foxfit.app.FoxFit",
+			"client": {
+				"app_id": "106413133"
 			},
-			"app_info":{
-				"package_name":"com.foxfit.app.FoxFit",
-				"app_id":"106413133"
+			"app_info": {
+				"package_name": "com.foxfit.app.FoxFit",
+				"app_id": "106413133"
 			},
-			"oauth_client":{
-				"client_type":1,
-				"client_id":"106413133"
+			"oauth_client": {
+				"client_type": 1,
+				"client_id": "106413133"
 			}
 		}
 	]
