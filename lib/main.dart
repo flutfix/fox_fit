@@ -1,44 +1,31 @@
 import 'dart:developer';
-import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
-import 'package:flutter_hms_gms_availability/flutter_hms_gms_availability.dart';
+import 'package:fox_fit/analitics_service/di.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:huawei_push/huawei_push.dart' as hms;
+import 'package:get_it/get_it.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  if (Platform.isIOS) {
-    await Firebase.initializeApp(options: AppConfig.firebaseOptions);
-  } else {
-    await Firebase.initializeApp();
-  }
-  log("[Firebase] Handling a background message: ${message.messageId}");
-}
-
-bool isHMS = false;
+import 'package:push_service/push_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterConfig.loadEnvVariables();
-  isHMS = const String.fromEnvironment("flavor") == 'hms';
 
-  if (!isHMS) {
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    await _init();
-  } else {
-    await _initHms();
-    // _getTokenHms();
-  }
+  // Подключение Push-сервиса
+  await FlutterConfig.loadEnvVariables();
+  AppConfig.isGms =
+      await const MethodChannel('flavor').invokeMethod<String>('getFlavor') ==
+          'gms';
+  init();
+  GetIt.instance.get<PushService>().init();
+  GetIt.instance.get<PushService>().backgroundHandler();
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
@@ -51,47 +38,6 @@ Future<void> main() async {
   );
   runApp(const MyApp());
 }
-
-Future _init() async {
-  if (Platform.isIOS) {
-    await Firebase.initializeApp(options: AppConfig.firebaseOptions);
-  } else {
-    await Firebase.initializeApp();
-  }
-  FirebaseMessaging _fcm = FirebaseMessaging.instance;
-
-  ///Request permissions for Ios
-  await _fcm.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
-}
-
-Future<void> _initHms() async {
-  // if (!mounted) return;
-  hms.Push.getTokenStream.listen(_onTokenEvent, onError: _onTokenError);
-}
-
-void _onTokenEvent(String event) {
-  // This function gets called when we receive the token successfully
-  String _token = event;
-  log('Push Token: ' + _token);
-  hms.Push.showToast(event.toString());
-}
-
-void _onTokenError(Object error) {
-  PlatformException e = error as PlatformException;
-  log("TokenErrorEvent: ${e.message}");
-}
-
-// void _getTokenHms() {
-//   hms.Push.getToken('');
-// }
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -107,25 +53,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    gms = false;
-    hms = false;
-
-    // Проверка доступа GMS & HMS сервисов
-    FlutterHmsGmsAvailability.isGmsAvailable.then((t) {
-      setState(() {
-        gms = t;
-      });
-    });
-    FlutterHmsGmsAvailability.isHmsAvailable.then((t) {
-      setState(() {
-        hms = t;
-      });
-    });
-
-    log('---[Services availability]----\n');
-    log('GMS availability = $gms');
-    log('HMS availability = $hms\n');
-    log('------------------------------');
   }
 
   @override

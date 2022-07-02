@@ -1,8 +1,7 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, unnecessary_cast, prefer_typing_uninitialized_variables
 
 import 'dart:developer';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fox_fit/config/config.dart';
@@ -20,8 +19,10 @@ import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/keep_alive_page.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:huawei_push/huawei_push.dart' as hms;
+import 'package:push_service/push_service.dart';
+// import 'package:huawei_push/huawei_push.dart' as hms;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class General extends StatefulWidget {
@@ -38,6 +39,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   late DateTime _now;
   String? _fcmToken = "";
+  late final PushService _pushService;
 
   @override
   void initState() {
@@ -49,6 +51,8 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     _generalController.appState.update((model) {
       model?.auth = authData;
     });
+
+    _pushService = GetIt.instance.get<PushService>();
 
     /// Для статистики тренера
     _now = DateTime.now().toUtc();
@@ -80,14 +84,13 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     }
     log('[Uid] ${_generalController.appState.value.auth?.users?[0].uid}');
 
-    if (!isHMS) {
-      /// Если приложение закрыто и пользователь нажимает на уведомление - его перекидывает на страницу [Уведомления]
-      FirebaseMessaging.instance.getInitialMessage().then((message) {
-        if (message != null) {
+    if (AppConfig.isGms) {
+      _pushService.onTapWhenAppClosed(
+        onTap: () {
           Get.toNamed(Routes.notifications);
-        }
-      });
-    }
+        },
+      );
+    } else {}
 
     _load();
 
@@ -123,9 +126,13 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     });
 
     var prefs = await SharedPreferences.getInstance();
-    if (!isHMS) {
+
+    if (AppConfig.isGms) {
       await _fcm();
+    } else {
+      _getTokenHms();
     }
+
     await ErrorHandler.request(
       context: context,
       request: () {
@@ -274,13 +281,9 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
   ///---- Firebase Notifications
   Future<void> _fcm() async {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    _fcmToken = '';
 
-    /// Получение [FCM] токена устройства
-    await FirebaseMessaging.instance.getToken().then((token) {
-      log('[FCM Token] $token');
-      _fcmToken = token;
-    });
+    _fcmToken = await _pushService.getToken();
+    log('[FCM Token] $_fcmToken');
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
@@ -296,40 +299,23 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
       Get.toNamed(Routes.notifications);
     });
 
-    ///Стрим на прослушку оповещений
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      // AndroidNotification? android = message.notification?.android;
+    _pushService.listener(plugin: flutterLocalNotificationsPlugin);
 
-      if (notification != null) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            iOS: const IOSNotificationDetails(),
-            android: AndroidNotificationDetails(
-              AppConfig.pushChannel.id,
-              AppConfig.pushChannel.name,
-              channelDescription: AppConfig.pushChannel.description,
-              icon: '@drawable/res_notification_logo',
-              color: Colors.orange,
-            ),
-          ),
-        );
-      }
-    });
-
-    /// Когда приложение в фоновом состоянии и юзер нажал на уведомление
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    _pushService.onTapWhenAppFon(onTap: () {
       Get.toNamed(Routes.notifications);
     });
-    //----
   }
+  //----
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  Future<void> _getTokenHms() async {
+    String? token = '';
+    token = await _pushService.getToken();
+    log('general ' + token.toString());
   }
 }
