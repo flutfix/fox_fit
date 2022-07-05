@@ -60,12 +60,12 @@ dependencies:
     path: packages/interface/push_service_interface
     
 # GMS
-  # push_service:
-  #   path: packages/gms/push_service
+  push_service:
+    path: packages/gms/push_service
 
 # HMS
-  push_service:
-    path: packages/hms/push_service
+  # push_service:
+  #   path: packages/hms/push_service
   
 dev_dependencies:
   flutter_test:

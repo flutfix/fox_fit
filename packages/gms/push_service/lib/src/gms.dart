@@ -3,7 +3,6 @@ part of push_service;
 class PushService implements IService {
   @override
   Future<void> init() async {
-    await Firebase.initializeApp();
     if (Platform.isIOS) {
       await Firebase.initializeApp(options: _firebaseOptions);
     } else {
@@ -90,3 +89,4 @@ const FirebaseOptions _firebaseOptions = FirebaseOptions(
   messagingSenderId: "150088765423",
   projectId: "android-foxfit-push",
 );
+

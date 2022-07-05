@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,9 +19,13 @@ Future<void> main() async {
 
   // Подключение Push-сервиса
   await FlutterConfig.loadEnvVariables();
-  AppConfig.isGms =
-      await const MethodChannel('flavor').invokeMethod<String>('getFlavor') ==
-          'gms';
+  if (Platform.isIOS) {
+    AppConfig.isGms = true;
+  } else {
+    AppConfig.isGms =
+        await const MethodChannel('flavor').invokeMethod<String>('getFlavor') ==
+            'gms';
+  }
   init();
   GetIt.instance.get<PushService>().init();
   GetIt.instance.get<PushService>().backgroundHandler();
