@@ -13,6 +13,7 @@ import 'package:fox_fit/screens/more/pages/schedule/pages/select_client/select_c
 import 'package:fox_fit/screens/more/pages/schedule/pages/select_service.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/sign_up_training_session.dart';
 import 'package:fox_fit/screens/more/pages/sleeping_customers/sleeping_customers.dart';
+import 'package:fox_fit/screens/more/pages/training/training.dart';
 import 'package:fox_fit/screens/notifications/notifications.dart';
 import 'package:fox_fit/screens/splash/splash_screen.dart';
 import 'package:fox_fit/screens/trainer_choosing/trainer_choosing.dart';
@@ -40,6 +41,7 @@ class Routes {
   static const String sale = '/sale';
   static const String error = '/error';
   static const String update = '/update';
+  static const String training = '/training';
 
   static List<GetPage<dynamic>> get getRoutes {
     return [
@@ -60,6 +62,7 @@ class Routes {
       _getPage(Routes.sale, () => const CreateSalePage()),
       _getPage(Routes.error, () => const ErrorPage()),
       _getPage(Routes.update, () => const UpdatePage()),
+      _getPage(Routes.training, () => const TrainingPage()),
       _getPage(Routes.signUpTrainingSession,
           () => const SignUpTrainingSessionPage()),
     ];

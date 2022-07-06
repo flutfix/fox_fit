@@ -124,6 +124,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "total": MessageLookupByLibrary.simpleMessage(""),
         "train": MessageLookupByLibrary.simpleMessage(""),
         "trainer_stats": MessageLookupByLibrary.simpleMessage(""),
+        "training": MessageLookupByLibrary.simpleMessage(""),
         "training_could_not_recorded": MessageLookupByLibrary.simpleMessage(""),
         "transmit": MessageLookupByLibrary.simpleMessage(""),
         "triner_choosing": MessageLookupByLibrary.simpleMessage(""),

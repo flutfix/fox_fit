@@ -1149,6 +1149,16 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get training {
+    return Intl.message(
+      '',
+      name: 'training',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

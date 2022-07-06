@@ -52,6 +52,7 @@ dependencies:
   characters: ^1.2.0
   package_info_plus: ^1.4.2
   flutter_config: ^2.0.0
+  webview_flutter: ^3.0.4
 
   get_it: ^7.2.0
   injectable: ^1.5.3
@@ -59,12 +60,12 @@ dependencies:
     path: packages/interface/push_service_interface
     
 # GMS
-  push_service:
-    path: packages/gms/push_service
+  # push_service:
+  #   path: packages/gms/push_service
 
 # HMS
-  # push_service:
-  #   path: packages/hms/push_service
+  push_service:
+    path: packages/hms/push_service
   
 dev_dependencies:
   flutter_test:

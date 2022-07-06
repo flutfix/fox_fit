@@ -174,6 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "train": MessageLookupByLibrary.simpleMessage("Тренировка"),
         "trainer_stats":
             MessageLookupByLibrary.simpleMessage("Статистика тренера"),
+        "training": MessageLookupByLibrary.simpleMessage("Обучение"),
         "training_could_not_recorded": MessageLookupByLibrary.simpleMessage(
             "Нельзя записать на прошедший месяц"),
         "transmit": MessageLookupByLibrary.simpleMessage("Передать"),

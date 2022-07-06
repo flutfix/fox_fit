@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import 'package:fox_fit/widgets/text_button.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class MorePage extends StatefulWidget {
   const MorePage({Key? key}) : super(key: key);
@@ -28,11 +30,13 @@ class MorePage extends StatefulWidget {
 class _MorePageState extends State<MorePage> {
   late List<MoreCardModel> cards;
   late GeneralController _controller;
+  late final Completer<WebViewController> _controllerWebView;
 
   @override
   void initState() {
     cards = [];
     _controller = Get.put(GeneralController());
+    _controllerWebView = Completer<WebViewController>();
     super.initState();
   }
 
@@ -121,6 +125,15 @@ class _MorePageState extends State<MorePage> {
             icon: Images.passPng,
             onTap: () {
               Get.toNamed(Routes.changePassword);
+            },
+          ),
+
+          /// [Обучение]
+          MoreCardModel(
+            text: S.of(context).training,
+            icon: Images.trainingPng,
+            onTap: () {
+              Get.toNamed(Routes.training);
             },
           ),
 
