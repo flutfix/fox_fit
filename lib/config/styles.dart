@@ -13,6 +13,7 @@ abstract class Styles {
   static const Color greyLight6 = Color(0xFFF2F2F2);
   static const Color greyLight7 = Color(0xFF828282);
   static const Color blue = Color(0xFF2692DA);
+  static const Color blueLight = Color(0xFFE9F4FB);
   static const Color primaryText = Color(0xFF333E63);
   static const Color secondaryText = Color(0xFF3A4060);
   static const Color primaryLightText = Color(0xFF59597C);
@@ -77,15 +78,18 @@ abstract class Styles {
       /// Голубой бордер
       focusColor: Styles.borderBlue,
 
-      ///[Воронка продаж] цввета линий
-      ///Серый
+      /// [Воронка продаж] цввета линий
+      /// Серый
       cardColor: Styles.darkGrey,
 
-      ///Оранжевый
+      /// Оранжевый
       highlightColor: Styles.darkOrange,
 
-      ///Синий
+      /// Синий
       disabledColor: Styles.darkBlue,
+
+      /// Красный
+      toggleableActiveColor: Styles.red,
 
       /// [Уведомления] цвет непрочитанных
       indicatorColor: Styles.green.withOpacity(0.2),
@@ -97,6 +101,9 @@ abstract class Styles {
       textSelectionTheme: TextSelectionThemeData(
         selectionColor: Styles.orange.withOpacity(0.15),
       ),
+
+      /// Цвет селектора в статистике тренера
+      selectedRowColor: blueLight,
 
       buttonTheme: const ButtonThemeData(
         colorScheme: ColorScheme.light(

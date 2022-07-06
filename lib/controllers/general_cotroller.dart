@@ -404,4 +404,17 @@ class GeneralController extends GetxController {
         bottomBarItems.indexWhere((element) => element.shortName == shortName);
     return bottomBarItems[index].uid;
   }
+
+  // Сортировка клиентов в алфавитном порядке
+  List<CustomerModel> sortAlphabetically(
+      {required List<CustomerModel> customers}) {
+    customers.sort(
+      (a, b) {
+        return a.fullName.toLowerCase().compareTo(
+              b.fullName.toLowerCase(),
+            );
+      },
+    );
+    return customers;
+  }
 }

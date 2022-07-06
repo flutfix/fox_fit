@@ -59,6 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "currency_symbol": MessageLookupByLibrary.simpleMessage("₽"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
+        "customers": MessageLookupByLibrary.simpleMessage("Клиенты"),
         "data_download_failed":
             MessageLookupByLibrary.simpleMessage("Загрузка данных не удалась"),
         "data_entered_incorrectly":
@@ -93,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Заполните предыдущие поля"),
         "for_customer": MessageLookupByLibrary.simpleMessage("для клиента"),
         "group": MessageLookupByLibrary.simpleMessage("Группа"),
+        "history": MessageLookupByLibrary.simpleMessage("История"),
         "i_did_it": MessageLookupByLibrary.simpleMessage("Я сделяль!"),
         "inactiveCustomers":
             MessageLookupByLibrary.simpleMessage("\"Спящие\" клиенты"),
@@ -121,11 +123,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "notifications": MessageLookupByLibrary.simpleMessage("Уведомления"),
         "only_add_or_remove_clients": MessageLookupByLibrary.simpleMessage(
             "В групповой тренировке можно только добавлять или удалять клиентов"),
-        "packages": MessageLookupByLibrary.simpleMessage("Пакеты:"),
+        "packages": MessageLookupByLibrary.simpleMessage("Пакеты"),
         "password_not_changed":
             MessageLookupByLibrary.simpleMessage("Пароль не изменён"),
         "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
             "Введённые пароли не совпадают"),
+        "pcs": MessageLookupByLibrary.simpleMessage("шт"),
         "personal": MessageLookupByLibrary.simpleMessage("Персональная"),
         "personalka": MessageLookupByLibrary.simpleMessage("Персоналка"),
         "quantity": MessageLookupByLibrary.simpleMessage("Количество"),
@@ -149,7 +152,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "server_navailable":
             MessageLookupByLibrary.simpleMessage("Сервер недоступен"),
         "service": MessageLookupByLibrary.simpleMessage("Услуга"),
-        "services": MessageLookupByLibrary.simpleMessage("Услуги:"),
+        "services": MessageLookupByLibrary.simpleMessage("Услуги"),
         "set_duration": MessageLookupByLibrary.simpleMessage(
             "Заполните длительность тренировки"),
         "sign_up_training_session":
@@ -167,6 +170,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Время проведения занятия"),
         "to_coach": MessageLookupByLibrary.simpleMessage("Тренеру"),
         "to_practice": MessageLookupByLibrary.simpleMessage("На тренировку"),
+        "total": MessageLookupByLibrary.simpleMessage("Всего"),
         "train": MessageLookupByLibrary.simpleMessage("Тренировка"),
         "trainer_stats":
             MessageLookupByLibrary.simpleMessage("Статистика тренера"),

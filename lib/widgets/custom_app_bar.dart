@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fox_fit/config/assets.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
+import 'package:fox_fit/widgets/badge.dart';
 import 'package:get/get.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -14,6 +15,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.isBackArrow = false,
     this.onBack,
     this.count,
+    this.countNotifications,
     this.action,
   }) : super(key: key);
 
@@ -24,6 +26,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool isBackArrow;
   final Function()? onBack;
   final int? count;
+  final int? countNotifications;
   final Widget? action;
 
   @override
@@ -48,7 +51,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return Container(
       height: widget.height,
       width: width,
-      padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 20),
+      padding: const EdgeInsets.fromLTRB(20, 25, 14, 25),
       decoration: BoxDecoration(
         color: theme.canvasColor,
         borderRadius: const BorderRadius.only(
@@ -100,7 +103,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                       behavior: HitTestBehavior.translucent,
                       onTap: widget.onNotification,
                       child: Stack(
-                        alignment: Alignment.centerRight,
+                        alignment: Alignment.center,
                         children: [
                           SvgPicture.asset(
                             Images.notifications,
@@ -109,8 +112,14 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                 ? theme.colorScheme.primary
                                 : theme.iconTheme.color,
                           ),
+                          if (widget.countNotifications != null)
+                            Badge(
+                              countNotifications: widget.countNotifications!,
+                              margin: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+                            ),
                           const SizedBox(
                             width: 36,
+                            height: 36,
                           )
                         ],
                       ),

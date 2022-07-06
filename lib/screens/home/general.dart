@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field, unnecessary_cast, prefer_typing_uninitialized_variables
+// ignore_for_file: unused_field
 
 import 'dart:developer';
 
@@ -9,7 +9,6 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/controllers/schedule_controller.dart';
 import 'package:fox_fit/generated/l10n.dart';
-import 'package:fox_fit/main.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
 import 'package:fox_fit/screens/more/more.dart';
@@ -22,7 +21,6 @@ import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:push_service/push_service.dart';
-// import 'package:huawei_push/huawei_push.dart' as hms;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class General extends StatefulWidget {
@@ -97,7 +95,8 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     super.initState();
   }
 
-  /// Отслеживание когда приложение возвращается из фонового состояния и обновление данных, если [true]
+  /// Отслеживание когда приложение возвращается из
+  /// фонового состояния и обновление данных, если [true]
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.inactive ||
@@ -263,6 +262,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
       title: controller.appState.value
           .bottomBarItems[controller.appState.value.currentIndex].shortName,
       count: (customers != null) ? customers.length : null,
+      countNotifications: 35,
       onNotification: onNotification,
     );
   }
@@ -278,7 +278,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
     });
   }
 
-  ///---- Firebase Notifications
+  /// Firebase Notifications
   Future<void> _fcm() async {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -305,17 +305,17 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
       Get.toNamed(Routes.notifications);
     });
   }
-  //----
+
+  /// Huawei Notifications
+  Future<void> _getTokenHms() async {
+    String? hmsToken = '';
+    hmsToken = await _pushService.getToken();
+    log('[HMS Token] $hmsToken');
+  }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
-
-  Future<void> _getTokenHms() async {
-    String? token = '';
-    token = await _pushService.getToken();
-    log('general ' + token.toString());
   }
 }

@@ -80,7 +80,7 @@ class _ServicesPageState extends State<ServicesPage> {
                         () => _buildServicesList(
                           theme,
                           items: _salesController.state.value.services,
-                          header: S.of(context).services,
+                          header: S.of(context).services + ':',
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -90,7 +90,7 @@ class _ServicesPageState extends State<ServicesPage> {
                         () => _buildServicesList(
                           theme,
                           items: _salesController.state.value.packageOfServices,
-                          header: S.of(context).packages,
+                          header: S.of(context).packages + ':',
                         ),
                       ),
                     ],

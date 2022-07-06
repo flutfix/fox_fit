@@ -33,7 +33,7 @@ class PushService implements IService {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       // AndroidNotification? android = message.notification?.android;
-
+      FlutterAppBadger.updateBadgeCount(1);
       if (notification != null) {
         plugin.show(
           notification.hashCode,
@@ -56,14 +56,7 @@ class PushService implements IService {
 
   @override
   Future<void> backgroundHandler() async {
-    FirebaseMessaging.onBackgroundMessage((message) async {
-      if (Platform.isIOS) {
-        await Firebase.initializeApp(options: _firebaseOptions);
-      } else {
-        await Firebase.initializeApp();
-      }
-      log("[Firebase] Handling a background message: ${message.messageId}");
-    });
+    FirebaseMessaging.onBackgroundMessage(_onBackgroundMessageHandler);
   }
 
   @override
@@ -81,6 +74,15 @@ class PushService implements IService {
       }
     });
   }
+}
+
+Future<void> _onBackgroundMessageHandler(RemoteMessage message) async {
+  if (Platform.isIOS) {
+    await Firebase.initializeApp(options: _firebaseOptions);
+  } else {
+    await Firebase.initializeApp();
+  }
+  log("[Firebase] Handling a background message: ${message.messageId}");
 }
 
 const FirebaseOptions _firebaseOptions = FirebaseOptions(

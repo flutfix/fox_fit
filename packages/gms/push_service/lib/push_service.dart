@@ -3,6 +3,7 @@ library push_service;
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:push_service_interface/push_service_interface.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
