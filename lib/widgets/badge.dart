@@ -30,6 +30,7 @@ class _BadgeState extends State<Badge> {
       child: Container(
         width: 12,
         height: 12,
+        padding: const EdgeInsets.only(top: 0.5),
         decoration: BoxDecoration(
           color: theme.toggleableActiveColor,
           borderRadius: BorderRadius.circular(90),

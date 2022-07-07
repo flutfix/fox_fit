@@ -258,11 +258,20 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
         .value
         .bottomBarItems[controller.appState.value.currentIndex]
         .uid];
+
+    // Сокращение количесвта уведомлений до максимально отражаемого числа
+    int countNewNotifications = 0;
+    if (controller.appState.value.countNewNotifications > 99) {
+      countNewNotifications = 99;
+    } else {
+      countNewNotifications = controller.appState.value.countNewNotifications;
+    }
+
     return CustomAppBar(
       title: controller.appState.value
           .bottomBarItems[controller.appState.value.currentIndex].shortName,
       count: (customers != null) ? customers.length : null,
-      countNotifications: 35,
+      countNotifications: countNewNotifications,
       onNotification: onNotification,
     );
   }

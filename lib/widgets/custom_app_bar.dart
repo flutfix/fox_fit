@@ -15,7 +15,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.isBackArrow = false,
     this.onBack,
     this.count,
-    this.countNotifications,
+    this.countNotifications = 0,
     this.action,
   }) : super(key: key);
 
@@ -26,7 +26,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool isBackArrow;
   final Function()? onBack;
   final int? count;
-  final int? countNotifications;
+  final int countNotifications;
   final Widget? action;
 
   @override
@@ -108,13 +108,15 @@ class _CustomAppBarState extends State<CustomAppBar> {
                           SvgPicture.asset(
                             Images.notifications,
                             width: 24,
-                            color: _controller.appState.value.isNewNotifications
+                            color: _controller
+                                        .appState.value.countNewNotifications !=
+                                    0
                                 ? theme.colorScheme.primary
                                 : theme.iconTheme.color,
                           ),
-                          if (widget.countNotifications != null)
+                          if (widget.countNotifications != 0)
                             Badge(
-                              countNotifications: widget.countNotifications!,
+                              countNotifications: widget.countNotifications,
                               margin: const EdgeInsets.fromLTRB(10, 0, 0, 10),
                             ),
                           const SizedBox(
