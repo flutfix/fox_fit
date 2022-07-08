@@ -19,8 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MorePage extends StatefulWidget {
-  final String token;
-  const MorePage({Key? key, required this.token}) : super(key: key);
+  const MorePage({Key? key}) : super(key: key);
 
   @override
   _MorePageState createState() => _MorePageState();
@@ -29,6 +28,7 @@ class MorePage extends StatefulWidget {
 class _MorePageState extends State<MorePage> {
   late List<MoreCardModel> cards;
   late GeneralController _controller;
+  
   @override
   void initState() {
     cards = [];
@@ -153,30 +153,27 @@ class _MorePageState extends State<MorePage> {
       physics: const BouncingScrollPhysics(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 25.0),
-        child: Column(children: [
-          ...List.generate(
-            cards.length,
-            (index) {
-              return Padding(
-                padding: EdgeInsets.only(
-                    bottom: (index != cards.length - 1) ? 5.0 : 0.0),
-                child: _buildCard(
-                  theme: theme,
-                  text: cards[index].text,
-                  icon: cards[index].icon,
-                  iconSize:
-                      cards[index].icon == Images.coordinatorPng ? 21 : 19,
-                  onTap: cards[index].onTap,
-                ),
-              );
-            },
-          ),
-          TextField(
-            controller: TextEditingController(
-              text: widget.token,
+        child: Column(
+          children: [
+            ...List.generate(
+              cards.length,
+              (index) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                      bottom: (index != cards.length - 1) ? 5.0 : 0.0),
+                  child: _buildCard(
+                    theme: theme,
+                    text: cards[index].text,
+                    icon: cards[index].icon,
+                    iconSize:
+                        cards[index].icon == Images.coordinatorPng ? 21 : 19,
+                    onTap: cards[index].onTap,
+                  ),
+                );
+              },
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
