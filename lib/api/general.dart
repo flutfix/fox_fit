@@ -63,7 +63,7 @@ class Requests {
         url,
         queryParameters: _queryParams,
       );
-      log(response.toString());
+      
       if (response.statusCode == 200) {
         List<CustomerModel> customers = [];
         List<ItemBottomBarModel> bottomBarItems = [];

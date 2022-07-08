@@ -285,19 +285,19 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                 const SizedBox(height: 32),
 
                 // Кнопки выбора подробной информации
-                Selector(
-                  controller: _infoController,
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  onTap: (int index) {
-                    setState(() {
-                      _infoController = index;
-                    });
-                  },
-                ),
-                const SizedBox(height: 16),
+                // Selector(
+                //   controller: _infoController,
+                //   margin: const EdgeInsets.symmetric(horizontal: 20),
+                //   onTap: (int index) {
+                //     setState(() {
+                //       _infoController = index;
+                //     });
+                //   },
+                // ),
+                // const SizedBox(height: 16),
 
                 // Подробная информация
-                _infoStats(theme: theme),
+                // _infoStats(theme: theme),
               ],
             ),
           ),
