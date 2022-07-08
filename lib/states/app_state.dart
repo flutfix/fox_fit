@@ -12,6 +12,7 @@ class AppState {
   AppState({
     this.isLoading = false,
     this.currentIndex = 0,
+    this.isNewNotifications = false,
     this.countNewNotifications = 0,
     this.useSchedule = false,
     this.useSalesCoach = false,
@@ -39,6 +40,9 @@ class AppState {
 
   bool isLoading;
   int currentIndex;
+
+  /// Есть ли новые уведомления
+  bool isNewNotifications;
 
   /// Количество новых уведомлений
   int countNewNotifications;

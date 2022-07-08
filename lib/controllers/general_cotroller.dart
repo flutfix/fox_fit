@@ -52,13 +52,19 @@ class GeneralController extends GetxController {
     if (data is int || data == null) {
       return data;
     } else {
-      const int countNewNotifications = 0;
-      final List<ItemBottomBarModel> bottomBarItems = data[1];
-      final List<CustomerModel> customers = data[2];
-      final bool? useSchedule = data[3];
-      final bool? useSalesCoach = data[4];
+      final bool isNewNotifications = data[0] is bool
+          ? data[0]
+          : data[0].toString().toLowerCase() == 'true'
+              ? true
+              : false;
+      final int countNewNotifications = data[1];
+      final List<ItemBottomBarModel> bottomBarItems = data[2];
+      final List<CustomerModel> customers = data[3];
+      final bool? useSchedule = data[4];
+      final bool? useSalesCoach = data[5];
 
       appState.update((model) {
+        model?.isNewNotifications = isNewNotifications;
         model?.countNewNotifications = countNewNotifications;
         model?.useSchedule = useSchedule ?? false;
         model?.useSalesCoach = useSalesCoach ?? false;
