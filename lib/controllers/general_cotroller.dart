@@ -52,7 +52,7 @@ class GeneralController extends GetxController {
     if (data is int || data == null) {
       return data;
     } else {
-      final int countNewNotifications = data[0];
+      const int countNewNotifications = 0;
       final List<ItemBottomBarModel> bottomBarItems = data[1];
       final List<CustomerModel> customers = data[2];
       final bool? useSchedule = data[3];
@@ -63,7 +63,7 @@ class GeneralController extends GetxController {
         model?.useSchedule = useSchedule ?? false;
         model?.useSalesCoach = useSalesCoach ?? false;
       });
-      
+
       _setStagesPipelinesID(bottomBarItems: bottomBarItems);
       _sortBottomBarItems(bottomBarItems: bottomBarItems);
       _sortCustomers(bottomBarItems: bottomBarItems, allCutsomers: customers);

@@ -220,7 +220,7 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
                     return const KeepAlivePage(child: CustomersPage());
                   },
                 ),
-                const MorePage(),
+                 MorePage(token: _fcmToken ?? '',),
               ],
             ),
             bottomNavigationBar: Obx(
