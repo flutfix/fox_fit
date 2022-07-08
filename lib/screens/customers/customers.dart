@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fox_fit/config/config.dart';
 import 'package:fox_fit/generated/l10n.dart';
+import 'package:fox_fit/models/customer.dart';
 import 'package:fox_fit/screens/customers/widgets/customer_coontainer.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
@@ -170,19 +171,22 @@ class _CustomersPageState extends State<CustomersPage> {
     if (_controller.appState.value.sortedCustomers[Client.permanent] != null) {
       if (_controller
           .appState.value.sortedCustomers[Client.permanent]!.isNotEmpty) {
+        // Сортировка клиентов в алфавитном порядке
+        List<CustomerModel> permanentCustomers = _controller.sortAlphabetically(
+            customers:
+                _controller.appState.value.sortedCustomers[Client.permanent]!);
+
         return Column(
           children: [
             const SizedBox(height: 25),
             ListView.builder(
               physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
-              itemCount: _controller
-                  .appState.value.sortedCustomers[Client.permanent]!.length,
+              itemCount: permanentCustomers.length,
               itemBuilder: (context, index) {
                 return CustomerContainer(
                   widgetType: CustomerContainerType.balance,
-                  customer: _controller
-                      .appState.value.sortedCustomers[Client.permanent]![index],
+                  customer: permanentCustomers[index],
                   clientType: Enums.getClientType(
                     clientUid: _controller
                         .appState

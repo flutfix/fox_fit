@@ -13,6 +13,7 @@ class AppState {
     this.isLoading = false,
     this.currentIndex = 0,
     this.isNewNotifications = false,
+    this.countNewNotifications = 0,
     this.useSchedule = false,
     this.useSalesCoach = false,
     this.isCoordinator = false,
@@ -39,12 +40,17 @@ class AppState {
 
   bool isLoading;
   int currentIndex;
+
+  /// Есть ли новые уведомления
   bool isNewNotifications;
 
-  ///Показывать ли раздел [Расписание]
+  /// Количество новых уведомлений
+  int countNewNotifications;
+
+  /// Показывать ли раздел [Расписание]
   bool useSchedule;
 
-  ///Показывать ли раздел [Продажи]
+  /// Показывать ли раздел [Продажи]
   bool useSalesCoach;
 
   /// Является ли юзер координатором

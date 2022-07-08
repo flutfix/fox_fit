@@ -257,7 +257,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   void _updateNotificationIconColor() {
     _controller.appState.update((model) {
-      model?.isNewNotifications = false;
+      model?.countNewNotifications = 0;
     });
   }
 }

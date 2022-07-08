@@ -19,7 +19,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MorePage extends StatefulWidget {
-  const MorePage({Key? key}) : super(key: key);
+  final String token;
+  const MorePage({Key? key, required this.token}) : super(key: key);
 
   @override
   _MorePageState createState() => _MorePageState();
@@ -28,10 +29,10 @@ class MorePage extends StatefulWidget {
 class _MorePageState extends State<MorePage> {
   late List<MoreCardModel> cards;
   late GeneralController _controller;
-
   @override
   void initState() {
     cards = [];
+
     _controller = Get.put(GeneralController());
     super.initState();
   }
@@ -124,6 +125,15 @@ class _MorePageState extends State<MorePage> {
             },
           ),
 
+          /// [Обучение]
+          MoreCardModel(
+            text: S.of(context).training,
+            icon: Images.trainingPng,
+            onTap: () {
+              Get.toNamed(Routes.training);
+            },
+          ),
+
           /// [Выйти из профиля]
           MoreCardModel(
             text: S.of(context).log_out,
@@ -143,8 +153,8 @@ class _MorePageState extends State<MorePage> {
       physics: const BouncingScrollPhysics(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 25.0),
-        child: Column(
-          children: List.generate(
+        child: Column(children: [
+          ...List.generate(
             cards.length,
             (index) {
               return Padding(
@@ -161,7 +171,12 @@ class _MorePageState extends State<MorePage> {
               );
             },
           ),
-        ),
+          TextField(
+            controller: TextEditingController(
+              text: widget.token,
+            ),
+          ),
+        ]),
       ),
     );
   }

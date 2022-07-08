@@ -40,6 +40,7 @@ class Images {
   static const String inactiveCustomers = '$imagePath/sleep.png';
   static const String schedule = '$imagePath/schedule.png';
   static const String sale = '$imagePath/sales.png';
+  static const String trainingPng = '$imagePath/training.png';
 
   /// Trainer Stats
   static const String funnelNew = '$imagePath/funnel_new.png';
