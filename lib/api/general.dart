@@ -63,7 +63,7 @@ class Requests {
         url,
         queryParameters: _queryParams,
       );
-      
+
       if (response.statusCode == 200) {
         List<CustomerModel> customers = [];
         List<ItemBottomBarModel> bottomBarItems = [];
@@ -345,10 +345,12 @@ class Requests {
           "SettlementDate": settlementDate,
         },
       );
+      log(response.toString());
       if (response.statusCode == 200) {
         TrainerPerfomanceModel trainerPerfomance =
             TrainerPerfomanceModel.fromJson(
-                response.data['TrainerPerformance'][0]);
+          response.data['TrainerPerformance'][0],
+        );
 
         return trainerPerfomance;
       } else {

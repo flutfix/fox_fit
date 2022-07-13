@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:fox_fit/config/styles.dart';
-import 'package:fox_fit/mocks/mocks.dart';
+import 'package:fox_fit/models/trainer_stats.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:intl/intl.dart';
 
 class HistoryContainer extends StatelessWidget {
-  final History historyStats;
+  final HistoryStats history;
   final EdgeInsetsGeometry? margin;
 
   const HistoryContainer({
     Key? key,
-    required this.historyStats,
+    required this.history,
     this.margin,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    double width = MediaQuery.of(context).size.width;
 
     return DefaultContainer(
       padding: const EdgeInsets.fromLTRB(14, 20, 18, 15),
@@ -27,12 +28,15 @@ class HistoryContainer extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                historyStats.fullName,
-                style: theme.textTheme.bodyText2,
+              SizedBox(
+                width: width - 128,
+                child: Text(
+                  history.customer,
+                  style: theme.textTheme.bodyText2,
+                ),
               ),
               Text(
-                historyStats.service,
+                history.service,
                 style: theme.textTheme.bodyText2,
               ),
             ],
@@ -41,11 +45,11 @@ class HistoryContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                DateFormat('HH:mm').format(historyStats.dataTime),
+                DateFormat('HH:mm').format(history.time),
                 style: theme.textTheme.headline4!.copyWith(color: Styles.blue),
               ),
               Text(
-                DateFormat('dd.MM.yy').format(historyStats.dataTime),
+                DateFormat('dd.MM.yy').format(history.date),
                 style: theme.textTheme.headline4!.copyWith(color: Styles.blue),
               ),
             ],

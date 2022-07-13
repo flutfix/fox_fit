@@ -34,37 +34,40 @@ class _StatsCardState extends State<StatsCard> {
             text: 'Всего продаж',
             count: widget.sales,
           ),
-          _buildRow(
-            theme,
-            text: 'План',
-            count: widget.plan,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Выполнение плана ${(double.parse(widget.progress) * 100).round()}%',
-            style: theme.textTheme.headline3!.copyWith(fontSize: 12),
-          ),
-          const SizedBox(height: 6),
-          Stack(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 8,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: theme.colorScheme.surface),
-              ),
-              AnimatedContainer(
-                duration: Duration(milliseconds: widget.duration),
-                width: progressContainerWidth * double.parse(widget.progress),
-                height: 8,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: theme.colorScheme.primary,
+          if (int.parse(widget.plan) != 0)
+            _buildRow(
+              theme,
+              text: 'План',
+              count: widget.plan,
+            ),
+          if (int.parse(widget.plan) != 0) const SizedBox(height: 4),
+          if (int.parse(widget.plan) != 0)
+            Text(
+              'Выполнение плана ${(double.parse(widget.progress) * 100).round()}%',
+              style: theme.textTheme.headline3!.copyWith(fontSize: 12),
+            ),
+          if (int.parse(widget.plan) != 0) const SizedBox(height: 6),
+          if (int.parse(widget.plan) != 0)
+            Stack(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 8,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: theme.colorScheme.surface),
                 ),
-              ),
-            ],
-          ),
+                AnimatedContainer(
+                  duration: Duration(milliseconds: widget.duration),
+                  width: progressContainerWidth * double.parse(widget.progress),
+                  height: 8,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+              ],
+            ),
         ],
       ),
     );

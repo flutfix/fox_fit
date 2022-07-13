@@ -5,6 +5,7 @@ import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/mocks/mocks.dart';
+import 'package:fox_fit/models/trainer_stats.dart';
 import 'package:fox_fit/screens/trainer_stats/widgets/history_container.dart';
 import 'package:fox_fit/screens/trainer_stats/widgets/selector.dart';
 import 'package:fox_fit/widgets/default_container.dart';
@@ -285,19 +286,22 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                 const SizedBox(height: 32),
 
                 // Кнопки выбора подробной информации
-                // Selector(
-                //   controller: _infoController,
-                //   margin: const EdgeInsets.symmetric(horizontal: 20),
-                //   onTap: (int index) {
-                //     setState(() {
-                //       _infoController = index;
-                //     });
-                //   },
-                // ),
-                // const SizedBox(height: 16),
+                Selector(
+                  controller: _infoController,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  onTap: (int index) {
+                    setState(() {
+                      _infoController = index;
+                    });
+                  },
+                ),
+                const SizedBox(height: 16),
 
                 // Подробная информация
-                // _infoStats(theme: theme),
+                _infoStats(
+                  theme: theme,
+                  width: width,
+                ),
               ],
             ),
           ),
@@ -380,164 +384,196 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
 
   Widget _infoStats({
     required ThemeData theme,
+    required double width,
   }) {
+    List<HistoryStats> history = _generalController
+            .appState.value.trainerPerfomance?.historicalData.history ??
+        [];
+    List<ServiceStats> services = _generalController
+            .appState.value.trainerPerfomance?.historicalData.services ??
+        [];
+    List<ClientStats> clients = _generalController
+            .appState.value.trainerPerfomance?.historicalData.clients ??
+        [];
+
     // История
     if (_infoController == 0) {
-      return ListView.separated(
-        itemCount: 3,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        separatorBuilder: (context, index) {
-          return const SizedBox(
-            height: 6,
-          );
-        },
-        itemBuilder: (context, index) {
-          return HistoryContainer(
-            historyStats: Mocks.historyStats,
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-          );
-        },
-      );
+      if (history.isNotEmpty) {
+        return ListView.separated(
+          itemCount: history.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          separatorBuilder: (context, index) {
+            return const SizedBox(
+              height: 6,
+            );
+          },
+          itemBuilder: (context, index) {
+            return HistoryContainer(
+              history: history[index],
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+            );
+          },
+        );
+      } else {
+        return const SizedBox();
+      }
 
       // Услуги
     } else if (_infoController == 1) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 29),
-              child: Text(
-                '${S.of(context).total} ${Mocks.serviceStats.amount} ${S.of(context).pcs}.',
-                style: theme.textTheme.headline3!.copyWith(
-                  color: Styles.blue,
+      if (history.isNotEmpty) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 29),
+                child: Text(
+                  '${S.of(context).total} ${services.length} ${S.of(context).pcs}.',
+                  style: theme.textTheme.headline3!.copyWith(
+                    color: Styles.blue,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 14),
-            DefaultContainer(
-              padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 27),
-              child: ListView.separated(
-                itemCount: 5,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      const SizedBox(
-                        height: 21,
-                      ),
-                      Container(
-                        height: 1,
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        color: theme.dividerColor.withOpacity(0.2),
-                      ),
-                      const SizedBox(
-                        height: 21,
-                      ),
-                    ],
-                  );
-                },
-                itemBuilder: (context, index) {
-                  return Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
+              const SizedBox(height: 14),
+              DefaultContainer(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 23, vertical: 27),
+                child: ListView.separated(
+                  itemCount: services.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  separatorBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        const SizedBox(
+                          height: 21,
                         ),
-                        decoration: BoxDecoration(
-                          color: theme.backgroundColor,
-                          borderRadius: BorderRadius.circular(8),
+                        Container(
+                          height: 1,
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          color: theme.dividerColor.withOpacity(0.2),
                         ),
-                        child: Text(
-                          '${Mocks.serviceStats.count} ${S.of(context).pcs}',
-                          style: theme.textTheme.headline4!.copyWith(
-                            color: Styles.blue,
+                        const SizedBox(
+                          height: 21,
+                        ),
+                      ],
+                    );
+                  },
+                  itemBuilder: (context, index) {
+                    return Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.backgroundColor,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            '${services[index].amount} ${S.of(context).pcs}',
+                            style: theme.textTheme.headline4!.copyWith(
+                              color: Styles.blue,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Text(
-                        Mocks.serviceStats.name,
-                        style: theme.textTheme.bodyText1,
-                      ),
-                    ],
-                  );
-                },
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        SizedBox(
+                          width: width - 153,
+                          child: Text(
+                            services[index].service,
+                            style: theme.textTheme.bodyText1,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
-        ),
-      );
+            ],
+          ),
+        );
+      } else {
+        return const SizedBox();
+      }
 
       // Клиенты
     } else {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 29),
-              child: Text(
-                '${S.of(context).total} ${Mocks.serviceStats.amount} ${S.of(context).pcs}.',
-                style: theme.textTheme.headline3!.copyWith(
-                  color: Styles.blue,
+      if (history.isNotEmpty) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 29),
+                child: Text(
+                  '${S.of(context).total} ${clients.length} ${S.of(context).pcs}.',
+                  style: theme.textTheme.headline3!.copyWith(
+                    color: Styles.blue,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 14),
-            ListView.separated(
-              itemCount: 5,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              separatorBuilder: (context, index) {
-                return const SizedBox(
-                  height: 6,
-                );
-              },
-              itemBuilder: (context, index) {
-                return DefaultContainer(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: theme.backgroundColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          '${Mocks.clientStats.count} ${S.of(context).pcs}',
-                          style: theme.textTheme.headline4!.copyWith(
-                            color: Styles.blue,
+              const SizedBox(height: 14),
+              ListView.separated(
+                itemCount: clients.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: 6,
+                  );
+                },
+                itemBuilder: (context, index) {
+                  return DefaultContainer(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 16,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.backgroundColor,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            '${clients[index].amount} ${S.of(context).pcs}',
+                            style: theme.textTheme.headline4!.copyWith(
+                              color: Styles.blue,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Text(
-                        Mocks.clientStats.name,
-                        style: theme.textTheme.bodyText1,
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      );
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        SizedBox(
+                          width: width - 131,
+                          child: Text(
+                            clients[index].customer,
+                            style: theme.textTheme.bodyText1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      } else {
+        return const SizedBox();
+      }
     }
   }
 }
