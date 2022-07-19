@@ -34,20 +34,20 @@ class _StatsCardState extends State<StatsCard> {
             text: 'Всего продаж',
             count: widget.sales,
           ),
-          if (int.parse(widget.plan) != 0)
+          if (widget.plan != '0')
             _buildRow(
               theme,
               text: 'План',
               count: widget.plan,
             ),
-          if (int.parse(widget.plan) != 0) const SizedBox(height: 4),
-          if (int.parse(widget.plan) != 0)
+          if (widget.plan != '0') const SizedBox(height: 4),
+          if (widget.plan != '0')
             Text(
               'Выполнение плана ${(double.parse(widget.progress) * 100).round()}%',
               style: theme.textTheme.headline3!.copyWith(fontSize: 12),
             ),
-          if (int.parse(widget.plan) != 0) const SizedBox(height: 6),
-          if (int.parse(widget.plan) != 0)
+          if (widget.plan != '0') const SizedBox(height: 6),
+          if (widget.plan != '0')
             Stack(
               children: [
                 Container(

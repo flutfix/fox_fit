@@ -109,5 +109,8 @@
     "customers": "",
     "pcs": "",
     "total": "",
-    "training": ""
+    "training": "",
+    "history_empty": "",
+    "services_empty": "",
+    "customer_empty": ""
 }

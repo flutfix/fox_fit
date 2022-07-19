@@ -107,17 +107,17 @@ class _CustomAppBarState extends State<CustomAppBar> {
                         children: [
                           SvgPicture.asset(
                             Images.notifications,
-                            width: 24,
+                            width: 18.88,
                             color: _controller
                                         .appState.value.countNewNotifications !=
                                     0
                                 ? theme.colorScheme.primary
-                                : theme.iconTheme.color,
+                                : theme.colorScheme.secondary,
                           ),
                           if (widget.countNotifications != 0)
                             Badge(
                               countNotifications: widget.countNotifications,
-                              margin: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+                              margin: const EdgeInsets.fromLTRB(10, 0, 0, 12),
                             ),
                           const SizedBox(
                             width: 36,

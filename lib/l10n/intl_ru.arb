@@ -108,5 +108,8 @@
     "customers": "Клиенты",
     "pcs": "шт",
     "total": "Всего",
-    "training": "Обучение"
+    "training": "Обучение",
+    "history_empty": "История пуста",
+    "services_empty": "Список услуг пуст",
+    "customer_empty": "Список клиентов пуст"
 }
