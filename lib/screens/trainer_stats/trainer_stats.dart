@@ -4,7 +4,6 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
-import 'package:fox_fit/mocks/mocks.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
 import 'package:fox_fit/screens/trainer_stats/widgets/history_container.dart';
 import 'package:fox_fit/screens/trainer_stats/widgets/selector.dart';
@@ -275,6 +274,25 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                               ],
                             ),
                           ),
+                          const SizedBox(height: 32),
+
+                          // Кнопки выбора подробной информации
+                          Selector(
+                            controller: _infoController,
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            onTap: (int index) {
+                              setState(() {
+                                _infoController = index;
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 16),
+
+                          // Подробная информация
+                          _infoStats(
+                            theme: theme,
+                            width: width,
+                          ),
                         ],
                       )
                     : const Padding(
@@ -283,25 +301,6 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                           child: CircularProgressIndicator(),
                         ),
                       ),
-                const SizedBox(height: 32),
-
-                // Кнопки выбора подробной информации
-                Selector(
-                  controller: _infoController,
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  onTap: (int index) {
-                    setState(() {
-                      _infoController = index;
-                    });
-                  },
-                ),
-                const SizedBox(height: 16),
-
-                // Подробная информация
-                _infoStats(
-                  theme: theme,
-                  width: width,
-                ),
               ],
             ),
           ),
@@ -416,7 +415,15 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
           },
         );
       } else {
-        return const SizedBox();
+        return DefaultContainer(
+          padding: const EdgeInsets.fromLTRB(14, 20, 18, 15),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            S.of(context).history_empty,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyText2,
+          ),
+        );
       }
 
       // Услуги
@@ -499,7 +506,15 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
           ),
         );
       } else {
-        return const SizedBox();
+        return DefaultContainer(
+          padding: const EdgeInsets.fromLTRB(14, 20, 18, 15),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            S.of(context).services_empty,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyText2,
+          ),
+        );
       }
 
       // Клиенты
@@ -572,7 +587,15 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
           ),
         );
       } else {
-        return const SizedBox();
+        return DefaultContainer(
+          padding: const EdgeInsets.fromLTRB(14, 20, 18, 15),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            S.of(context).customer_empty,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyText2,
+          ),
+        );
       }
     }
   }

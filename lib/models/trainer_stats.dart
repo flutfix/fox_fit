@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 class TrainerPerfomanceModel {
   TrainerPerfomanceModel({
     required this.month,

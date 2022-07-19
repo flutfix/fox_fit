@@ -1159,6 +1159,36 @@ class S {
       args: [],
     );
   }
+
+  /// ``
+  String get history_empty {
+    return Intl.message(
+      '',
+      name: 'history_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get services_empty {
+    return Intl.message(
+      '',
+      name: 'services_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ``
+  String get customer_empty {
+    return Intl.message(
+      '',
+      name: 'customer_empty',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

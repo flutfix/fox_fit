@@ -57,6 +57,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Подтверждение не выполнено"),
         "coordinator": MessageLookupByLibrary.simpleMessage("Координатор"),
         "currency_symbol": MessageLookupByLibrary.simpleMessage("₽"),
+        "customer_empty":
+            MessageLookupByLibrary.simpleMessage("Список клиентов пуст"),
         "customer_information":
             MessageLookupByLibrary.simpleMessage("Информация о клиенте"),
         "customers": MessageLookupByLibrary.simpleMessage("Клиенты"),
@@ -95,6 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "for_customer": MessageLookupByLibrary.simpleMessage("для клиента"),
         "group": MessageLookupByLibrary.simpleMessage("Группа"),
         "history": MessageLookupByLibrary.simpleMessage("История"),
+        "history_empty": MessageLookupByLibrary.simpleMessage("История пуста"),
         "i_did_it": MessageLookupByLibrary.simpleMessage("Я сделяль!"),
         "inactiveCustomers":
             MessageLookupByLibrary.simpleMessage("\"Спящие\" клиенты"),
@@ -153,6 +156,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Сервер недоступен"),
         "service": MessageLookupByLibrary.simpleMessage("Услуга"),
         "services": MessageLookupByLibrary.simpleMessage("Услуги"),
+        "services_empty":
+            MessageLookupByLibrary.simpleMessage("Список услуг пуст"),
         "set_duration": MessageLookupByLibrary.simpleMessage(
             "Заполните длительность тренировки"),
         "sign_up_training_session":
