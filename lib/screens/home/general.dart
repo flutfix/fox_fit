@@ -12,6 +12,7 @@ import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/auth_data.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
 import 'package:fox_fit/screens/more/more.dart';
+import 'package:fox_fit/utils/count_new_notifications/count_new_notification_service.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/bottom_bar.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
@@ -259,19 +260,13 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
         .bottomBarItems[controller.appState.value.currentIndex]
         .uid];
 
-    // Сокращение количесвта уведомлений до максимально отражаемого числа
-    int countNewNotifications = 0;
-    if (controller.appState.value.countNewNotifications > 99) {
-      countNewNotifications = 99;
-    } else {
-      countNewNotifications = controller.appState.value.countNewNotifications;
-    }
+  
 
     return CustomAppBar(
       title: controller.appState.value
           .bottomBarItems[controller.appState.value.currentIndex].shortName,
       count: (customers != null) ? customers.length : null,
-      countNotifications: countNewNotifications,
+      countNotifications: CountNewNotificationSevice.badge(controller),
       onNotification: onNotification,
     );
   }

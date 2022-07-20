@@ -3,6 +3,7 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
+import 'package:fox_fit/utils/count_new_notifications/count_new_notification_service.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
@@ -67,6 +68,7 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
   CustomAppBar _appBar() {
     return CustomAppBar(
       title: S.of(context).coordinator,
+      countNotifications: CountNewNotificationSevice.badge(_controller),
       isBackArrow: true,
       onBack: () async {
         Get.back();

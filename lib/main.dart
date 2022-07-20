@@ -8,7 +8,7 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:fox_fit/service_locator/di.dart';
+import 'package:fox_fit/service_locator/sl.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

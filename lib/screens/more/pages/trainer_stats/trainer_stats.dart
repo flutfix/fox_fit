@@ -5,11 +5,12 @@ import 'package:fox_fit/config/styles.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/models/trainer_stats.dart';
-import 'package:fox_fit/screens/trainer_stats/widgets/history_container.dart';
-import 'package:fox_fit/screens/trainer_stats/widgets/selector.dart';
+import 'package:fox_fit/screens/more/pages/trainer_stats/widgets/history_container.dart';
+import 'package:fox_fit/screens/more/pages/trainer_stats/widgets/selector.dart';
+import 'package:fox_fit/screens/more/pages/trainer_stats/widgets/stats_card.dart';
+import 'package:fox_fit/utils/count_new_notifications/count_new_notification_service.dart';
 import 'package:fox_fit/widgets/default_container.dart';
 import 'package:fox_fit/widgets/months.dart';
-import 'package:fox_fit/screens/trainer_stats/widgets/stats_card.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
 import 'package:fox_fit/widgets/snackbar.dart';
@@ -81,6 +82,8 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
             Get.toNamed(Routes.notifications);
           },
           title: S.of(context).trainer_stats,
+          countNotifications:
+              CountNewNotificationSevice.badge(_generalController),
           isBackArrow: true,
           onBack: () async {
             if (!isLoading) {
@@ -274,25 +277,6 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 32),
-
-                          // Кнопки выбора подробной информации
-                          Selector(
-                            controller: _infoController,
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            onTap: (int index) {
-                              setState(() {
-                                _infoController = index;
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 16),
-
-                          // Подробная информация
-                          _infoStats(
-                            theme: theme,
-                            width: width,
-                          ),
                         ],
                       )
                     : const Padding(
@@ -301,6 +285,25 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
                           child: CircularProgressIndicator(),
                         ),
                       ),
+                const SizedBox(height: 32),
+
+                // Кнопки выбора подробной информации
+                Selector(
+                  controller: _infoController,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  onTap: (int index) {
+                    setState(() {
+                      _infoController = index;
+                    });
+                  },
+                ),
+                const SizedBox(height: 16),
+
+                // Подробная информация
+                _infoStats(
+                  theme: theme,
+                  width: width,
+                ),
               ],
             ),
           ),
@@ -415,15 +418,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
           },
         );
       } else {
-        return DefaultContainer(
-          padding: const EdgeInsets.fromLTRB(14, 20, 18, 15),
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          child: Text(
-            S.of(context).history_empty,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyText2,
-          ),
-        );
+        return const SizedBox();
       }
 
       // Услуги
@@ -506,15 +501,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
           ),
         );
       } else {
-        return DefaultContainer(
-          padding: const EdgeInsets.fromLTRB(14, 20, 18, 15),
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          child: Text(
-            S.of(context).services_empty,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyText2,
-          ),
-        );
+        return const SizedBox();
       }
 
       // Клиенты
@@ -587,15 +574,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
           ),
         );
       } else {
-        return DefaultContainer(
-          padding: const EdgeInsets.fromLTRB(14, 20, 18, 15),
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          child: Text(
-            S.of(context).customer_empty,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyText2,
-          ),
-        );
+        return const SizedBox();
       }
     }
   }

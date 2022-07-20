@@ -3,6 +3,7 @@ import 'package:fox_fit/config/routes.dart';
 import 'package:fox_fit/controllers/general_cotroller.dart';
 import 'package:fox_fit/generated/l10n.dart';
 import 'package:fox_fit/screens/customers/customers.dart';
+import 'package:fox_fit/utils/count_new_notifications/count_new_notification_service.dart';
 import 'package:fox_fit/utils/enums.dart';
 import 'package:fox_fit/utils/error_handler.dart';
 import 'package:fox_fit/widgets/custom_app_bar.dart';
@@ -56,7 +57,17 @@ class _SleepingCustomersPageState extends State<SleepingCustomersPage> {
       },
       child: Scaffold(
         backgroundColor: theme.backgroundColor,
-        appBar: _appBar(),
+        appBar: CustomAppBar(
+          title: S.of(context).sleeping_customers,
+          countNotifications: CountNewNotificationSevice.badge(_controller),
+          isBackArrow: true,
+          onBack: () async {
+            await _onBack();
+          },
+          onNotification: () {
+            Get.toNamed(Routes.notifications);
+          },
+        ),
         body: !_isLoading
             ? const CustomersPage(
                 pageType: CustomersPageType.sleep,
@@ -80,19 +91,6 @@ class _SleepingCustomersPageState extends State<SleepingCustomersPage> {
           title: S.of(context).error,
           message: S.of(context).failed_update_list,
         );
-      },
-    );
-  }
-
-  CustomAppBar _appBar() {
-    return CustomAppBar(
-      title: S.of(context).sleeping_customers,
-      isBackArrow: true,
-      onBack: ()async {
-        await _onBack();
-      },
-      onNotification: () {
-        Get.toNamed(Routes.notifications);
       },
     );
   }

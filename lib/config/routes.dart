@@ -13,11 +13,11 @@ import 'package:fox_fit/screens/more/pages/schedule/pages/select_client/select_c
 import 'package:fox_fit/screens/more/pages/schedule/pages/select_service.dart';
 import 'package:fox_fit/screens/more/pages/schedule/pages/sign_up_training_session.dart';
 import 'package:fox_fit/screens/more/pages/sleeping_customers/sleeping_customers.dart';
+import 'package:fox_fit/screens/more/pages/trainer_stats/trainer_stats.dart';
 import 'package:fox_fit/screens/more/pages/training/training.dart';
 import 'package:fox_fit/screens/notifications/notifications.dart';
 import 'package:fox_fit/screens/splash/splash_screen.dart';
 import 'package:fox_fit/screens/trainer_choosing/trainer_choosing.dart';
-import 'package:fox_fit/screens/trainer_stats/trainer_stats.dart';
 import 'package:get/get.dart';
 
 class Routes {
@@ -48,18 +48,42 @@ class Routes {
       _getPage(Routes.splash, () => const SpalshScreen()),
       _getPage(Routes.auth, () => const AuthPage()),
       _getPage(Routes.general, () => const General()),
-      _getPage(Routes.trainerStats, () => const TrainerStatsPage()),
+      _getPage(
+        Routes.trainerStats,
+        () => const TrainerStatsPage(),
+        transition: Transition.rightToLeft,
+      ),
       _getPage(Routes.trainerChoosing, () => const TrainerChoosingPage()),
-      _getPage(Routes.coordinator, () => const CoordinatorPage()),
-      _getPage(Routes.changePassword, () => const ChangePasswordPage()),
+      _getPage(
+        Routes.coordinator,
+        () => const CoordinatorPage(),
+        transition: Transition.rightToLeft,
+      ),
+      _getPage(
+        Routes.changePassword,
+        () => const ChangePasswordPage(),
+        transition: Transition.rightToLeft,
+      ),
       _getPage(Routes.notifications, () => const NotificationsPage()),
-      _getPage(Routes.sleepingCustomers, () => const SleepingCustomersPage()),
-      _getPage(Routes.schedule, () => const SchedulePage()),
+      _getPage(
+        Routes.sleepingCustomers,
+        () => const SleepingCustomersPage(),
+        transition: Transition.rightToLeft,
+      ),
+      _getPage(
+        Routes.schedule,
+        () => const SchedulePage(),
+        transition: Transition.rightToLeft,
+      ),
       _getPage(Routes.selectClient, () => const SelectClientPage()),
       _getPage(Routes.searchClient, () => const SearchClient()),
       _getPage(Routes.selectService, () => const SelectServicePage()),
       _getPage(Routes.saleServices, () => const ServicesPage()),
-      _getPage(Routes.sale, () => const CreateSalePage()),
+      _getPage(
+        Routes.sale,
+        () => const CreateSalePage(),
+        transition: Transition.rightToLeft,
+      ),
       _getPage(Routes.error, () => const ErrorPage()),
       _getPage(Routes.update, () => const UpdatePage()),
       _getPage(Routes.training, () => const TrainingPage()),
@@ -68,11 +92,15 @@ class Routes {
     ];
   }
 
-  static GetPage<dynamic> _getPage(String routeName, Widget Function() page) {
+  static GetPage<dynamic> _getPage(
+    String routeName,
+    Widget Function() page, {
+    Transition transition = Transition.fadeIn,
+  }) {
     return GetPage(
       name: routeName,
-      transition: Transition.fadeIn,
-      curve: Curves.easeOut,
+      transition: transition,
+      curve: Curves.easeInOut,
       page: page,
     );
   }
