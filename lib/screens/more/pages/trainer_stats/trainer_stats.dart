@@ -83,7 +83,7 @@ class _TrainerStatsPageState extends State<TrainerStatsPage> {
           },
           title: S.of(context).trainer_stats,
           countNotifications:
-              CountNewNotificationSevice.badge(_generalController),
+              CountNewNotificationService.badge(_generalController),
           isBackArrow: true,
           onBack: () async {
             if (!isLoading) {

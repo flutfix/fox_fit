@@ -68,7 +68,7 @@ class _CoordinatorPageState extends State<CoordinatorPage> {
   CustomAppBar _appBar() {
     return CustomAppBar(
       title: S.of(context).coordinator,
-      countNotifications: CountNewNotificationSevice.badge(_controller),
+      countNotifications: CountNewNotificationService.badge(_controller),
       isBackArrow: true,
       onBack: () async {
         Get.back();

@@ -1,6 +1,6 @@
 import 'package:fox_fit/controllers/general_cotroller.dart';
 
-class CountNewNotificationSevice {
+class CountNewNotificationService {
   static int badge(GeneralController controller) {
     // Сокращение количесвта уведомлений до максимально отражаемого числа
     int countNewNotifications = 0;

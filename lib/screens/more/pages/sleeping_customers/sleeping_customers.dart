@@ -59,7 +59,7 @@ class _SleepingCustomersPageState extends State<SleepingCustomersPage> {
         backgroundColor: theme.backgroundColor,
         appBar: CustomAppBar(
           title: S.of(context).sleeping_customers,
-          countNotifications: CountNewNotificationSevice.badge(_controller),
+          countNotifications: CountNewNotificationService.badge(_controller),
           isBackArrow: true,
           onBack: () async {
             await _onBack();

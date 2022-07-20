@@ -260,13 +260,11 @@ class _GeneralState extends State<General> with WidgetsBindingObserver {
         .bottomBarItems[controller.appState.value.currentIndex]
         .uid];
 
-  
-
     return CustomAppBar(
       title: controller.appState.value
           .bottomBarItems[controller.appState.value.currentIndex].shortName,
       count: (customers != null) ? customers.length : null,
-      countNotifications: CountNewNotificationSevice.badge(controller),
+      countNotifications: CountNewNotificationService.badge(controller),
       onNotification: onNotification,
     );
   }
